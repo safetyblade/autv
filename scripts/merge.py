@@ -9,9 +9,14 @@ LG = Path("lg_upstream.m3u")
 PLUTO_US = Path("pluto_us_upstream.m3u")
 PLUTO_CA = Path("pluto_ca_upstream.m3u")
 PLUTO_GB = Path("pluto_gb_upstream.m3u")
+PLEX_US = Path("plex_us_upstream.m3u")
+PLEX_GB = Path("plex_gb_upstream.m3u")
+PLEX_CA = Path("plex_ca_upstream.m3u")
+PLEX_NZ = Path("plex_nz_upstream.m3u")
 SELECTED_SAMSUNG = Path("selected_channels.txt")
 SELECTED_LG = Path("selected_lg_channels.txt")
 SELECTED_PLUTO = Path("selected_pluto_channels.txt")
+SELECTED_PLEX = Path("selected_plex_channels.txt")
 CUSTOM = Path("custom.m3u")
 OUTPUT = Path("playlist.m3u")
 XMLTV = Path("curated.xml")
@@ -107,6 +112,12 @@ pluto_entries = (
     + parse_entries(read(PLUTO_CA))
     + parse_entries(read(PLUTO_GB))
 )
+plex_entries = (
+    parse_entries(read(PLEX_US))
+    + parse_entries(read(PLEX_GB))
+    + parse_entries(read(PLEX_CA))
+    + parse_entries(read(PLEX_NZ))
+)
 
 extras = []
 xml_channels = []
@@ -114,6 +125,7 @@ xml_channels = []
 missing_samsung = add_selected("SAMSUNG", samsung_entries, SELECTED_SAMSUNG, extras, xml_channels)
 missing_lg = add_selected("LG", lg_entries, SELECTED_LG, extras, xml_channels)
 missing_pluto = add_selected("PLUTO", pluto_entries, SELECTED_PLUTO, extras, xml_channels)
+missing_plex = add_selected("PLEX", plex_entries, SELECTED_PLEX, extras, xml_channels)
 
 for name, extinf, url in parse_entries(read(CUSTOM)):
     m3u, xml = normalise(name, extinf, url)
@@ -149,9 +161,12 @@ print(f"Wrote {XMLTV} with {len(xml_channels)} channel definitions")
 print(f"Samsung requested channels not found: {len(missing_samsung)}")
 print(f"LG requested channels not found: {len(missing_lg)}")
 print(f"Pluto requested channels not found: {len(missing_pluto)}")
+print(f"Plex requested channels not found: {len(missing_plex)}")
 if missing_samsung:
     print("Missing Samsung list: " + " | ".join(missing_samsung))
 if missing_lg:
     print("Missing LG list: " + " | ".join(missing_lg))
 if missing_pluto:
     print("Missing Pluto list: " + " | ".join(missing_pluto))
+if missing_plex:
+    print("Missing Plex list: " + " | ".join(missing_plex))
