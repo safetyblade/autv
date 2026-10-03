@@ -1166,17 +1166,9 @@
     <display-name>Gravitas Movies</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99991312/168x168.png?type=color_onBlack" />
   </channel>
-  <channel id="99951596">
-    <display-name>Great American RomComs</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951596/168x168.png?type=color_onBlack" />
-  </channel>
   <channel id="99991621">
     <display-name>Universal Movies</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99991621/168x168.png?type=color_onBlack" />
-  </channel>
-  <channel id="99951411">
-    <display-name>Shout! Movies</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951411/168x168.png?type=color_onBlack" />
   </channel>
   <channel id="99951572">
     <display-name>MGM Presents: Action</display-name>
@@ -1194,18 +1186,6 @@
     <display-name>Field &amp; Stream TV</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99991374/168x168.png?type=color_onBlack" />
   </channel>
-  <channel id="99951601">
-    <display-name>SI TV</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951601/168x168.png?type=color_onBlack" />
-  </channel>
-  <channel id="99951390">
-    <display-name>PickleballTV</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951390/168x168.png?type=color_onBlack" />
-  </channel>
-  <channel id="99951406">
-    <display-name>Willow Sports</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951406/168x168.png?type=color_onBlack" />
-  </channel>
   <channel id="99951530">
     <display-name>ONE Championship</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951530/168x168.png?type=color_onBlack" />
@@ -1214,10 +1194,6 @@
     <display-name>HBO Boxing</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951469/168x168.png?type=color_onBlack" />
   </channel>
-  <channel id="99951413">
-    <display-name>NASCAR Channel</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951413/168x168.png?type=color_onBlack" />
-  </channel>
   <channel id="99991622">
     <display-name>Stories by AMC</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99991622/168x168.png?type=color_onBlack" />
@@ -1225,10 +1201,6 @@
   <channel id="99951497">
     <display-name>BBC Drama</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951497/168x168.png?type=color_onBlack" />
-  </channel>
-  <channel id="99951535">
-    <display-name>Weeds &amp; Nurse Jackie</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951535/168x168.png?type=color_onBlack" />
   </channel>
   <channel id="99951452">
     <display-name>Murdoch Mysteries </display-name>
@@ -1342,14 +1314,6 @@
     <display-name>BBC Food</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951177/168x168.png?type=color_onBlack" />
   </channel>
-  <channel id="99951393">
-    <display-name>Bizarre Foods with Andrew Zimmern</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951393/168x168.png?type=color_onBlack" />
-  </channel>
-  <channel id="99951384">
-    <display-name>Bachelor Nation</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951384/168x168.png?type=color_onBlack" />
-  </channel>
   <channel id="99951479">
     <display-name>Love After Lockup We TV</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951479/168x168.png?type=color_onBlack" />
@@ -1357,14 +1321,6 @@
   <channel id="99951595">
     <display-name>Sesame Street</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951595/168x168.png?type=color_onBlack" />
-  </channel>
-  <channel id="99951441">
-    <display-name>Power Rangers</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951441/168x168.png?type=color_onBlack" />
-  </channel>
-  <channel id="99951442">
-    <display-name>My Little Pony</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951442/168x168.png?type=color_onBlack" />
   </channel>
   <channel id="5ddd7cb2cbb9010009b4fe32">
     <display-name>Nick Jr Club</display-name>
@@ -1501,5 +1457,21 @@
   <channel id="pluto.scare.tactics">
     <display-name>Scare Tactics</display-name>
     <icon src="https://images.pluto.tv/channels/6874ad2f3484d60732267ba8/colorLogoPNG.png" />
+  </channel>
+  <channel id="f885c4d5b5a17671">
+    <display-name>Obsessive Compulsive Cleaners - LG AU Test</display-name>
+    <icon src="http://img.platform.wurl.dev/channel/2226/lg/0331bd/LG-Logo-PNG-100x100_v1.png" />
+  </channel>
+  <channel id="GB1200011U5">
+    <display-name>Obsessive Compulsive Cleaners - Samsung GB Test</display-name>
+    <icon src="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB1200011U5_20260811T045340SQUARE.png" />
+  </channel>
+  <channel id="US700005ID">
+    <display-name>WWE Superstar Central</display-name>
+    <icon src="https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US700005ID_20260421T142358SQUARE.png" />
+  </channel>
+  <channel id="400000294">
+    <display-name>Watch AEW - Tubi Test</display-name>
+    <icon src="https://canvas-lb.tubitv.com/opts/yeAV3-c2XWfYzw==/e9cd4624-20d8-421b-b5ed-282769cf2f57/CHgQeDoFMS4xLjlAAQ==" />
   </channel>
 </tv>
