@@ -103,42 +103,42 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 277,Big 12 Studios,Sport,General Sports,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 278,FloHockey 24/7,Sport,General Sports,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 279,Willow Sports,Sport,General Sports,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-300,Action Hollywood Movies,Movies,,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-301,British Screen Classics,Movies,,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-302,Classic Movies Channel,Movies,,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-303,Curzon,Movies,,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-304,FilmRise Creators,Movies,,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-305,FilmRise Free Movies,Movies,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
-306,FilmRise Horror,Movies,,Full,Roku,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-307,FilmRise Western,Movies,,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-308,Gravitas Movies,Movies,,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-309,Great American RomComs,Movies,,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-310,Grjngo - Western Movies,Movies,,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-311,Hallmark Movies & More,Movies,,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-312,Hi-Yah!,Movies,,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-313,Lifetime Movie Favorites,Movies,,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-314,Maverick Black Cinema,Movies,,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-315,MGM Presents,Movies,,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-316,MGM Presents: Action,Movies,,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-317,MGM Presents: Westerns,Movies,,Full,Xumo,,Active,Western films and classic western series.
-318,Movie Hub,Movies,,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-319,Movie Hub Action,Movies,,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-320,Movieitaly Channel,Movies,,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-321,MOVIESPHERE,Movies,,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-322,182 MyTime Movie Network,Movies,,Full,Curated,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-323,Pam Grier's Soul Flix,Movies,,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-324,Paramount Movie Channel,Movies,,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-325,Pluto TV Action Movies,Movies,,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-326,Pluto TV Cult Films,Movies,,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-327,Pluto TV Horror,Movies,,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-328,Pluto TV Thrillers,Movies,,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-329,PopCorn Central,Movies,,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-330,Shout! Movies,Movies,,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-331,Sparkle Movies - Light & Love,Movies,,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-332,Surf Cinema,Movies,,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-333,Universal Movies,Movies,,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-334,173 Universal Westerns,Movies,,Full,Curated,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-335,Western Bound,Movies,,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+300,MGM Presents,Movies,Major / Broad Movies,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+301,Paramount Movie Channel,Movies,Major / Broad Movies,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+302,Universal Movies,Movies,Major / Broad Movies,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+303,MOVIESPHERE,Movies,Major / Broad Movies,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+304,FilmRise Creators,Entertainment,,Full,Plex AU,,Active,"Creator-led entertainment channel featuring digital personalities, web series and online video programming."
+304,Gravitas Movies,Movies,Major / Broad Movies,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+305,Shout! Movies,Movies,Major / Broad Movies,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+306,FilmRise Free Movies,Movies,Major / Broad Movies,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
+307,Movie Hub,Movies,Major / Broad Movies,Full,Roku,,Active,Broad movie FAST channel with a rotating mix of feature films.
+308,MyTime Movie Network,Movies,Major / Broad Movies,Full,Curated,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+309,Action Hollywood Movies,Movies,Action & Martial Arts,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+310,MGM Presents: Action,Movies,Action & Martial Arts,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+311,Movie Hub Action,Movies,Action & Martial Arts,Full,Roku,,Active,Action-focused movie FAST channel featuring action and adventure films.
+312,Pluto TV Action Movies,Movies,Action & Martial Arts,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+313,Hi-Yah!,Movies,Action & Martial Arts,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+314,FilmRise Horror,Movies,Horror / Thriller / Cult,Full,Roku,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+315,Pluto TV Horror,Movies,Horror / Thriller / Cult,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+316,Pluto TV Thrillers,Movies,Horror / Thriller / Cult,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+317,Pluto TV Cult Films,Movies,Horror / Thriller / Cult,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+318,Hallmark Movies & More,Movies,Romance & Lifetime,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+319,Lifetime Movie Favorites,Movies,Romance & Lifetime,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+320,Great American RomComs,Movies,Romance & Lifetime,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+321,Sparkle Movies - Light & Love,Movies,Romance & Lifetime,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+322,British Screen Classics,Movies,Classics / British / Arthouse,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+323,Classic Movies Channel,Movies,Classics / British / Arthouse,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+324,Curzon,Movies,Classics / British / Arthouse,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+325,Movieitaly Channel,Movies,Classics / British / Arthouse,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+326,Maverick Black Cinema,Movies,Black Cinema,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+327,Pam Grier's Soul Flix,Movies,Black Cinema,Full,Roku,,Active,"Black cinema movie channel centred on soul cinema, cult films and Pam Grier-associated programming."
+328,FilmRise Western,Movies,Westerns,Full,Roku,,Active,Western movie channel featuring classic and modern western films.
+329,Grjngo - Western Movies,Movies,Westerns,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+330,MGM Presents: Westerns,Movies,Westerns,Full,Xumo,,Active,Western films and classic western series.
+331,Universal Westerns,Movies,Westerns,Full,Curated,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+332,Western Bound,Movies,Westerns,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+333,PopCorn Central,Movies,Specialty / Niche,Full,Roku,,Active,Movie and entertainment channel featuring a broad catalogue of films and selected series.
+334,Surf Cinema,Movies,Specialty / Niche,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 400,Deal Or No Deal,Game Shows,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 401,Family Feud,Game Shows,,Full,Xumo,,Active,Game-show and competition programming.
 402,Family Feud Classic,Game Shows,,Full,Xumo,,Active,Game-show and competition programming.
