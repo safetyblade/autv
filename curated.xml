@@ -602,10 +602,6 @@
     <display-name>Girlfriends</display-name>
     <icon src="https://images.pluto.tv/channels/66ba1e4446762a000855cd87/colorLogoPNG.png" />
   </channel>
-  <channel id="6695294632e25300084bb61b">
-    <display-name>Sister, Sister</display-name>
-    <icon src="https://images.pluto.tv/channels/6695294632e25300084bb61b/colorLogoPNG.png" />
-  </channel>
   <channel id="60faffc3fbbc120007fc4376">
     <display-name>Baby Shark TV</display-name>
     <icon src="https://images.pluto.tv/channels/60faffc3fbbc120007fc4376/colorLogoPNG_1754073070812.png" />
@@ -886,19 +882,19 @@
     <display-name>MTV Spankin' New</display-name>
     <icon src="https://images.pluto.tv/channels/5d14fdb8ca91eedee1633117/colorLogoPNG.png" />
   </channel>
-  <channel id="pluto.nick.jr.club">
+  <channel id="5ddd7cb2cbb9010009b4fe32">
     <display-name>Nick Jr Club</display-name>
     <icon src="https://images.pluto.tv/channels/5ddd7cb2cbb9010009b4fe32/colorLogoPNG.png" />
   </channel>
-  <channel id="pluto.mtv.reality">
+  <channel id="64f89fcfd661bb00081ba45c">
     <display-name>MTV Reality</display-name>
     <icon src="https://images.pluto.tv/channels/64f89fcfd661bb00081ba45c/colorLogoPNG.png" />
   </channel>
-  <channel id="pluto.survivor">
+  <channel id="5f21e7b24744c60007c1f6fc">
     <display-name>Survivor</display-name>
     <icon src="https://images.pluto.tv/channels/5f21e7b24744c60007c1f6fc/colorLogoPNG.png" />
   </channel>
-  <channel id="pluto.south.park">
+  <channel id="64edf6eaa7ec0d000812f58c">
     <display-name>South Park</display-name>
     <icon src="https://images.pluto.tv/channels/64edf6eaa7ec0d000812f58c/colorLogoPNG.png" />
   </channel>
