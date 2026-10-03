@@ -1,6 +1,5 @@
 # Curated global Pluto additions. One exact channel name per line.
 # Existing proven Pluto channels in custom.m3u are intentionally not duplicated here.
-
 60 Minutes
 ABC News Live
 BBC News
@@ -171,3 +170,5 @@ Qello Concerts
 XITE Gospel
 Yo! MTV
 MTV Spankin' New
+SI TV
+Willow Sports
