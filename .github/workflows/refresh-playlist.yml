@@ -25,23 +25,34 @@ jobs:
           curl --fail --silent --show-error --location "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plutotv_us.m3u" --output pluto_us_upstream.m3u
           curl --fail --silent --show-error --location "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plutotv_ca.m3u" --output pluto_ca_upstream.m3u
           curl --fail --silent --show-error --location "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plutotv_gb.m3u" --output pluto_gb_upstream.m3u
+          curl --fail --silent --show-error --location "https://github.com/matthuisman/i.mjh.nz/raw/master/Plex/au.xml.gz" --output epg_plex_au.xml.gz
+          curl --fail --silent --show-error --location "https://github.com/matthuisman/i.mjh.nz/raw/master/Plex/us.xml.gz" --output epg_plex_us.xml.gz
+          curl --fail --silent --show-error --location "https://github.com/matthuisman/i.mjh.nz/raw/master/Plex/gb.xml.gz" --output epg_plex_gb.xml.gz
+          curl --fail --silent --show-error --location "https://github.com/matthuisman/i.mjh.nz/raw/master/Plex/ca.xml.gz" --output epg_plex_ca.xml.gz
+          curl --fail --silent --show-error --location "https://github.com/matthuisman/i.mjh.nz/raw/master/Plex/nz.xml.gz" --output epg_plex_nz.xml.gz
+          curl --fail --silent --show-error --location "https://github.com/matthuisman/i.mjh.nz/raw/master/PlutoTV/us.xml.gz" --output epg_pluto_us.xml.gz
+          curl --fail --silent --show-error --location "https://github.com/matthuisman/i.mjh.nz/raw/master/PlutoTV/gb.xml.gz" --output epg_pluto_gb.xml.gz
+          curl --fail --silent --show-error --location "https://github.com/matthuisman/i.mjh.nz/raw/master/PlutoTV/ca.xml.gz" --output epg_pluto_ca.xml.gz
 
       - name: Build playlist
         run: python3 scripts/merge.py
+
+      - name: Build combined EPG
+        run: python3 scripts/build_epg.py
 
       - name: Publish generated files
         shell: bash
         run: |
           set -euo pipefail
-          rm -f base_upstream.m3u secondary_upstream.m3u lg_upstream.m3u pluto_us_upstream.m3u pluto_ca_upstream.m3u pluto_gb_upstream.m3u
+          rm -f base_upstream.m3u secondary_upstream.m3u lg_upstream.m3u pluto_us_upstream.m3u pluto_ca_upstream.m3u pluto_gb_upstream.m3u epg_plex_*.xml.gz epg_pluto_*.xml.gz
 
-          if git diff --quiet -- playlist.m3u curated.xml; then
+          if git diff --quiet -- playlist.m3u curated.xml epg.xml.gz; then
             echo "No generated file changes."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add playlist.m3u curated.xml
+          git add playlist.m3u curated.xml epg.xml.gz
           git commit -m "chore: refresh playlist"
           git push
