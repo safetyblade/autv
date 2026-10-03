@@ -575,5 +575,5 @@ https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-66fd3e25216b
 https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-62efba6588a16bb7d6b6fb58/?X-Plex-Token=NY2boCbX9a6p7tgT4YSn
 
 # ---- Curated extras ----
-#EXTINF:-1 tvg-name="Don't Tell The Bride (AU) Geo" group-title="Australia",Don't Tell The Bride (AU) Geo
+#EXTINF:-1 tvg-id="autv.don-t-tell-the-bride-au-geo" tvg-name="Don't Tell The Bride (AU) Geo" group-title="Australia",Don't Tell The Bride (AU) Geo
 https://amg00426-lds-amg00426c15-samsung-au-3684.playouts.now.amagi.tv/playlist.m3u8
