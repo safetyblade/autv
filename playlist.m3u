@@ -1249,6 +1249,20 @@ https://dbrb49pjoymg4.cloudfront.net/10001/99951177/hls/playlist.m3u8?includeAss
 https://d3pxo1qcgzxtxs.cloudfront.net/10005/99951479/hls/playlist.m3u8?includeAssetTags=true&ads.xumo_channelId=99951479&ads.xumo_streamId=99951479&ads.channelId=99951479&ads.channelName=AMCLoveAfterLockupWeTV_us&ads.csid=xumo_web_AMCLoveAfterLockupWeTV_ssai&ads._fw_coppa=0&ads._fw_content_genre=Reality-TV&ads.xumo_contentId=4361&ads.xumo_contentName=AMCLoveAfterLockupWeTV&ads.xumo_providerId=4361&ads.xumo_providerName=AMCLoveAfterLockupWeTV&ads._fw_is_lat=0&ads._fw_us_privacy=&ads._fw_did=:1095e88e-2063-4243-a10c-2471d085d57d&ads._fw_content_category=&ads._fw_content_language=en&ads._fw_content_rating=&ads._fw_deviceType=3-Connected_TV&ads._fw_deviceMake=GitHubAction&ads._fw_device_model=PythonScript&ads.xumo_platform=web&ads.appVersion=1.0.0&ads._fw_app_bundle=web.xumo.com&ads._fw_app_store_url=&ads._fw_ifa_type=
 #EXTINF:-1 tvg-id="99951595" tvg-name="Sesame Street" tvg-logo="https://image.xumo.com/v1/channels/channel/99951595/168x168.png?type=color_onBlack" group-title="Kids",Sesame Street
 https://d38d8jwr5u7ckx.cloudfront.net/v1/master/2235ea0b65a152869ea53a8429808cfe476767a6/test-xumo-linear-main-hlsv3-ams/playlist.m3u8?includeAssetTags=true&ads.xumo_channelId=99951595&ads.xumo_streamId=99951595&ads.channelId=99951595&ads.asnw=&ads.caid=CricketMediaSesameStreet&ads.csid=xumo_web_CricketMediaSesameStreet_ssai&ads._fw_coppa=1&ads.xumo_contentId=4536&ads.xumo_contentName=CricketMediaSesameStreet&ads.xumo_providerId=4536&ads.xumo_providerName=CricketMediaSesameStreet&ads.channelName=CricketMediaSesameStreet&ads._fw_ifa_type=&ads._fw_did=f65920a8-6443-4eab-bdd4-12cb88cd1c38&ads.amznappId=&ads.lat=&ads.lon=&ads.os=&ads.osv=&ads._fw_is_lat=0&ads._fw_us_privacy=&ads.genre=&ads._fw_content_category=&ads._fw_content_language=en&ads._fw_content_genre=&ads._fw_content_rating=&ads._fw_deviceMake=GitHubAction&ads._fw_device_model=PythonScript&ads.xumo_platform=web&ads.site_id=&ads.appVersion=1.0.0&ads._fw_app_bundle=web.xumo.com&ads._fw_app_store_url=&ads.appName=xumo
+#EXTINF:-1 tvg-id="400000294" tvg-name="Watch AEW" tvg-logo="https://canvas-lb.tubitv.com/opts/yeAV3-c2XWfYzw==/e9cd4624-20d8-421b-b5ed-282769cf2f57/CHgQeDoFMS4xLjlAAQ==" group-title="Sports On Now",Watch AEW
+https://live-manifest.production-public.tubi.io/live/512cbe42-c22e-40c8-90e3-7d62684f51a7/playlist.m3u8
+#EXTINF:-1 tvg-id="400000121" tvg-name="NASCAR" tvg-logo="https://canvas-lb.tubitv.com/opts/1hBihc5u12jjfA==/7739dd1a-423d-4a56-92c7-d27129356eb0/CHgQeDoFMS4xLjlAAQ==" group-title="Sports On Now",NASCAR
+https://live-manifest.production-public.tubi.io/live/3404f25c-24bd-4ced-9d72-f2b4d5f63c57/playlist.m3u8
+#EXTINF:-1 tvg-id="400000008" tvg-name="NHL" tvg-logo="https://canvas-lb.tubitv.com/opts/8h7HYVpDz2amhw==/085bca04-c806-4a7f-bb0c-d38fe352f3e3/CHgQeDoFMS4xLjlAAQ==" group-title="Sports On Now",NHL
+https://live-manifest.production-public.tubi.io/live/2cfb4368-6c7e-4075-bc1f-69f7141a8012/playlist.m3u8
+#EXTINF:-1 tvg-id="613763" tvg-name="Stadium" tvg-logo="https://canvas-lb.tubitv.com/opts/-NtXXHY5Foetwg==/ffec7159-bf94-4c51-9544-5162e5a57b2f/CHgQeDoFMS4xLjlAAQ==" group-title="Sports On Now",Stadium
+https://live-manifest.production-public.tubi.io/live/30fec756-4948-4ecb-98ae-2fda1cd0ee95/playlist.m3u8
+#EXTINF:-1 tvg-id="400000304" tvg-name="UEFA.tv" tvg-logo="https://canvas-lb.tubitv.com/opts/vYU_W6gGesX41A==/f137edcb-de3c-4b3c-9e41-ef2cc6f8d156/CHgQeDoFMS4xLjlAAQ==" group-title="Sports On Now",UEFA.tv
+https://live-manifest.production-public.tubi.io/live/d846008d-b608-4ddf-931c-48e9b60bf6c5/playlist.m3u8
+#EXTINF:-1 tvg-id="677011" tvg-name="Gordon Ramsay" tvg-logo="https://canvas-lb.tubitv.com/opts/zBCOxZ6hwxcgWg==/f7eea1c7-409e-4abc-b6f3-1228bb7135d7/CHgQeDoFMS4xLjlAAQ==" group-title="Good Eats",Gordon Ramsay
+https://live-manifest.production-public.tubi.io/live/329f14a6-aa88-4a92-a7ee-6a44b8b1b96c/playlist.m3u8
+#EXTINF:-1 tvg-id="400000303" tvg-name="Hit Sitcoms" tvg-logo="https://canvas-lb.tubitv.com/opts/bzbotn083pvPAg==/9e4fcb72-8070-4793-bae0-b1c632600193/CHgQeDoFMS4xLjlAAQ==" group-title="Comedy",Hit Sitcoms
+https://live-manifest.production-public.tubi.io/live/6b33d5c1-455e-4616-92a8-761fe87711e8/playlist.m3u8
 #EXTINF:-1 tvg-id="5ddd7cb2cbb9010009b4fe32" tvg-name="Nick Jr Club" tvg-logo="https://images.pluto.tv/channels/5ddd7cb2cbb9010009b4fe32/colorLogoPNG.png" group-title="Pluto",Nick Jr Club
 https://jmp2.uk/plu-5ddd7cb2cbb9010009b4fe32.m3u8
 #EXTINF:-1 tvg-id="64f89fcfd661bb00081ba45c" tvg-name="MTV Reality" tvg-logo="https://images.pluto.tv/channels/64f89fcfd661bb00081ba45c/colorLogoPNG.png" group-title="Pluto",MTV Reality
@@ -1317,31 +1331,11 @@ https://jmp2.uk/plu-63e20bd160bc8f0008b4c949.m3u8
 https://jmp2.uk/plu-65660223635c3c00086c2578.m3u8
 #EXTINF:-1 tvg-id="pluto.scare.tactics" tvg-name="Scare Tactics" tvg-logo="https://images.pluto.tv/channels/6874ad2f3484d60732267ba8/colorLogoPNG.png" group-title="Pluto",Scare Tactics
 https://jmp2.uk/plu-6874ad2f3484d60732267ba8.m3u8
-#EXTINF:-1 tvg-id="f885c4d5b5a17671" tvg-name="Obsessive Compulsive Cleaners - LG AU Test" tvg-logo="http://img.platform.wurl.dev/channel/2226/lg/0331bd/LG-Logo-PNG-100x100_v1.png" group-title="Targeted Tests",Obsessive Compulsive Cleaners - LG AU Test
+#EXTINF:-1 tvg-id="f885c4d5b5a17671" tvg-name="Obsessive Compulsive Cleaners" tvg-logo="http://img.platform.wurl.dev/channel/2226/lg/0331bd/LG-Logo-PNG-100x100_v1.png" group-title="Targeted Tests",Obsessive Compulsive Cleaners
 https://3b56a85a.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctYXVfT2JzZXNzaXZlQ29tcHVsc2l2ZUNsZWFuZXJzX0hMUw/playlist.m3u8
-#EXTINF:-1 tvg-id="GB1200011U5" tvg-name="Obsessive Compulsive Cleaners - Samsung GB Test" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB1200011U5_20260811T045340SQUARE.png" group-title="Targeted Tests",Obsessive Compulsive Cleaners - Samsung GB Test
-https://jmp2.uk/stvp-GB1200011U5
-#EXTINF:-1 tvg-id="400000294" tvg-name="Watch AEW - Tubi Test" tvg-logo="https://canvas-lb.tubitv.com/opts/yeAV3-c2XWfYzw==/e9cd4624-20d8-421b-b5ed-282769cf2f57/CHgQeDoFMS4xLjlAAQ==" group-title="Targeted Tests",Watch AEW - Tubi Test
-https://live-manifest.production-public.tubi.io/live/512cbe42-c22e-40c8-90e3-7d62684f51a7/playlist.m3u8
 #EXTINF:-1 tvg-id="GB3700005QK" tvg-name="Hoarders" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB3700005QK_20250326T013514SQUARE.png" group-title="Targeted Tests",Hoarders
 https://jmp2.uk/stvp-GB3700005QK
-#EXTINF:-1 tvg-id="GB270001538" tvg-name="Emergency 24/7" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB270001538_20250107T153916SQUARE.png" group-title="Targeted Tests",Emergency 24/7
-https://jmp2.uk/stvp-GB270001538
 #EXTINF:-1 tvg-id="GB1200010DG" tvg-name="Garden Rescue" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB1200010DG_20260811T045335SQUARE.png" group-title="Targeted Tests",Garden Rescue
 https://jmp2.uk/stvp-GB1200010DG
 #EXTINF:-1 tvg-id="e15ebd310d112565" tvg-name="Real Emergency" tvg-logo="http://img.platform.wurl.dev/channel/2221/lg/13b87f/LG-Logo-PNG-100x100_v1.png" group-title="Targeted Tests",Real Emergency
 https://d8eac4f8.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctYXVfUmVhbEVtZXJnZW5jeVN0YW5kYXJkX0hMUw/playlist.m3u8
-#EXTINF:-1 tvg-id="GB500013LT" tvg-name="Wrestling Legends TV" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB500013LT_20260505T035911SQUARE.png" group-title="Targeted Tests",Wrestling Legends TV
-https://jmp2.uk/stvp-GB500013LT
-#EXTINF:-1 tvg-id="GB2700012HS" tvg-name="Sky Sports Classics" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB2700012HS_20260317T034217SQUARE.png" group-title="Targeted Tests",Sky Sports Classics
-https://jmp2.uk/stvp-GB2700012HS
-#EXTINF:-1 tvg-id="GB2700013Y7" tvg-name="Sky Sports Stories" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB2700013Y7_20260317T034220SQUARE.png" group-title="Targeted Tests",Sky Sports Stories
-https://jmp2.uk/stvp-GB2700013Y7
-#EXTINF:-1 tvg-id="7e80870842d5c7b1" tvg-name="Sky Sports Vault" tvg-logo="https://image.xumo.com/v1/channels/channel/99984031/400x200.png?type=white_cropped" group-title="Targeted Tests",Sky Sports Vault
-https://d1kdeksltkpcza.cloudfront.net/30705/99984031/hls/master.m3u8?ads.xumo_channelId=99984031&ads.xumo_streamId=99984031&ads.csid=lgchannels_uk_skysportsvault_ssai&ads.ad_tag_id=118331&ads.xumo_contentName=SkySportsVault&ads.xumo_contentId=4075&ads.content_provider=SkySportsVault&ads.content_category=iab17&ads.content_genre=sports&ads.content_rating=bbfc-pg&ads.did=[IFA]&ads.coppa=0&ads.lmt=[LMT]&ads.dnt=[DNS]&ads.us_privacy=[US_PRIVACY]&ads.gdpr=[GDPR]&ads.gdpr_consent=[GDPR_CONSENT]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.country=[COUNTRY]&ads.livestream=0&ads.prodq=1&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.app_name=[APP_NAME]&ads.app_bundle=[APP_BUNDLE]&ads.app_storeurl=[APP_STOREURL]
-#EXTINF:-1 tvg-id="US100000704" tvg-name="CBS Sports Golazo Network" tvg-logo="https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US100000704_20260701T010049SQUARE.png" group-title="Targeted Tests",CBS Sports Golazo Network
-https://jmp2.uk/stvp-US100000704
-#EXTINF:-1 tvg-id="d64997c32008e8cf" tvg-name="FloSports Channel" tvg-logo="https://d3bd0tgyk368z1.cloudfront.net/feeds/Images/flosports/FloSportsChannelLogoWhite400x200.png" group-title="Targeted Tests",FloSports Channel
-https://amg02278-amg02278c7-amgplt0023.playout.now3.amagi.tv/ts-us-w2-n2/playlist/amg02278-amg02278c7-amgplt0023/playlist.m3u8?ads.appname=[APP_NAME]&ads.appstoreurl=[APP_STOREURL]&ads.appversion=[APP_VERSION]&ads.bundleid=[APP_BUNDLE]&ads.country=[COUNTRY]&ads.deviceid=[DEVICE_ID]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.devicetype=[DEVICE_TYPE]&ads.dmake=[DEVICE_MAKE]&ads.donotsell=[DNS]&ads.fck=[FCK]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.givn=[NONCE]&ads.hoteltype=[HOTEL_TYPE]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.ip=[IP]&ads.lat=[LMT]&ads.targetad=[TARGETAD_ALLOWED]&ads.ua=[UA]&ads.usprivacy=[US_PRIVACY]&ads.viewsize=[VIEWSIZE]&coppa=0&network_name=FloSports Inc
-#EXTINF:-1 tvg-id="US3200012O8" tvg-name="Yahoo! Sports Network" tvg-logo="https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US3200012O8_20260421T143258SQUARE.png" group-title="Targeted Tests",Yahoo! Sports Network
-https://jmp2.uk/stvp-US3200012O8
