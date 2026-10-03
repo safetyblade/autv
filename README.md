@@ -8,13 +8,22 @@ Use this URL in the TV app:
 
 `https://raw.githubusercontent.com/safetyblade/autv/main/playlist.m3u`
 
-## Optional curated XMLTV URL
+## EPG
 
-The refresh also generates:
+The refresh now generates a combined filtered programme guide:
 
-`https://raw.githubusercontent.com/safetyblade/autv/main/curated.xml`
+`https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz`
 
-This XMLTV file is optional. It is not required for channel exposure, but it gives curated channels stable XMLTV IDs and can be used later for guide data, logos and other metadata.
+The published M3U points to this file automatically.
+
+It currently merges programme data for:
+- Plex AU
+- future selected Plex US / UK / Canada / NZ channels
+- selected Pluto US / UK / Canada channels
+
+Only channels present in the final playlist are retained in the generated EPG.
+
+`curated.xml` is still generated as a lightweight fallback channel-definition file for curated channels that do not yet have a programme-guide source.
 
 ## How it works
 
@@ -36,7 +45,9 @@ It also creates a matching XMLTV channel definition for each curated extra.
 - Some external FAST lists contain stale, geo-restricted or changed stream URLs.
 - TVirl may successfully import a newly added channel but Android TV can leave that channel disabled by default.
 - If a channel scans but does not appear in the guide, first check the TV/Live Channels channel settings and enable it.
-- XMLTV is **not** required for a channel to exist or appear. It is an optional enrichment layer for guide data, logos and metadata.
+- XMLTV is **not** required for a channel to exist or appear.
+- Plex and Pluto programme data are now merged into the generated `epg.xml.gz`.
+- Samsung Australia and LG curated channels may still have channel/logo metadata without programme listings where no reliable matching XMLTV source is available.
 - New sources should be treated as discovery feeds first. Channels should only remain in the curated list after they have been confirmed to play.
 
 ## Add or remove channels
