@@ -268,6 +268,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 641,I Love Lucy,Comedy,Classic Sitcoms,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 642,Mr. Bean,Comedy,Major / Modern Sitcoms,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 643,Mr. Bean Live Action,Comedy,Major / Modern Sitcoms,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+644,The Kids in the Hall,Comedy,Sketch / Panel / Variety,Full,Plex AU,,Active,Adult sketch-comedy channel featuring The Kids in the Hall.
 700,BBC Drama,Entertainment,Drama & Action Series,Full,Xumo,,Active,"Scripted drama, action or series programming."
 701,Blue Bloods,Entertainment,Drama & Action Series,Full,Pluto,,Active,"Scripted drama, action or series programming."
 702,Criminal Minds,Entertainment,Drama & Action Series,Full,Pluto,,Active,"Scripted drama, action or series programming."
@@ -568,61 +569,60 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1152,World War TV,Factual,History / War,Full,Pluto,,Active,"Military-history channel focused on major conflicts, campaigns and wartime history."
 1153,Pluto TV Military,Factual,History / War,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
 1154,Pluto TV Britain at War,Factual,History / War,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1200,Animation+,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1201,ANIME x HIDIVE,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1202,Arthur,Kids & Animation,,Full,Plex AU,,Active,"Kids, family and animation programming."
-1203,Baby Einstein,Kids & Animation,,Full,Plex AU,,Active,"Kids, family and animation programming."
-1204,Baby Shark TV,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1205,Beyblade,Kids & Animation,,Full,Plex AU,,Active,"Kids, family and animation programming."
-1206,272 Cocobi,Kids & Animation,,Full,Curated,,Active,"Kids, family and animation programming."
-1207,Crunchyroll,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1208,Garfield and Friends,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1209,170 He-Man & Masters Of The Universe,Kids & Animation,,Full,Curated,,Active,"Kids, family and animation programming."
-1210,iCarly TV,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1211,Inuyasha,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1212,Kartoon Channel (Australia),Kids & Animation,,Full,Curated,,Active,"Kids, family and animation programming."
-1213,LEGO Kids TV,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1214,Max & Ruby,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1215,Mister Rogers' Neighborhood,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1216,Mona The Vampire,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1217,Moonbug Kids,Kids & Animation,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
-1218,My Little Pony,Kids & Animation,,Full,Plex AU,,Active,"Kids, family and animation programming."
-1219,Naruto,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1220,Nick Jr Club,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1221,Nick Jr. Pluto TV,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1222,Nickelodeon Pluto TV,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1223,NickToons,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1224,One Piece,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1225,PBS Kids (Australia) find correct aus,Kids & Animation,,Full,Curated,,Active,"Kids, family and animation programming."
-1226,Peppa Pig,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1227,Pluto TV Retro Toons,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1228,Pokémon,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1229,Power Rangers,Kids & Animation,,Full,Plex AU,,Active,"Kids, family and animation programming."
-1230,273 Robocar POLI,Kids & Animation,,Full,Curated,,Active,"Kids, family and animation programming."
-1231,Sailor Moon,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1232,Smurf TV,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1233,Sonic The Hedgehog,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1234,Sonic TV,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1235,SpongeBob SquarePants,Kids & Animation,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1236,Strawberry Shortcake,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1237,Super Mario Brothers,Kids & Animation,,Full,Roku,,Active,"Kids, family and animation programming."
-1238,Super Simple Songs,Kids & Animation,,Full,Roku,,Active,"Kids, family and animation programming."
-1239,Teletubbies,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1240,TG Junior,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1241,The Kids in the Hall,Kids & Animation,,Full,Plex AU,,Active,"Kids, family and animation programming."
-1242,The Raccoons,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1243,The Smurfs,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1244,The Wiggles,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1245,TOTALLY TURTLES,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1246,Watch it Kid,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1247,261 Winx Club TV,Kids & Animation,,Full,Curated,,Active,"Kids, family and animation programming."
-1248,Yu-Gi-Oh!,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
-1249,123GO!,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1250,pocket.watch Game-On,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1251,Preston & Brianna,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1252,Ryan and Friends,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1253,Toon Goggles,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1254,Unspeakable,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1200,The Wiggles,Kids & Animation,Preschool / Young Kids,Full,Plex AU,,Active,Preschool and family channel featuring The Wiggles.
+1201,Peppa Pig,Kids & Animation,Preschool / Young Kids,Full,Pluto,,Active,"Kids, family and animation programming."
+1202,Baby Shark TV,Kids & Animation,Preschool / Young Kids,Full,Pluto,,Active,"Kids, family and animation programming."
+1203,Baby Einstein,Kids & Animation,Preschool / Young Kids,Full,Plex AU,,Active,"Kids, family and animation programming."
+1204,Super Simple Songs,Kids & Animation,Preschool / Young Kids,Full,Roku,,Active,"Kids, family and animation programming."
+1205,Teletubbies,Kids & Animation,Preschool / Young Kids,Full,Plex AU,,Active,Preschool channel featuring Teletubbies programming.
+1206,Max & Ruby,Kids & Animation,Preschool / Young Kids,Full,Pluto,,Active,"Kids, family and animation programming."
+1207,Mister Rogers' Neighborhood,Kids & Animation,Preschool / Young Kids,Full,Pluto,,Active,"Kids, family and animation programming."
+1208,Moonbug Kids,Kids & Animation,Preschool / Young Kids,Full,Roku,,Active,Preschool and young-kids channel featuring Moonbug children's programming.
+1209,Cocobi,Kids & Animation,Preschool / Young Kids,Full,Curated,,Active,"Kids, family and animation programming."
+1210,Robocar POLI,Kids & Animation,Preschool / Young Kids,Full,Curated,,Active,"Kids, family and animation programming."
+1211,Nick Jr Club,Kids & Animation,Preschool / Young Kids,Full,Pluto,,Active,"Kids, family and animation programming."
+1212,Nick Jr. Pluto TV,Kids & Animation,Preschool / Young Kids,Full,Pluto,,Active,"Kids, family and animation programming."
+1213,PBS Kids (Australia),Kids & Animation,Preschool / Young Kids,Full,Curated,,Active,"Kids, family and animation programming."
+1214,Strawberry Shortcake,Kids & Animation,Preschool / Young Kids,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1215,SpongeBob SquarePants,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,Kids animation channel featuring SpongeBob SquarePants.
+1216,Pokémon,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1217,LEGO Kids TV,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1218,My Little Pony,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,"Kids, family and animation programming."
+1219,Garfield and Friends,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1220,The Smurfs,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1221,Smurf TV,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,Kids animation channel featuring Smurfs-related programming.
+1222,Sonic The Hedgehog,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,Kids animation channel featuring Sonic the Hedgehog programming.
+1223,Sonic TV,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,Kids animation channel featuring Sonic-branded animated programming.
+1224,Power Rangers,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,"Kids, family and animation programming."
+1225,Beyblade,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,"Kids, family and animation programming."
+1226,He-Man & Masters Of The Universe,Kids & Animation,Kids / Family Animation,Full,Curated,,Active,"Kids, family and animation programming."
+1227,Winx Club TV,Kids & Animation,Kids / Family Animation,Full,Curated,,Active,"Kids, family and animation programming."
+1228,Super Mario Brothers,Kids & Animation,Kids / Family Animation,Full,Roku,,Active,"Kids, family and animation programming."
+1229,TOTALLY TURTLES,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1230,Arthur,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,"Kids, family and animation programming."
+1231,Mona The Vampire,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1232,The Raccoons,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1233,Kartoon Channel (Australia),Kids & Animation,Kids / Family Animation,Full,Curated,,Active,"Kids, family and animation programming."
+1234,Nickelodeon Pluto TV,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1235,NickToons,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1236,Pluto TV Retro Toons,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1237,Animation+,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1238,Toon Goggles,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,Kids animation channel with family-friendly cartoons and animated series.
+1239,Watch it Kid,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1240,TG Junior,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1241,Crunchyroll,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
+1242,ANIME x HIDIVE,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
+1243,Naruto,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
+1244,One Piece,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
+1245,Sailor Moon,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
+1246,Inuyasha,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
+1247,Yu-Gi-Oh!,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
+1248,iCarly TV,Kids & Animation,Teen / Family Live Action,Full,Pluto,,Active,"Kids, family and animation programming."
+1249,123GO!,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,"Youth creator channel featuring challenge, craft and entertainment videos."
+1250,pocket.watch Game-On,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,Youth gaming and creator-led entertainment channel.
+1251,Preston & Brianna,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,"Youth creator channel featuring gaming, challenges and family-friendly entertainment."
+1252,Ryan and Friends,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,Children's creator-led entertainment featuring Ryan and related family programming.
+1253,Unspeakable,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,"Youth creator channel featuring gaming, challenges and family-friendly entertainment."
 1300,Classic Rock,Music,,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
 1301,Classica,Music,,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
 1302,Easy Listening,Music,,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
