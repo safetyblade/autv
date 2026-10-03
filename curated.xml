@@ -162,17 +162,9 @@
     <display-name>170 He-Man &amp; Masters Of The Universe</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99984060/400x200.png?type=white_cropped" />
   </channel>
-  <channel id="autv.141-10-drama-nsw">
-    <display-name>141 10 Drama NSW</display-name>
-    <icon src="https://10.com.au/ip/s3/2025/06/25/a1dd1ff9b4d062a9bcdaafde684b30d5-1384580.png" />
-  </channel>
   <channel id="autv.191-younghollywood">
     <display-name>191 YoungHollywood</display-name>
     <icon src="https://dtuq5o0udz92b.cloudfront.net/YH-LG_Logo_300x200.png" />
-  </channel>
-  <channel id="autv.142-10-comedy-nsw">
-    <display-name>142 10 Comedy NSW</display-name>
-    <icon src="https://10.com.au/ip/s3/2025/06/25/861b025a0af95c74523333b2c0eb8549-1384587.png" />
   </channel>
   <channel id="autv.291-earthtouch">
     <display-name>291 earthtouch</display-name>
@@ -210,8 +202,20 @@
     <display-name>343 Trace Stars</display-name>
     <icon src="https://d3dj3gmzxw0r4q.cloudfront.net/Trace_SportStars/LG_Ch_Logo_460x200.png" />
   </channel>
-  <channel id="autv.143-nickelodeon-nsw">
-    <display-name>143 Nickelodeon NSW</display-name>
-    <icon src="https://10.com.au/ip/s3/2023/07/31/9bf17d41aaafa3d5f0c416dfed96ef08-1252730.png" />
+  <channel id="autv.nick-jr-club-pluto-test">
+    <display-name>Nick Jr Club - Pluto Test</display-name>
+    <icon src="https://images.pluto.tv/channels/5ddd7cb2cbb9010009b4fe32/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.mtv-reality-pluto-test">
+    <display-name>MTV Reality - Pluto Test</display-name>
+    <icon src="https://images.pluto.tv/channels/64f89fcfd661bb00081ba45c/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.survivor-pluto-test">
+    <display-name>Survivor - Pluto Test</display-name>
+    <icon src="https://images.pluto.tv/channels/5f21e7b24744c60007c1f6fc/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.south-park-pluto-test">
+    <display-name>South Park - Pluto Test</display-name>
+    <icon src="https://images.pluto.tv/channels/64edf6eaa7ec0d000812f58c/colorLogoPNG.png" />
   </channel>
 </tv>
