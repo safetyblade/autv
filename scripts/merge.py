@@ -155,18 +155,6 @@ if missing_lg:
     print("Missing LG list: " + " | ".join(missing_lg))
 if missing_pluto:
     print("Missing Pluto list: " + " | ".join(missing_pluto))
-, f'#EXTM3U url-tvg="{EPG_URL}"', base, count=1)
-if extras:
-    merged += "\n\n# ---- Curated extras ----\n" + "\n".join(extras)
-merged += "\n"
-
-count = sum(1 for line in merged.splitlines() if line.startswith("#EXTINF:"))
-if count < 10:
-    raise SystemExit(f"Refusing suspicious playlist: only {count} channels")
-
-OUTPUT.write_text(merged, encoding="utf-8")
-
-xml_lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<tv generator-info-name="autv">']
 for channel in xml_channels:
     xml_lines.append(f'  <channel id="{escape(channel["id"])}">')
     xml_lines.append(f'    <display-name>{escape(channel["name"])}</display-name>')
