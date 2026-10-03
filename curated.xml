@@ -882,10 +882,6 @@
     <display-name>MTV Spankin' New</display-name>
     <icon src="https://images.pluto.tv/channels/5d14fdb8ca91eedee1633117/colorLogoPNG.png" />
   </channel>
-  <channel id="8346c21c4b5b032cca68a74933e7642b">
-    <display-name>Watch AEW</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/8346c21c4b5b032cca68a74933e7642b/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1779304614728_all_elite_wrestling_logo_hud.png" />
-  </channel>
   <channel id="c0b79a332cfd90b8eeb6d4a0dcb63674">
     <display-name>Top Rank Classics</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/c0b79a332cfd90b8eeb6d4a0dcb63674/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1730998467166_TRClassics_HUD.png" />
@@ -901,10 +897,6 @@
   <channel id="b4273871759a5631bd536d2214f175e5">
     <display-name>Fubo Sports Network</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/b4273871759a5631bd536d2214f175e5/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1761774127737_Roku-FSN-Logo-efefef.png" />
-  </channel>
-  <channel id="8c48bcf59acd57779977b83a41fac919">
-    <display-name>Swerve Combat</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/8c48bcf59acd57779977b83a41fac919/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1697035676086_Swerve_Combat_Logo_260x147_Center_Align_White.png" />
   </channel>
   <channel id="c5e8a74546771de365652cd053f73351">
     <display-name>Red Bull TV</display-name>
@@ -925,14 +917,6 @@
   <channel id="5976983fa00953dab911a0ebea932943">
     <display-name>DraftKings</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/5976983fa00953dab911a0ebea932943/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1694201368177_Roku_DKN_HUD_Logo_Centered.png" />
-  </channel>
-  <channel id="b238edf1869657abb47970bc9b7bfce1">
-    <display-name>CHGO Sports</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/b238edf1869657abb47970bc9b7bfce1/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1720447133788_Roku_HUD_CHGO.png" />
-  </channel>
-  <channel id="9ec48964d9b9502396f19fcb3a527074">
-    <display-name>PHLY Sports</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/9ec48964d9b9502396f19fcb3a527074/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1720539914940_Roku_HUD_PHLY.png" />
   </channel>
   <channel id="15cc44e50d8453e18f21ea37713319c5">
     <display-name>Electric Now</display-name>
@@ -982,10 +966,6 @@
     <display-name>FilmRise Mysteries</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/16722bc43ef05012afa2297def830266/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1774448547651_RokuChannel_FilmRiseMysteries_HUD_Logo_260x147.png" />
   </channel>
-  <channel id="447d63b6da208bb796b69f0383c474a1">
-    <display-name>Danger TV</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/447d63b6da208bb796b69f0383c474a1/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1728505178821_dangertv_hud.png" />
-  </channel>
   <channel id="e7b30e2a58409242100d0edd2bfebbfd">
     <display-name>Pam Grier's Soul Flix</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/e7b30e2a58409242100d0edd2bfebbfd/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1734494082178_PGSF_HUDAthanasiosTsiris.png" />
@@ -1025,10 +1005,6 @@
   <channel id="b3ad0323cd466f4bb0c04ef9bee54543">
     <display-name>Live PD: Presents</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/b3ad0323cd466f4bb0c04ef9bee54543/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1746641522830_Live_PD_Presents_HUD_logo_efefef_center_aligned_260x147.png" />
-  </channel>
-  <channel id="fb8579bf16248ce630f42f129ed2e8d5">
-    <display-name>Acorn TV Mysteries</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/fb8579bf16248ce630f42f129ed2e8d5/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1761252500000_ACORNTV_MYSTERIES_hud_efefef_center_260x147_Bill_Watts.png" />
   </channel>
   <channel id="8abbea29b86a5a5da299c7ef2e288cab">
     <display-name>Reelz Famous and Infamous</display-name>
@@ -1122,10 +1098,6 @@
     <display-name>Dove</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/d93912b4b21158fd95af2ceb8979c586/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1738599967209_DoveRefresh_RokuLinear_260X147.png" />
   </channel>
-  <channel id="23cf98a043e9d1336c958e6b707f81dc">
-    <display-name>Curiosity Explora</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/23cf98a043e9d1336c958e6b707f81dc/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1760568679689_Curiosity-Explora_260_147px.png" />
-  </channel>
   <channel id="ada4254a1dd65c138f62e7c45affb45c">
     <display-name>GARDEN with Monty Don</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/ada4254a1dd65c138f62e7c45affb45c/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1777303688429_GWMD_Rebrand_HUD_Logo.png" />
@@ -1149,6 +1121,54 @@
   <channel id="9aff620ece2457a3a7572886ecae0495">
     <display-name>Super Simple Songs</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/9aff620ece2457a3a7572886ecae0495/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1657674103329_SuperSimpleSongs_Image_HUD2.png" />
+  </channel>
+  <channel id="99951253">
+    <display-name>NBC Sports NOW</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951253/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99991315">
+    <display-name>ACC Digital Network</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99991315/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951388">
+    <display-name>PBR RidePass</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951388/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951359">
+    <display-name>Big 12 Studios</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951359/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951381">
+    <display-name>Real Madrid TV</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951381/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951158">
+    <display-name>ION</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951158/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="9999614">
+    <display-name>ION Plus</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/9999614/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951254">
+    <display-name>Universal Action</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951254/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951439">
+    <display-name>50 Cent Action</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951439/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99991659">
+    <display-name>25 Words or Less</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99991659/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951224">
+    <display-name>The Celebrity Name Game Channel</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951224/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951339">
+    <display-name>Family Feud Classic</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951339/168x168.png?type=color_onBlack" />
   </channel>
   <channel id="5ddd7cb2cbb9010009b4fe32">
     <display-name>Nick Jr Club</display-name>
