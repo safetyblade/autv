@@ -103,3 +103,16 @@ https://jmp2.uk/plu-65660223635c3c00086c2578.m3u8
 
 #EXTINF:-1 tvg-id="pluto.scare.tactics" tvg-name="Scare Tactics" tvg-logo="https://images.pluto.tv/channels/6874ad2f3484d60732267ba8/colorLogoPNG.png" group-title="Pluto",Scare Tactics
 https://jmp2.uk/plu-6874ad2f3484d60732267ba8.m3u8
+
+# ---- Targeted source tests ----
+#EXTINF:-1 tvg-id="f885c4d5b5a17671" tvg-name="Obsessive Compulsive Cleaners - LG AU Test" tvg-logo="http://img.platform.wurl.dev/channel/2226/lg/0331bd/LG-Logo-PNG-100x100_v1.png" group-title="Targeted Tests",Obsessive Compulsive Cleaners - LG AU Test
+https://3b56a85a.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctYXVfT2JzZXNzaXZlQ29tcHVsc2l2ZUNsZWFuZXJzX0hMUw/playlist.m3u8
+
+#EXTINF:-1 tvg-id="GB1200011U5" tvg-name="Obsessive Compulsive Cleaners - Samsung GB Test" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB1200011U5_20260811T045340SQUARE.png" group-title="Targeted Tests",Obsessive Compulsive Cleaners - Samsung GB Test
+https://jmp2.uk/stvp-GB1200011U5
+
+#EXTINF:-1 tvg-id="US700005ID" tvg-name="WWE Superstar Central" tvg-logo="https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US700005ID_20260421T142358SQUARE.png" group-title="Targeted Tests",WWE Superstar Central
+https://jmp2.uk/stvp-US700005ID
+
+#EXTINF:-1 tvg-id="400000294" tvg-name="Watch AEW - Tubi Test" tvg-logo="https://canvas-lb.tubitv.com/opts/yeAV3-c2XWfYzw==/e9cd4624-20d8-421b-b5ed-282769cf2f57/CHgQeDoFMS4xLjlAAQ==" group-title="Targeted Tests",Watch AEW - Tubi Test
+https://live-manifest.production-public.tubi.io/live/512cbe42-c22e-40c8-90e3-7d62684f51a7/playlist.m3u8
