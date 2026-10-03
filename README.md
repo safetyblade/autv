@@ -44,6 +44,10 @@ It contains:
 
 The guide represents the **working lineup only**. Failed tests and rejected channels are not retained as guide rows.
 
+## Current lineup
+
+The current guide contains **639 active channels**. Channel numbers are intentionally grouped into the canonical genre ranges below. A refresh may temporarily publish fewer channels when an upstream feed is unavailable; that does not change the guide's intended lineup.
+
 ## Channel-number blocks
 
 | Range | Genre |
@@ -117,7 +121,7 @@ After refreshing:
 - Internal subgenres create a sensible old-school TV order inside each genre.
 - Australian/local content is prioritised where useful.
 - Non-English channels are generally excluded, except where specifically approved for Sport.
-- A logical channel should appear only once unless two feeds are genuinely different services.
+- A logical channel should appear only once unless two feeds are genuinely different services; known duplicates are consolidated into the stronger single listing.
 - Failed channels are removed from the working guide.
 - Source information is maintenance metadata; the viewing experience is driven by the final guide.
 - The guide, not any upstream catalogue, is authoritative.
