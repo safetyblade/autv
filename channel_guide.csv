@@ -182,7 +182,6 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 500,American Crime Channel,Crime,True Crime / Investigations,Full,Plex AU,,Active,"Crime, investigation, court, mystery or forensic programming."
 501,Bloodline Detectives,Crime,True Crime / Investigations,Full,Pluto,,Active,"Crime, investigation, court, mystery or forensic programming."
 502,Cold Case Files by A&E,Crime,True Crime / Investigations,Full,Pluto,,Active,"Crime, investigation, court, mystery or forensic programming."
-503,Beyond Paranormal,Factual,Paranormal,Full,Plex AU,,Active,"Paranormal factual channel featuring unexplained phenomena, investigations and supernatural subjects."
 503,Crime 360,Crime,True Crime / Investigations,Full,Plex AU,,Active,"Crime, investigation, court, mystery or forensic programming."
 504,Crime Scene TV,Crime,True Crime / Investigations,Full,Plex AU,,Active,"Crime, investigation, court, mystery or forensic programming."
 505,Crimes That Shook Britain,Crime,True Crime / Investigations,Full,Pluto,,Active,"Crime, investigation, court, mystery or forensic programming."
@@ -210,7 +209,6 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 527,World's Wildest Police Videos,Crime,Police / Jail / Live Enforcement,Full,Xumo,,Active,"Crime, investigation, court, mystery or forensic programming."
 528,Court TV,Crime,Court / Legal,Full,Pluto,,Active,"Crime, investigation, court, mystery or forensic programming."
 529,Court TV Legendary Trials,Crime,Court / Legal,Full,Roku,,Active,"Crime, investigation, court, mystery or forensic programming."
-529,Most Haunted,Factual,Paranormal,Full,Plex AU,,Active,Paranormal investigation channel featuring haunted locations and supernatural investigations.
 530,Law&Crime,Crime,Court / Legal,Full,Xumo,,Active,"Crime, investigation, court, mystery or forensic programming."
 531,Paternity Court,Crime,Court / Legal,Full,Roku,,Active,Court-reality channel focused on paternity disputes and relationship cases.
 532,The Judge Judy Channel,Crime,Court / Legal,Full,Pluto,,Active,Court-reality channel featuring Judge Judy episodes and legal disputes.
@@ -249,7 +247,6 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 620,NBC Comedy Vault,Comedy,Stand-up / Broad Comedy Networks,Full,Xumo,,Active,"Comedy, sitcom or stand-up programming."
 621,Bounce XL,Comedy,Stand-up / Broad Comedy Networks,Full,Xumo,,Active,"Comedy, sitcom or stand-up programming."
 622,Just For Laughs Gags,Comedy,Alternative / Visual / Creator Comedy,Full,Plex AU,,Active,"Comedy, sitcom or stand-up programming."
-622,Sam and Colby,Factual,Paranormal,Full,Roku,,Active,Paranormal exploration and creator-led investigation programming focused on haunted and unexplained locations.
 623,Always Funny Videos,Comedy,Alternative / Visual / Creator Comedy,Full,Roku,,Active,"Comedy, sitcom or stand-up programming."
 624,MST3K,Comedy,Alternative / Visual / Creator Comedy,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
 625,RiffTrax,Comedy,Alternative / Visual / Creator Comedy,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
@@ -512,63 +509,65 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1087,MTV Jersey Shore,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 1088,Teen Mom,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 1089,The Osbournes,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1100,Adventure Earth,Factual,,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
-1101,305 Autentic History,Factual,,Full,Curated,,Active,"Documentary, factual, history, science or real-world programming."
-1102,BBC Earth,Factual,,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
-1103,CNN Originals,Factual,,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
-1104,Dinos 24/7,Factual,,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
-1105,Documentary+,Factual,,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
-1106,291 earthtouch,Factual,,Full,Curated,,Active,"Documentary, factual, history, science or real-world programming."
-1107,Eddie's Wonderland,Factual,,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
-1108,Evolution Earth,Factual,,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
-1109,Go Wild,Factual,,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
-1110,History & Warfare,Factual,,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
-1111,History Hit,Factual,,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
-1112,History Hunters,Factual,,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
-1113,INWILD (Australia),Factual,,Full,Curated,,Active,"Documentary, factual, history, science or real-world programming."
-1114,INWONDER (Australia),Factual,,Full,Curated,,Active,"Documentary, factual, history, science or real-world programming."
-1115,Love Nature,Factual,,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
-1116,MagellanTV Wildest,Factual,,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
-1117,60 Minutes,Factual,,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
-1118,Nature Moments,Factual,,Full,Roku,,Active,"Documentary, factual, history, science or real-world programming."
-1119,Naturetime (Australia),Factual,,Full,Curated,,Active,"Documentary, factual, history, science or real-world programming."
-1120,Outdoor Channel (Australia) Geo,Factual,,Full,Curated,,Active,"Documentary, factual, history, science or real-world programming."
-1121,Paranormal Chronicles,Factual,,Full,Roku,,Active,"Documentary, factual, history, science or real-world programming."
-1122,PBS History,Factual,,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
-1123,PBS Nature,Factual,,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
-1124,PBS Science,Factual,,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
-1125,Pluto TV History,Factual,,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
-1126,Pluto TV Military,Factual,,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
-1127,Pluto TV Science,Factual,,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
-1128,Popular Science,Factual,,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
-1129,Real Emergency,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1130,Real Wild,Factual,,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
-1131,River Monsters,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1132,Smithsonian Channel Selects,Factual,,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
-1133,The Pet Collective,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1134,The Wicked Tuna Channel,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1135,TruBlu Crime Channel,Factual,,Full,Roku,,Active,"Documentary, factual, history, science or real-world programming."
-1136,True History,Factual,,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
-1137,Untold Stories of the ER,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1138,WildEarth,Factual,,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
-1139,Wonder,Factual,,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
-1140,World War TV,Factual,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1141,Ancient Aliens,Factual,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1142,Beyond Belief,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1143,Docsville,Factual,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
-1144,Ghost,Factual,Paranormal,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1145,Ghost Hunters Channel,Factual,Paranormal,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1146,Haunt TV,Factual,Paranormal,Full,Curated,,Active,"Crime, investigation, court, mystery or forensic programming."
-1147,Haunt TV (Australia),Factual,Paranormal,Full,Curated,,Active,"Crime, investigation, court, mystery or forensic programming."
-1148,I Shouldn't Be Alive,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1149,I Survived…,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1150,Mayday: Air Disaster,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1151,Modern Marvels,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1152,Mythbusters,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1153,Pluto TV Britain at War,Factual,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1154,Pluto TV Conspiracy,Factual,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1155,Startalk TV,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1156,TV5MONDE Voyage,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1100,BBC Earth,Factual,Documentary / General Factual,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
+1101,Smithsonian Channel Selects,Factual,Documentary / General Factual,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
+1102,Documentary+,Factual,Documentary / General Factual,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
+1103,CNN Originals,Factual,Documentary / General Factual,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
+1104,60 Minutes,Factual,Documentary / General Factual,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
+1105,Docsville,Factual,Documentary / General Factual,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
+1106,INWONDER (Australia),Factual,Documentary / General Factual,Full,Curated,,Active,"Documentary, factual, history, science or real-world programming."
+1107,Wonder,Factual,Documentary / General Factual,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
+1108,Adventure Earth,Factual,Documentary / General Factual,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
+1109,Love Nature,Factual,Nature / Wildlife,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
+1110,PBS Nature,Factual,Nature / Wildlife,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
+1111,WildEarth,Factual,Nature / Wildlife,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
+1112,earthtouch,Factual,Nature / Wildlife,Full,Curated,,Active,"Documentary, factual, history, science or real-world programming."
+1113,Real Wild,Factual,Nature / Wildlife,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
+1114,MagellanTV Wildest,Factual,Nature / Wildlife,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
+1115,INWILD (Australia),Factual,Nature / Wildlife,Full,Curated,,Active,"Documentary, factual, history, science or real-world programming."
+1116,Go Wild,Factual,Nature / Wildlife,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
+1117,Evolution Earth,Factual,Nature / Wildlife,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
+1118,Dinos 24/7,Factual,Nature / Wildlife,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
+1119,Nature Moments,Factual,Nature / Wildlife,Full,Roku,,Active,"Documentary, factual, history, science or real-world programming."
+1120,Naturetime (Australia),Factual,Nature / Wildlife,Full,Curated,,Active,"Documentary, factual, history, science or real-world programming."
+1121,Outdoor Channel (Australia),Sport,Outdoor & Surf,Full,Curated,,Active,"Outdoor sports channel featuring fishing, hunting and adventure programming."
+1121,River Monsters,Factual,Nature / Wildlife,Full,Plex AU,,Active,Wildlife and adventure factual series focused on freshwater predators and extreme fishing expeditions.
+1122,Eddie's Wonderland,Factual,Nature / Wildlife,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
+1123,PBS Science,Factual,Science / Engineering / Discovery,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
+1124,Pluto TV Science,Factual,Science / Engineering / Discovery,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
+1125,Popular Science,Factual,Science / Engineering / Discovery,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
+1126,Mythbusters,Factual,Science / Engineering / Discovery,Full,Plex AU,,Active,Science and engineering entertainment testing myths through experiments.
+1127,Modern Marvels,Factual,Science / Engineering / Discovery,Full,Plex AU,,Active,"Technology, engineering and industrial-history factual programming."
+1128,Startalk TV,Factual,Science / Engineering / Discovery,Full,Plex AU,,Active,Science and space discussion programming centred on astronomy and astrophysics.
+1129,I Shouldn't Be Alive,Factual,Survival / Disaster / Real World,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1130,I Survived…,Factual,Survival / Disaster / Real World,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1131,Mayday: Air Disaster,Factual,Survival / Disaster / Real World,Full,Plex AU,,Active,Aviation-disaster documentary series examining major air accidents and investigations.
+1132,Real Emergency,Factual,Survival / Disaster / Real World,Full,Plex AU,,Active,Real-world emergency and rescue factual programming.
+1133,Untold Stories of the ER,Factual,Survival / Disaster / Real World,Full,Plex AU,,Active,Medical factual series based on unusual emergency-room cases.
+1134,Ancient Aliens,Factual,Paranormal / Unexplained,Full,Pluto,,Active,Unexplained-history and speculative archaeology factual programming.
+1135,Beyond Belief,Factual,Paranormal / Unexplained,Full,Plex AU,,Active,Unexplained and paranormal factual entertainment.
+1135,The Pet Collective,Reality & Lifestyle,Animals / Pets,Full,Plex AU,,Active,Animal and pet-focused entertainment and lifestyle programming.
+1136,Beyond Paranormal,Factual,Paranormal / Unexplained,Full,Plex AU,,Active,"Paranormal factual channel featuring unexplained phenomena, investigations and supernatural subjects."
+1136,The Wicked Tuna Channel,Reality & Lifestyle,People / Work / Unscripted,Full,Plex AU,,Active,Workplace reality series following commercial tuna fishing crews and their competition at sea.
+1136,TruBlu Crime Channel,Crime,True Crime / Investigations,Full,Roku,,Active,"True-crime channel featuring criminal investigations, cases and law-enforcement programming."
+1137,Paranormal Chronicles,Factual,Paranormal / Unexplained,Full,Roku,,Active,"Documentary, factual, history, science or real-world programming."
+1138,Ghost Hunters Channel,Factual,Paranormal / Unexplained,Full,Plex AU,,Active,Paranormal investigation programming focused on haunted locations.
+1139,Ghost,Factual,Paranormal / Unexplained,Full,Plex AU,,Active,Paranormal and supernatural factual programming.
+1140,Haunt TV,Factual,Paranormal / Unexplained,Full,Curated,,Active,Paranormal investigation and supernatural factual programming.
+1141,Haunt TV (Australia),Factual,Paranormal / Unexplained,Full,Curated,,Active,Paranormal investigation and supernatural factual programming.
+1142,Most Haunted,Factual,Paranormal / Unexplained,Full,Plex AU,,Active,Paranormal investigation channel featuring haunted locations and supernatural investigations.
+1143,Sam and Colby,Factual,Paranormal / Unexplained,Full,Roku,,Active,Paranormal exploration and creator-led investigation programming focused on haunted and unexplained locations.
+1144,Pluto TV Conspiracy,Factual,Paranormal / Unexplained,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1145,History Hit,Factual,History / War,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
+1146,True History,Factual,History / War,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
+1147,PBS History,Factual,History / War,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
+1148,Pluto TV History,Factual,History / War,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
+1149,Autentic History,Factual,History / War,Full,Curated,,Active,"Documentary, factual, history, science or real-world programming."
+1150,History & Warfare,Factual,History / War,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
+1151,History Hunters,Factual,History / War,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
+1152,World War TV,Factual,History / War,Full,Pluto,,Active,"Military-history channel focused on major conflicts, campaigns and wartime history."
+1153,Pluto TV Military,Factual,History / War,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
+1154,Pluto TV Britain at War,Factual,History / War,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 1200,Animation+,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 1201,ANIME x HIDIVE,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
 1202,Arthur,Kids & Animation,,Full,Plex AU,,Active,"Kids, family and animation programming."
