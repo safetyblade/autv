@@ -1503,4 +1503,16 @@
   <channel id="NewJapanProWrestlingWorld.jp">
     <display-name>New Japan Pro Wrestling World</display-name>
   </channel>
+  <channel id="BrondbyTV.se@DK">
+    <display-name>Brøndby TV</display-name>
+  </channel>
+  <channel id="BVB-Frauen">
+    <display-name>BVB-Frauen</display-name>
+  </channel>
+  <channel id="CanaldoInter.br@SD">
+    <display-name>Canal do Inter</display-name>
+  </channel>
+  <channel id="HoopTV">
+    <display-name>Hoop TV</display-name>
+  </channel>
 </tv>
