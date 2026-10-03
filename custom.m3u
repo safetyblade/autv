@@ -132,3 +132,12 @@ https://jmp2.uk/rok-35633f08c98857cb9e85c91eae17c0d5.m3u8
 
 #EXTINF:-1 tvg-id="NewJapanProWrestlingWorld.jp" tvg-name="New Japan Pro Wrestling World" group-title="Sport",New Japan Pro Wrestling World
 https://aka-amd-njpwworld-hls-enlive.akamaized.net/hls/video/njpw_en/njpw_en_channel01_3/playlist_DVR.m3u8
+
+#EXTINF:-1 tvg-id="BrondbyTV.se@DK" tvg-name="Brøndby TV" group-title="Sport",Brøndby TV
+https://jmp2.uk/plu-685029cda1e091e16ff57fc8.m3u8
+
+#EXTINF:-1 tvg-id="BVB-Frauen" tvg-name="BVB-Frauen" group-title="Sport",BVB-Frauen
+https://jmp2.uk/plu-66337ea1307fa300082c28a0.m3u8
+
+#EXTINF:-1 tvg-id="CanaldoInter.br@SD" tvg-name="Canal do Inter" group-title="Sport",Canal do Inter
+https://video01.soultv.com.br/internacional/internacional/playlist.m3u8
