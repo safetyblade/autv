@@ -56,9 +56,14 @@ guide = {
 header, entries = parse_entries(PLAYLIST.read_text(encoding="utf-8-sig"))
 ranked = []
 missing = []
+seen_names = set()
 
 for position, (name, extinf, url) in enumerate(entries):
-    guide_row = guide_all.get(name.casefold())
+    logical_name = name.casefold()
+    if logical_name in seen_names:
+        continue
+    seen_names.add(logical_name)
+    guide_row = guide_all.get(logical_name)
     if guide_row and guide_row.get("Status", "Active").strip().casefold() != "active":
         continue
     row = guide.get(name.casefold())
