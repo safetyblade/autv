@@ -9,9 +9,11 @@ LG = Path("lg_upstream.m3u")
 PLUTO_US = Path("pluto_us_upstream.m3u")
 PLUTO_CA = Path("pluto_ca_upstream.m3u")
 PLUTO_GB = Path("pluto_gb_upstream.m3u")
+ROKU = Path("roku_upstream.m3u")
 SELECTED_SAMSUNG = Path("selected_channels.txt")
 SELECTED_LG = Path("selected_lg_channels.txt")
 SELECTED_PLUTO = Path("selected_pluto_channels.txt")
+SELECTED_ROKU = Path("selected_roku_channels.txt")
 CUSTOM = Path("custom.m3u")
 OUTPUT = Path("playlist.m3u")
 XMLTV = Path("curated.xml")
@@ -107,6 +109,7 @@ pluto_entries = (
     + parse_entries(read(PLUTO_CA))
     + parse_entries(read(PLUTO_GB))
 )
+roku_entries = parse_entries(read(ROKU))
 
 extras = []
 xml_channels = []
@@ -114,6 +117,7 @@ xml_channels = []
 missing_samsung = add_selected("SAMSUNG", samsung_entries, SELECTED_SAMSUNG, extras, xml_channels)
 missing_lg = add_selected("LG", lg_entries, SELECTED_LG, extras, xml_channels)
 missing_pluto = add_selected("PLUTO", pluto_entries, SELECTED_PLUTO, extras, xml_channels)
+missing_roku = add_selected("ROKU", roku_entries, SELECTED_ROKU, extras, xml_channels)
 
 for name, extinf, url in parse_entries(read(CUSTOM)):
     m3u, xml = normalise(name, extinf, url)
@@ -149,9 +153,12 @@ print(f"Wrote {XMLTV} with {len(xml_channels)} channel definitions")
 print(f"Samsung requested channels not found: {len(missing_samsung)}")
 print(f"LG requested channels not found: {len(missing_lg)}")
 print(f"Pluto requested channels not found: {len(missing_pluto)}")
+print(f"Roku requested channels not found: {len(missing_roku)}")
 if missing_samsung:
     print("Missing Samsung list: " + " | ".join(missing_samsung))
 if missing_lg:
     print("Missing LG list: " + " | ".join(missing_lg))
 if missing_pluto:
     print("Missing Pluto list: " + " | ".join(missing_pluto))
+if missing_roku:
+    print("Missing Roku list: " + " | ".join(missing_roku))
