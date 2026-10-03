@@ -1,0 +1,281 @@
+# Approved Plex AU channels. One exact channel name per line.
+123GO!
+21 Jump Street
+5-Minute Crafts
+ACL Cornhole TV
+Action Hollywood Movies
+AddictaTV
+Adventure Earth
+AfroLandTV
+Alternative
+American Crime Channel
+Andromeda
+Animation+
+Antiques Road Trip
+Arthur
+Asian Drama
+Ax Men
+Baby Einstein
+Bachelor Nation
+Bassmaster
+beIN SPORTS XTRA
+Beyblade
+Beyond Belief
+Beyond Paranormal
+Billiard TV
+Bizaar
+Bizarre Foods with Andrew Zimmern
+Bloomberg Originals
+Bloomberg TV
+Bon Voyage
+Bondi Vet
+BOOT
+Bowling TV
+Brat TV
+Breaking Sports News
+Bring It!
+Camp Spoopy
+CBC News
+Cesar's Pack Leader TV
+Cheaters
+CINEPRIDE
+Classic Rock
+CombaTV
+Come Dine With Me
+Cooking Panda
+COPS
+COPS Reloaded
+Corner Gas
+CraftsyTV
+Creator Television
+Cricket Gold
+Crime 360
+Crime Scene TV
+Deal or No Deal
+Death Valley Days
+Dick Van Dyke
+Documentary+
+Dog The Bounty Hunter
+Dog Whisperer
+Dr. Phil
+Duck Dynasty
+Easy Listening
+Eddie's Wonderland
+Euro Hits
+Euronews
+Evolution Earth
+FailArmy
+FashionTV
+Fear Factor
+FIFA+
+Fifth Gear (UK)
+Fight Network
+FilmRise Creators
+Flashback 70s
+Forensic Files
+Four in a Bed
+FRANCE 24
+FrightFlix
+FTF Sports
+FUEL TV
+Galxy TV
+GB News
+Ghost
+Ghost Hunters Channel
+Glewed TV
+GLORY Kickboxing
+Go Wild
+Gone Fishing
+Great American RomComs
+Great British Menu
+Grjngo - Western Movies
+GrowthDay Network
+GUSTOTV
+Hard Knocks
+Hardcore Pawn
+Heartland
+Hell's Kitchen
+Highway Thru Hell
+Highway to Heaven
+Hip-Hop/R&B
+History & Warfare
+History Hit
+Hit List
+Homeful
+Homes Under the Hammer
+Homicide Hunter
+Hot Ones
+Hunter
+I Shouldn't Be Alive
+I Survived…
+Ice Pilots NWT
+Ice Road Truckers
+Inside Outside
+INTER 24/7
+Intervention
+Iron Chef
+Jade Fever
+JAIL
+Johnny Carson TV
+Journy
+Judge Nosey
+Just For Laughs Gags
+Legacy
+Life Down Under
+Life+Style
+Little Women: LA
+Lone Star
+Lucha Plus
+Made In Hollywood
+MagellanTV Wildest
+Maverick Black Cinema
+Mayday: Air Disaster
+Metal.Rocks
+Million Dollar Dream Home
+Modern Marvels
+Monster Jam
+More U
+Most Haunted
+Movieitaly Channel
+MOVIESPHERE
+Mr. Bean
+Mr. Bean Live Action
+Mutant X
+My Little Pony
+Mythbusters
+Mythical 24/7
+NASCAR Channel
+Nashville
+NEW KFOOD
+Newsmax2
+NewsWorld
+NFL Channel
+NFL Super Bowl Champions
+NHRA TV
+Nomad Travel
+Nosey
+Nothin' But 90s
+Operation Repo
+OUTflix Proud
+Pac-12 Insider
+PBS History
+PBS Science
+People are Awesome
+PFL MMA
+PGA TOUR
+PickleballTV
+PickleTV
+pocket.watch Game-On
+Poker Night TV
+PokerGO
+POP
+Pop Adult
+Popular Science
+Powder TV
+Power Rangers
+Powernation
+Preston & Brianna
+PursuitUP
+Qwest TV
+RACER International
+Racing America
+RCM
+Real Crime
+Real Crime Uncovered
+Real Emergency
+Real Wild
+Relic Hunter
+Remember the ‘80s
+Revry
+River Monsters
+Robot Wars by Mech+
+Rookie Blue
+Ryan and Friends
+Sheriffs: El Dorado County
+Shout! Movies
+SI TV
+SKWAD
+SLOPES
+Smooth Jazz
+Smurf TV
+Sonic The Hedgehog
+Sonic TV
+Sparkle Movies - Light & Love
+SPEEDVISION
+SportsGrid
+Stars Central
+Startalk TV
+Stingray DJAZZ
+Stingray Greatest Hits
+Stingray Holidayscapes
+Stingray Hot Country
+Stingray Karaoke
+Stingray Naturescape
+Stingray Soul Storm
+Strawberry Shortcake
+Strongman Champions
+Surf Cinema
+Surfer TV
+SWAC TV
+Teletubbies
+Tennis TV
+Tennis+
+TG Junior
+The Biggest Loser
+The Bob Ross Channel
+The Bold and the Beautiful
+The Carol Burnett Show
+The Design Network
+The Ed Sullivan Show
+The Emeril Lagasse Channel
+The Hotel Inspector
+The Kids in the Hall
+The Martha Stewart Channel
+The Osbournes
+The Pet Collective
+The Prof G Channel
+The Reuters 60
+The Spa
+The Wicked Tuna Channel
+The Wiggles
+The World Poker Tour
+Tiny House Nation
+TNA Wrestling Channel
+Today's K-Pop
+Toon Goggles
+TRACE Brazuca
+TRACE Latina
+TRACE UK
+TRACE Urban
+Trailers From Hell
+Travel Escapes
+True Crime Now
+True History
+TV5MONDE Chefs
+TV5MONDE Voyage
+UFC
+Unbeaten
+Undercover Boss
+Unspeakable
+Untold Stories of the ER
+USA TODAY
+Watch it Kid
+Watch it SCREAM
+Waypoint TV
+WeatherSpy
+Western Bound
+WildEarth
+Willow Sports
+WipeoutXtra
+Wired2Fish
+Women Behind Bars
+Women's Sports Network
+Wonder
+World Billiards TV
+World Surf League 24/7
+XFC TV
+Xtreme Caution
+Y2K
+Yahoo Finance
+Z Nation
+ZenLIFE by Stingray
