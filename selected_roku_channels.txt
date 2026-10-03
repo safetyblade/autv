@@ -9,8 +9,6 @@ Triton Poker
 Unbeaten Sports
 Ryz Sports Network
 DraftKings
-CHGO Sports
-PHLY Sports
 Electric Now
 Let's Make a Deal
 Supermarket Sweep
@@ -23,7 +21,6 @@ FilmRise Classic TV
 FilmRise Horror
 FilmRise Free Movies
 FilmRise Mysteries
-Danger TV
 Pam Grier's Soul Flix
 Movie Hub
 Movie Hub Action
@@ -34,7 +31,6 @@ Court TV Legendary Trials
 TruBlu Crime Channel
 Dr. G: Medical Examiner
 Live PD: Presents
-Acorn TV Mysteries
 Reelz Famous and Infamous
 Paranormal Chronicles
 Paternity Court
@@ -58,7 +54,6 @@ Life with Derek
 Candyjar
 Braxton Family Values
 Dove
-Curiosity Explora
 GARDEN with Monty Don
 Tastemade Home
 Nature Moments
