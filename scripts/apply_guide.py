@@ -78,7 +78,7 @@ for position, (name, extinf, url) in enumerate(entries):
         ranked.append((channel_no, position, extinf, url))
     else:
         missing.append(name)
-        ranked.append((9000 + position, position, extinf, url))
+        continue
 
 ranked.sort(key=lambda item: (item[0], item[1]))
 
@@ -89,6 +89,6 @@ for _, _, extinf, url in ranked:
 PLAYLIST.write_text("\n".join(out) + "\n", encoding="utf-8")
 
 print(f"Applied guide metadata to {len(entries) - len(missing)} channels")
-print(f"Guide-unmatched channels: {len(missing)}")
+print(f"Guide-unmatched channels dropped: {len(missing)}")
 if missing:
     print("Unmatched: " + " | ".join(missing))
