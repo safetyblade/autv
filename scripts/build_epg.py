@@ -12,6 +12,7 @@ EPG_SOURCES = [
     Path("epg_pluto_ca.xml.gz"),
     Path("epg_roku_all.xml.gz"),
     Path("epg_xumo.xml.gz"),
+    Path("epg_tubi.xml"),
 ]
 
 def playlist_ids():
