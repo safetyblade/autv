@@ -192,43 +192,43 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 537,Hawaii Five-O,Crime,Crime Drama / Mystery,Full,Pluto,,Active,"Crime, investigation, court, mystery or forensic programming."
 538,JAG,Crime,Crime Drama / Mystery,Full,Pluto,,Active,"Crime, investigation, court, mystery or forensic programming."
 539,Universal Crime,Crime,Crime Drama / Mystery,Full,Xumo,,Active,"Crime, investigation, court, mystery or forensic programming."
-600,ALF,Comedy,,Full,Roku,,Active,"Comedy, sitcom or stand-up programming."
-601,Always Funny Videos,Comedy,,Full,Roku,,Active,"Comedy, sitcom or stand-up programming."
-602,Bounce XL,Comedy,,Full,Xumo,,Active,"Comedy, sitcom or stand-up programming."
-603,Cheers,Comedy,,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
-604,Comedy Central Pluto TV,Comedy,,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
-605,Comedy Dynamics,Comedy,,Full,Xumo,,Active,"Comedy, sitcom or stand-up programming."
-606,Dry Bar Comedy (Australia),Comedy,,Full,Curated,,Active,"Comedy, sitcom or stand-up programming."
-607,Family Ties,Comedy,,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
-608,Frasier,Comedy,,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
-609,Girlfriends,Comedy,,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
-610,Green Acres,Comedy,,Full,Xumo,,Active,Classic television series and archive entertainment.
-611,Just For Laughs Gags,Comedy,,Full,Plex AU,,Active,"Comedy, sitcom or stand-up programming."
-612,King of Queens,Comedy,,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
-613,Leave It to Beaver,Comedy,,Full,Xumo,,Active,Classic television series and archive entertainment.
-614,LOL Network,Comedy,,Full,Roku,,Active,"Comedy, sitcom or stand-up programming."
-615,Married... with Children,Comedy,,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
-616,Mr Bean Animated (Australia),Comedy,,Full,Curated,,Active,"Comedy, sitcom or stand-up programming."
-617,MST3K,Comedy,,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
-618,NBC Comedy Vault,Comedy,,Full,Xumo,,Active,"Comedy, sitcom or stand-up programming."
-619,8 Out of 10 Cats (Australia),Comedy,,Full,Curated,,Active,"Comedy, sitcom or stand-up programming."
-620,Portlandia,Comedy,,Full,Xumo,,Active,"Comedy, sitcom or stand-up programming."
-621,RiffTrax,Comedy,,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
-622,Sam and Colby,Comedy,,Full,Roku,,Active,"Comedy, sitcom or stand-up programming."
-623,Saved by the Bell,Comedy,,Full,Xumo,,Active,"Comedy, sitcom or stand-up programming."
-624,SNL Vault,Comedy,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
-625,South Park,Comedy,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-626,Stokes Twins,Comedy,,Full,Roku,,Active,"Comedy, sitcom or stand-up programming."
-627,Taxi,Comedy,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-628,The Addams Family,Comedy,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-629,The Andy Griffith Show,Comedy,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-630,The Beverly Hillbillies,Comedy,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-631,The Carol Burnett Show,Comedy,,Full,Plex AU,Roku,Active,"Comedy, sitcom or stand-up programming."
-632,The Conners,Comedy,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-633,The Red Green Channel,Comedy,,Full,Roku,,Active,"Comedy, sitcom or stand-up programming."
-634,Three's Company,Comedy,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-635,Tosh.0,Comedy,,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
-636,Whose Line Is It Anyway?,Comedy,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+600,Cheers,Comedy,Major / Modern Sitcoms,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
+601,Frasier,Comedy,Major / Modern Sitcoms,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
+602,King of Queens,Comedy,Major / Modern Sitcoms,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
+603,Married... with Children,Comedy,Major / Modern Sitcoms,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
+604,South Park,Comedy,Major / Modern Sitcoms,Full,Pluto,,Active,Animated comedy channel dedicated to South Park episodes and specials.
+605,The Conners,Comedy,Major / Modern Sitcoms,Full,Pluto,,Active,Modern sitcom channel featuring The Conners.
+606,Girlfriends,Comedy,Major / Modern Sitcoms,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
+607,Family Ties,Comedy,Major / Modern Sitcoms,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
+608,Saved by the Bell,Comedy,Major / Modern Sitcoms,Full,Xumo,,Active,"Comedy, sitcom or stand-up programming."
+609,Portlandia,Comedy,Major / Modern Sitcoms,Full,Xumo,,Active,"Comedy, sitcom or stand-up programming."
+610,SNL Vault,Comedy,Sketch / Panel / Variety,Full,Roku,,Active,Saturday Night Live sketch-comedy archive channel featuring classic and selected SNL material.
+611,The Carol Burnett Show,Comedy,Sketch / Panel / Variety,Full,Plex AU,Roku,Active,"Comedy, sitcom or stand-up programming."
+612,Whose Line Is It Anyway?,Comedy,Sketch / Panel / Variety,Full,Pluto,,Active,Improvisational comedy and panel-show channel featuring Whose Line Is It Anyway?
+613,8 Out of 10 Cats (Australia),Comedy,Sketch / Panel / Variety,Full,Curated,,Active,"Comedy, sitcom or stand-up programming."
+614,Tosh.0,Comedy,Sketch / Panel / Variety,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
+615,The Red Green Channel,Comedy,Sketch / Panel / Variety,Full,Roku,,Active,"Comedy, sitcom or stand-up programming."
+616,Comedy Central Pluto TV,Comedy,Stand-up / Broad Comedy Networks,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
+617,Comedy Dynamics,Comedy,Stand-up / Broad Comedy Networks,Full,Xumo,,Active,"Comedy, sitcom or stand-up programming."
+618,Dry Bar Comedy (Australia),Comedy,Stand-up / Broad Comedy Networks,Full,Curated,,Active,"Comedy, sitcom or stand-up programming."
+619,LOL Network,Comedy,Stand-up / Broad Comedy Networks,Full,Roku,,Active,"Comedy, sitcom or stand-up programming."
+620,NBC Comedy Vault,Comedy,Stand-up / Broad Comedy Networks,Full,Xumo,,Active,"Comedy, sitcom or stand-up programming."
+621,Bounce XL,Comedy,Stand-up / Broad Comedy Networks,Full,Xumo,,Active,"Comedy, sitcom or stand-up programming."
+622,Just For Laughs Gags,Comedy,Alternative / Visual / Creator Comedy,Full,Plex AU,,Active,"Comedy, sitcom or stand-up programming."
+622,Sam and Colby,Factual,Paranormal,Full,Roku,,Active,Paranormal exploration and creator-led investigation programming focused on haunted and unexplained locations.
+623,Always Funny Videos,Comedy,Alternative / Visual / Creator Comedy,Full,Roku,,Active,"Comedy, sitcom or stand-up programming."
+624,MST3K,Comedy,Alternative / Visual / Creator Comedy,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
+625,RiffTrax,Comedy,Alternative / Visual / Creator Comedy,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
+626,Mr Bean Animated (Australia),Comedy,Alternative / Visual / Creator Comedy,Full,Curated,,Active,"Comedy, sitcom or stand-up programming."
+627,Stokes Twins,Comedy,Alternative / Visual / Creator Comedy,Full,Roku,,Active,"Comedy, sitcom or stand-up programming."
+628,Taxi,Comedy,Classic Sitcoms,Full,Pluto,,Active,Classic sitcom channel featuring Taxi episodes.
+629,Three's Company,Comedy,Classic Sitcoms,Full,Pluto,,Active,Classic sitcom channel featuring Three's Company.
+630,The Addams Family,Comedy,Classic Sitcoms,Full,Pluto,,Active,Classic sitcom channel featuring The Addams Family.
+631,The Andy Griffith Show,Comedy,Classic Sitcoms,Full,Pluto,,Active,Classic sitcom channel featuring The Andy Griffith Show.
+632,The Beverly Hillbillies,Comedy,Classic Sitcoms,Full,Pluto,,Active,Classic sitcom channel featuring The Beverly Hillbillies.
+633,Green Acres,Comedy,Classic Sitcoms,Full,Xumo,,Active,Classic television series and archive entertainment.
+634,Leave It to Beaver,Comedy,Classic Sitcoms,Full,Xumo,,Active,Classic television series and archive entertainment.
+635,ALF,Comedy,Classic Sitcoms,Full,Roku,,Active,"Comedy, sitcom or stand-up programming."
 700,123GO!,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 701,5-Minute Crafts,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 702,AddictaTV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
