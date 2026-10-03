@@ -1,2 +1,2 @@
-# Approved extra channels only.
-# One display name per line.
+# One approved channel name per line.
+Don't Tell The Bride
