@@ -57,105 +57,102 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 231,NHL,Sport,US Major Sports,Full,Tubi,,Active,Ice-hockey FAST channel featuring NHL programming and related coverage.
 232,Hard Knocks,Sport,US Major Sports,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 233,NASCAR,Sport,Motorsport,Full,Tubi,,Active,"NASCAR motorsport FAST channel with race, archive and related programming."
-234,NASCAR Channel,Sport,Motorsport,Full,Xumo,Plex AU,Active,"NASCAR motorsport FAST channel with race, archive and related programming."
-235,Monster Jam,Sport,Motorsport,Full,Plex AU,Roku,Active,Monster Jam motorsport channel featuring monster-truck events and related programming.
-236,FloRacing 24/7,Sport,Motorsport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-237,Racing America,Sport,Motorsport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-238,Rally TV,Sport,Motorsport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-239,Red Bull TV,Sport,Motorsport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-240,NHRA TV,Sport,Motorsport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-241,RACER International,Sport,Motorsport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-242,Tennis TV,Sport,Racquet & Golf,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-243,Tennis+,Sport,Racquet & Golf,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-244,TennisChannel 2,Sport,Racquet & Golf,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-245,GolfPass,Sport,Racquet & Golf,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-246,PickleballTV,Sport,Racquet & Golf,Full,Plex AU,Samsung US,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-247,PGA TOUR,Sport,Racquet & Golf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-248,MODUS Super Series Darts,Sport,"Cue, Darts & Poker",Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-249,Pluto TV Snooker 900,Sport,"Cue, Darts & Poker",Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-250,Billiard TV,Sport,"Cue, Darts & Poker",Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-251,World Billiards TV,Sport,"Cue, Darts & Poker",Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-252,Triton Poker,Sport,"Cue, Darts & Poker",Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-253,Poker Night TV,Sport,"Cue, Darts & Poker",Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-254,The World Poker Tour,Sport,"Cue, Darts & Poker",Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-255,PokerGO,Sport,"Cue, Darts & Poker",Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-256,World Surf League 24/7,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-257,Waypoint TV,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-258,Wired2Fish,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-259,Gone Fishing,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-260,Field & Stream TV,Sport,Outdoor & Surf,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-261,Powder TV,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-262,PursuitUP,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-263,SLOPES,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-264,Surfer TV,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-265,WFN,Sport,Outdoor & Surf,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
-266,Outdoor Channel (Australia),Sport,Outdoor & Surf,Full,Curated,,Active,"Outdoor sports channel featuring fishing, hunting and adventure programming."
-267,Strongman Champions,Sport,Niche & Competition,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-268,ACL Cornhole TV,Sport,Niche & Competition,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-269,Bowling TV,Sport,Niche & Competition,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-270,Team USA TV,Sport,Niche & Competition,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-271,Women's Sports Network,Sport,Niche & Competition,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-272,SWAC TV,Sport,Niche & Competition,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-273,FOX Sports,Sport,General Sports,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-274,NBC Sports NOW,Sport,General Sports,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-275,CBS Sports HQ,Sport,General Sports,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-276,Fubo Sports Network,Sport,General Sports,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-277,Scripps Sports Network,Sport,General Sports,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-278,Stadium,Sport,General Sports,Full,Tubi,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-279,SportsGrid,Sport,General Sports,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-280,FTF Sports,Sport,General Sports,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-281,SI TV,Sport,General Sports,Full,Pluto,Plex AU,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-282,Breaking Sports News,Sport,General Sports,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-283,Ryz Sports Network,Sport,General Sports,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-284,Unbeaten Sports,Sport,General Sports,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-285,ACC Digital Network,Sport,General Sports,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-286,Big 12 Studios,Sport,General Sports,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-287,FloHockey 24/7,Sport,General Sports,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-288,Willow Sports,Sport,General Sports,Full,Pluto,Plex AU,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-289,CombaTV,Sport,General Sports,Full,Plex AU,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
-290,Cricket Gold,Sport,General Sports,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-291,FUEL TV,Sport,General Sports,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-292,Pac-12 Insider,Sport,General Sports,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+234,Monster Jam,Sport,Motorsport,Full,Plex AU,Roku,Active,Monster Jam motorsport channel featuring monster-truck events and related programming.
+235,FloRacing 24/7,Sport,Motorsport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+236,Racing America,Sport,Motorsport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+237,Rally TV,Sport,Motorsport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+238,Red Bull TV,Sport,Motorsport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+239,NHRA TV,Sport,Motorsport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+240,RACER International,Sport,Motorsport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+241,Tennis TV,Sport,Racquet & Golf,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+242,Tennis+,Sport,Racquet & Golf,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+243,TennisChannel 2,Sport,Racquet & Golf,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+244,GolfPass,Sport,Racquet & Golf,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+245,PickleTV,Sport,Racquet & Golf,Full,Plex AU,,Active,"Pickleball-focused sports channel featuring matches, highlights and related programming."
+246,PGA TOUR,Sport,Racquet & Golf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+247,MODUS Super Series Darts,Sport,"Cue, Darts & Poker",Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+248,Pluto TV Snooker 900,Sport,"Cue, Darts & Poker",Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+249,Billiard TV,Sport,"Cue, Darts & Poker",Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+250,World Billiards TV,Sport,"Cue, Darts & Poker",Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+251,Triton Poker,Sport,"Cue, Darts & Poker",Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+252,Poker Night TV,Sport,"Cue, Darts & Poker",Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+253,The World Poker Tour,Sport,"Cue, Darts & Poker",Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+254,PokerGO,Sport,"Cue, Darts & Poker",Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+255,World Surf League 24/7,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+256,Waypoint TV,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+257,Wired2Fish,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+258,Gone Fishing,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+259,Field & Stream TV,Sport,Outdoor & Surf,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+260,Powder TV,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+261,PursuitUP,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+262,SLOPES,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+263,Surfer TV,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+264,WFN,Sport,Outdoor & Surf,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
+265,Outdoor Channel (Australia),Sport,Outdoor & Surf,Full,Curated,,Active,"Outdoor sports channel featuring fishing, hunting and adventure programming."
+266,Strongman Champions,Sport,Niche & Competition,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+267,ACL Cornhole TV,Sport,Niche & Competition,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+268,Bowling TV,Sport,Niche & Competition,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+269,Team USA TV,Sport,Niche & Competition,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+270,Women's Sports Network,Sport,Niche & Competition,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+271,SWAC TV,Sport,Niche & Competition,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+272,FOX Sports,Sport,General Sports,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+273,NBC Sports NOW,Sport,General Sports,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+274,CBS Sports HQ,Sport,General Sports,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+275,Fubo Sports Network,Sport,General Sports,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+276,Scripps Sports Network,Sport,General Sports,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+277,Stadium,Sport,General Sports,Full,Tubi,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+278,SportsGrid,Sport,General Sports,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+279,FTF Sports,Sport,General Sports,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+280,SI TV,Sport,General Sports,Full,Pluto,Plex AU,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+281,Breaking Sports News,Sport,General Sports,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+282,Ryz Sports Network,Sport,General Sports,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+283,Unbeaten Sports,Sport,General Sports,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+284,ACC Digital Network,Sport,General Sports,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+285,Big 12 Studios,Sport,General Sports,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+286,FloHockey 24/7,Sport,General Sports,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+287,Willow Sports,Sport,General Sports,Full,Pluto,Plex AU,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+288,CombaTV,Sport,General Sports,Full,Plex AU,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
+289,Cricket Gold,Sport,General Sports,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+290,FUEL TV,Sport,General Sports,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+291,Pac-12 Insider,Sport,General Sports,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+292,Trace Stars,Sport,General Sports,Full,Curated,,Active,"Sports channel featuring athlete, competition and sports-entertainment programming."
 300,MGM Presents,Movies,Major / Broad Movies,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 301,Paramount Movie Channel,Movies,Major / Broad Movies,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 302,Universal Movies,Movies,Major / Broad Movies,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 303,MOVIESPHERE,Movies,Major / Broad Movies,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 304,Gravitas Movies,Movies,Major / Broad Movies,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-305,Shout! Movies,Movies,Major / Broad Movies,Full,Xumo,Plex AU,Active,Movie-focused FAST channel with scheduled films or genre collections.
-306,FilmRise Free Movies,Movies,Major / Broad Movies,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
-307,Movie Hub,Movies,Major / Broad Movies,Full,Roku,,Active,Broad movie FAST channel with a rotating mix of feature films.
-308,MyTime Movie Network,Movies,Major / Broad Movies,Full,Curated,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-309,Action Hollywood Movies,Movies,Action & Martial Arts,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-310,MGM Presents: Action,Movies,Action & Martial Arts,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-311,Movie Hub Action,Movies,Action & Martial Arts,Full,Roku,,Active,Action-focused movie FAST channel featuring action and adventure films.
-312,Pluto TV Action Movies,Movies,Action & Martial Arts,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-313,Hi-Yah!,Movies,Action & Martial Arts,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-314,FilmRise Horror,Movies,Horror / Thriller / Cult,Full,Roku,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-315,Pluto TV Horror,Movies,Horror / Thriller / Cult,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-316,Pluto TV Thrillers,Movies,Horror / Thriller / Cult,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-317,Pluto TV Cult Films,Movies,Horror / Thriller / Cult,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-318,Hallmark Movies & More,Movies,Romance & Lifetime,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-319,Lifetime Movie Favorites,Movies,Romance & Lifetime,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-320,Great American RomComs,Movies,Romance & Lifetime,Full,Xumo,Plex AU,Active,Movie-focused FAST channel with scheduled films or genre collections.
+305,FilmRise Free Movies,Movies,Major / Broad Movies,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
+306,Movie Hub,Movies,Major / Broad Movies,Full,Roku,,Active,Broad movie FAST channel with a rotating mix of feature films.
+307,MyTime Movie Network,Movies,Major / Broad Movies,Full,Curated,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+308,Action Hollywood Movies,Movies,Action & Martial Arts,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+309,MGM Presents: Action,Movies,Action & Martial Arts,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+310,Movie Hub Action,Movies,Action & Martial Arts,Full,Roku,,Active,Action-focused movie FAST channel featuring action and adventure films.
+311,Pluto TV Action Movies,Movies,Action & Martial Arts,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+312,Hi-Yah!,Movies,Action & Martial Arts,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+313,FilmRise Horror,Movies,Horror / Thriller / Cult,Full,Roku,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+314,Pluto TV Horror,Movies,Horror / Thriller / Cult,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+315,Pluto TV Thrillers,Movies,Horror / Thriller / Cult,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+316,Pluto TV Cult Films,Movies,Horror / Thriller / Cult,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+317,FrightFlix,Movies,Horror / Thriller / Cult,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+318,Watch it SCREAM,Movies,Horror / Thriller / Cult,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+319,Hallmark Movies & More,Movies,Romance & Lifetime,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+320,Lifetime Movie Favorites,Movies,Romance & Lifetime,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 321,Sparkle Movies - Light & Love,Movies,Romance & Lifetime,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 322,British Screen Classics,Movies,Classics / British / Arthouse,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 323,Classic Movies Channel,Movies,Classics / British / Arthouse,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 324,Curzon,Movies,Classics / British / Arthouse,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-325,Movieitaly Channel,Movies,Classics / British / Arthouse,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-326,Maverick Black Cinema,Movies,Black Cinema,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-327,Pam Grier's Soul Flix,Movies,Black Cinema,Full,Roku,,Active,"Black cinema movie channel centred on soul cinema, cult films and Pam Grier-associated programming."
-328,FilmRise Western,Movies,Westerns,Full,Roku,,Active,Western movie channel featuring classic and modern western films.
-329,Grjngo - Western Movies,Movies,Westerns,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-330,MGM Presents: Westerns,Movies,Westerns,Full,Xumo,,Active,Western films and classic western series.
-331,Universal Westerns,Movies,Westerns,Full,Curated,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-332,Western Bound,Movies,Westerns,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-333,PopCorn Central,Movies,Specialty / Niche,Full,Roku,,Active,Movie and entertainment channel featuring a broad catalogue of films and selected series.
-334,Surf Cinema,Movies,Specialty / Niche,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-335,CINEPRIDE,Movies,Specialty / Niche,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-336,FrightFlix,Movies,Horror / Thriller / Cult,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-337,The Asylum (Australia),Movies,Specialty / Niche,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
-338,Trailers From Hell,Movies,Specialty / Niche,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-339,Watch it SCREAM,Movies,Horror / Thriller / Cult,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+325,Maverick Black Cinema,Movies,Black Cinema,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+326,Pam Grier's Soul Flix,Movies,Black Cinema,Full,Roku,,Active,"Black cinema movie channel centred on soul cinema, cult films and Pam Grier-associated programming."
+327,FilmRise Western,Movies,Westerns,Full,Roku,,Active,Western movie channel featuring classic and modern western films.
+328,Grjngo - Western Movies,Movies,Westerns,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+329,MGM Presents: Westerns,Movies,Westerns,Full,Xumo,,Active,Western films and classic western series.
+330,Universal Westerns,Movies,Westerns,Full,Curated,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+331,Western Bound,Movies,Westerns,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+332,PopCorn Central,Movies,Specialty / Niche,Full,Roku,,Active,Movie and entertainment channel featuring a broad catalogue of films and selected series.
+333,Surf Cinema,Movies,Specialty / Niche,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+334,CINEPRIDE,Movies,Specialty / Niche,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+335,The Asylum (Australia),Movies,Specialty / Niche,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
+336,Trailers From Hell,Movies,Specialty / Niche,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 400,Family Feud,Game Shows,Major / Classic Game Shows,Full,Xumo,,Active,Game-show and competition programming.
 401,Family Feud Classic,Game Shows,Major / Classic Game Shows,Full,Xumo,,Active,Game-show and competition programming.
 402,The Price is Right,Game Shows,Major / Classic Game Shows,Full,Pluto,,Active,Game-show and competition programming.
@@ -406,17 +403,16 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 837,Inside Outside,Entertainment,Specialty Entertainment,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 838,Journy,Entertainment,Specialty Entertainment,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 839,Life Down Under,Entertainment,Specialty Entertainment,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-840,PickleTV,Entertainment,Specialty Entertainment,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-841,Powernation,Entertainment,Specialty Entertainment,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-842,Robot Wars by Mech+,Entertainment,Specialty Entertainment,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-843,SKWAD,Entertainment,Specialty Entertainment,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-844,SPEEDVISION,Entertainment,Specialty Entertainment,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-845,The Prof G Channel,Entertainment,Specialty Entertainment,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-846,Unbeaten,Entertainment,Specialty Entertainment,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-847,Xtreme Caution,Entertainment,Specialty Entertainment,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-848,Life with Derek,Entertainment,Specialty Entertainment,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
-849,Walker Texas Ranger,Entertainment,Specialty Entertainment,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-850,Top Gear,Entertainment,Specialty Entertainment,Full,Pluto,,Active,"Automotive entertainment series featuring cars, challenges and motoring features."
+840,Powernation,Entertainment,Specialty Entertainment,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+841,Robot Wars by Mech+,Entertainment,Specialty Entertainment,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+842,SKWAD,Entertainment,Specialty Entertainment,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+843,SPEEDVISION,Entertainment,Specialty Entertainment,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+844,The Prof G Channel,Entertainment,Specialty Entertainment,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+845,Unbeaten,Entertainment,Specialty Entertainment,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+846,Xtreme Caution,Entertainment,Specialty Entertainment,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+847,Life with Derek,Entertainment,Specialty Entertainment,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
+848,Walker Texas Ranger,Entertainment,Specialty Entertainment,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+849,Top Gear,Entertainment,Specialty Entertainment,Full,Pluto,,Active,"Automotive entertainment series featuring cars, challenges and motoring features."
 1000,Undercover Boss,Reality & Lifestyle,People / Work / Unscripted,Full,Plex AU,,Active,Workplace reality series following senior executives working anonymously inside their own organisations.
 1001,Warner Bros. TV Say Yes to the Dress,Reality & Lifestyle,People / Work / Unscripted,Full,Pluto,,Active,Wedding and bridal reality programming centred on dress selection and customer stories.
 1002,Don't Tell The Bride (Australia),Reality & Lifestyle,People / Work / Unscripted,Full,Curated,,Active,Wedding reality series in which one partner plans the wedding without the other's involvement.
@@ -445,70 +441,68 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1025,Anthony Bourdain: Parts Unknown,Reality & Lifestyle,Food & Cooking,Full,Pluto,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
 1026,BBC Food,Reality & Lifestyle,Food & Cooking,Full,Xumo,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
 1027,Best of Bobby Flay by Food Network,Reality & Lifestyle,Food & Cooking,Full,Pluto,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1028,Bizarre Foods with Andrew Zimmern,Reality & Lifestyle,Food & Cooking,Full,Xumo,Plex AU,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1029,Cooking Panda,Reality & Lifestyle,Food & Cooking,Full,Plex AU,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1030,Gordon Ramsay,Reality & Lifestyle,Food & Cooking,Full,Tubi,,Active,"Gordon Ramsay-focused FAST channel featuring food, competition and reality programming."
-1031,Hell's Kitchen,Reality & Lifestyle,Food & Cooking,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1032,Hell's Kitchen | Kitchen Nightmares,Reality & Lifestyle,Food & Cooking,Full,Roku,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1033,Home Cooking by Food Network,Reality & Lifestyle,Food & Cooking,Full,Pluto,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1034,Iron Chef,Reality & Lifestyle,Food & Cooking,Full,Plex AU,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1035,Kitchen Battles,Reality & Lifestyle,Food & Cooking,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1036,Love Wine,Reality & Lifestyle,Food & Cooking,Full,Curated,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1037,NEW KFOOD,Reality & Lifestyle,Food & Cooking,Full,Plex AU,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1038,Great British Menu,Reality & Lifestyle,Food & Cooking,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1039,GUSTOTV,Reality & Lifestyle,Food & Cooking,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1040,The Jamie Oliver Channel,Reality & Lifestyle,Food & Cooking,Full,Pluto,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1041,The Emeril Lagasse Channel,Reality & Lifestyle,Food & Cooking,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1042,The Martha Stewart Channel,Reality & Lifestyle,Food & Cooking,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1043,Top Chef,Reality & Lifestyle,Food & Cooking,Full,Pluto,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1044,BBC Home & Garden,Reality & Lifestyle,Home / Property / Garden,Full,Xumo,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1045,GARDEN with Monty Don,Reality & Lifestyle,Home / Property / Garden,Full,Roku,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1046,Homeful,Reality & Lifestyle,Home / Property / Garden,Full,Plex AU,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1047,Homes Under the Hammer,Reality & Lifestyle,Home / Property / Garden,Full,Plex AU,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1048,Million Dollar Dream Home,Reality & Lifestyle,Home / Property / Garden,Full,Plex AU,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1049,Obsessive Compulsive Cleaners,Reality & Lifestyle,Home / Property / Garden,Full,LG AU,Samsung GB,Active,British factual-reality series channel focused on extreme cleaning and household transformations.
-1050,Property Brothers,Reality & Lifestyle,Home / Property / Garden,Full,Pluto,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1051,Smart Healthy Green Living,Reality & Lifestyle,Home / Property / Garden,Full,Curated,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1052,Tastemade Home,Reality & Lifestyle,Home / Property / Garden,Full,Roku,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1053,The Bob Ross Channel,Reality & Lifestyle,Home / Property / Garden,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1054,The Design Network,Reality & Lifestyle,Home / Property / Garden,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1055,This Old House,Reality & Lifestyle,Home / Property / Garden,Full,Pluto,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1056,Tiny House Nation,Reality & Lifestyle,Home / Property / Garden,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1057,Escape to the Country (Australia),Reality & Lifestyle,Home / Property / Garden,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
-1058,Million Dollar Listing Vault,Reality & Lifestyle,Home / Property / Garden,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1059,Antiques Road Trip,Reality & Lifestyle,Travel / Lifestyle,Full,Plex AU,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1060,Autentic Travel,Reality & Lifestyle,Travel / Lifestyle,Full,Curated,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1061,Nomad Travel,Reality & Lifestyle,Travel / Lifestyle,Full,Plex AU,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1062,PBS Antiques Roadshow,Reality & Lifestyle,Travel / Lifestyle,Full,Roku,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1063,Travel Escapes,Reality & Lifestyle,Travel / Lifestyle,Full,Plex AU,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1064,Travelxp,Reality & Lifestyle,Travel / Lifestyle,Full,Curated,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
-1065,FashionTV,Reality & Lifestyle,Travel / Lifestyle,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1066,Life+Style,Reality & Lifestyle,Travel / Lifestyle,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1067,The Spa,Reality & Lifestyle,Travel / Lifestyle,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1068,Bondi Vet,Reality & Lifestyle,Animals / Pets,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1069,Cesar's Pack Leader TV,Reality & Lifestyle,Animals / Pets,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1070,Dog Whisperer,Reality & Lifestyle,Animals / Pets,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1071,Pet Club TV (Australia),Reality & Lifestyle,Animals / Pets,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
-1072,The Pet Collective,Reality & Lifestyle,Animals / Pets,Full,Plex AU,,Active,Animal and pet-focused entertainment and lifestyle programming.
-1073,Bachelor Nation,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Xumo,Plex AU,Active,Reality and unscripted entertainment programming.
-1074,Love After Lockup We TV,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Xumo,,Active,Reality and unscripted entertainment programming.
-1075,MTV Reality,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1076,Real Housewives Vault,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1077,The Real Housewives,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1078,World of Love Island,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1079,Bad Girls Club,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1080,Big Brother,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1081,Black Ink Crew,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1082,Braxton Family Values,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
-1083,Catfish,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1084,Dance Moms,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1085,Geordie Shore,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1086,Little Women: LA,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1087,Love & Hip Hop,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1088,MTV Dating,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1089,MTV Jersey Shore,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1090,Teen Mom,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-1091,The Osbournes,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1028,Cooking Panda,Reality & Lifestyle,Food & Cooking,Full,Plex AU,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1029,Gordon Ramsay,Reality & Lifestyle,Food & Cooking,Full,Tubi,,Active,"Gordon Ramsay-focused FAST channel featuring food, competition and reality programming."
+1030,Hell's Kitchen,Reality & Lifestyle,Food & Cooking,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1031,Hell's Kitchen | Kitchen Nightmares,Reality & Lifestyle,Food & Cooking,Full,Roku,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1032,Home Cooking by Food Network,Reality & Lifestyle,Food & Cooking,Full,Pluto,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1033,Iron Chef,Reality & Lifestyle,Food & Cooking,Full,Plex AU,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1034,Kitchen Battles,Reality & Lifestyle,Food & Cooking,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1035,Love Wine,Reality & Lifestyle,Food & Cooking,Full,Curated,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1036,NEW KFOOD,Reality & Lifestyle,Food & Cooking,Full,Plex AU,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1037,Great British Menu,Reality & Lifestyle,Food & Cooking,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1038,GUSTOTV,Reality & Lifestyle,Food & Cooking,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1039,The Jamie Oliver Channel,Reality & Lifestyle,Food & Cooking,Full,Pluto,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1040,The Emeril Lagasse Channel,Reality & Lifestyle,Food & Cooking,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1041,The Martha Stewart Channel,Reality & Lifestyle,Food & Cooking,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1042,Top Chef,Reality & Lifestyle,Food & Cooking,Full,Pluto,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1043,BBC Home & Garden,Reality & Lifestyle,Home / Property / Garden,Full,Xumo,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1044,GARDEN with Monty Don,Reality & Lifestyle,Home / Property / Garden,Full,Roku,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1045,Homeful,Reality & Lifestyle,Home / Property / Garden,Full,Plex AU,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1046,Homes Under the Hammer,Reality & Lifestyle,Home / Property / Garden,Full,Plex AU,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1047,Million Dollar Dream Home,Reality & Lifestyle,Home / Property / Garden,Full,Plex AU,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1048,Obsessive Compulsive Cleaners,Reality & Lifestyle,Home / Property / Garden,Full,LG AU,Samsung GB,Active,British factual-reality series channel focused on extreme cleaning and household transformations.
+1049,Property Brothers,Reality & Lifestyle,Home / Property / Garden,Full,Pluto,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1050,Smart Healthy Green Living,Reality & Lifestyle,Home / Property / Garden,Full,Curated,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1051,Tastemade Home,Reality & Lifestyle,Home / Property / Garden,Full,Roku,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1052,The Bob Ross Channel,Reality & Lifestyle,Home / Property / Garden,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1053,The Design Network,Reality & Lifestyle,Home / Property / Garden,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1054,This Old House,Reality & Lifestyle,Home / Property / Garden,Full,Pluto,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1055,Tiny House Nation,Reality & Lifestyle,Home / Property / Garden,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1056,Escape to the Country (Australia),Reality & Lifestyle,Home / Property / Garden,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
+1057,Million Dollar Listing Vault,Reality & Lifestyle,Home / Property / Garden,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1058,Antiques Road Trip,Reality & Lifestyle,Travel / Lifestyle,Full,Plex AU,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1059,Autentic Travel,Reality & Lifestyle,Travel / Lifestyle,Full,Curated,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1060,Nomad Travel,Reality & Lifestyle,Travel / Lifestyle,Full,Plex AU,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1061,PBS Antiques Roadshow,Reality & Lifestyle,Travel / Lifestyle,Full,Roku,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1062,Travel Escapes,Reality & Lifestyle,Travel / Lifestyle,Full,Plex AU,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1063,Travelxp,Reality & Lifestyle,Travel / Lifestyle,Full,Curated,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
+1064,FashionTV,Reality & Lifestyle,Travel / Lifestyle,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1065,Life+Style,Reality & Lifestyle,Travel / Lifestyle,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1066,The Spa,Reality & Lifestyle,Travel / Lifestyle,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1067,Bondi Vet,Reality & Lifestyle,Animals / Pets,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1068,Cesar's Pack Leader TV,Reality & Lifestyle,Animals / Pets,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1069,Dog Whisperer,Reality & Lifestyle,Animals / Pets,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1070,Pet Club TV (Australia),Reality & Lifestyle,Animals / Pets,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
+1071,The Pet Collective,Reality & Lifestyle,Animals / Pets,Full,Plex AU,,Active,Animal and pet-focused entertainment and lifestyle programming.
+1072,Love After Lockup We TV,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Xumo,,Active,Reality and unscripted entertainment programming.
+1073,MTV Reality,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1074,Real Housewives Vault,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1075,The Real Housewives,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1076,World of Love Island,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1077,Bad Girls Club,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1078,Big Brother,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1079,Black Ink Crew,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1080,Braxton Family Values,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
+1081,Catfish,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1082,Dance Moms,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1083,Geordie Shore,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1084,Little Women: LA,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1085,Love & Hip Hop,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1086,MTV Dating,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1087,MTV Jersey Shore,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1088,Teen Mom,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1089,The Osbournes,Reality & Lifestyle,Reality / Relationships & Celebrity,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 1100,BBC Earth,Factual,Documentary / General Factual,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
 1101,Smithsonian Channel Selects,Factual,Documentary / General Factual,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
 1102,Documentary+,Factual,Documentary / General Factual,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
@@ -577,47 +571,44 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1210,Robocar POLI,Kids & Animation,Preschool / Young Kids,Full,Curated,,Active,"Kids, family and animation programming."
 1211,Nick Jr Club,Kids & Animation,Preschool / Young Kids,Full,Pluto,,Active,"Kids, family and animation programming."
 1212,Nick Jr. Pluto TV,Kids & Animation,Preschool / Young Kids,Full,Pluto,,Active,"Kids, family and animation programming."
-1213,PBS Kids (Australia),Kids & Animation,Preschool / Young Kids,Full,Curated,,Active,"Kids, family and animation programming."
-1214,Strawberry Shortcake,Kids & Animation,Preschool / Young Kids,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1215,SpongeBob SquarePants,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,Kids animation channel featuring SpongeBob SquarePants.
-1216,Pokémon,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
-1217,LEGO Kids TV,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
-1218,My Little Pony,Kids & Animation,Kids / Family Animation,Full,Xumo,Plex AU,Active,"Kids, family and animation programming."
-1219,Garfield and Friends,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
-1220,The Smurfs,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
-1221,Smurf TV,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,Kids animation channel featuring Smurfs-related programming.
-1222,Sonic The Hedgehog,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,Kids animation channel featuring Sonic the Hedgehog programming.
-1223,Sonic TV,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,Kids animation channel featuring Sonic-branded animated programming.
-1224,Power Rangers,Kids & Animation,Kids / Family Animation,Full,Xumo,Plex AU,Active,"Kids, family and animation programming."
-1225,Beyblade,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,"Kids, family and animation programming."
-1226,He-Man & Masters Of The Universe,Kids & Animation,Kids / Family Animation,Full,Curated,,Active,"Kids, family and animation programming."
-1227,Winx Club TV,Kids & Animation,Kids / Family Animation,Full,Curated,,Active,"Kids, family and animation programming."
-1228,Super Mario Brothers,Kids & Animation,Kids / Family Animation,Full,Roku,,Active,"Kids, family and animation programming."
-1229,TOTALLY TURTLES,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
-1230,Arthur,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,"Kids, family and animation programming."
-1231,Mona The Vampire,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
-1232,The Raccoons,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
-1233,Kartoon Channel (Australia),Kids & Animation,Kids / Family Animation,Full,Curated,,Active,"Kids, family and animation programming."
-1234,Nickelodeon Pluto TV,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
-1235,NickToons,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
-1236,Pluto TV Retro Toons,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
-1237,Animation+,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1238,Toon Goggles,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,Kids animation channel with family-friendly cartoons and animated series.
-1239,Watch it Kid,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1240,TG Junior,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1241,Crunchyroll,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
-1242,ANIME x HIDIVE,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
-1243,Naruto,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
-1244,One Piece,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
-1245,Sailor Moon,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
-1246,Inuyasha,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
-1247,Yu-Gi-Oh!,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
-1248,iCarly TV,Kids & Animation,Teen / Family Live Action,Full,Pluto,,Active,"Kids, family and animation programming."
-1249,123GO!,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,"Youth creator channel featuring challenge, craft and entertainment videos."
-1250,pocket.watch Game-On,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,Youth gaming and creator-led entertainment channel.
-1251,Preston & Brianna,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,"Youth creator channel featuring gaming, challenges and family-friendly entertainment."
-1252,Ryan and Friends,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,Children's creator-led entertainment featuring Ryan and related family programming.
-1253,Unspeakable,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,"Youth creator channel featuring gaming, challenges and family-friendly entertainment."
+1213,Strawberry Shortcake,Kids & Animation,Preschool / Young Kids,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1214,SpongeBob SquarePants,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,Kids animation channel featuring SpongeBob SquarePants.
+1215,Pokémon,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1216,LEGO Kids TV,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1217,Garfield and Friends,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1218,The Smurfs,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1219,Smurf TV,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,Kids animation channel featuring Smurfs-related programming.
+1220,Sonic The Hedgehog,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,Kids animation channel featuring Sonic the Hedgehog programming.
+1221,Sonic TV,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,Kids animation channel featuring Sonic-branded animated programming.
+1222,Beyblade,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,"Kids, family and animation programming."
+1223,He-Man & Masters Of The Universe,Kids & Animation,Kids / Family Animation,Full,Curated,,Active,"Kids, family and animation programming."
+1224,Winx Club TV,Kids & Animation,Kids / Family Animation,Full,Curated,,Active,"Kids, family and animation programming."
+1225,Super Mario Brothers,Kids & Animation,Kids / Family Animation,Full,Roku,,Active,"Kids, family and animation programming."
+1226,TOTALLY TURTLES,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1227,Arthur,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,"Kids, family and animation programming."
+1228,Mona The Vampire,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1229,The Raccoons,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1230,Kartoon Channel (Australia),Kids & Animation,Kids / Family Animation,Full,Curated,,Active,"Kids, family and animation programming."
+1231,Nickelodeon Pluto TV,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1232,NickToons,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1233,Pluto TV Retro Toons,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1234,Animation+,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1235,Toon Goggles,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,Kids animation channel with family-friendly cartoons and animated series.
+1236,Watch it Kid,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1237,TG Junior,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1238,Crunchyroll,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
+1239,ANIME x HIDIVE,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
+1240,Naruto,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
+1241,One Piece,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
+1242,Sailor Moon,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
+1243,Inuyasha,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
+1244,Yu-Gi-Oh!,Kids & Animation,Anime,Full,Pluto,,Active,"Kids, family and animation programming."
+1245,iCarly TV,Kids & Animation,Teen / Family Live Action,Full,Pluto,,Active,"Kids, family and animation programming."
+1246,123GO!,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,"Youth creator channel featuring challenge, craft and entertainment videos."
+1247,pocket.watch Game-On,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,Youth gaming and creator-led entertainment channel.
+1248,Preston & Brianna,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,"Youth creator channel featuring gaming, challenges and family-friendly entertainment."
+1249,Ryan and Friends,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,Children's creator-led entertainment featuring Ryan and related family programming.
+1250,Unspeakable,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,"Youth creator channel featuring gaming, challenges and family-friendly entertainment."
 1300,Stingray Greatest Hits,Music,Hits / Pop / Decades,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
 1301,Stingray Hit List,Music,Hits / Pop / Decades,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
 1302,Stingray Pop Adult,Music,Hits / Pop / Decades,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
@@ -627,24 +618,23 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1306,Y2K,Music,Hits / Pop / Decades,Full,Plex AU,,Active,2000s-era music channel featuring pop and hits from the Y2K period.
 1307,MTV Spankin' New,Music,Hits / Pop / Decades,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
 1308,TRACE UK,Music,Hits / Pop / Decades,Full,Plex AU,,Active,UK-focused music channel featuring contemporary hits and music videos.
-1309,Trace Stars,Music,Hits / Pop / Decades,Full,Curated,,Active,"Music channel featuring major artists, hits and contemporary music programming."
-1310,Stingray Classic Rock,Music,Rock / Metal,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
-1311,Metal.Rocks,Music,Rock / Metal,Full,Plex AU,,Active,Rock and metal music channel featuring heavy music videos and related programming.
-1312,Hip-Hop/R&B,Music,Hip-Hop / R&B / Soul,Full,Plex AU,,Active,Hip-hop and R&B music channel featuring music videos and genre programming.
-1313,Yo! MTV,Music,Hip-Hop / R&B / Soul,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
-1314,TRACE Urban,Music,Hip-Hop / R&B / Soul,Full,Plex AU,,Active,"Urban music channel featuring hip-hop, R&B and related genres."
-1315,Stingray Soul Storm,Music,Hip-Hop / R&B / Soul,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-1316,Shades of Black,Music,Hip-Hop / R&B / Soul,Full,Roku,,Active,"Music videos, performances or genre-based music programming."
-1317,Stingray DJAZZ,Music,Jazz / Classical / Country,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-1318,Smooth Jazz,Music,Jazz / Classical / Country,Full,Plex AU,,Active,Smooth jazz music channel featuring instrumental and contemporary jazz programming.
-1319,Qwest TV,Music,Jazz / Classical / Country,Full,Plex AU,,Active,"Jazz, soul and world-music performance channel."
-1320,Classica,Music,Jazz / Classical / Country,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
-1321,Stingray Hot Country,Music,Jazz / Classical / Country,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-1322,Qello Concerts,Music,Concerts / Specialty,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
-1323,Stingray Karaoke,Music,Concerts / Specialty,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-1324,XITE Gospel,Music,Concerts / Specialty,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
-1325,Stingray Easy Listening,Music,Chill / Ambient,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
-1326,Stingray SPA,Music,Chill / Ambient,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
-1327,Stingray Naturescape,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-1328,Stingray Holidayscapes,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-1329,ZenLIFE by Stingray,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
+1309,Stingray Classic Rock,Music,Rock / Metal,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
+1310,Metal.Rocks,Music,Rock / Metal,Full,Plex AU,,Active,Rock and metal music channel featuring heavy music videos and related programming.
+1311,Hip-Hop/R&B,Music,Hip-Hop / R&B / Soul,Full,Plex AU,,Active,Hip-hop and R&B music channel featuring music videos and genre programming.
+1312,Yo! MTV,Music,Hip-Hop / R&B / Soul,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
+1313,TRACE Urban,Music,Hip-Hop / R&B / Soul,Full,Plex AU,,Active,"Urban music channel featuring hip-hop, R&B and related genres."
+1314,Stingray Soul Storm,Music,Hip-Hop / R&B / Soul,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
+1315,Shades of Black,Music,Hip-Hop / R&B / Soul,Full,Roku,,Active,"Music videos, performances or genre-based music programming."
+1316,Stingray DJAZZ,Music,Jazz / Classical / Country,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
+1317,Smooth Jazz,Music,Jazz / Classical / Country,Full,Plex AU,,Active,Smooth jazz music channel featuring instrumental and contemporary jazz programming.
+1318,Qwest TV,Music,Jazz / Classical / Country,Full,Plex AU,,Active,"Jazz, soul and world-music performance channel."
+1319,Classica,Music,Jazz / Classical / Country,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
+1320,Stingray Hot Country,Music,Jazz / Classical / Country,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
+1321,Qello Concerts,Music,Concerts / Specialty,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
+1322,Stingray Karaoke,Music,Concerts / Specialty,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
+1323,XITE Gospel,Music,Concerts / Specialty,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
+1324,Stingray Easy Listening,Music,Chill / Ambient,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
+1325,Stingray SPA,Music,Chill / Ambient,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
+1326,Stingray Naturescape,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
+1327,Stingray Holidayscapes,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
+1328,ZenLIFE by Stingray,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
