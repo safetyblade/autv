@@ -4,8 +4,10 @@ import unicodedata
 from xml.sax.saxutils import escape
 
 BASE = Path("base_upstream.m3u")
-SECONDARY = Path("secondary_upstream.m3u")
-SELECTED = Path("selected_channels.txt")
+SAMSUNG = Path("secondary_upstream.m3u")
+LG = Path("lg_upstream.m3u")
+SELECTED_SAMSUNG = Path("selected_channels.txt")
+SELECTED_LG = Path("selected_lg_channels.txt")
 CUSTOM = Path("custom.m3u")
 OUTPUT = Path("playlist.m3u")
 XMLTV = Path("curated.xml")
@@ -73,27 +75,34 @@ def normalise(name: str, extinf: str, url: str):
     xml = {"id": tvg_id, "name": tvg_name, "logo": tvg_logo}
     return m3u, xml
 
+def add_selected(source_name: str, entries, selected_file: Path, extras, xml_channels):
+    missing = []
+    for name in wanted(selected_file):
+        exact = next((e for e in entries if e[0].casefold() == name.casefold()), None)
+        match = exact or next((e for e in entries if name.casefold() in e[0].casefold()), None)
+
+        if match:
+            m3u, xml = normalise(match[0], match[1], match[2])
+            extras.append(m3u)
+            xml_channels.append(xml)
+            print(f"ADDED {source_name}: {match[0]}")
+        else:
+            missing.append(name)
+            print(f"NOT FOUND {source_name}: {name}")
+    return missing
+
 base = read(BASE)
 if not base.startswith("#EXTM3U"):
     raise SystemExit("Base playlist is invalid")
 
-secondary_entries = parse_entries(read(SECONDARY))
+samsung_entries = parse_entries(read(SAMSUNG))
+lg_entries = parse_entries(read(LG))
+
 extras = []
 xml_channels = []
-missing = []
 
-for name in wanted(SELECTED):
-    exact = next((e for e in secondary_entries if e[0].casefold() == name.casefold()), None)
-    match = exact or next((e for e in secondary_entries if name.casefold() in e[0].casefold()), None)
-
-    if match:
-        m3u, xml = normalise(match[0], match[1], match[2])
-        extras.append(m3u)
-        xml_channels.append(xml)
-        print(f"ADDED: {match[0]}")
-    else:
-        missing.append(name)
-        print(f"NOT FOUND: {name}")
+missing_samsung = add_selected("SAMSUNG", samsung_entries, SELECTED_SAMSUNG, extras, xml_channels)
+missing_lg = add_selected("LG", lg_entries, SELECTED_LG, extras, xml_channels)
 
 for name, extinf, url in parse_entries(read(CUSTOM)):
     m3u, xml = normalise(name, extinf, url)
@@ -126,6 +135,9 @@ print("")
 print(f"Wrote {OUTPUT} with {count} channels")
 print(f"Curated channels added: {len(extras)}")
 print(f"Wrote {XMLTV} with {len(xml_channels)} channel definitions")
-print(f"Requested channels not found: {len(missing)}")
-if missing:
-    print("Missing list: " + " | ".join(missing))
+print(f"Samsung requested channels not found: {len(missing_samsung)}")
+print(f"LG requested channels not found: {len(missing_lg)}")
+if missing_samsung:
+    print("Missing Samsung list: " + " | ".join(missing_samsung))
+if missing_lg:
+    print("Missing LG list: " + " | ".join(missing_lg))
