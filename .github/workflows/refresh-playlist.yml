@@ -2,8 +2,6 @@ name: Refresh playlists
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "17 18 * * *"
 
 permissions:
   contents: write
