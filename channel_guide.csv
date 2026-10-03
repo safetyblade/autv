@@ -23,6 +23,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 121,Yahoo Finance,News,,Full,Plex AU,,Active,"Rolling news, current affairs, weather or business coverage."
 122,The Weather Network,News,,Full,Pluto,,Active,"Rolling news, current affairs, weather or business coverage."
 123,WeatherSpy,News,,Full,Plex AU,,Active,"Rolling news, current affairs, weather or business coverage."
+124,FRANCE 24,News,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 200,Watch AEW,Sport,Wrestling & Combat,Channel only,Tubi,,Active,"AEW wrestling FAST channel, currently sourced from Tubi."
 201,TNA Wrestling Channel,Sport,Wrestling & Combat,Full,Plex AU,Roku,Active,24/7 TNA wrestling channel with matches and archive programming.
 202,New Japan Pro Wrestling World,Sport,Wrestling & Combat,Channel only,Direct,,Active,New Japan Pro Wrestling channel featuring NJPW matches and archive programming.
@@ -103,11 +104,26 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 277,Big 12 Studios,Sport,General Sports,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 278,FloHockey 24/7,Sport,General Sports,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 279,Willow Sports,Sport,General Sports,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+280,CombaTV,Sport,General Sports,Full,Plex AU,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
+281,Cricket Gold,Sport,General Sports,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+282,Fight Network,Sport,Wrestling & Combat,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+283,FUEL TV,Sport,General Sports,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+284,Hard Knocks,Sport,US Major Sports,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+285,Lucha Plus,Sport,Wrestling & Combat,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+286,NHRA TV,Sport,Motorsport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+287,Pac-12 Insider,Sport,General Sports,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+288,PGA TOUR,Sport,Racquet & Golf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+289,PokerGO,Sport,"Cue, Darts & Poker",Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+290,Powder TV,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+291,PursuitUP,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+292,RACER International,Sport,Motorsport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+293,SLOPES,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+294,Surfer TV,Sport,Outdoor & Surf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+295,WFN,Sport,Outdoor & Surf,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
 300,MGM Presents,Movies,Major / Broad Movies,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 301,Paramount Movie Channel,Movies,Major / Broad Movies,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 302,Universal Movies,Movies,Major / Broad Movies,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 303,MOVIESPHERE,Movies,Major / Broad Movies,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-304,FilmRise Creators,Entertainment,,Full,Plex AU,,Active,"Creator-led entertainment channel featuring digital personalities, web series and online video programming."
 304,Gravitas Movies,Movies,Major / Broad Movies,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 305,Shout! Movies,Movies,Major / Broad Movies,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 306,FilmRise Free Movies,Movies,Major / Broad Movies,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
@@ -139,6 +155,11 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 332,Western Bound,Movies,Westerns,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 333,PopCorn Central,Movies,Specialty / Niche,Full,Roku,,Active,Movie and entertainment channel featuring a broad catalogue of films and selected series.
 334,Surf Cinema,Movies,Specialty / Niche,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
+335,CINEPRIDE,Movies,Specialty / Niche,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+336,FrightFlix,Movies,Horror / Thriller / Cult,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+337,The Asylum (Australia),Movies,Specialty / Niche,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
+338,Trailers From Hell,Movies,Specialty / Niche,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+339,Watch it SCREAM,Movies,Horror / Thriller / Cult,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 400,Family Feud,Game Shows,Major / Classic Game Shows,Full,Xumo,,Active,Game-show and competition programming.
 401,Family Feud Classic,Game Shows,Major / Classic Game Shows,Full,Xumo,,Active,Game-show and competition programming.
 402,The Price is Right,Game Shows,Major / Classic Game Shows,Full,Pluto,,Active,Game-show and competition programming.
@@ -192,6 +213,11 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 537,Hawaii Five-O,Crime,Crime Drama / Mystery,Full,Pluto,,Active,"Crime, investigation, court, mystery or forensic programming."
 538,JAG,Crime,Crime Drama / Mystery,Full,Pluto,,Active,"Crime, investigation, court, mystery or forensic programming."
 539,Universal Crime,Crime,Crime Drama / Mystery,Full,Xumo,,Active,"Crime, investigation, court, mystery or forensic programming."
+540,48 Hours,Crime,True Crime / Investigations,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+541,Dog The Bounty Hunter,Crime,Police / Jail / Live Enforcement,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+542,Homicide Hunter,Crime,True Crime / Investigations,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+543,Judge Nosey,Crime,Court / Legal,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+544,Sheriffs: El Dorado County,Crime,Police / Jail / Live Enforcement,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 600,Cheers,Comedy,Major / Modern Sitcoms,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
 601,Frasier,Comedy,Major / Modern Sitcoms,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
 602,King of Queens,Comedy,Major / Modern Sitcoms,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
@@ -229,7 +255,15 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 633,Green Acres,Comedy,Classic Sitcoms,Full,Xumo,,Active,Classic television series and archive entertainment.
 634,Leave It to Beaver,Comedy,Classic Sitcoms,Full,Xumo,,Active,Classic television series and archive entertainment.
 635,ALF,Comedy,Classic Sitcoms,Full,Roku,,Active,"Comedy, sitcom or stand-up programming."
-700,123GO!,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+636,Anger Management (Australia),Comedy,Major / Modern Sitcoms,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
+637,Corner Gas,Comedy,Major / Modern Sitcoms,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+638,Dick Van Dyke,Comedy,Classic Sitcoms,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+639,Happy Days,Comedy,Classic Sitcoms,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+640,Hogan's Heroes,Comedy,Classic Sitcoms,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+641,I Love Lucy,Comedy,Classic Sitcoms,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+642,Mr. Bean,Comedy,Major / Modern Sitcoms,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+643,Mr. Bean Live Action,Comedy,Major / Modern Sitcoms,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+700,FilmRise Creators,Entertainment,,Full,Plex AU,,Active,"Creator-led entertainment channel featuring digital personalities, web series and online video programming."
 701,5-Minute Crafts,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 702,AddictaTV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 703,AfroLandTV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
@@ -238,220 +272,116 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 706,AMC Thrillers,Entertainment,,Full,Xumo,,Active,"Science-fiction, horror, supernatural or cult programming."
 707,America's Got Talent,Entertainment,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
 708,American Ninja Warrior,Entertainment,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
-709,American Pickers,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-710,Ancient Aliens,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 711,Andromeda,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-712,Anger Management (Australia),Entertainment,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
 713,Asian Drama,Entertainment,,Full,Plex AU,,Active,"Scripted drama, action or series programming."
-714,370 AWE Plus,Entertainment,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
-715,Ax Men,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-716,Bad Girls Club,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-717,Bar Rescue,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+714,AWE Plus,Entertainment,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
 718,Bassmaster,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 719,Battlestar Galactica,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 720,Baywatch,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
 721,BBC Drama,Entertainment,,Full,Xumo,,Active,"Scripted drama, action or series programming."
 722,Beverly Hills 90210,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
-723,Beyond Belief,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-724,Big Brother,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-725,Billboard Español TV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 726,Bizaar,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-727,Black Ink Crew,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 728,Blue Bloods,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
 729,Bon Voyage,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-730,Bondi Vet,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 731,BOOT,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 732,Brat TV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 733,Bravo Vault,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-734,Braxton Family Values,Entertainment,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
-735,Bring It!,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 736,BritBox Mysteries,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
-737,C4 en Alerta,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 738,Camp Spoopy,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 739,Candyjar,Entertainment,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
-740,Catfish,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-741,Cesar's Pack Leader TV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 742,Charmed,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-743,Cheaters,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 744,ChopperTown (Australia),Entertainment,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
-745,CINEPRIDE,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-746,CombaTV,Entertainment,,Full,Plex AU,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
-747,Come Dine With Me,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 748,Complex TV,Entertainment,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
-749,Corner Gas,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-750,CraftsyTV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 751,Creator Television,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-752,Cricket Gold,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 753,Criminal Minds,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
 754,CSI,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
 755,CSI: Miami,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
 756,CSI: NY,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
-757,Dance Moms,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 758,Dark Matter TV,Entertainment,,Full,Xumo,,Active,"Science-fiction, horror, supernatural or cult programming."
 759,Death Valley Days,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 760,Degrassi,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
-761,Dick Van Dyke,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 762,Doc Martin,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
-763,301 Docsville,Entertainment,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
 764,Doctor Who Classic,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-765,Dog The Bounty Hunter,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-766,Dog Whisperer,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 767,Dove,Entertainment,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
-768,Dr. Phil,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-769,Duck Dynasty,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 770,Dynasty,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 771,Earth: Final Conflict,Entertainment,,Full,Pluto,,Active,"American football FAST channel with NFL programming, highlights or archive content."
-772,El Conflicto TV,Entertainment,,Full,Plex AU,,Active,"American football FAST channel with NFL programming, highlights or archive content."
 773,Electric Now,Entertainment,,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-774,Escape to the Country (Australia),Entertainment,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
-775,Euro Hits,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-776,Éxitos del Momento,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 777,FailArmy,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 778,Farscape,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-779,FashionTV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 780,Fear Factor,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 782,Fifth Gear (UK),Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-783,Fight Network,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 784,FilmRise Black TV,Entertainment,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
 785,FilmRise British TV,Entertainment,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
 786,FilmRise Classic TV,Entertainment,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
 787,Flashback 70s,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-788,Four in a Bed,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-789,FRANCE 24,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-790,FrightFlix,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-791,FUEL TV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 792,Galxy TV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-793,Geordie Shore,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-794,Ghost,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-795,Ghost Hunters Channel,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 796,Ghost Whisperer,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 797,Glewed TV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-798,367 Globetrotter,Entertainment,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
-799,Great British Menu,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+798,Globetrotter,Entertainment,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
 800,Grit Xtra,Entertainment,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
 801,Growing Up Hip Hop WeTV,Entertainment,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
 802,GrowthDay Network,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-803,GUSTOTV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-804,Happy Days,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-805,Hard Knocks,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-806,Hardcore Pawn,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-807,Haunt TV,Entertainment,,Full,Curated,,Active,"Crime, investigation, court, mystery or forensic programming."
-808,Haunt TV (Australia),Entertainment,,Full,Curated,,Active,"Crime, investigation, court, mystery or forensic programming."
 809,Heartland,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-810,172 Hercules: The Legendary Journeys,Entertainment,,Full,Curated,,Active,"Scripted drama, action or series programming."
-811,Highway Thru Hell,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+810,Hercules: The Legendary Journeys,Entertainment,,Full,Curated,,Active,"Scripted drama, action or series programming."
 812,Highway to Heaven,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-813,Hip-Hop/R&B,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-814,Hogan's Heroes,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-815,Homicide Hunter,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-816,342 Horse & Country,Entertainment,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
+816,Horse & Country,Entertainment,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
 817,Hot Ones,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-818,48 Hours,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 819,Hunter,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-820,I Love Lucy,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-821,I Shouldn't Be Alive,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-822,I Survived…,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-823,Ice Pilots NWT,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-824,Ice Road Truckers,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-825,Ideas En 5 Minutos,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 826,In the Heat of the Night,Entertainment,,Full,Xumo,,Active,Classic television series and archive entertainment.
 827,INFAST (Australia),Entertainment,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
-828,Ink Master,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 829,Inside Outside,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-831,Intervention,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 832,ION,Entertainment,,Full,Xumo,,Active,"Scripted drama, action or series programming."
 833,ION Mystery,Entertainment,,Full,Xumo,,Active,"Science-fiction, horror, supernatural or cult programming."
 834,ION Plus,Entertainment,,Full,Xumo,,Active,"Scripted drama, action or series programming."
-835,179 Ironside,Entertainment,,Full,Curated,,Active,"Scripted drama, action or series programming."
-836,ITV Deportes,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-837,Jade Fever,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+835,Ironside,Entertainment,,Full,Curated,,Active,"Scripted drama, action or series programming."
 838,Jane the Virgin,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
 839,Johnny Carson TV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 840,Journy,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 841,JoySauce Network,Entertainment,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
-842,Judge Nosey,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 843,21 Jump Street,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-844,177 Lassie,Entertainment,,Full,Curated,,Active,"Scripted drama, action or series programming."
+844,Lassie,Entertainment,,Full,Curated,,Active,"Scripted drama, action or series programming."
 845,Law & Order,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
 846,Legacy,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 847,Life Down Under,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 848,Life with Derek,Entertainment,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
-849,Life+Style,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 850,Little House on the Prairie,Entertainment,,Full,Xumo,,Active,Western films and classic western series.
-851,Little Women: LA,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 852,Lone Star,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-853,Love & Hip Hop,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-854,Lucha Plus,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 855,MacGyver,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
 856,Made In Hollywood,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 857,Matlock,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-858,Mayday: Air Disaster,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 859,McLeod's Daughters,Entertainment,,Full,Xumo,,Active,Western films and classic western series.
-860,Metal.Rocks,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 861,Midsomer Murders,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
-862,Million Dollar Listing Vault,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 863,Mission Impossible,Entertainment,,Full,Pluto,,Active,Game-show and competition programming.
-864,Modern Marvels,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 865,More U,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-866,Mr. Bean,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-867,Mr. Bean Live Action,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-868,MTV Dating,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-869,MTV Jersey Shore,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 870,MTV Ridiculousness,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 871,Mutant X,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-872,Mythbusters,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 873,Mythical 24/7,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 874,Narcos,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
 875,Nash Bridges,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
 876,Nashville,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 877,NCIS,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 878,NCIS: Los Angeles,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-879,NHRA TV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 880,Northern Exposure,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
 881,Nosey,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-882,Nosey Escándalos,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-883,Nothin' But 90s,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-884,Novelisima,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-885,Operation Repo,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 886,OUTflix Proud,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-887,Pac-12 Insider,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-888,PeliMex,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 889,Penn & Teller: Fool Us,Entertainment,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
 890,People are Awesome,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 891,Perry Mason,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-892,Pet Club TV (Australia),Entertainment,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
-893,PGA TOUR,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 894,PickleTV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-895,Pitufo TV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 896,Pluto TV Alien Invasion,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-897,Pluto TV Britain at War,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-898,Pluto TV Conspiracy,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 899,Pluto TV Space,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-900,pocket.watch Game-On,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-901,PokerGO,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 902,POP,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-903,Pop Adult,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-904,Powder TV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 905,Powernation,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-906,Preston & Brianna,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-907,PursuitUP,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-908,Qwest TV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-909,RACER International,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 910,Rawhide,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 911,RCM,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 912,Reelz Famous and Infamous,Entertainment,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
 913,Relic Hunter,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-914,Remember the ‘80s,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 915,Revry,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 916,Robot Wars by Mech+,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 917,Rookie Blue,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-918,Ryan and Friends,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 919,Scare Tactics,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 920,Sea Patrol,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-921,Shemaroo Bollywood,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-922,Sheriffs: El Dorado County,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 923,SKWAD,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-924,SLOPES,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 925,SPEEDVISION,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 926,Star Trek,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 927,Star Trek: Deep Space Nine,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
@@ -460,40 +390,28 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 930,Star Trek: Voyager,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 931,Stargate,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 932,Stars Central,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-933,Startalk TV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 934,Stories by AMC,Entertainment,,Full,Xumo,,Active,"Scripted drama, action or series programming."
-935,Surfer TV,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-936,The Asylum (Australia),Entertainment,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
-937,176 The Bionic Woman,Entertainment,,Full,Curated,,Active,"Scripted drama, action or series programming."
+937,The Bionic Woman,Entertainment,,Full,Curated,,Active,"Scripted drama, action or series programming."
 938,The Bold and the Beautiful,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 939,The Ed Sullivan Show,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 940,The Graham Norton Show,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-941,178 The Incredible Hulk,Entertainment,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
-942,174 The Lone Ranger,Entertainment,,Full,Curated,,Active,"Scripted drama, action or series programming."
+941,The Incredible Hulk,Entertainment,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
+942,The Lone Ranger,Entertainment,,Full,Curated,,Active,"Scripted drama, action or series programming."
 943,The Outer Limits,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 944,The Prof G Channel,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 945,The Rifleman,Entertainment,,Full,Xumo,,Active,Western films and classic western series.
-946,175 The Six-Million Dollar Man,Entertainment,,Full,Curated,,Active,"Scripted drama, action or series programming."
-947,The Spa,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+946,The Six-Million Dollar Man,Entertainment,,Full,Curated,,Active,"Scripted drama, action or series programming."
 948,The Twilight Zone,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 949,The Walking Dead Universe,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
 950,The X-Files,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-951,Toon Goggles,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 952,Touched By An Angel,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-953,Trailers From Hell,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-954,TV5MONDE Voyage,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 955,Unbeaten,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 956,Universal Action,Entertainment,,Full,Xumo,,Active,"Scripted drama, action or series programming."
-957,Unspeakable,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 958,Walker Texas Ranger,Entertainment,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-959,Watch it SCREAM,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 960,Weeds / Nurse Jackie,Entertainment,,Full,Pluto,,Active,"Scripted drama, action or series programming."
-961,Weeds & Nurse Jackie,Entertainment,,Full,Plex AU,,Active,"Scripted drama, action or series programming."
-962,299 WFN,Entertainment,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
-963,171 Xena Warrior Princess,Entertainment,,Full,Curated,,Active,"Scripted drama, action or series programming."
+963,Xena Warrior Princess,Entertainment,,Full,Curated,,Active,"Scripted drama, action or series programming."
 964,Xtreme Caution,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-965,Y2K,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-966,191 YoungHollywood,Entertainment,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
+966,YoungHollywood,Entertainment,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
 967,Z Nation,Entertainment,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 1000,America's Next Top Model,Reality & Lifestyle,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 1001,America's Test Kitchen,Reality & Lifestyle,,Full,Pluto,,Active,"Lifestyle, food, home, garden, travel or renovation programming."
@@ -555,6 +473,46 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1057,Undercover Boss,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 1058,Warner Bros. TV Say Yes to the Dress,Reality & Lifestyle,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 1059,World of Love Island,Reality & Lifestyle,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1060,American Pickers,Reality & Lifestyle,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1061,Ax Men,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1062,Bad Girls Club,Reality & Lifestyle,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1063,Bar Rescue,Reality & Lifestyle,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1064,Big Brother,Reality & Lifestyle,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1065,Black Ink Crew,Reality & Lifestyle,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1066,Bondi Vet,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1067,Braxton Family Values,Reality & Lifestyle,,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
+1068,Bring It!,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1069,Catfish,Reality & Lifestyle,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1070,Cesar's Pack Leader TV,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1071,Cheaters,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1072,Come Dine With Me,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1073,CraftsyTV,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1074,Dance Moms,Reality & Lifestyle,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1075,Dog Whisperer,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1076,Dr. Phil,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1077,Duck Dynasty,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1078,Escape to the Country (Australia),Reality & Lifestyle,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
+1079,FashionTV,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1080,Four in a Bed,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1081,Geordie Shore,Reality & Lifestyle,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1082,Great British Menu,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1083,GUSTOTV,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1084,Hardcore Pawn,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1085,Highway Thru Hell,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1086,Ice Pilots NWT,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1087,Ice Road Truckers,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1088,Ink Master,Reality & Lifestyle,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1089,Intervention,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1090,Jade Fever,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1091,Life+Style,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1092,Little Women: LA,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1093,Love & Hip Hop,Reality & Lifestyle,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1094,Million Dollar Listing Vault,Reality & Lifestyle,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1095,MTV Dating,Reality & Lifestyle,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1096,MTV Jersey Shore,Reality & Lifestyle,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1097,Operation Repo,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1098,Pet Club TV (Australia),Reality & Lifestyle,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
+1099,The Spa,Reality & Lifestyle,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 1100,Adventure Earth,Factual,,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
 1101,305 Autentic History,Factual,,Full,Curated,,Active,"Documentary, factual, history, science or real-world programming."
 1102,BBC Earth,Factual,,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
@@ -596,6 +554,22 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1138,WildEarth,Factual,,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
 1139,Wonder,Factual,,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
 1140,World War TV,Factual,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1141,Ancient Aliens,Factual,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1142,Beyond Belief,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1143,Docsville,Factual,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
+1144,Ghost,Factual,Paranormal,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1145,Ghost Hunters Channel,Factual,Paranormal,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1146,Haunt TV,Factual,Paranormal,Full,Curated,,Active,"Crime, investigation, court, mystery or forensic programming."
+1147,Haunt TV (Australia),Factual,Paranormal,Full,Curated,,Active,"Crime, investigation, court, mystery or forensic programming."
+1148,I Shouldn't Be Alive,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1149,I Survived…,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1150,Mayday: Air Disaster,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1151,Modern Marvels,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1152,Mythbusters,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1153,Pluto TV Britain at War,Factual,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1154,Pluto TV Conspiracy,Factual,,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1155,Startalk TV,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1156,TV5MONDE Voyage,Factual,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 1200,Animation+,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 1201,ANIME x HIDIVE,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
 1202,Arthur,Kids & Animation,,Full,Plex AU,,Active,"Kids, family and animation programming."
@@ -645,6 +619,12 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1246,Watch it Kid,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 1247,261 Winx Club TV,Kids & Animation,,Full,Curated,,Active,"Kids, family and animation programming."
 1248,Yu-Gi-Oh!,Kids & Animation,,Full,Pluto,,Active,"Kids, family and animation programming."
+1249,123GO!,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1250,pocket.watch Game-On,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1251,Preston & Brianna,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1252,Ryan and Friends,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1253,Toon Goggles,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1254,Unspeakable,Kids & Animation,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 1300,Classic Rock,Music,,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
 1301,Classica,Music,,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
 1302,Easy Listening,Music,,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
@@ -675,3 +655,11 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1327,XITE Gospel,Music,,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
 1328,Yo! MTV,Music,,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
 1329,ZenLIFE by Stingray,Music,,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
+1330,Euro Hits,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1331,Hip-Hop/R&B,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1332,Metal.Rocks,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1333,Nothin' But 90s,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1334,Pop Adult,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1335,Qwest TV,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1336,Remember the ‘80s,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1337,Y2K,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
