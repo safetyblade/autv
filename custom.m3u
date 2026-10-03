@@ -108,9 +108,6 @@ https://jmp2.uk/plu-6874ad2f3484d60732267ba8.m3u8
 #EXTINF:-1 tvg-id="f885c4d5b5a17671" tvg-name="Obsessive Compulsive Cleaners" tvg-logo="http://img.platform.wurl.dev/channel/2226/lg/0331bd/LG-Logo-PNG-100x100_v1.png" group-title="Targeted Tests",Obsessive Compulsive Cleaners
 https://3b56a85a.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctYXVfT2JzZXNzaXZlQ29tcHVsc2l2ZUNsZWFuZXJzX0hMUw/playlist.m3u8
 
-#EXTINF:-1 tvg-id="400000294" tvg-name="Watch AEW" tvg-logo="https://canvas-lb.tubitv.com/opts/yeAV3-c2XWfYzw==/e9cd4624-20d8-421b-b5ed-282769cf2f57/CHgQeDoFMS4xLjlAAQ==" group-title="Targeted Tests",Watch AEW
-https://live-manifest.production-public.tubi.io/live/512cbe42-c22e-40c8-90e3-7d62684f51a7/playlist.m3u8
-
 # ---- New high-value target tests ----
 #EXTINF:-1 tvg-id="GB3700005QK" tvg-name="Hoarders" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB3700005QK_20250326T013514SQUARE.png" group-title="Targeted Tests",Hoarders
 https://jmp2.uk/stvp-GB3700005QK
