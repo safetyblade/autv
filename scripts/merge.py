@@ -61,7 +61,7 @@ def normalise(name: str, extinf: str, url: str):
     tvg_name = attr(extinf, "tvg-name") or name
     tvg_logo = attr(extinf, "tvg-logo")
     group = attr(extinf, "group-title") or "Australia"
-    tvg_id = f"autv.{slug(name)}"
+    tvg_id = attr(extinf, "tvg-id") or f"autv.{slug(name)}"
 
     fields = [
         f'tvg-id="{tvg_id}"',
