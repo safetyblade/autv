@@ -1,0 +1,53 @@
+name: Refresh merged playlist
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 18 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-playlist
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Download Plex Australia playlist
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location \
+            --retry 3 --retry-delay 5 \
+            --connect-timeout 15 --max-time 60 \
+            "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plex_au.m3u" \
+            --output plex_upstream.m3u
+
+      - name: Build merged playlist
+        run: python3 scripts/merge.py
+
+      - name: Remove temporary upstream file
+        run: rm -f plex_upstream.m3u
+
+      - name: Commit only when playlist changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- playlist.m3u; then
+            echo "No playlist changes."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add playlist.m3u
+          git commit -m "chore: refresh live TV playlist"
+          git push
