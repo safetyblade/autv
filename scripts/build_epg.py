@@ -7,10 +7,6 @@ OUTPUT = Path("epg.xml.gz")
 
 EPG_SOURCES = [
     Path("epg_plex_au.xml.gz"),
-    Path("epg_plex_us.xml.gz"),
-    Path("epg_plex_gb.xml.gz"),
-    Path("epg_plex_ca.xml.gz"),
-    Path("epg_plex_nz.xml.gz"),
     Path("epg_pluto_us.xml.gz"),
     Path("epg_pluto_gb.xml.gz"),
     Path("epg_pluto_ca.xml.gz"),
