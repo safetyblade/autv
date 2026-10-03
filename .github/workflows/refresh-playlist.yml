@@ -25,19 +25,19 @@ jobs:
       - name: Build playlist
         run: python3 scripts/merge.py
 
-      - name: Publish playlist
+      - name: Publish generated files
         shell: bash
         run: |
           set -euo pipefail
           rm -f base_upstream.m3u secondary_upstream.m3u
 
-          if git diff --quiet -- playlist.m3u; then
-            echo "No playlist changes."
+          if git diff --quiet -- playlist.m3u curated.xml; then
+            echo "No generated file changes."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add playlist.m3u
+          git add playlist.m3u curated.xml
           git commit -m "chore: refresh playlist"
           git push
