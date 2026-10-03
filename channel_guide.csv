@@ -25,6 +25,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 123,WeatherSpy,News,,Full,Plex AU,,Active,"Rolling news, current affairs, weather or business coverage."
 200,Watch AEW,Sport,Wrestling & Combat,Channel only,Tubi,,Active,"AEW wrestling FAST channel, currently sourced from Tubi."
 201,TNA Wrestling Channel,Sport,Wrestling & Combat,Full,Plex AU,Roku,Active,24/7 TNA wrestling channel with matches and archive programming.
+202,New Japan Pro Wrestling World,Sport,Wrestling & Combat,Channel only,Direct,,Active,New Japan Pro Wrestling channel featuring NJPW matches and archive programming.
 203,UFC,Sport,Wrestling & Combat,Full,Plex AU,,Active,Combat-sports channel featuring UFC programming and fight content.
 204,PFL MMA,Sport,Wrestling & Combat,Full,Plex AU,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
 205,ONE Championship,Sport,Wrestling & Combat,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
@@ -42,12 +43,16 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 217,TOP BARÇA,Sport,Football,Channel only,LG AU,,Active,"Football FAST channel focused on club, league or competition programming."
 218,Man City 24/7,Sport,Football,Channel only,LG GB,,Active,"Football FAST channel focused on club, league or competition programming."
 219,INTER 24/7,Sport,Football,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+220,Brøndby TV,Sport,Football,Channel only,Pluto DK,,Active,Brøndby IF club football channel with club programming and match coverage.
+221,BVB-Frauen,Sport,Football,Channel only,Pluto DE,,Active,"Borussia Dortmund women's football channel with matches, replays and club programming."
+222,Canal do Inter,Sport,Football,Channel only,Direct,,Active,SC Internacional club channel from Brazil; direct HLS source and not always 24/7.
 223,FIFA+ Women,Sport,Football,Channel only,Samsung GB,,Active,"Football FAST channel featuring league, club, tournament or archive programming."
 224,GFN Football,Sport,Football,Channel only,Samsung GB,,Active,"Football FAST channel featuring league, club, tournament or archive programming."
 225,ViX Lo Mejor de Liga MX,Sport,Football,Channel only,Roku,,Active,"Football FAST channel focused on club, league or competition programming."
 226,beIN SPORTS XTRA,Sport,Football,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 227,Rugby Pass TV,Sport,Football,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 228,The NBA Channel,Sport,Basketball,Full,Pluto,,Active,"Dedicated NBA FAST channel with highlights, archive games, original programming and basketball coverage."
+229,Hoop TV,Sport,Basketball,Channel only,SoFast,,Active,"Dedicated basketball FAST channel with games, highlights, news, interviews and basketball culture programming."
 230,NFL Channel,Sport,US Major Sports,Full,Plex AU,,Active,"American football FAST channel with NFL programming, highlights or archive content."
 231,NFL Super Bowl Champions,Sport,US Major Sports,Full,Plex AU,,Active,"American football FAST channel with NFL programming, highlights or archive content."
 232,MLB,Sport,US Major Sports,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
@@ -670,8 +675,3 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1327,XITE Gospel,Music,,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
 1328,Yo! MTV,Music,,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
 1329,ZenLIFE by Stingray,Music,,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-202,New Japan Pro Wrestling World,Sport,Wrestling & Combat,Channel only,Direct,,Active,New Japan Pro Wrestling channel featuring NJPW matches and archive programming.
-220,Brøndby TV,Sport,Football,Channel only,Pluto DK,,Active,Brøndby IF club football channel with club programming and match coverage.
-221,BVB-Frauen,Sport,Football,Channel only,Pluto DE,,Active,"Borussia Dortmund women's football channel with matches, replays and club programming."
-222,Canal do Inter,Sport,Football,Channel only,Direct,,Active,SC Internacional club channel from Brazil; direct HLS source and not always 24/7.
-229,Hoop TV,Sport,Basketball,Channel only,SoFast,,Active,"Dedicated basketball FAST channel with games, highlights, news, interviews and basketball culture programming."
