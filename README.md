@@ -10,7 +10,13 @@ Use this URL in the TV app:
 
 `https://raw.githubusercontent.com/safetyblade/autv/main/playlist.m3u`
 
-This is the only playlist URL you need.
+## Curated XMLTV URL
+
+Add this as an additional XMLTV source in the TV app:
+
+`https://raw.githubusercontent.com/safetyblade/autv/main/curated.xml`
+
+The curated XMLTV file is generated automatically for the extra channels and uses the same `tvg-id` values as their M3U entries.
 
 ## Current setup
 
@@ -20,13 +26,13 @@ This is the only playlist URL you need.
 - selected extra channels
 - any manually added direct streams
 
-Extra channels are added at the bottom of the generated playlist under:
+Extra channels are added at the bottom under:
 
 `# ---- Curated extras ----`
 
-## Add a channel from the secondary channel list
+`curated.xml` contains a channel definition for each curated extra so the TV app can map those channels into the guide.
 
-Use this process:
+## Add a channel
 
 1. Find the direct stream URL for the channel.
 2. Test the `.m3u8` URL manually in a browser/HLS player.
@@ -37,13 +43,13 @@ Use this process:
 7. Open **Refresh playlist**.
 8. Select **Run workflow**.
 9. Wait for the workflow to complete successfully.
-10. The existing playlist URL will automatically contain the refreshed list.
+10. The existing playlist and curated XMLTV URLs are updated automatically.
 
 Do **not** use **Re-run jobs** on an old workflow run. Always start a new **Run workflow** from the current `main` branch.
 
 ## selected_channels.txt
 
-This file is for channels that already exist in the secondary source list.
+This file is for approved channels that already exist in the secondary source list.
 
 Example:
 
@@ -52,7 +58,7 @@ Don't Tell The Bride
 Another Channel
 ```
 
-The refresh script finds the matching channel and adds it to the curated section of `playlist.m3u`.
+The refresh script finds the matching channel, adds it to the curated section of `playlist.m3u`, and creates the matching channel entry in `curated.xml`.
 
 ## custom.m3u
 
@@ -60,9 +66,9 @@ Use `custom.m3u` only when a channel does not come from the normal secondary lis
 
 Normal channel selection should use `selected_channels.txt`.
 
-## Refreshing the playlist
+## Refreshing
 
-A refresh is **manual only** to avoid unnecessary GitHub Actions usage.
+A refresh is manual only.
 
 Run it when:
 
@@ -74,18 +80,14 @@ Path:
 
 **Actions → Refresh playlist → Run workflow**
 
-If nothing has changed, the workflow does not create a new playlist commit.
-
-If the refresh fails, the existing published `playlist.m3u` remains unchanged.
+If the refresh fails, the existing published files remain unchanged.
 
 ## Remove a curated channel
 
 1. Delete its name from `selected_channels.txt`.
 2. Run a new **Refresh playlist** workflow.
-3. The channel will be removed from the curated section.
+3. The channel is removed from both the curated M3U section and `curated.xml`.
 
 ## Basic rule
-
-Keep this project simple:
 
 **Test the stream first → update the channel list → run the workflow once.**
