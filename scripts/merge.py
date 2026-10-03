@@ -155,25 +155,3 @@ if missing_lg:
     print("Missing LG list: " + " | ".join(missing_lg))
 if missing_pluto:
     print("Missing Pluto list: " + " | ".join(missing_pluto))
-for channel in xml_channels:
-    xml_lines.append(f'  <channel id="{escape(channel["id"])}">')
-    xml_lines.append(f'    <display-name>{escape(channel["name"])}</display-name>')
-    if channel["logo"]:
-        xml_lines.append(f'    <icon src="{escape(channel["logo"])}" />')
-    xml_lines.append('  </channel>')
-xml_lines.append('</tv>')
-XMLTV.write_text("\n".join(xml_lines) + "\n", encoding="utf-8")
-
-print("")
-print(f"Wrote {OUTPUT} with {count} channels")
-print(f"Curated channels added: {len(extras)}")
-print(f"Wrote {XMLTV} with {len(xml_channels)} channel definitions")
-print(f"Samsung requested channels not found: {len(missing_samsung)}")
-print(f"LG requested channels not found: {len(missing_lg)}")
-print(f"Pluto requested channels not found: {len(missing_pluto)}")
-if missing_samsung:
-    print("Missing Samsung list: " + " | ".join(missing_samsung))
-if missing_lg:
-    print("Missing LG list: " + " | ".join(missing_lg))
-if missing_pluto:
-    print("Missing Pluto list: " + " | ".join(missing_pluto))
