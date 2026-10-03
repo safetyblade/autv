@@ -96,6 +96,9 @@ Channel number,Channel name,Genre,EPG,Source,Alternate source,Status,Description
 265,Big 12 Studios,Sport,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 266,FloHockey 24/7,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 267,Willow Sports,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+268,Bundesliga,Sport,Channel only,Samsung GB,,Active,"Football FAST channel featuring league, club, tournament or archive programming."
+269,FIFA+ Women,Sport,Channel only,Samsung GB,,Active,"Football FAST channel featuring league, club, tournament or archive programming."
+270,GFN Football,Sport,Channel only,Samsung GB,,Active,"Football FAST channel featuring league, club, tournament or archive programming."
 300,Action Hollywood Movies,Movies,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 301,British Screen Classics,Movies,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 302,Classic Movies Channel,Movies,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
