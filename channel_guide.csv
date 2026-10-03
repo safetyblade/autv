@@ -623,41 +623,33 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1251,Preston & Brianna,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,"Youth creator channel featuring gaming, challenges and family-friendly entertainment."
 1252,Ryan and Friends,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,Children's creator-led entertainment featuring Ryan and related family programming.
 1253,Unspeakable,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,"Youth creator channel featuring gaming, challenges and family-friendly entertainment."
-1300,Classic Rock,Music,,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-1301,Classica,Music,,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
-1302,Easy Listening,Music,,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-1303,Hit List,Music,,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-1304,MTV Spankin' New,Music,,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
-1305,Qello Concerts,Music,,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
-1306,Shades of Black,Music,,Full,Roku,,Active,"Music videos, performances or genre-based music programming."
-1307,Smooth Jazz,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1308,Stingray 2000s,Music,,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
-1309,Stingray Classic Rock,Music,,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
-1310,Stingray DJAZZ,Music,,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-1311,Stingray Easy Listening,Music,,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
-1312,Stingray Greatest Hits,Music,,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-1313,Stingray Hit list,Music,,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
-1314,Stingray Holidayscapes,Music,,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-1315,Stingray Hot Country,Music,,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-1316,Stingray Karaoke,Music,,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-1317,Stingray Naturescape,Music,,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-1318,Stingray Pop Adult,Music,,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
-1319,Stingray Soul Storm,Music,,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-1320,Stingray Spa,Music,,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
-1321,Today's K-Pop,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1322,TRACE Brazuca,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1323,TRACE Latina,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1324,343 Trace Stars,Music,,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
-1325,TRACE UK,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1326,TRACE Urban,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1327,XITE Gospel,Music,,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
-1328,Yo! MTV,Music,,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
-1329,ZenLIFE by Stingray,Music,,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-1330,Euro Hits,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1331,Hip-Hop/R&B,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1332,Metal.Rocks,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1333,Nothin' But 90s,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1334,Pop Adult,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1335,Qwest TV,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1336,Remember the ‘80s,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-1337,Y2K,Music,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+1300,Stingray Greatest Hits,Music,Hits / Pop / Decades,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
+1301,Stingray Hit List,Music,Hits / Pop / Decades,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
+1302,Stingray Pop Adult,Music,Hits / Pop / Decades,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
+1303,Stingray 2000s,Music,Hits / Pop / Decades,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
+1304,Nothin' But 90s,Music,Hits / Pop / Decades,Full,Plex AU,,Active,"1990s music channel featuring pop, rock and hits from the decade."
+1305,Remember the ‘80s,Music,Hits / Pop / Decades,Full,Plex AU,,Active,1980s music channel featuring hits and music videos from the decade.
+1306,Y2K,Music,Hits / Pop / Decades,Full,Plex AU,,Active,2000s-era music channel featuring pop and hits from the Y2K period.
+1307,MTV Spankin' New,Music,Hits / Pop / Decades,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
+1308,TRACE UK,Music,Hits / Pop / Decades,Full,Plex AU,,Active,UK-focused music channel featuring contemporary hits and music videos.
+1309,Trace Stars,Music,Hits / Pop / Decades,Full,Curated,,Active,"Music channel featuring major artists, hits and contemporary music programming."
+1310,Stingray Classic Rock,Music,Rock / Metal,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
+1311,Metal.Rocks,Music,Rock / Metal,Full,Plex AU,,Active,Rock and metal music channel featuring heavy music videos and related programming.
+1312,Hip-Hop/R&B,Music,Hip-Hop / R&B / Soul,Full,Plex AU,,Active,Hip-hop and R&B music channel featuring music videos and genre programming.
+1313,Yo! MTV,Music,Hip-Hop / R&B / Soul,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
+1314,TRACE Urban,Music,Hip-Hop / R&B / Soul,Full,Plex AU,,Active,"Urban music channel featuring hip-hop, R&B and related genres."
+1315,Stingray Soul Storm,Music,Hip-Hop / R&B / Soul,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
+1316,Shades of Black,Music,Hip-Hop / R&B / Soul,Full,Roku,,Active,"Music videos, performances or genre-based music programming."
+1317,Stingray DJAZZ,Music,Jazz / Classical / Country,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
+1318,Smooth Jazz,Music,Jazz / Classical / Country,Full,Plex AU,,Active,Smooth jazz music channel featuring instrumental and contemporary jazz programming.
+1319,Qwest TV,Music,Jazz / Classical / Country,Full,Plex AU,,Active,"Jazz, soul and world-music performance channel."
+1320,Classica,Music,Jazz / Classical / Country,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
+1321,Stingray Hot Country,Music,Jazz / Classical / Country,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
+1322,Qello Concerts,Music,Concerts / Specialty,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
+1323,Stingray Karaoke,Music,Concerts / Specialty,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
+1324,XITE Gospel,Music,Concerts / Specialty,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
+1325,Stingray Easy Listening,Music,Chill / Ambient,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
+1326,Stingray SPA,Music,Chill / Ambient,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
+1327,Stingray Naturescape,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
+1328,Stingray Holidayscapes,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
+1329,ZenLIFE by Stingray,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
