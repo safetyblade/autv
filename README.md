@@ -26,6 +26,8 @@ Selected Samsung-style channels are kept in `selected_channels.txt`.
 
 Selected LG Australia channels are kept in `selected_lg_channels.txt`.
 
+Selected global Pluto channels are kept in `selected_pluto_channels.txt`. The refresh checks the current US, Canada and UK Pluto catalogues and keeps only the selected channels.
+
 It also creates a matching XMLTV channel definition for each curated extra.
 
 ## What we have learned
@@ -58,6 +60,8 @@ It reports:
 - `NOT FOUND SAMSUNG: channel name`
 - `ADDED LG: channel name`
 - `NOT FOUND LG: channel name`
+- `ADDED PLUTO: channel name`
+- `NOT FOUND PLUTO: channel name`
 
 `ADDED` means the channel was found in the source and written to the playlist. It does **not** prove the stream is currently playable.
 
@@ -82,6 +86,8 @@ Keep the project simple:
 - source playlists used only to discover and populate extra channels
 - manually remove stale or non-playing streams
 - add new source feeds only when they provide genuinely useful channels not already present
+- global Pluto channels are eligible when they are useful, English-language, genuinely additive and actually play from Australia
+- music is kept only when it adds a genre or format not already well covered by the existing Stingray lineup
 
 ## Basic rule
 
