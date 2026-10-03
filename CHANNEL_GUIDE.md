@@ -6,18 +6,18 @@ The authoritative data lives in `channel_guide.csv`. The generated playlist is r
 
 ## Current guide snapshot
 
-The current authoritative guide contains **639 active channels**.
+The current authoritative guide contains **638 active channels**.
 
 | Genre | Active channels |
 | --- | ---: |
 | News | 24 |
 | Sport | 93 |
 | Movies | 37 |
-| Game Shows | 19 |
+| Game Shows | 20 |
 | Crime | 46 |
 | Comedy | 45 |
-| Entertainment | 150 |
-| Reality & Lifestyle | 90 |
+| Entertainment | 147 |
+| Reality & Lifestyle | 91 |
 | Factual | 55 |
 | Kids & Animation | 51 |
 | Music | 29 |
