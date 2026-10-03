@@ -37,7 +37,8 @@ programmes = []
 for source in EPG_SOURCES:
     if not source.exists():
         continue
-    with gzip.open(source, "rb") as handle:
+    opener = gzip.open if source.suffix == ".gz" else open
+    with opener(source, "rb") as handle:
         for event, elem in ET.iterparse(handle, events=("end",)):
             if elem.tag == "channel":
                 cid = elem.attrib.get("id", "")
