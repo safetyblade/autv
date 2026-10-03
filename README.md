@@ -37,22 +37,17 @@ The physical order of `playlist.m3u` is also sorted by our channel number so the
 
 | Range | Genre |
 | --- | --- |
-| 100–199 | News & Business |
+| 100–199 | News |
 | 200–299 | Sport |
 | 300–399 | Movies |
 | 400–499 | Game Shows |
-| 500–599 | Crime & Mystery |
+| 500–599 | Crime |
 | 600–699 | Comedy |
-| 700–799 | Drama |
-| 800–899 | Reality |
-| 900–999 | Factual & Documentary |
-| 1000–1099 | Lifestyle & Food |
-| 1100–1199 | Kids & Animation |
-| 1200–1299 | Music |
-| 1300–1399 | Sci-Fi & Horror |
-| 1400–1449 | Westerns |
-| 1450–1499 | Classic TV |
-| 1600+ | General Entertainment |
+| 700–999 | Entertainment |
+| 1000–1099 | Reality & Lifestyle |
+| 1100–1199 | Factual |
+| 1200–1299 | Kids & Animation |
+| 1300–1399 | Music |
 
 See `CHANNEL_GUIDE.md` for the detailed guide rules and maintenance model.
 
@@ -92,7 +87,7 @@ Current fields:
 
 - **Channel number** — our final channel number and sort order.
 - **Channel name** — final display name.
-- **Genre** — our canonical genre, not the source service's genre.
+- **Genre** — one of the project's 11 simple canonical genres, not the source service's genre.
 - **EPG** — whether useful programme-guide data is available.
 - **Source** — primary working source.
 - **Alternate source** — known usable alternate when relevant.
@@ -146,6 +141,7 @@ The **Build playlist** step reports entries such as:
 
 - Prefer genuinely additive channels over raw catalogue size.
 - Movies, game shows and sports are high-value lanes.
+- Genre taxonomy is intentionally simple: News, Sport, Movies, Game Shows, Crime, Comedy, Entertainment, Reality & Lifestyle, Factual, Kids & Animation, Music.
 - Recognisable binge/franchise FAST channels are useful.
 - News/weather/local duplication is low value.
 - Non-English feeds are normally excluded.
