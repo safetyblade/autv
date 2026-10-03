@@ -42,10 +42,15 @@ def set_name(extinf, name):
 with GUIDE.open(newline="", encoding="utf-8-sig") as handle:
     rows = list(csv.DictReader(handle))
 
-guide = {
+guide_all = {
     row["Channel name"].strip().casefold(): row
     for row in rows
-    if row.get("Channel name") and row.get("Status", "Active").strip().casefold() == "active"
+    if row.get("Channel name")
+}
+guide = {
+    name: row
+    for name, row in guide_all.items()
+    if row.get("Status", "Active").strip().casefold() == "active"
 }
 
 header, entries = parse_entries(PLAYLIST.read_text(encoding="utf-8-sig"))
@@ -53,6 +58,9 @@ ranked = []
 missing = []
 
 for position, (name, extinf, url) in enumerate(entries):
+    guide_row = guide_all.get(name.casefold())
+    if guide_row and guide_row.get("Status", "Active").strip().casefold() != "active":
+        continue
     row = guide.get(name.casefold())
     if row:
         channel_no = int(row["Channel number"])
