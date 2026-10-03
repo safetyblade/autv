@@ -1466,12 +1466,52 @@
     <display-name>Obsessive Compulsive Cleaners - Samsung GB Test</display-name>
     <icon src="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB1200011U5_20260811T045340SQUARE.png" />
   </channel>
-  <channel id="US700005ID">
-    <display-name>WWE Superstar Central</display-name>
-    <icon src="https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US700005ID_20260421T142358SQUARE.png" />
-  </channel>
   <channel id="400000294">
     <display-name>Watch AEW - Tubi Test</display-name>
     <icon src="https://canvas-lb.tubitv.com/opts/yeAV3-c2XWfYzw==/e9cd4624-20d8-421b-b5ed-282769cf2f57/CHgQeDoFMS4xLjlAAQ==" />
+  </channel>
+  <channel id="GB3700005QK">
+    <display-name>Hoarders</display-name>
+    <icon src="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB3700005QK_20250326T013514SQUARE.png" />
+  </channel>
+  <channel id="GB270001538">
+    <display-name>Emergency 24/7</display-name>
+    <icon src="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB270001538_20250107T153916SQUARE.png" />
+  </channel>
+  <channel id="GB1200010DG">
+    <display-name>Garden Rescue</display-name>
+    <icon src="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB1200010DG_20260811T045335SQUARE.png" />
+  </channel>
+  <channel id="e15ebd310d112565">
+    <display-name>Real Emergency</display-name>
+    <icon src="http://img.platform.wurl.dev/channel/2221/lg/13b87f/LG-Logo-PNG-100x100_v1.png" />
+  </channel>
+  <channel id="GB500013LT">
+    <display-name>Wrestling Legends TV</display-name>
+    <icon src="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB500013LT_20260505T035911SQUARE.png" />
+  </channel>
+  <channel id="GB2700012HS">
+    <display-name>Sky Sports Classics</display-name>
+    <icon src="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB2700012HS_20260317T034217SQUARE.png" />
+  </channel>
+  <channel id="GB2700013Y7">
+    <display-name>Sky Sports Stories</display-name>
+    <icon src="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/GB2700013Y7_20260317T034220SQUARE.png" />
+  </channel>
+  <channel id="7e80870842d5c7b1">
+    <display-name>Sky Sports Vault</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984031/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="US100000704">
+    <display-name>CBS Sports Golazo Network</display-name>
+    <icon src="https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US100000704_20260701T010049SQUARE.png" />
+  </channel>
+  <channel id="d64997c32008e8cf">
+    <display-name>FloSports Channel</display-name>
+    <icon src="https://d3bd0tgyk368z1.cloudfront.net/feeds/Images/flosports/FloSportsChannelLogoWhite400x200.png" />
+  </channel>
+  <channel id="US3200012O8">
+    <display-name>Yahoo! Sports Network</display-name>
+    <icon src="https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US3200012O8_20260421T143258SQUARE.png" />
   </channel>
 </tv>
