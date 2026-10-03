@@ -1,14 +1,11 @@
 from pathlib import Path
 import re
-import unicodedata
-from xml.sax.saxutils import escape
 
 BASE = Path("base_upstream.m3u")
 SECONDARY = Path("secondary_upstream.m3u")
 SELECTED = Path("selected_channels.txt")
 CUSTOM = Path("custom.m3u")
 OUTPUT = Path("playlist.m3u")
-CURATED_XML = Path("curated.xml")
 
 def read(path: Path) -> str:
     if not path.exists():
@@ -50,34 +47,17 @@ def attr(extinf: str, key: str) -> str:
     match = re.search(rf'{re.escape(key)}="([^"]*)"', extinf)
     return match.group(1) if match else ""
 
-def slug(value: str) -> str:
-    value = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode()
-    value = re.sub(r"[^a-zA-Z0-9]+", "-", value).strip("-").lower()
-    return value or "channel"
-
-def curated_id(name: str) -> str:
-    return f"autv.{slug(name)}"
-
-def normalise(name: str, extinf: str, url: str):
+def normalise(name: str, extinf: str, url: str) -> str:
     tvg_name = attr(extinf, "tvg-name") or name
     tvg_logo = attr(extinf, "tvg-logo")
     group = attr(extinf, "group-title") or "Australia"
-    tvg_id = curated_id(name)
 
-    fields = [
-        f'tvg-id="{tvg_id}"',
-        f'tvg-name="{tvg_name}"',
-    ]
+    fields = [f'tvg-name="{tvg_name}"']
     if tvg_logo:
         fields.append(f'tvg-logo="{tvg_logo}"')
     fields.append(f'group-title="{group}"')
 
-    m3u = f'#EXTINF:-1 {" ".join(fields)},{name}\n{url}'
-    return m3u, {
-        "id": tvg_id,
-        "name": tvg_name,
-        "logo": tvg_logo,
-    }
+    return f'#EXTINF:-1 {" ".join(fields)},{name}\n{url}'
 
 base = read(BASE)
 if not base.startswith("#EXTM3U"):
@@ -85,28 +65,22 @@ if not base.startswith("#EXTM3U"):
 
 secondary_entries = parse_entries(read(SECONDARY))
 extras = []
-xml_channels = []
 missing = []
 
 for name in wanted(SELECTED):
     exact = next((e for e in secondary_entries if e[0].casefold() == name.casefold()), None)
     match = exact or next((e for e in secondary_entries if name.casefold() in e[0].casefold()), None)
 
-    if not match:
+    if match:
+        extras.append(normalise(match[0], match[1], match[2]))
+        print(f"ADDED: {match[0]}")
+    else:
         missing.append(name)
-        continue
-
-    m3u, xml = normalise(match[0], match[1], match[2])
-    extras.append(m3u)
-    xml_channels.append(xml)
+        print(f"NOT FOUND: {name}")
 
 for name, extinf, url in parse_entries(read(CUSTOM)):
-    m3u, xml = normalise(name, extinf, url)
-    extras.append(m3u)
-    xml_channels.append(xml)
-
-if missing:
-    raise SystemExit("Selected channels not found: " + ", ".join(missing))
+    extras.append(normalise(name, extinf, url))
+    print(f"ADDED CUSTOM: {name}")
 
 merged = base
 if extras:
@@ -118,16 +92,9 @@ if count < 10:
     raise SystemExit(f"Refusing suspicious playlist: only {count} channels")
 
 OUTPUT.write_text(merged, encoding="utf-8")
-
-xml_lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<tv generator-info-name="autv">']
-for channel in xml_channels:
-    xml_lines.append(f'  <channel id="{escape(channel["id"])}">')
-    xml_lines.append(f'    <display-name>{escape(channel["name"])}</display-name>')
-    if channel["logo"]:
-        xml_lines.append(f'    <icon src="{escape(channel["logo"])}" />')
-    xml_lines.append('  </channel>')
-xml_lines.append('</tv>')
-CURATED_XML.write_text("\n".join(xml_lines) + "\n", encoding="utf-8")
-
+print("")
 print(f"Wrote {OUTPUT} with {count} channels")
-print(f"Wrote {CURATED_XML} with {len(xml_channels)} curated channel definitions")
+print(f"Curated channels added: {len(extras)}")
+print(f"Requested channels not found: {len(missing)}")
+if missing:
+    print("Missing list: " + " | ".join(missing))
