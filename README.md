@@ -1,104 +1,160 @@
 # AU TV
 
-A simple personal M3U playlist for Android TV.
+A personal FAST/IPTV playlist for Android/Google TV, built around a stable Australian base plus manually curated channels from additional FAST services.
 
-## Playlist URL
+## Published playlist
 
-Use this URL in the TV app:
+Use this M3U in TVirl:
 
 `https://raw.githubusercontent.com/safetyblade/autv/main/playlist.m3u`
 
-## EPG
-
-The refresh now generates a combined filtered programme guide:
+Combined EPG:
 
 `https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz`
 
-The published M3U points to this file automatically.
+The M3U already points to the combined EPG.
 
-It currently merges programme data for:
+## Project model
+
+The project has two separate layers:
+
+1. **Source acquisition** — Plex AU plus selected channels from Samsung, LG, Pluto, Roku, Xumo, Tubi and custom direct feeds.
+2. **Guide control** — `channel_guide.csv` owns the final channel number, genre, display order and project metadata.
+
+Upstream source category/order/channel numbers are not authoritative.
+
+Every refresh:
+
+1. downloads the current source playlists and EPG files;
+2. builds the working playlist from the selected-channel files;
+3. applies `channel_guide.csv` to rewrite `tvg-chno`, `group-title` and display order;
+4. builds the filtered combined EPG;
+5. publishes the generated files.
+
+The physical order of `playlist.m3u` is also sorted by our channel number so the order remains useful even if a TV app does not display `tvg-chno` consistently.
+
+## Channel-number blocks
+
+| Range | Genre |
+| --- | --- |
+| 100–199 | News & Business |
+| 200–299 | Sport |
+| 300–399 | Movies |
+| 400–499 | Game Shows |
+| 500–599 | Crime & Mystery |
+| 600–699 | Comedy |
+| 700–799 | Drama |
+| 800–899 | Reality |
+| 900–999 | Factual & Documentary |
+| 1000–1099 | Lifestyle & Food |
+| 1100–1199 | Kids & Animation |
+| 1200–1299 | Music |
+| 1300–1399 | Sci-Fi & Horror |
+| 1400–1449 | Westerns |
+| 1450–1499 | Classic TV |
+| 1600+ | General Entertainment |
+
+See `CHANNEL_GUIDE.md` for the detailed guide rules and maintenance model.
+
+## Source stack
+
+### Base
+- Plex AU — retained as the main starting catalogue.
+
+### Curated sources
+- Samsung TV Plus
+- LG Channels
+- Pluto TV
+- Roku Channel
+- Xumo Play
+- Tubi
+- Custom direct feeds
+
+Each source is only useful when it adds something genuinely worthwhile or provides a better working alternate stream.
+
+Tubi remains intentionally wired into the project even with a small selected set because it has already proven useful as an alternate-source/rescue option for channels such as Watch AEW.
+
+## Selection files
+
+- `selected_channels.txt` — Samsung
+- `selected_lg_channels.txt` — LG
+- `selected_pluto_channels.txt` — Pluto
+- `selected_roku_channels.txt` — Roku
+- `selected_xumo_channels.txt` — Xumo
+- `selected_tubi_channels.txt` — Tubi
+- `custom.m3u` — direct/manual feeds
+
+## Channel guide
+
+`channel_guide.csv` is the master metadata file.
+
+Current fields:
+
+- **Channel number** — our final channel number and sort order.
+- **Channel name** — final display name.
+- **Genre** — our canonical genre, not the source service's genre.
+- **EPG** — whether useful programme-guide data is available.
+- **Source** — primary working source.
+- **Alternate source** — known usable alternate when relevant.
+- **Status** — normally Active for channels intended to remain in the build.
+- **Description** — plain-English summary of what kind of channel it is.
+
+The guide is intended to describe the actual working channel lineup, not record every failed source attempt.
+
+## EPG
+
+The combined EPG is filtered to channels that exist in the final playlist.
+
+Current programme-guide inputs include:
 - Plex AU
-- selected Pluto US / UK / Canada channels
+- Pluto US / UK / Canada
+- Roku
+- Xumo
+- Tubi
 
-Only channels present in the final playlist are retained in the generated EPG.
+`curated.xml` remains a lightweight fallback channel-definition file for curated channels.
 
-`curated.xml` is still generated as a lightweight fallback channel-definition file for curated channels that do not yet have a programme-guide source.
+## Refresh workflow
 
-## How it works
+Always start a **fresh** run:
 
-The refresh keeps the main channel list intact and appends selected extra channels from the supported secondary sources under:
-
-`# ---- Curated extras ----`
-
-Selected Samsung-style channels are kept in `selected_channels.txt`.
-
-Selected LG Australia channels are kept in `selected_lg_channels.txt`.
-
-Selected global Pluto channels are kept in `selected_pluto_channels.txt`. The refresh checks the current US, Canada and UK Pluto catalogues and keeps only the selected channels.
-
-It also creates a matching XMLTV channel definition for each curated extra.
-
-## What we have learned
-
-- A channel appearing in a source playlist does **not** guarantee that its stream still plays.
-- Some external FAST lists contain stale, geo-restricted or changed stream URLs.
-- TVirl may successfully import a newly added channel but Android TV can leave that channel disabled by default.
-- If a channel scans but does not appear in the guide, first check the TV/Live Channels channel settings and enable it.
-- XMLTV is **not** required for a channel to exist or appear.
-- Plex and Pluto programme data are now merged into the generated `epg.xml.gz`.
-- Samsung Australia and LG curated channels may still have channel/logo metadata without programme listings where no reliable matching XMLTV source is available.
-- New sources should be treated as discovery feeds first. Channels should only remain in the curated list after they have been confirmed to play.
-
-## Add or remove channels
-
-1. Add or remove channel names in the relevant selected list.
-2. Open **Actions → Refresh playlist → Run workflow**.
-3. Start a fresh run from the current `main` branch.
-4. When it finishes, `playlist.m3u` and `curated.xml` are refreshed.
-5. Rescan TVirl and enable newly added channels in Android TV if required.
-6. Remove any channel that imports but repeatedly fails on playback.
+**Actions → Refresh playlist → Run workflow**
 
 Do not use **Re-run jobs** on an old Action run.
 
-## Check what was imported
+After the run:
+1. rescan/refresh TVirl;
+2. Android TV may leave newly added channels disabled by default;
+3. enable new channels in the Live Channels/TV channel settings if they imported but are hidden;
+4. remove channels that repeatedly fail playback.
 
-Open the **Build playlist** step in the Action log.
+## Import log
 
-It reports:
+The **Build playlist** step reports entries such as:
 
-- `ADDED SAMSUNG: channel name`
-- `NOT FOUND SAMSUNG: channel name`
-- `ADDED LG: channel name`
-- `NOT FOUND LG: channel name`
-- `ADDED PLUTO: channel name`
-- `NOT FOUND PLUTO: channel name`
+- `ADDED SAMSUNG: ...`
+- `ADDED LG: ...`
+- `ADDED PLUTO: ...`
+- `ADDED ROKU: ...`
+- `ADDED XUMO: ...`
+- `ADDED TUBI: ...`
+- `NOT FOUND ...`
 
-`ADDED` means the channel was found in the source and written to the playlist. It does **not** prove the stream is currently playable.
+`ADDED` means the current source contained the channel. It does not by itself prove the stream plays from Australia.
 
-## TVirl note
+## Curation rules
 
-When new channels are added after the original TVirl setup, Android TV may leave those new channels disabled by default.
+- Prefer genuinely additive channels over raw catalogue size.
+- Movies, game shows and sports are high-value lanes.
+- Recognisable binge/franchise FAST channels are useful.
+- News/weather/local duplication is low value.
+- Non-English feeds are normally excluded.
+- Likely duplicates are treated as duplicates.
+- Previously rejected low-value channels remain low value unless there is a clear reason to revisit them.
+- Failed source attempts do not block trying the same channel from another provider.
+- Alternate sources are useful when a preferred feed fails.
+- Tubi, Xumo, Roku, Pluto, Samsung and LG can all be revisited for targeted searches.
 
-If a new channel scans but does not appear in the guide, enable it in the TV/Live Channels channel settings.
+## Core rule
 
-## XMLTV note
-
-`curated.xml` currently defines the curated channels and preserves any logo supplied by the source. It does not yet contain programme listings.
-
-Guide enrichment can be added later without changing the M3U import process.
-
-## Source strategy
-
-Keep the project simple:
-
-- one published M3U playlist
-- one optional curated XMLTV file
-- source playlists used only to discover and populate extra channels
-- manually remove stale or non-playing streams
-- add new source feeds only when they provide genuinely useful channels not already present
-- global Pluto channels are eligible when they are useful, English-language, genuinely additive and actually play from Australia
-- music is kept only when it adds a genre or format not already well covered by the existing Stingray lineup
-
-## Basic rule
-
-**Discover → test → add → refresh → enable → remove anything that does not play.**
+**Discover → compare → test → keep only what works → assign our genre/number → refresh.**
