@@ -1,3 +1,2 @@
-# One channel name per line.
-# Matching is case-insensitive and based on the displayed channel name.
-Don't Tell The Bride
+# Approved extra channels only.
+# One display name per line.
