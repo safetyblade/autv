@@ -1,6 +1,2 @@
 #EXTM3U
-# Curated channels missing from Plex/LiveTVx go here.
-#
-# Planned:
-# - Don't Tell The Bride (AU FAST) once current stream + metadata are confirmed.
-# - WWE Live via stable YouTube live resolver.
+# Direct/resolver-backed channels that have been tested and approved.
