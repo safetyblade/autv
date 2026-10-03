@@ -117,3 +117,9 @@ https://jmp2.uk/stvp-GB1200010DG
 
 #EXTINF:-1 tvg-id="e15ebd310d112565" tvg-name="Real Emergency" tvg-logo="http://img.platform.wurl.dev/channel/2221/lg/13b87f/LG-Logo-PNG-100x100_v1.png" group-title="Targeted Tests",Real Emergency
 https://d8eac4f8.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctYXVfUmVhbEVtZXJnZW5jeVN0YW5kYXJkX0hMUw/playlist.m3u8
+#EXTINF:-1 tvg-id="GB3500002R8" tvg-name="Bundesliga" group-title="Sport",Bundesliga
+https://jmp2.uk/stvp-GB3500002R8
+#EXTINF:-1 tvg-id="GB3800009F0" tvg-name="FIFA+ Women" group-title="Sport",FIFA+ Women
+https://jmp2.uk/stvp-GB3800009F0
+#EXTINF:-1 tvg-id="GB2200002CC" tvg-name="GFN Football" group-title="Sport",GFN Football
+https://jmp2.uk/stvp-GB2200002CC
