@@ -1,5 +1,4 @@
 # Approved curated channels. One channel name per line.
-Entertainment Hub
 Don't Tell The Bride
 Project Runway
 8 Out of 10 Cats
@@ -10,7 +9,6 @@ Dry Bar Comedy
 The Asylum
 Choppertown
 INFAST
-INTROUBLE
 Haunt TV
 Escape to the Country
 Outdoor Channel
@@ -19,20 +17,11 @@ INWILD
 INWONDER
 Unsolved Mysteries
 NatureTime
-Red Bull TV
-Vevo Pop
-Vevo 2K
-Vevo 90s
-Vevo 80s
-Vevo 70s
-Vevo Country
 Stingray Classic Rock
 Stingray Hit List
 Stingray Pop Adult
 Stingray 2000s
 Stingray Easy Listening
 PBS Kids
-Caillou
-Duck TV
 Kartoon Channel
 Stingray SPA
