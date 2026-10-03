@@ -139,17 +139,17 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 332,Western Bound,Movies,Westerns,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 333,PopCorn Central,Movies,Specialty / Niche,Full,Roku,,Active,Movie and entertainment channel featuring a broad catalogue of films and selected series.
 334,Surf Cinema,Movies,Specialty / Niche,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-400,Deal Or No Deal,Game Shows,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-401,Family Feud,Game Shows,,Full,Xumo,,Active,Game-show and competition programming.
-402,Family Feud Classic,Game Shows,,Full,Xumo,,Active,Game-show and competition programming.
-403,Let's Make a Deal,Game Shows,,Full,Roku,,Active,Game-show and competition programming.
-404,Pointless (Australia),Game Shows,,Full,Curated,,Active,Game-show and competition programming.
-405,Supermarket Sweep,Game Shows,,Full,Roku,,Active,Game-show and competition programming.
-406,The Price is Right,Game Shows,,Full,Pluto,,Active,Game-show and competition programming.
-407,The Price is Right: The Barker Era,Game Shows,,Full,Pluto,Roku,Active,Game-show and competition programming.
-408,WipeoutXtra,Game Shows,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-409,25 Words or Less,Game Shows,,Full,Xumo,,Active,Game-show and competition programming.
-410,Xumo Free Game Show TV,Game Shows,,Full,Xumo,,Active,Game-show and competition programming.
+400,Family Feud,Game Shows,Major / Classic Game Shows,Full,Xumo,,Active,Game-show and competition programming.
+401,Family Feud Classic,Game Shows,Major / Classic Game Shows,Full,Xumo,,Active,Game-show and competition programming.
+402,The Price is Right,Game Shows,Major / Classic Game Shows,Full,Pluto,,Active,Game-show and competition programming.
+403,The Price is Right: The Barker Era,Game Shows,Major / Classic Game Shows,Full,Pluto,Roku,Active,Game-show and competition programming.
+404,Let's Make a Deal,Game Shows,Major / Classic Game Shows,Full,Roku,,Active,Game-show and competition programming.
+405,Deal or No Deal,Game Shows,Major / Classic Game Shows,Full,Plex AU,,Active,Deal or No Deal game-show channel featuring episodes and competition programming.
+406,Supermarket Sweep,Game Shows,Major / Classic Game Shows,Full,Roku,,Active,Game-show and competition programming.
+407,Pointless (Australia),Game Shows,Major / Classic Game Shows,Full,Curated,,Active,Game-show and competition programming.
+408,25 Words or Less,Game Shows,Major / Classic Game Shows,Full,Xumo,,Active,Game-show and competition programming.
+409,WipeoutXtra,Game Shows,Physical / Competition,Full,Plex AU,,Active,Physical competition and obstacle-course game-show programming.
+410,Xumo Free Game Show TV,Game Shows,General Game Show Network,Full,Xumo,,Active,Game-show and competition programming.
 500,A&E Alaska State Troopers,Crime,,Full,Xumo,,Active,"Crime, investigation, court, mystery or forensic programming."
 501,A&E Live PD: Greatest Shifts,Crime,,Full,Xumo,,Active,"Crime, investigation, court, mystery or forensic programming."
 502,American Crime Channel,Crime,,Full,Plex AU,,Active,"Crime, investigation, court, mystery or forensic programming."
