@@ -1130,10 +1130,6 @@
     <display-name>ACC Digital Network</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99991315/168x168.png?type=color_onBlack" />
   </channel>
-  <channel id="99951388">
-    <display-name>PBR RidePass</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951388/168x168.png?type=color_onBlack" />
-  </channel>
   <channel id="99951359">
     <display-name>Big 12 Studios</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951359/168x168.png?type=color_onBlack" />
@@ -1154,21 +1150,221 @@
     <display-name>Universal Action</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951254/168x168.png?type=color_onBlack" />
   </channel>
-  <channel id="99951439">
-    <display-name>50 Cent Action</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951439/168x168.png?type=color_onBlack" />
-  </channel>
   <channel id="99991659">
     <display-name>25 Words or Less</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99991659/168x168.png?type=color_onBlack" />
   </channel>
-  <channel id="99951224">
-    <display-name>The Celebrity Name Game Channel</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951224/168x168.png?type=color_onBlack" />
-  </channel>
   <channel id="99951339">
     <display-name>Family Feud Classic</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951339/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99991302">
+    <display-name>Hi-Yah!</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99991302/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99991312">
+    <display-name>Gravitas Movies</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99991312/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951596">
+    <display-name>Great American RomComs</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951596/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99991621">
+    <display-name>Universal Movies</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99991621/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951411">
+    <display-name>Shout! Movies</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951411/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951572">
+    <display-name>MGM Presents: Action</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951572/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951573">
+    <display-name>MGM Presents</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951573/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951538">
+    <display-name>Scripps Sports Network</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951538/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99991374">
+    <display-name>Field &amp; Stream TV</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99991374/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951601">
+    <display-name>SI TV</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951601/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951390">
+    <display-name>PickleballTV</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951390/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951406">
+    <display-name>Willow Sports</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951406/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951530">
+    <display-name>ONE Championship</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951530/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951469">
+    <display-name>HBO Boxing</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951469/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951413">
+    <display-name>NASCAR Channel</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951413/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99991622">
+    <display-name>Stories by AMC</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99991622/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951497">
+    <display-name>BBC Drama</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951497/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951535">
+    <display-name>Weeds &amp; Nurse Jackie</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951535/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951452">
+    <display-name>Murdoch Mysteries </display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951452/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951157">
+    <display-name>ION Mystery</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951157/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951377">
+    <display-name>AMC Thrillers</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951377/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951250">
+    <display-name>OuterSphere by Lionsgate</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951250/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="9999615">
+    <display-name>Dark Matter TV</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/9999615/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951256">
+    <display-name>Alfred Hitchcock Presents</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951256/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951244">
+    <display-name>NBC Comedy Vault</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951244/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951247">
+    <display-name>Saved by the Bell</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951247/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951463">
+    <display-name>Comedy Dynamics</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951463/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951301">
+    <display-name>Portlandia</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951301/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="9999613">
+    <display-name>Bounce XL</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/9999613/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99991639">
+    <display-name>Xumo Free Game Show TV</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99991639/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99991232">
+    <display-name>Family Feud</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99991232/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951576">
+    <display-name>In the Heat of the Night</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951576/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951577">
+    <display-name>Green Acres</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951577/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951257">
+    <display-name>Leave It to Beaver</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951257/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951466">
+    <display-name>Oxygen True Crime Archives</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951466/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951245">
+    <display-name>Universal Crime</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951245/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99991320">
+    <display-name>Law&amp;Crime</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99991320/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951544">
+    <display-name>World's Wildest Police Videos</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951544/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951550">
+    <display-name>A&amp;E Live PD: Greatest Shifts</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951550/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951555">
+    <display-name>A&amp;E Alaska State Troopers</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951555/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951575">
+    <display-name>MGM Presents: Westerns</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951575/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951138">
+    <display-name>McLeod's Daughters</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951138/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951216">
+    <display-name>The Rifleman</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951216/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951240">
+    <display-name>Little House on the Prairie</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951240/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951178">
+    <display-name>BBC Home &amp; Garden</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951178/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951177">
+    <display-name>BBC Food</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951177/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951393">
+    <display-name>Bizarre Foods with Andrew Zimmern</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951393/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951384">
+    <display-name>Bachelor Nation</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951384/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951479">
+    <display-name>Love After Lockup We TV</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951479/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951595">
+    <display-name>Sesame Street</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951595/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951441">
+    <display-name>Power Rangers</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951441/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951442">
+    <display-name>My Little Pony</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951442/168x168.png?type=color_onBlack" />
   </channel>
   <channel id="5ddd7cb2cbb9010009b4fe32">
     <display-name>Nick Jr Club</display-name>
