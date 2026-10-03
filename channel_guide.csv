@@ -9,16 +9,11 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 107,NBC News NOW,News,,Full,Pluto,,Active,"Rolling news, current affairs, weather or business coverage."
 108,CBS News 24/7,News,,Full,Pluto,,Active,"Rolling news, current affairs, weather or business coverage."
 109,Scripps News,News,,Full,Pluto,,Active,"Rolling news, current affairs, weather or business coverage."
-110,Euronews Deutsch,News,,Full,Plex AU,,Inactive,"Rolling news, current affairs, weather or business coverage."
 110,USA TODAY,News,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-111,Euronews Español,News,,Full,Plex AU,,Inactive,"Rolling news, current affairs, weather or business coverage."
 111,The Reuters 60,News,,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 112,CNN HEADLINES,News,,Full,Pluto,,Active,"Rolling news, current affairs, weather or business coverage."
-112,Euronews Français,News,,Full,Plex AU,,Inactive,"Rolling news, current affairs, weather or business coverage."
-113,Euronews Italiano,News,,Full,Plex AU,,Inactive,"Rolling news, current affairs, weather or business coverage."
 113,Global News National,News,,Full,Pluto,,Active,"Rolling news, current affairs, weather or business coverage."
 114,CBC News,News,,Full,Plex AU,,Active,"Rolling news, current affairs, weather or business coverage."
-114,Euronews Portuguese,News,,Full,Plex AU,,Inactive,"Rolling news, current affairs, weather or business coverage."
 115,Euronews,News,,Full,Plex AU,,Active,"Rolling news, current affairs, weather or business coverage."
 116,GB News,News,,Full,Plex AU,,Active,"Rolling news, current affairs, weather or business coverage."
 117,NewsWorld,News,,Full,Plex AU,,Active,"Rolling news, current affairs, weather or business coverage."
@@ -43,7 +38,6 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 213,FIFA+,Sport,Football,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 214,UEFA Champions League,Sport,Football,Full,Pluto,,Active,"Football FAST channel featuring UEFA competitions, highlights or archive programming."
 215,UEFA.tv,Sport,Football,Full,Tubi,,Active,"Football FAST channel featuring UEFA competitions, highlights or archive programming."
-215,Bundesliga,Sport,Football,Channel only,Samsung GB,,Inactive,Football FAST channel retained for alternate-source rescue; current Samsung GB source removed from the final playlist.
 216,Real Madrid TV,Sport,Football,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 217,TOP BARÇA,Sport,Football,Channel only,LG AU,,Active,"Football FAST channel focused on club, league or competition programming."
 218,Man City 24/7,Sport,Football,Channel only,LG GB,,Active,"Football FAST channel focused on club, league or competition programming."
@@ -680,8 +674,4 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 220,Brøndby TV,Sport,Football,Channel only,Pluto DK,,Active,Brøndby IF club football channel with club programming and match coverage.
 221,BVB-Frauen,Sport,Football,Channel only,Pluto DE,,Active,"Borussia Dortmund women's football channel with matches, replays and club programming."
 222,Canal do Inter,Sport,Football,Channel only,Direct,,Active,SC Internacional club channel from Brazil; direct HLS source and not always 24/7.
-215,Juventus Play,Sport,Football,Channel only,Source rescue,,Inactive,Confirmed free 24/7 Juventus FAST channel; source extraction still required.
-215,LALIGA Inside,Sport,Football,Channel only,Source rescue,,Inactive,Confirmed 24/7 LALIGA FAST channel; source extraction still required.
-215,MUTV,Sport,Football,Channel only,Source rescue,,Inactive,Manchester United 24/7 club channel; current public Brightcove path is tokenised and not suitable as a stable committed source.
 229,Hoop TV,Sport,Basketball,Channel only,SoFast,,Active,"Dedicated basketball FAST channel with games, highlights, news, interviews and basketball culture programming."
-0,NBA G League TV,Sport,Basketball,Channel only,Source rescue,,Inactive,Official NBA G League FAST service on Tubi Game Days; current durable direct linear source not yet established.
