@@ -202,20 +202,152 @@
     <display-name>343 Trace Stars</display-name>
     <icon src="https://d3dj3gmzxw0r4q.cloudfront.net/Trace_SportStars/LG_Ch_Logo_460x200.png" />
   </channel>
-  <channel id="autv.nick-jr-club-pluto-test">
-    <display-name>Nick Jr Club - Pluto Test</display-name>
+  <channel id="autv.nick-jr-club">
+    <display-name>Nick Jr Club</display-name>
     <icon src="https://images.pluto.tv/channels/5ddd7cb2cbb9010009b4fe32/colorLogoPNG.png" />
   </channel>
-  <channel id="autv.mtv-reality-pluto-test">
-    <display-name>MTV Reality - Pluto Test</display-name>
+  <channel id="autv.mtv-reality">
+    <display-name>MTV Reality</display-name>
     <icon src="https://images.pluto.tv/channels/64f89fcfd661bb00081ba45c/colorLogoPNG.png" />
   </channel>
-  <channel id="autv.survivor-pluto-test">
-    <display-name>Survivor - Pluto Test</display-name>
+  <channel id="autv.survivor">
+    <display-name>Survivor</display-name>
     <icon src="https://images.pluto.tv/channels/5f21e7b24744c60007c1f6fc/colorLogoPNG.png" />
   </channel>
-  <channel id="autv.south-park-pluto-test">
-    <display-name>South Park - Pluto Test</display-name>
+  <channel id="autv.south-park">
+    <display-name>South Park</display-name>
     <icon src="https://images.pluto.tv/channels/64edf6eaa7ec0d000812f58c/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.48-hours">
+    <display-name>48 Hours</display-name>
+    <icon src="https://images.pluto.tv/channels/62e925bc68d18a00077bb990/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.aftershock">
+    <display-name>Aftershock</display-name>
+    <icon src="https://images.pluto.tv/channels/63e36b374e83e70008987c58/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.america-s-next-top-model">
+    <display-name>America's Next Top Model</display-name>
+    <icon src="https://images.pluto.tv/channels/68679fc6bb46d0bdd38ac9a4/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.matlock">
+    <display-name>Matlock</display-name>
+    <icon src="https://images.pluto.tv/channels/63da365f60bc8f0008a50f44/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.mission-impossible">
+    <display-name>Mission Impossible</display-name>
+    <icon src="https://images.pluto.tv/channels/62ea43aa0c43540007f2db96/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.mtv-dating">
+    <display-name>MTV Dating</display-name>
+    <icon src="https://images.pluto.tv/channels/64f8a0c230ab3300084369b8/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.mtv-jersey-shore">
+    <display-name>MTV Jersey Shore</display-name>
+    <icon src="https://images.pluto.tv/channels/68b9b0dbf9cf3d7cb9f56d88/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.mtv-ridiculousness">
+    <display-name>MTV Ridiculousness</display-name>
+    <icon src="https://images.pluto.tv/channels/64f9cccf110545000837912e/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.nicktoons">
+    <display-name>NickToons</display-name>
+    <icon src="https://images.pluto.tv/channels/654ca7f92c1d3300086b608c/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.spongebob-squarepants">
+    <display-name>SpongeBob SquarePants</display-name>
+    <icon src="https://images.pluto.tv/channels/63f87d057533d80008ab9549/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.the-graham-norton-show">
+    <display-name>The Graham Norton Show</display-name>
+    <icon src="https://images.pluto.tv/channels/66166ce7aec96800080f6bd3/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.the-judge-judy-channel">
+    <display-name>The Judge Judy Channel</display-name>
+    <icon src="https://images.pluto.tv/channels/62e92e536f28870007fa9b3a/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.the-love-boat">
+    <display-name>The Love Boat</display-name>
+    <icon src="https://images.pluto.tv/channels/62e91563ce7ce300076f917e/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.the-new-detectives">
+    <display-name>The New Detectives</display-name>
+    <icon src="https://images.pluto.tv/channels/62bdabbc5611f2000761ca30/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.the-outer-limits">
+    <display-name>The Outer Limits</display-name>
+    <icon src="https://images.pluto.tv/channels/6874ad743ffa5e0c917f6e20/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.the-price-is-right">
+    <display-name>The Price is Right</display-name>
+    <icon src="https://images.pluto.tv/channels/64c2214c2a7f2200089a0c4b/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.the-price-is-right-the-barker-era">
+    <display-name>The Price is Right: The Barker Era</display-name>
+    <icon src="https://images.pluto.tv/channels/64c220e15dc1660008a79c96/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.the-x-files">
+    <display-name>The X-Files</display-name>
+    <icon src="https://images.pluto.tv/channels/691b023a7613e09a8b209539/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.three-s-company">
+    <display-name>Three's Company</display-name>
+    <icon src="https://images.pluto.tv/channels/64ca723a2bc49300081a8966/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.top-gear">
+    <display-name>Top Gear</display-name>
+    <icon src="https://images.pluto.tv/channels/638e10220aa6a6000726979f/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.transformers">
+    <display-name>Transformers</display-name>
+    <icon src="https://images.pluto.tv/channels/63da36dea995710008727d4d/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.walker-texas-ranger">
+    <display-name>Walker Texas Ranger</display-name>
+    <icon src="https://images.pluto.tv/channels/635659445b4c4700076d2ad1/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.world-of-love-island">
+    <display-name>World of Love Island</display-name>
+    <icon src="https://images.pluto.tv/channels/667d419415f35c0008942dd1/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.ncis">
+    <display-name>NCIS</display-name>
+    <icon src="https://images.pluto.tv/channels/62f4f5de1c100100075665ef/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.ncis-los-angeles">
+    <display-name>NCIS: Los Angeles</display-name>
+    <icon src="https://images.pluto.tv/channels/66a106c8a79dea0008aa5ef3/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.the-challenge">
+    <display-name>The Challenge</display-name>
+    <icon src="https://images.pluto.tv/channels/64f8a22a3efb510008245df0/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.the-conners">
+    <display-name>The Conners</display-name>
+    <icon src="https://images.pluto.tv/channels/66e2a94d167a8b000813485d/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.taxi">
+    <display-name>Taxi</display-name>
+    <icon src="https://images.pluto.tv/channels/62e9186f8b685d000773cf58/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.the-andy-griffith-show">
+    <display-name>The Andy Griffith Show</display-name>
+    <icon src="https://images.pluto.tv/channels/62e9145ec07f2a00070e68dc/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.the-beverly-hillbillies">
+    <display-name>The Beverly Hillbillies</display-name>
+    <icon src="https://images.pluto.tv/channels/6565fefdc917a50008485cc6/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.perry-mason">
+    <display-name>Perry Mason</display-name>
+    <icon src="https://images.pluto.tv/channels/63e20bd160bc8f0008b4c949/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.rawhide">
+    <display-name>Rawhide</display-name>
+    <icon src="https://images.pluto.tv/channels/65660223635c3c00086c2578/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.scare-tactics">
+    <display-name>Scare Tactics</display-name>
+    <icon src="https://images.pluto.tv/channels/6874ad2f3484d60732267ba8/colorLogoPNG.png" />
   </channel>
 </tv>
