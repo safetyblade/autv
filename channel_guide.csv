@@ -28,76 +28,74 @@ Channel number,Channel name,Genre,EPG,Source,Alternate source,Status,Description
 121,Yahoo Finance,News,Full,Plex AU,,Active,"Rolling news, current affairs, weather or business coverage."
 122,The Weather Network,News,Full,Pluto,,Active,"Rolling news, current affairs, weather or business coverage."
 123,WeatherSpy,News,Full,Plex AU,,Active,"Rolling news, current affairs, weather or business coverage."
-200,ACC Digital Network,Sport,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-201,ACL Cornhole TV,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-202,beIN SPORTS XTRA,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-203,Bellator MMA,Sport,Full,Pluto,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
-204,Big 12 Studios,Sport,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-205,Billiard TV,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-206,Bowling TV,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-207,Breaking Sports News,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-208,CBS Sports HQ,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-209,DAZN Ringside,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-210,DraftKings,Sport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-211,Field & Stream TV,Sport,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-212,FloHockey 24/7,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-213,FloRacing 24/7,Sport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-214,FOX Sports,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-215,FTF Sports,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-216,Fubo Sports Network,Sport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-217,GLORY Kickboxing,Sport,Full,Plex AU,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
-218,GolfPass,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-219,Gone Fishing,Sport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-220,HBO Boxing,Sport,Full,Xumo,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
-221,MLB,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-222,345 MMA TV,Sport,Full,Curated,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
-223,MODUS Super Series Darts,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+200,Watch AEW,Sport,Channel only,Tubi,,Active,"AEW wrestling FAST channel, currently sourced from Tubi."
+201,TNA Wrestling Channel,Sport,Full,Plex AU,Roku,Active,24/7 TNA wrestling channel with matches and archive programming.
+202,UFC,Sport,Full,Plex AU,,Active,Combat-sports channel featuring UFC programming and fight content.
+203,PFL MMA,Sport,Full,Plex AU,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
+204,ONE Championship,Sport,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+205,GLORY Kickboxing,Sport,Full,Plex AU,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
+206,Bellator MMA,Sport,Full,Pluto,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
+207,345 MMA TV,Sport,Full,Curated,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
+208,DAZN Ringside,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+209,HBO Boxing,Sport,Full,Xumo,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
+210,Top Rank Classics,Sport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+211,XFC TV,Sport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+212,UEFA Champions League,Sport,Full,Pluto,,Active,"Football FAST channel featuring UEFA competitions, highlights or archive programming."
+213,UEFA.tv,Sport,Full,Tubi,,Active,"Football FAST channel featuring UEFA competitions, highlights or archive programming."
+214,Real Madrid TV,Sport,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+215,beIN SPORTS XTRA,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+216,Rugby Pass TV,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+217,The NBA Channel,Sport,Full,Pluto,,Active,"Basketball FAST channel with NBA programming, highlights or archive content."
+218,NFL Channel,Sport,Full,Plex AU,,Active,"American football FAST channel with NFL programming, highlights or archive content."
+219,NFL Super Bowl Champions,Sport,Full,Plex AU,,Active,"American football FAST channel with NFL programming, highlights or archive content."
+220,MLB,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+221,NHL,Sport,Full,Tubi,,Active,Ice-hockey FAST channel featuring NHL programming and related coverage.
+222,NASCAR,Sport,Full,Tubi,,Active,"NASCAR motorsport FAST channel with race, archive and related programming."
+223,NASCAR Channel,Sport,Full,Plex AU,,Active,"NASCAR motorsport FAST channel with race, archive and related programming."
 224,Monster Jam,Sport,Full,Plex AU,Roku,Active,Monster Jam motorsport channel featuring monster-truck events and related programming.
-225,NASCAR,Sport,Full,Tubi,,Active,"NASCAR motorsport FAST channel with race, archive and related programming."
-226,NASCAR Channel,Sport,Full,Plex AU,,Active,"NASCAR motorsport FAST channel with race, archive and related programming."
-227,NBC Sports NOW,Sport,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-228,NFL Channel,Sport,Full,Plex AU,,Active,"American football FAST channel with NFL programming, highlights or archive content."
-229,NFL Super Bowl Champions,Sport,Full,Plex AU,,Active,"American football FAST channel with NFL programming, highlights or archive content."
-230,NHL,Sport,Full,Tubi,,Active,Ice-hockey FAST channel featuring NHL programming and related coverage.
-231,ONE Championship,Sport,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-232,PFL MMA,Sport,Full,Plex AU,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
+225,FloRacing 24/7,Sport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+226,Racing America,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+227,Rally TV,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+228,Red Bull TV,Sport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+229,Tennis TV,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+230,Tennis+,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+231,TennisChannel 2,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+232,GolfPass,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 233,PickleballTV,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-234,Pluto TV Snooker 900,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-235,Poker Night TV,Sport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-236,Racing America,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-237,Rally TV,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-238,Real Madrid TV,Sport,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-239,Red Bull TV,Sport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-240,Rugby Pass TV,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-241,Ryz Sports Network,Sport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-242,Scripps Sports Network,Sport,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-243,SI TV,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-244,SportsGrid,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-245,Stadium,Sport,Full,Tubi,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+234,MODUS Super Series Darts,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+235,Pluto TV Snooker 900,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+236,Billiard TV,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+237,World Billiards TV,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+238,Triton Poker,Sport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+239,Poker Night TV,Sport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+240,The World Poker Tour,Sport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+241,World Surf League 24/7,Sport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+242,Waypoint TV,Sport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+243,Wired2Fish,Sport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+244,Gone Fishing,Sport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+245,Field & Stream TV,Sport,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 246,Strongman Champions,Sport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-247,SWAC TV,Sport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-248,Team USA TV,Sport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-249,Tennis TV,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-250,Tennis+,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-251,TennisChannel 2,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-252,The NBA Channel,Sport,Full,Pluto,,Active,"Basketball FAST channel with NBA programming, highlights or archive content."
-253,The World Poker Tour,Sport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-254,The World Poker Tour,Sport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-255,TNA Wrestling Channel,Sport,Full,Plex AU,Roku,Active,24/7 TNA wrestling channel with matches and archive programming.
-256,Top Rank Classics,Sport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-257,Triton Poker,Sport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-258,UEFA Champions League,Sport,Full,Pluto,,Active,"Football FAST channel featuring UEFA competitions, highlights or archive programming."
-259,UEFA.tv,Sport,Full,Tubi,,Active,"Football FAST channel featuring UEFA competitions, highlights or archive programming."
-260,UFC,Sport,Full,Plex AU,,Active,Combat-sports channel featuring UFC programming and fight content.
-261,Unbeaten Sports,Sport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-262,Watch AEW,Sport,Channel only,Tubi,,Active,"AEW wrestling FAST channel, currently sourced from Tubi."
-263,Waypoint TV,Sport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-264,Willow Sports,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-265,Wired2Fish,Sport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-266,Women's Sports Network,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-267,World Billiards TV,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-268,World Surf League 24/7,Sport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-269,XFC TV,Sport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+247,ACL Cornhole TV,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+248,Bowling TV,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+249,Team USA TV,Sport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+250,Women's Sports Network,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+251,SWAC TV,Sport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+252,FOX Sports,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+253,NBC Sports NOW,Sport,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+254,CBS Sports HQ,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+255,Fubo Sports Network,Sport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+256,Scripps Sports Network,Sport,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+257,Stadium,Sport,Full,Tubi,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+258,SportsGrid,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+259,FTF Sports,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+260,SI TV,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+261,Breaking Sports News,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+262,Ryz Sports Network,Sport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+263,Unbeaten Sports,Sport,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+264,ACC Digital Network,Sport,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+265,Big 12 Studios,Sport,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+266,FloHockey 24/7,Sport,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+267,Willow Sports,Sport,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 300,Action Hollywood Movies,Movies,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 301,British Screen Classics,Movies,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 302,Classic Movies Channel,Movies,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
