@@ -129,3 +129,6 @@ https://amg17560-fcb-amg17560c1-lg-au-9622.playouts.now.amagi.tv/ts-eu-w1-n2/pla
 https://8aa6484a.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctZ2JfTWFuQ2l0eTI0N19ITFM/playlist.m3u8
 #EXTINF:-1 tvg-id="rok-vix-liga-mx" tvg-name="ViX Lo Mejor de Liga MX" group-title="Sport",ViX Lo Mejor de Liga MX
 https://jmp2.uk/rok-35633f08c98857cb9e85c91eae17c0d5.m3u8
+
+#EXTINF:-1 tvg-id="NewJapanProWrestlingWorld.jp" tvg-name="New Japan Pro Wrestling World" group-title="Sport",New Japan Pro Wrestling World
+https://aka-amd-njpwworld-hls-enlive.akamaized.net/hls/video/njpw_en/njpw_en_channel01_3/playlist_DVR.m3u8
