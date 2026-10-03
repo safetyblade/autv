@@ -8,22 +8,17 @@ The authoritative data lives in `channel_guide.csv`. The generated `playlist.m3u
 
 | Range | Genre | Purpose |
 | --- | --- | --- |
-| 100–199 | News & Business | News, business, current affairs and weather |
-| 200–299 | Sport | Sport, combat sports and motorsport |
-| 300–399 | Movies | Movie channels and movie genre feeds |
-| 400–499 | Game Shows | Game shows and competition channels |
-| 500–599 | Crime & Mystery | Crime, court, investigation and mystery |
-| 600–699 | Comedy | Sitcoms, comedy and stand-up |
-| 700–799 | Drama | Scripted drama and action series |
-| 800–899 | Reality | Reality and unscripted entertainment |
-| 900–999 | Factual & Documentary | Documentary, factual, history and science |
-| 1000–1099 | Lifestyle & Food | Food, home, garden, travel and renovation |
-| 1100–1199 | Kids & Animation | Kids, family and animation |
-| 1200–1299 | Music | Music channels |
-| 1300–1399 | Sci-Fi & Horror | Sci-fi, horror, supernatural and cult |
-| 1400–1449 | Westerns | Western film and television |
-| 1450–1499 | Classic TV | Classic and archive television |
-| 1600+ | General Entertainment | Broad/mixed channels that do not fit a stronger genre |
+| 100–199 | News | News, business, current affairs and weather |
+| 200–299 | Sport | All sport, wrestling, combat and motorsport |
+| 300–399 | Movies | All movie channels and movie genre feeds |
+| 400–499 | Game Shows | Game shows and competition formats |
+| 500–599 | Crime | True crime, court, investigation and forensic |
+| 600–699 | Comedy | Sitcoms, sketch and stand-up |
+| 700–999 | Entertainment | Drama, classic TV, sci-fi, western series and broad entertainment |
+| 1000–1099 | Reality & Lifestyle | Reality, food, home, garden, travel and renovation |
+| 1100–1199 | Factual | Documentary, history, science and nature |
+| 1200–1299 | Kids & Animation | Kids, cartoons and anime |
+| 1300–1399 | Music | Music channels |
 
 Numbers are intentionally separated into blocks so individual genres can grow without forcing a full renumber every time a channel is added.
 
@@ -42,16 +37,30 @@ Numbers are intentionally separated into blocks so individual genres can grow wi
 
 ## Genre policy
 
-The project deliberately ignores the inconsistent genre labels supplied by FAST providers.
+The project deliberately uses a small taxonomy. The final genres are:
+
+- News
+- Sport
+- Movies
+- Game Shows
+- Crime
+- Comedy
+- Entertainment
+- Reality & Lifestyle
+- Factual
+- Kids & Animation
+- Music
+
+The point is practical ordering, not perfect editorial taxonomy.
 
 Examples:
-
-- `Sports`, `Combat Sports`, motorsport and similar source labels → **Sport**
-- `Crime TV`, `Crime`, `Law` → **Crime & Mystery**
-- `Documentary`, factual/history/science labels → **Factual & Documentary**
-- food, home, renovation, garden and travel → **Lifestyle & Food**
-- source labels such as `Season of Scares` → **Sci-Fi & Horror**
-- kids, animation and children's programming → **Kids & Animation**
+- wrestling, combat sports, motorsport and poker → **Sport**
+- movie westerns, horror movies and action movies → **Movies**
+- true crime, court and forensic channels → **Crime**
+- drama, classic TV, sci-fi series and western series → **Entertainment**
+- reality, food, home, garden, travel and renovation → **Reality & Lifestyle**
+- documentary, history, science and nature → **Factual**
+- kids, cartoons and anime → **Kids & Animation**
 
 If a source misclassifies a channel, the guide wins.
 
