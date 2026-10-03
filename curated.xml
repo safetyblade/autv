@@ -1202,10 +1202,6 @@
     <display-name>BBC Drama</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951497/168x168.png?type=color_onBlack" />
   </channel>
-  <channel id="99951452">
-    <display-name>Murdoch Mysteries </display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951452/168x168.png?type=color_onBlack" />
-  </channel>
   <channel id="99951157">
     <display-name>ION Mystery</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951157/168x168.png?type=color_onBlack" />
@@ -1213,10 +1209,6 @@
   <channel id="99951377">
     <display-name>AMC Thrillers</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951377/168x168.png?type=color_onBlack" />
-  </channel>
-  <channel id="99951250">
-    <display-name>OuterSphere by Lionsgate</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951250/168x168.png?type=color_onBlack" />
   </channel>
   <channel id="9999615">
     <display-name>Dark Matter TV</display-name>
@@ -1318,10 +1310,6 @@
     <display-name>Love After Lockup We TV</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951479/168x168.png?type=color_onBlack" />
   </channel>
-  <channel id="99951595">
-    <display-name>Sesame Street</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951595/168x168.png?type=color_onBlack" />
-  </channel>
   <channel id="400000294">
     <display-name>Watch AEW</display-name>
     <icon src="https://canvas-lb.tubitv.com/opts/yeAV3-c2XWfYzw==/e9cd4624-20d8-421b-b5ed-282769cf2f57/CHgQeDoFMS4xLjlAAQ==" />
@@ -1345,10 +1333,6 @@
   <channel id="677011">
     <display-name>Gordon Ramsay</display-name>
     <icon src="https://canvas-lb.tubitv.com/opts/zBCOxZ6hwxcgWg==/f7eea1c7-409e-4abc-b6f3-1228bb7135d7/CHgQeDoFMS4xLjlAAQ==" />
-  </channel>
-  <channel id="400000303">
-    <display-name>Hit Sitcoms</display-name>
-    <icon src="https://canvas-lb.tubitv.com/opts/bzbotn083pvPAg==/9e4fcb72-8070-4793-bae0-b1c632600193/CHgQeDoFMS4xLjlAAQ==" />
   </channel>
   <channel id="5ddd7cb2cbb9010009b4fe32">
     <display-name>Nick Jr Club</display-name>
