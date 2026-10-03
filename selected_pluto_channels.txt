@@ -1,0 +1,174 @@
+# Curated global Pluto additions. One exact channel name per line.
+# Existing proven Pluto channels in custom.m3u are intentionally not duplicated here.
+
+60 Minutes
+ABC News Live
+BBC News
+CBS News 24/7
+CNN HEADLINES
+CNNi
+NBC News NOW
+Scripps News
+Sky News
+Global News National
+The Weather Network
+CNN Originals
+Smithsonian Channel Selects
+Pluto TV History
+Pluto TV Military
+Pluto TV Science
+BBC Earth
+Love Nature
+PBS Nature
+Dinos 24/7
+History Hunters
+World War TV
+Pluto TV Britain at War
+Pluto TV Space
+Pluto TV Alien Invasion
+Pluto TV Conspiracy
+Ancient Aliens
+American Pickers
+Bar Rescue
+Bad Girls Club
+Black Ink Crew
+Bravo Vault
+Catfish
+Dance Moms
+Geordie Shore
+Love & Hip Hop
+Million Dollar Listing Vault
+Real Housewives Vault
+Storage Wars by A&E
+Teen Mom
+Warner Bros. TV Say Yes to the Dress
+The Real Housewives
+Big Brother
+The Amazing Race
+Ink Master
+Kitchen Battles
+Blue Bloods
+Criminal Minds
+CSI
+CSI: Miami
+CSI: NY
+Law & Order
+Midsomer Murders
+Narcos
+Nash Bridges
+Beverly Hills 90210
+Baywatch
+Doc Martin
+JAG
+MacGyver
+Northern Exposure
+Sea Patrol
+The Walking Dead Universe
+BritBox Mysteries
+Degrassi
+Jane the Virgin
+Weeds / Nurse Jackie
+Battlestar Galactica
+Charmed
+Doctor Who Classic
+Ghost Whisperer
+Stargate
+Star Trek
+Star Trek: Deep Space Nine
+Star Trek: Enterprise
+Star Trek: The Next Generation
+Star Trek: Voyager
+Farscape
+Earth: Final Conflict
+The Twilight Zone
+Happy Days
+I Love Lucy
+Diagnosis Murder
+Dynasty
+The Addams Family
+Hogan's Heroes
+Cagney & Lacey
+Hawaii Five-O
+Touched By An Angel
+Cheers
+Frasier
+Family Ties
+King of Queens
+Married... with Children
+Whose Line Is It Anyway?
+Tosh.0
+Comedy Central Pluto TV
+RiffTrax
+MST3K
+Girlfriends
+Sister Sister
+Baby Shark TV
+Peppa Pig
+Pokémon
+Garfield and Friends
+LEGO Kids TV
+Mister Rogers' Neighborhood
+Nick Jr. Pluto TV
+Nickelodeon Pluto TV
+TOTALLY TURTLES
+iCarly TV
+Max & Ruby
+Mona The Vampire
+Pluto TV Retro Toons
+The Raccoons
+The Smurfs
+Crunchyroll
+Naruto
+One Piece
+Sailor Moon
+Yu-Gi-Oh!
+Inuyasha
+ANIME x HIDIVE
+America's Test Kitchen
+Anthony Bourdain: Parts Unknown
+The Jamie Oliver Channel
+Property Brothers
+This Old House
+Best of Bobby Flay by Food Network
+Home Cooking by Food Network
+Top Chef
+Cold Case Files by A&E
+Dateline 24/7
+Court TV
+The First 48 by A&E
+FBI Files
+Deadly Women
+Crimes That Shook Britain
+Criminal Confessions
+Medical Detectives
+Bloodline Detectives
+Evidence of Evil
+CBS Sports HQ
+FOX Sports
+MLB
+The NBA Channel
+UEFA Champions League
+DAZN Ringside
+GolfPass
+TennisChannel 2
+Rugby Pass TV
+Rally TV
+FloHockey 24/7
+MODUS Super Series Darts
+Pluto TV Snooker 900
+Bellator MMA
+Classic Movies Channel
+Paramount Movie Channel
+Hallmark Movies & More
+Lifetime Movie Favorites
+British Screen Classics
+Curzon
+Pluto TV Horror
+Pluto TV Thrillers
+Pluto TV Cult Films
+Pluto TV Action Movies
+Classica
+Qello Concerts
+XITE Gospel
+Yo! MTV
+MTV Spankin' New
