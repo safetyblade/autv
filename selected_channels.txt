@@ -1,2 +1,106 @@
-# One approved channel name per line.
+# Approved curated channels. One channel name per line.
+BBC News
+News24 Now
+Entertainment Hub
+Law & Order
+30 Rock
+Shark Tank
+Sony One Dragons' Den
 Don't Tell The Bride
+Project Runway
+Scrambled Up
+8 Out of 10 Cats
+The Cube
+Pointless
+Stargate
+Conan O'Brien TV
+Letterman TV
+Anger Management
+Mr Bean Animated
+Dry Bar Comedy
+Just For Laughs Stand Up
+Sony One FAVES
+Movie Hub Marathons
+Movie Hub
+Sony One Action HITS
+Sony One Comedy HITS
+The Asylum
+MyTime Movies
+Grit TV
+Outback Truckers
+Extreme Jobs
+Mark Rober TV
+Challenge Accepted
+The Try Guys
+Brave Wilderness
+Choppertown
+INFAST
+INTROUBLE
+Haunt TV
+Luke Nguyen's World
+Escape to the Country
+BBC Food
+BBC Home and Garden
+BBC Travel
+Saturday Kitchen
+Obsessive Compulsive Cleaners
+The Sorry Girls
+Gardeners World
+Epic Gardening TV
+Outdoor Channel
+Lucky Dog
+Pet Club TV
+Travelxp
+INTRAVEL
+INWILD
+INWONDER
+Unsolved Mysteries
+Dr. G: Medical Examiner
+NatureTime
+Wild Stuff
+MotoAmerica TV
+FIFA+ Women
+Red Bull TV
+MTRSPT1
+Strongman Champion League
+Horse & Country
+Trace Sports Stars
+Vevo Pop
+Vevo 2K
+Vevo 90s
+Vevo 80s
+That's 80s
+That's 70s
+Vevo 70s
+Vevo Country
+That's ROCK
+Vevo Rock
+CJ ENM K-POP
+NEW KPOP
+SMTOWN
+Stingray Today's K-Pop
+Stingray Classic Rock
+Stingray Greatest Holiday Hits
+Stingray Hit List
+Stingray Pop Adult
+Stingray 2000s
+Stingray Easy Listening
+Pokémon
+BABY SHARK TV
+PBS Kids
+Car City Adventures
+Caillou
+Super Mario
+Duck TV
+Kartoon Channel
+Space Live
+Storm Vibes
+Rainy Day Vibes
+Free Riding
+Time2Rlx
+Stingray SPA
+Island Vibes
+Beach Bonfire Vibes
+Ocean Vibes
+Fall Vibes
+Fireplace Vibes
