@@ -1962,6 +1962,14 @@
     <display-name>MTV Spankin' New</display-name>
     <icon src="https://images.pluto.tv/channels/5d14fdb8ca91eedee1633117/colorLogoPNG.png" />
   </channel>
+  <channel id="6a8d96aa2cfd341eb5809214">
+    <display-name>SI TV</display-name>
+    <icon src="https://images.pluto.tv/channels/6a8d96aa2cfd341eb5809214/colorLogoPNG_1790272809808.png" />
+  </channel>
+  <channel id="6972546cc62833833a187f50">
+    <display-name>Willow Sports</display-name>
+    <icon src="https://images.pluto.tv/channels/6972546cc62833833a187f50/colorLogoPNG_1770648792020.png" />
+  </channel>
   <channel id="c0b79a332cfd90b8eeb6d4a0dcb63674">
     <display-name>Top Rank Classics</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/c0b79a332cfd90b8eeb6d4a0dcb63674/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1730998467166_TRClassics_HUD.png" />
@@ -2386,9 +2394,33 @@
     <display-name>Love After Lockup We TV</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951479/168x168.png?type=color_onBlack" />
   </channel>
-  <channel id="99951390">
-    <display-name>PickleballTV</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951390/168x168.png?type=color_onBlack" />
+  <channel id="99951413">
+    <display-name>NASCAR Channel</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951413/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951411">
+    <display-name>Shout! Movies</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951411/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951596">
+    <display-name>Great American RomComs</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951596/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951393">
+    <display-name>Bizarre Foods with Andrew Zimmern</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951393/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951384">
+    <display-name>Bachelor Nation</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951384/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951442">
+    <display-name>My Little Pony</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951442/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951441">
+    <display-name>Power Rangers</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951441/168x168.png?type=color_onBlack" />
   </channel>
   <channel id="400000294">
     <display-name>Watch AEW</display-name>
@@ -2583,5 +2615,126 @@
   </channel>
   <channel id="HoopTV">
     <display-name>Hoop TV</display-name>
+  </channel>
+  <channel id="autv.299-wfn">
+    <display-name>WFN</display-name>
+    <icon src="http://accio.its-newid.net/rt_channel/newid_rt041/lg_channels/img/channel_logo/default/channel_logo.png" />
+  </channel>
+  <channel id="autv.outdoor-channel-australia-geo">
+    <display-name>Outdoor Channel (Australia)</display-name>
+  </channel>
+  <channel id="autv.182-mytime-movie-network">
+    <display-name>MyTime Movie Network</display-name>
+    <icon src="https://d23edfjfpc1xrv.cloudfront.net/MT_logo_200x200.png" />
+  </channel>
+  <channel id="autv.173-universal-westerns">
+    <display-name>Universal Westerns</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984051/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.172-hercules-the-legendary-journeys">
+    <display-name>Hercules: The Legendary Journeys</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984057/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.171-xena-warrior-princess">
+    <display-name>Xena Warrior Princess</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984056/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.178-the-incredible-hulk">
+    <display-name>The Incredible Hulk</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984054/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.176-the-bionic-woman">
+    <display-name>The Bionic Woman</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984058/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.175-the-six-million-dollar-man">
+    <display-name>The Six-Million Dollar Man</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984053/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.179-ironside">
+    <display-name>Ironside</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984055/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.174-the-lone-ranger">
+    <display-name>The Lone Ranger</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984052/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.177-lassie">
+    <display-name>Lassie</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984050/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.191-younghollywood">
+    <display-name>YoungHollywood</display-name>
+    <icon src="https://dtuq5o0udz92b.cloudfront.net/YH-LG_Logo_300x200.png" />
+  </channel>
+  <channel id="autv.370-awe-plus">
+    <display-name>AWE Plus</display-name>
+    <icon src="https://dvvlqr1rtlak3.cloudfront.net/ZEE/ZeeNews/AWE-Plus_400x200.png" />
+  </channel>
+  <channel id="autv.367-globetrotter">
+    <display-name>Globetrotter</display-name>
+    <icon src="https://d2mxb63djushzm.cloudfront.net/images/GLOBETROTTER400x200.png" />
+  </channel>
+  <channel id="autv.342-horse-country">
+    <display-name>Horse &amp; Country</display-name>
+    <icon src="https://d2mxb63djushzm.cloudfront.net/images/hnc_logo.png" />
+  </channel>
+  <channel id="autv.don-t-tell-the-bride-au-geo">
+    <display-name>Don't Tell The Bride (Australia)</display-name>
+  </channel>
+  <channel id="autv.375-love-wine">
+    <display-name>Love Wine</display-name>
+    <icon src="https://d1lvk5a9p6ko2q.cloudfront.net/WINE_logo_LG_500x200.png" />
+  </channel>
+  <channel id="autv.357-smart-healthy-green-living">
+    <display-name>Smart Healthy Green Living</display-name>
+    <icon src="https://d2mxb63djushzm.cloudfront.net/Images/LG_ChannelLogo_SHGL.png" />
+  </channel>
+  <channel id="autv.377-autentic-travel">
+    <display-name>Autentic Travel</display-name>
+    <icon src="http://img.platform.wurl.dev/channel/1517/lg/980216/LG-Logo-PNG-100x100_v2.png" />
+  </channel>
+  <channel id="autv.378-travelxp">
+    <display-name>Travelxp</display-name>
+    <icon src="http://img.platform.wurl.dev/channel/473/lg/1db7f7/LG-Logo-PNG-100x100_v1.png" />
+  </channel>
+  <channel id="autv.301-docsville">
+    <display-name>Docsville</display-name>
+    <icon src="https://d2mxb63djushzm.cloudfront.net/images/DOCSVILLE400x200.png" />
+  </channel>
+  <channel id="autv.291-earthtouch">
+    <display-name>earthtouch</display-name>
+    <icon src="https://dbbafpr18dnj5.cloudfront.net/Images/S3/AMG01823C1/ETTV_Logo_White.png" />
+  </channel>
+  <channel id="autv.305-autentic-history">
+    <display-name>Autentic History</display-name>
+    <icon src="http://img.platform.wurl.dev/channel/1501/lg/3fe535/LG-Logo-PNG-100x100_v2.png" />
+  </channel>
+  <channel id="autv.272-cocobi">
+    <display-name>Cocobi</display-name>
+    <icon src="http://accio.its-newid.net/channel/newid_104/lg_channels/img/channel_logo/default/channel_logo.png?ver=20230915160427" />
+  </channel>
+  <channel id="autv.273-robocar-poli">
+    <display-name>Robocar POLI</display-name>
+    <icon src="http://accio.its-newid.net/channel/newid_108/lg_channels/img/channel_logo/default/channel_logo.png" />
+  </channel>
+  <channel id="autv.pbs-kids-australia-find-correct-aus">
+    <display-name>PBS Kids (Australia)</display-name>
+  </channel>
+  <channel id="autv.170-he-man-masters-of-the-universe">
+    <display-name>He-Man &amp; Masters Of The Universe</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984060/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.261-winx-club-tv">
+    <display-name>Winx Club TV</display-name>
+    <icon src="https://d3bd0tgyk368z1.cloudfront.net/feeds/Images/Winx_Club_TV_400x200.png" />
+  </channel>
+  <channel id="autv.343-trace-stars">
+    <display-name>Trace Stars</display-name>
+    <icon src="https://d3dj3gmzxw0r4q.cloudfront.net/Trace_SportStars/LG_Ch_Logo_460x200.png" />
+  </channel>
+  <channel id="USBD4200016QR">
+    <display-name>PickleballTV</display-name>
+    <icon src="https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD4200016QR_20240520T220130SQUARE.png" />
   </channel>
 </tv>
