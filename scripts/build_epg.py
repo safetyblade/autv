@@ -10,6 +10,7 @@ EPG_SOURCES = [
     Path("epg_pluto_us.xml.gz"),
     Path("epg_pluto_gb.xml.gz"),
     Path("epg_pluto_ca.xml.gz"),
+    Path("epg_roku_all.xml.gz"),
 ]
 
 def playlist_ids():
