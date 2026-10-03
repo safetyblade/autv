@@ -914,10 +914,6 @@
     <display-name>Ryz Sports Network</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/5f9c59c52f0ad475d90a33fdfd14d651/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1755024648037_Ryz_Roku_EPG_DarkBG_V3.png" />
   </channel>
-  <channel id="5976983fa00953dab911a0ebea932943">
-    <display-name>DraftKings</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/5976983fa00953dab911a0ebea932943/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1694201368177_Roku_DKN_HUD_Logo_Centered.png" />
-  </channel>
   <channel id="15cc44e50d8453e18f21ea37713319c5">
     <display-name>Electric Now</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/15cc44e50d8453e18f21ea37713319c5/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1660071204893_1605145912343_EN_Logo_WhiteonBlack_260x147.png" />
@@ -1485,5 +1481,23 @@
   <channel id="e15ebd310d112565">
     <display-name>Real Emergency</display-name>
     <icon src="http://img.platform.wurl.dev/channel/2221/lg/13b87f/LG-Logo-PNG-100x100_v1.png" />
+  </channel>
+  <channel id="GB3500002R8">
+    <display-name>Bundesliga</display-name>
+  </channel>
+  <channel id="GB3800009F0">
+    <display-name>FIFA+ Women</display-name>
+  </channel>
+  <channel id="GB2200002CC">
+    <display-name>GFN Football</display-name>
+  </channel>
+  <channel id="52c2459e8a4c4c8f">
+    <display-name>TOP BARÇA</display-name>
+  </channel>
+  <channel id="cd187615e4e57822">
+    <display-name>Man City 24/7</display-name>
+  </channel>
+  <channel id="rok-vix-liga-mx">
+    <display-name>ViX Lo Mejor de Liga MX</display-name>
   </channel>
 </tv>
