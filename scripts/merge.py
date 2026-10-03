@@ -1,6 +1,5 @@
 from pathlib import Path
 import re
-import unicodedata
 
 BASE = Path("base_upstream.m3u")
 SECONDARY = Path("secondary_upstream.m3u")
@@ -44,32 +43,21 @@ def parse_entries(text: str):
             i += 1
     return entries
 
-def slug(value: str) -> str:
-    value = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode()
-    value = re.sub(r"[^a-zA-Z0-9]+", "-", value).strip("-").lower()
-    return value or "channel"
-
 def attr(extinf: str, key: str) -> str:
     match = re.search(rf'{re.escape(key)}="([^"]*)"', extinf)
     return match.group(1) if match else ""
 
 def normalise(name: str, extinf: str, url: str) -> str:
-    channel_id = attr(extinf, "channel-id") or f"autv.{slug(name)}"
-    tvg_id = attr(extinf, "tvg-id") or channel_id
     tvg_name = attr(extinf, "tvg-name") or name
-    tvg_chno = attr(extinf, "tvg-chno")
     tvg_logo = attr(extinf, "tvg-logo")
     group = attr(extinf, "group-title") or "Australia"
 
     fields = [
-        f'channel-id="{channel_id}"',
-        f'tvg-id="{tvg_id}"',
-        f'tvg-chno="{tvg_chno}"',
         f'tvg-name="{tvg_name}"',
+        f'group-title="{group}"',
     ]
     if tvg_logo:
-        fields.append(f'tvg-logo="{tvg_logo}"')
-    fields.append(f'group-title="{group}"')
+        fields.insert(1, f'tvg-logo="{tvg_logo}"')
 
     return f'#EXTINF:-1 {" ".join(fields)},{name}\n{url}'
 
