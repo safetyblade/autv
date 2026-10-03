@@ -18,9 +18,13 @@ This XMLTV file is optional. It is not required for channel exposure, but it giv
 
 ## How it works
 
-The refresh keeps the main channel list intact and appends selected extra channels under:
+The refresh keeps the main channel list intact and appends selected extra channels from the supported secondary sources under:
 
 `# ---- Curated extras ----`
+
+Selected Samsung-style channels are kept in `selected_channels.txt`.
+
+Selected LG Australia channels are kept in `selected_lg_channels.txt`.
 
 It also creates a matching XMLTV channel definition for each curated extra.
 
@@ -35,15 +39,12 @@ It also creates a matching XMLTV channel definition for each curated extra.
 
 ## Add or remove channels
 
-1. Find or select a candidate channel.
-2. Test the stream manually where practical.
-3. Edit `selected_channels.txt`.
-4. Add or remove channel names, one per line.
-5. Open **Actions → Refresh playlist → Run workflow**.
-6. Start a fresh run from the current `main` branch.
-7. When it finishes, `playlist.m3u` and `curated.xml` are refreshed.
-8. Rescan TVirl and enable newly added channels in Android TV if required.
-9. Remove any channel that imports but repeatedly fails on playback.
+1. Add or remove channel names in the relevant selected list.
+2. Open **Actions → Refresh playlist → Run workflow**.
+3. Start a fresh run from the current `main` branch.
+4. When it finishes, `playlist.m3u` and `curated.xml` are refreshed.
+5. Rescan TVirl and enable newly added channels in Android TV if required.
+6. Remove any channel that imports but repeatedly fails on playback.
 
 Do not use **Re-run jobs** on an old Action run.
 
@@ -53,8 +54,10 @@ Open the **Build playlist** step in the Action log.
 
 It reports:
 
-- `ADDED: channel name`
-- `NOT FOUND: channel name`
+- `ADDED SAMSUNG: channel name`
+- `NOT FOUND SAMSUNG: channel name`
+- `ADDED LG: channel name`
+- `NOT FOUND LG: channel name`
 
 `ADDED` means the channel was found in the source and written to the playlist. It does **not** prove the stream is currently playable.
 
