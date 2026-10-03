@@ -1,14 +1,10 @@
-name: Refresh playlists
+name: Refresh playlist
 
 on:
   workflow_dispatch:
 
 permissions:
   contents: write
-
-concurrency:
-  group: refresh-playlists
-  cancel-in-progress: true
 
 jobs:
   refresh:
@@ -19,34 +15,29 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v5
 
-      - name: Download base playlist
+      - name: Download source playlists
         shell: bash
         run: |
           set -euo pipefail
-          curl --fail --silent --show-error --location             --retry 3 --retry-delay 5             --connect-timeout 15 --max-time 60             "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plex_au.m3u"             --output base_upstream.m3u
+          curl --fail --silent --show-error --location "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plex_au.m3u" --output base_upstream.m3u
+          curl --fail --silent --show-error --location "https://www.apsattv.com/ssungaus.m3u" --output secondary_upstream.m3u
 
-      - name: Download secondary playlist
-        shell: bash
-        run: |
-          set -euo pipefail
-          curl --fail --silent --show-error --location             --retry 3 --retry-delay 5             --connect-timeout 15 --max-time 60             "https://www.apsattv.com/ssungaus.m3u"             --output secondary_upstream.m3u
-
-      - name: Build production and test playlists
+      - name: Build playlist
         run: python3 scripts/merge.py
 
-      - name: Remove temporary files
-        run: rm -f base_upstream.m3u secondary_upstream.m3u
-
-      - name: Commit generated playlists only when changed
+      - name: Publish playlist
         shell: bash
         run: |
           set -euo pipefail
-          if git diff --quiet -- playlist.m3u test-playlist.m3u; then
+          rm -f base_upstream.m3u secondary_upstream.m3u
+
+          if git diff --quiet -- playlist.m3u; then
             echo "No playlist changes."
             exit 0
           fi
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add playlist.m3u test-playlist.m3u
-          git commit -m "chore: refresh generated playlists"
+          git add playlist.m3u
+          git commit -m "chore: refresh playlist"
           git push
