@@ -12,6 +12,7 @@ PLUTO_GB = Path("pluto_gb_upstream.m3u")
 ROKU = Path("roku_upstream.m3u")
 XUMO = Path("xumo_upstream.m3u")
 TUBI = Path("tubi_upstream.m3u")
+SELECTED_PLEX = Path("selected_plex_channels.txt")
 SELECTED_SAMSUNG = Path("selected_channels.txt")
 SELECTED_LG = Path("selected_lg_channels.txt")
 SELECTED_PLUTO = Path("selected_pluto_channels.txt")
@@ -102,10 +103,11 @@ def add_selected(source_name: str, entries, selected_file: Path, extras, xml_cha
             print(f"NOT FOUND {source_name}: {name}")
     return missing
 
-base = read(BASE)
-if not base.startswith("#EXTM3U"):
-    raise SystemExit("Base playlist is invalid")
+plex_text = read(BASE)
+if not plex_text.startswith("#EXTM3U"):
+    raise SystemExit("Plex playlist is invalid")
 
+plex_entries = parse_entries(plex_text)
 samsung_entries = parse_entries(read(SAMSUNG))
 lg_entries = parse_entries(read(LG))
 pluto_entries = (
@@ -120,6 +122,7 @@ tubi_entries = parse_entries(read(TUBI))
 extras = []
 xml_channels = []
 
+missing_plex = add_selected("PLEX", plex_entries, SELECTED_PLEX, extras, xml_channels)
 missing_samsung = add_selected("SAMSUNG", samsung_entries, SELECTED_SAMSUNG, extras, xml_channels)
 missing_lg = add_selected("LG", lg_entries, SELECTED_LG, extras, xml_channels)
 missing_pluto = add_selected("PLUTO", pluto_entries, SELECTED_PLUTO, extras, xml_channels)
@@ -133,9 +136,9 @@ for name, extinf, url in parse_entries(read(CUSTOM)):
     xml_channels.append(xml)
     print(f"ADDED CUSTOM: {name}")
 
-merged = re.sub(r'^#EXTM3U.*$', f'#EXTM3U url-tvg="{EPG_URL}"', base, count=1, flags=re.MULTILINE)
+merged = f'#EXTM3U url-tvg="{EPG_URL}"\n'
 if extras:
-    merged += "\n\n# ---- Curated extras ----\n" + "\n".join(extras)
+    merged += "\n# ---- Selected channels ----\n" + "\n".join(extras)
 merged += "\n"
 
 count = sum(1 for line in merged.splitlines() if line.startswith("#EXTINF:"))
@@ -158,12 +161,15 @@ print("")
 print(f"Wrote {OUTPUT} with {count} channels")
 print(f"Curated channels added: {len(extras)}")
 print(f"Wrote {XMLTV} with {len(xml_channels)} channel definitions")
+print(f"Plex requested channels not found: {len(missing_plex)}")
 print(f"Samsung requested channels not found: {len(missing_samsung)}")
 print(f"LG requested channels not found: {len(missing_lg)}")
 print(f"Pluto requested channels not found: {len(missing_pluto)}")
 print(f"Roku requested channels not found: {len(missing_roku)}")
 print(f"Xumo requested channels not found: {len(missing_xumo)}")
 print(f"Tubi requested channels not found: {len(missing_tubi)}")
+if missing_plex:
+    print("Missing Plex list: " + " | ".join(missing_plex))
 if missing_samsung:
     print("Missing Samsung list: " + " | ".join(missing_samsung))
 if missing_lg:
