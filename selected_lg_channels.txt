@@ -20,9 +20,7 @@ Universal Westerns
 Lassie
 MyTime Movie Network
 He-Man & Masters Of The Universe
-10 Drama
 YoungHollywood
-10 Comedy
 Earthtouch
 Cocobi
 Robocar POLI
@@ -32,4 +30,3 @@ Docsville
 MMA TV
 Horse & Country
 Trace Stars
-Nickelodeon
