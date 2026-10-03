@@ -125,3 +125,15 @@ The build order is:
 7. publish.
 
 This means future ordering work happens in the guide, not in upstream source lists.
+## End-of-QA targeted playback test
+
+Park these newly added Sport channels for one final playback check after EPG and genre QA are complete:
+
+- New Japan Pro Wrestling World
+- Brøndby TV
+- BVB-Frauen
+- Canal do Inter
+- Hoop TV
+
+This is a temporary QA note only. The final working guide remains limited to channels that pass playback testing.
+
