@@ -4,6 +4,26 @@ This document defines the channel-number, genre, subgenre and ordering model for
 
 The authoritative data lives in `channel_guide.csv`. The generated playlist is rebuilt from that guide, and the guide is also intended to become the data source for the old-school TV guide presentation.
 
+## Current guide snapshot
+
+The current authoritative guide contains **639 active channels**.
+
+| Genre | Active channels |
+| --- | ---: |
+| News | 24 |
+| Sport | 93 |
+| Movies | 37 |
+| Game Shows | 19 |
+| Crime | 46 |
+| Comedy | 45 |
+| Entertainment | 150 |
+| Reality & Lifestyle | 90 |
+| Factual | 55 |
+| Kids & Animation | 51 |
+| Music | 29 |
+
+This is the intended lineup. The generated playlist may temporarily contain fewer channels if an approved upstream feed is unavailable.
+
 ## Canonical channel blocks
 
 | Range | Genre | Purpose |
