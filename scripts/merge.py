@@ -121,7 +121,8 @@ for name, extinf, url in parse_entries(read(CUSTOM)):
     xml_channels.append(xml)
     print(f"ADDED CUSTOM: {name}")
 
-merged = re.sub(r'^#EXTM3U.*
+merged = re.sub(r'^#EXTM3U.*$', f'#EXTM3U url-tvg="{EPG_URL}"', base, count=1, flags=re.MULTILINE)
+if extras:
     merged += "\n\n# ---- Curated extras ----\n" + "\n".join(extras)
 merged += "\n"
 
