@@ -15,6 +15,7 @@ SELECTED_PLUTO = Path("selected_pluto_channels.txt")
 CUSTOM = Path("custom.m3u")
 OUTPUT = Path("playlist.m3u")
 XMLTV = Path("curated.xml")
+EPG_URL = "https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz"
 
 def read(path: Path) -> str:
     if not path.exists():
@@ -120,7 +121,40 @@ for name, extinf, url in parse_entries(read(CUSTOM)):
     xml_channels.append(xml)
     print(f"ADDED CUSTOM: {name}")
 
-merged = base
+merged = re.sub(r'^#EXTM3U.*
+    merged += "\n\n# ---- Curated extras ----\n" + "\n".join(extras)
+merged += "\n"
+
+count = sum(1 for line in merged.splitlines() if line.startswith("#EXTINF:"))
+if count < 10:
+    raise SystemExit(f"Refusing suspicious playlist: only {count} channels")
+
+OUTPUT.write_text(merged, encoding="utf-8")
+
+xml_lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<tv generator-info-name="autv">']
+for channel in xml_channels:
+    xml_lines.append(f'  <channel id="{escape(channel["id"])}">')
+    xml_lines.append(f'    <display-name>{escape(channel["name"])}</display-name>')
+    if channel["logo"]:
+        xml_lines.append(f'    <icon src="{escape(channel["logo"])}" />')
+    xml_lines.append('  </channel>')
+xml_lines.append('</tv>')
+XMLTV.write_text("\n".join(xml_lines) + "\n", encoding="utf-8")
+
+print("")
+print(f"Wrote {OUTPUT} with {count} channels")
+print(f"Curated channels added: {len(extras)}")
+print(f"Wrote {XMLTV} with {len(xml_channels)} channel definitions")
+print(f"Samsung requested channels not found: {len(missing_samsung)}")
+print(f"LG requested channels not found: {len(missing_lg)}")
+print(f"Pluto requested channels not found: {len(missing_pluto)}")
+if missing_samsung:
+    print("Missing Samsung list: " + " | ".join(missing_samsung))
+if missing_lg:
+    print("Missing LG list: " + " | ".join(missing_lg))
+if missing_pluto:
+    print("Missing Pluto list: " + " | ".join(missing_pluto))
+, f'#EXTM3U url-tvg="{EPG_URL}"', base, count=1)
 if extras:
     merged += "\n\n# ---- Curated extras ----\n" + "\n".join(extras)
 merged += "\n"
