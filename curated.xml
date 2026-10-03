@@ -1482,9 +1482,6 @@
     <display-name>Real Emergency</display-name>
     <icon src="http://img.platform.wurl.dev/channel/2221/lg/13b87f/LG-Logo-PNG-100x100_v1.png" />
   </channel>
-  <channel id="GB3500002R8">
-    <display-name>Bundesliga</display-name>
-  </channel>
   <channel id="GB3800009F0">
     <display-name>FIFA+ Women</display-name>
   </channel>
