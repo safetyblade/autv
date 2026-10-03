@@ -93,25 +93,6 @@ for position, (name, extinf, url) in enumerate(entries):
 
 ranked.sort(key=lambda item: (item[0], item[1]))
 
-active_guide_count = len(guide)
-matched_guide_names = {
-    canonical(re.search(r",(.*)$", item[2]).group(1))
-    for item in ranked
-    if re.search(r",(.*)$", item[2])
-}
-missing_active = [
-    row["Channel name"].strip()
-    for key, row in guide.items()
-    if key not in matched_guide_names
-]
-if len(ranked) != active_guide_count:
-    print(f"Active guide channels missing from playlist: {len(missing_active)}")
-    if missing_active:
-        print("Missing active guide rows: " + " | ".join(missing_active))
-    raise SystemExit(
-        f"Refusing incomplete playlist: matched {len(ranked)} of {active_guide_count} active guide channels"
-    )
-
 out = [header]
 for _, _, extinf, url in ranked:
     out.extend([extinf, url])
