@@ -16,6 +16,7 @@ Channel name,Category,EPG,Source,Alternate source,Status
 182 MyTime Movie Network,Movies,Full,Curated,,Active
 191 YoungHollywood,General Entertainment,Full,Curated,,Active
 21 Jump Street,General Entertainment,Full,Plex AU,,Active
+25 Words or Less,Game Shows,Full,Xumo,,Active
 261 Winx Club TV,Kids & Animation,Full,Curated,,Active
 272 Cocobi,Kids & Animation,Full,Curated,,Active
 273 Robocar POLI,Kids & Animation,Full,Curated,,Active
@@ -36,16 +37,25 @@ Channel name,Category,EPG,Source,Alternate source,Status
 5-Minute Crafts,General Entertainment,Full,Plex AU,,Active
 60 Minutes,Factual,Full,Pluto,,Active
 8 Out of 10 Cats (Australia),Comedy,Full,Curated,,Active
+A&E Alaska State Troopers,Crime TV,Full,Xumo,,Active
+A&E Live PD: Greatest Shifts,Crime TV,Full,Xumo,,Active
 ABC News Live,News & Business,Full,Pluto,,Active
+ACC Digital Network,Sports,Full,Xumo,,Active
 ACL Cornhole TV,Sport,Full,Plex AU,,Active
 Action Hollywood Movies,Movies,Full,Plex AU,,Active
 AddictaTV,General Entertainment,Full,Plex AU,,Active
 Adventure Earth,Factual,Full,Plex AU,,Active
 AfroLandTV,General Entertainment,Full,Plex AU,,Active
+ALF,Comedy,Full,Roku,,Active
+Alfred Hitchcock Presents,Season of Scares,Full,Xumo,,Active
 Alternative,General Entertainment,Full,Plex AU,,Active
+Always Funny Videos,Comedy,Full,Roku,,Active
+AMC Thrillers,Season of Scares,Full,Xumo,,Active
+America's Got Talent,TV & Entertainment,Full,Roku,,Active
 America's Next Top Model,General Entertainment,Full,Pluto,,Active
 America's Test Kitchen,Lifestyle,Full,Pluto,,Active
 American Crime Channel,Crime & Mystery,Full,Plex AU,,Active
+American Ninja Warrior,TV & Entertainment,Full,Roku,,Active
 American Pickers,General Entertainment,Full,Pluto,,Active
 Ancient Aliens,General Entertainment,Full,Pluto,,Active
 Andromeda,General Entertainment,Full,Plex AU,,Active
@@ -59,12 +69,16 @@ Asian Drama,Drama,Full,Plex AU,,Active
 Ax Men,General Entertainment,Full,Plex AU,,Active
 Baby Einstein,Kids & Animation,Full,Plex AU,,Active
 Baby Shark TV,Kids & Animation,Full,Pluto,,Active
+Bachelor Nation,Reality TV,Full,Plex AU,,Active
 Bad Girls Club,General Entertainment,Full,Pluto,,Active
 Bar Rescue,General Entertainment,Full,Pluto,,Active
 Bassmaster,General Entertainment,Full,Plex AU,,Active
 Battlestar Galactica,General Entertainment,Full,Pluto,,Active
 Baywatch,Drama,Full,Pluto,,Active
+BBC Drama,Action & Drama,Full,Xumo,,Active
 BBC Earth,Factual,Full,Pluto,,Active
+BBC Food,Food,Full,Xumo,,Active
+BBC Home & Garden,Home & Design,Full,Xumo,,Active
 BBC News,News & Business,Full,Pluto,,Active
 beIN SPORTS XTRA,Sport,Full,Plex AU,,Active
 Bellator MMA,Sport,Full,Pluto,,Active
@@ -73,10 +87,12 @@ Beverly Hills 90210,Drama,Full,Pluto,,Active
 Beyblade,Kids & Animation,Full,Plex AU,,Active
 Beyond Belief,General Entertainment,Full,Plex AU,,Active
 Beyond Paranormal,Crime & Mystery,Full,Plex AU,,Active
+Big 12 Studios,Sports,Full,Xumo,,Active
 Big Brother,General Entertainment,Full,Pluto,,Active
 Billboard Español TV,General Entertainment,Full,Plex AU,,Active
 Billiard TV,Sport,Full,Plex AU,,Active
 Bizaar,General Entertainment,Full,Plex AU,,Active
+Bizarre Foods with Andrew Zimmern,Food,Full,Plex AU,,Active
 Black Ink Crew,General Entertainment,Full,Pluto,,Active
 Bloodline Detectives,Crime & Mystery,Full,Pluto,,Active
 Bloomberg Originals,News & Business,Full,Plex AU,,Active
@@ -85,17 +101,19 @@ Blue Bloods,Drama,Full,Pluto,,Active
 Bon Voyage,General Entertainment,Full,Plex AU,,Active
 Bondi Vet,General Entertainment,Full,Plex AU,,Active
 BOOT,General Entertainment,Full,Plex AU,,Active
+Bounce XL,Comedy,Full,Xumo,,Active
 Bowling TV,Sport,Full,Plex AU,,Active
 Brat TV,General Entertainment,Full,Plex AU,,Active
 Bravo Vault,General Entertainment,Full,Pluto,,Active
+Braxton Family Values,TV & Entertainment,Full,Roku,,Active
 Breaking Sports News,Sport,Full,Plex AU,,Active
 Bring It!,General Entertainment,Full,Plex AU,,Active
 BritBox Mysteries,Drama,Full,Pluto,,Active
 British Screen Classics,Movies,Full,Pluto,,Active
-BUZZR,Game Shows,Full,Roku,,Active
 C4 en Alerta,General Entertainment,Full,Plex AU,,Active
 Cagney & Lacey,Crime & Mystery,Full,Pluto,,Active
 Camp Spoopy,General Entertainment,Full,Plex AU,,Active
+Candyjar,TV & Entertainment,Full,Roku,,Active
 Catfish,General Entertainment,Full,Pluto,,Active
 CBC News,News & Business,Full,Plex AU,,Active
 CBS News 24/7,News & Business,Full,Pluto,,Active
@@ -116,11 +134,14 @@ Cold Case Files by A&E,Crime & Mystery,Full,Pluto,,Active
 CombaTV,General Entertainment,Full,Plex AU,,Active
 Come Dine With Me,General Entertainment,Full,Plex AU,,Active
 Comedy Central Pluto TV,Comedy,Full,Pluto,,Active
+Comedy Dynamics,Comedy,Full,Xumo,,Active
+Complex TV,TV & Entertainment,Full,Roku,,Active
 Cooking Panda,Lifestyle,Full,Plex AU,,Active
 COPS,General Entertainment,Full,Plex AU,,Active
 COPS Reloaded,General Entertainment,Full,Plex AU,,Active
 Corner Gas,General Entertainment,Full,Plex AU,,Active
 Court TV,Crime & Mystery,Full,Pluto,,Active
+Court TV Legendary Trials,Law,Full,Roku,,Active
 CraftsyTV,General Entertainment,Full,Plex AU,,Active
 Creator Television,General Entertainment,Full,Plex AU,,Active
 Cricket Gold,General Entertainment,Full,Plex AU,,Active
@@ -135,6 +156,7 @@ CSI: Miami,Drama,Full,Pluto,,Active
 CSI: NY,Drama,Full,Pluto,,Active
 Curzon,Movies,Full,Pluto,,Active
 Dance Moms,General Entertainment,Full,Pluto,,Active
+Dark Matter TV,Season of Scares,Full,Xumo,,Active
 Dateline 24/7,Crime & Mystery,Full,Pluto,,Active
 DAZN Ringside,Sport,Full,Pluto,,Active
 Deadly Women,Crime & Mystery,Full,Pluto,,Active
@@ -150,7 +172,10 @@ Documentary+,Factual,Full,Plex AU,,Active
 Dog The Bounty Hunter,General Entertainment,Full,Plex AU,,Active
 Dog Whisperer,General Entertainment,Full,Plex AU,,Active
 Don't Tell The Bride (AU) Geo,General Entertainment,Full,Curated,,Active
+Dove,Faith & Family,Full,Roku,,Active
+Dr. G: Medical Examiner,Crime,Full,Roku,,Active
 Dr. Phil,General Entertainment,Full,Plex AU,,Active
+DraftKings,Sports,Full,Roku,,Active
 Dry Bar Comedy (Australia),Comedy,Full,Curated,,Active
 Duck Dynasty,General Entertainment,Full,Plex AU,,Active
 Dynasty,General Entertainment,Full,Pluto,,Active
@@ -158,6 +183,7 @@ Earth: Final Conflict,Sport,Full,Pluto,,Active
 Easy Listening,Music,Full,Plex AU,,Active
 Eddie's Wonderland,Factual,Full,Plex AU,,Active
 El Conflicto TV,Sport,Full,Plex AU,,Active
+Electric Now,Sports,Full,Roku,,Active
 Escape to the Country (Australia),General Entertainment,Full,Curated,,Active
 Euro Hits,General Entertainment,Full,Plex AU,,Active
 Euronews,News & Business,Full,Plex AU,,Active
@@ -170,17 +196,28 @@ Evidence of Evil,Crime & Mystery,Full,Pluto,,Active
 Evolution Earth,Factual,Full,Plex AU,,Active
 Éxitos del Momento,General Entertainment,Full,Plex AU,,Active
 FailArmy,General Entertainment,Full,Plex AU,,Active
+Family Feud,Game Shows,Full,Xumo,,Active
+Family Feud Classic,Game Shows,Full,Xumo,,Active
 Family Ties,Comedy,Full,Pluto,,Active
 Farscape,General Entertainment,Full,Pluto,,Active
 FashionTV,General Entertainment,Full,Plex AU,,Active
 FBI Files,Crime & Mystery,Full,Pluto,,Active
 Fear Factor,General Entertainment,Full,Plex AU,,Active
+Field & Stream TV,Sports,Full,Xumo,,Active
 FIFA+,General Entertainment,Full,Plex AU,,Active
 Fifth Gear (UK),General Entertainment,Full,Plex AU,,Active
 Fight Network,General Entertainment,Full,Plex AU,,Active
+FilmRise Black TV,TV & Entertainment,Full,Roku,,Active
+FilmRise British TV,TV & Entertainment,Full,Roku,,Active
+FilmRise Classic TV,TV & Entertainment,Full,Roku,,Active
 FilmRise Creators,Movies,Full,Plex AU,,Active
+FilmRise Free Movies,TV & Entertainment,Full,Roku,,Active
+FilmRise Horror,Movies,Full,Roku,,Active
+FilmRise Mysteries,Crime,Full,Roku,,Active
+FilmRise Western,Sports,Full,Roku,,Active
 Flashback 70s,General Entertainment,Full,Plex AU,,Active
 FloHockey 24/7,Sport,Full,Pluto,,Active
+FloRacing 24/7,Auto & Motorsports,Full,Roku,,Active
 Forensic Files,Crime & Mystery,Full,Plex AU,,Active
 Four in a Bed,General Entertainment,Full,Plex AU,,Active
 FOX Sports,Sport,Full,Pluto,,Active
@@ -188,8 +225,10 @@ FRANCE 24,General Entertainment,Full,Plex AU,,Active
 Frasier,Comedy,Full,Pluto,,Active
 FrightFlix,General Entertainment,Full,Plex AU,,Active
 FTF Sports,Sport,Full,Plex AU,,Active
+Fubo Sports Network,Sports,Full,Roku,,Active
 FUEL TV,General Entertainment,Full,Plex AU,,Active
 Galxy TV,General Entertainment,Full,Plex AU,,Active
+GARDEN with Monty Don,House/Garden,Full,Roku,,Active
 Garfield and Friends,Kids & Animation,Full,Pluto,,Active
 GB News,News & Business,Full,Plex AU,,Active
 Geordie Shore,General Entertainment,Full,Pluto,,Active
@@ -203,18 +242,27 @@ GLORY Kickboxing,Sport,Full,Plex AU,,Active
 Go Wild,Factual,Full,Plex AU,,Active
 GolfPass,Sport,Full,Pluto,,Active
 Gone Fishing,General Entertainment,Full,Plex AU,,Active
+Gravitas Movies,Movies,Full,Xumo,,Active
+Great American RomComs,Movies,Full,Plex AU,,Active
 Great British Menu,General Entertainment,Full,Plex AU,,Active
+Green Acres,Classic TV,Full,Xumo,,Active
+Grit Xtra,TV & Entertainment,Full,Roku,,Active
 Grjngo - Western Movies,Movies,Full,Plex AU,,Active
+Growing Up Hip Hop WeTV,TV & Entertainment,Full,Roku,,Active
 GrowthDay Network,General Entertainment,Full,Plex AU,,Active
 GUSTOTV,General Entertainment,Full,Plex AU,,Active
 Hallmark Movies & More,Movies,Full,Pluto,,Active
 Happy Days,General Entertainment,Full,Pluto,,Active
 Hard Knocks,General Entertainment,Full,Plex AU,,Active
 Hardcore Pawn,General Entertainment,Full,Plex AU,,Active
+Haunt TV,Crime & Mystery,Full,Curated,,Active
 Haunt TV (Australia),Crime & Mystery,Full,Curated,,Active
 Hawaii Five-O,Crime & Mystery,Full,Pluto,,Active
+HBO Boxing,Combat Sports,Full,Xumo,,Active
 Heartland,General Entertainment,Full,Plex AU,,Active
 Hell's Kitchen,General Entertainment,Full,Plex AU,,Active
+Hell's Kitchen | Kitchen Nightmares,Cooking,Full,Roku,,Active
+Hi-Yah!,Movies,Full,Xumo,,Active
 Highway Thru Hell,General Entertainment,Full,Plex AU,,Active
 Highway to Heaven,General Entertainment,Full,Plex AU,,Active
 Hip-Hop/R&B,General Entertainment,Full,Plex AU,,Active
@@ -236,6 +284,7 @@ iCarly TV,Kids & Animation,Full,Pluto,,Active
 Ice Pilots NWT,General Entertainment,Full,Plex AU,,Active
 Ice Road Truckers,General Entertainment,Full,Plex AU,,Active
 Ideas En 5 Minutos,General Entertainment,Full,Plex AU,,Active
+In the Heat of the Night,Classic TV,Full,Xumo,,Active
 INFAST (Australia),General Entertainment,Full,Curated,,Active
 Ink Master,General Entertainment,Full,Pluto,,Active
 Inside Outside,General Entertainment,Full,Plex AU,,Active
@@ -244,6 +293,9 @@ Intervention,General Entertainment,Full,Plex AU,,Active
 Inuyasha,Kids & Animation,Full,Pluto,,Active
 INWILD (Australia),Factual,Full,Curated,,Active
 INWONDER (Australia),Factual,Full,Curated,,Active
+ION,Action & Drama,Full,Xumo,,Active
+ION Mystery,Season of Scares,Full,Xumo,,Active
+ION Plus,Action & Drama,Full,Xumo,,Active
 Iron Chef,Lifestyle,Full,Plex AU,,Active
 ITV Deportes,General Entertainment,Full,Plex AU,,Active
 Jade Fever,General Entertainment,Full,Plex AU,,Active
@@ -252,20 +304,29 @@ JAIL,Crime & Mystery,Full,Plex AU,,Active
 Jane the Virgin,Drama,Full,Pluto,,Active
 Johnny Carson TV,General Entertainment,Full,Plex AU,,Active
 Journy,General Entertainment,Full,Plex AU,,Active
+JoySauce Network,TV & Entertainment,Full,Roku,,Active
 Judge Nosey,General Entertainment,Full,Plex AU,,Active
 Just For Laughs Gags,Comedy,Full,Plex AU,,Active
 Kartoon Channel (Australia),Kids & Animation,Full,Curated,,Active
 King of Queens,Comedy,Full,Pluto,,Active
 Kitchen Battles,General Entertainment,Full,Pluto,,Active
 Law & Order,Drama,Full,Pluto,,Active
+Law&Crime,Crime TV,Full,Xumo,,Active
+Leave It to Beaver,Classic TV,Full,Xumo,,Active
 Legacy,General Entertainment,Full,Plex AU,,Active
 LEGO Kids TV,Kids & Animation,Full,Pluto,,Active
+Let's Make a Deal,Game Show,Full,Roku,,Active
 Life Down Under,General Entertainment,Full,Plex AU,,Active
+Life with Derek,TV & Entertainment,Full,Roku,,Active
 Life+Style,General Entertainment,Full,Plex AU,,Active
 Lifetime Movie Favorites,Movies,Full,Pluto,,Active
+Little House on the Prairie,Westerns & Country,Full,Xumo,,Active
 Little Women: LA,General Entertainment,Full,Plex AU,,Active
+Live PD: Presents,Crime,Full,Roku,,Active
+LOL Network,Comedy,Full,Roku,,Active
 Lone Star,General Entertainment,Full,Plex AU,,Active
 Love & Hip Hop,General Entertainment,Full,Pluto,,Active
+Love After Lockup We TV,Reality TV,Full,Xumo,,Active
 Love Nature,Factual,Full,Pluto,,Active
 Lucha Plus,General Entertainment,Full,Plex AU,,Active
 MacGyver,Drama,Full,Pluto,,Active
@@ -276,8 +337,12 @@ Matlock,General Entertainment,Full,Pluto,,Active
 Maverick Black Cinema,Movies,Full,Plex AU,,Active
 Max & Ruby,Kids & Animation,Full,Pluto,,Active
 Mayday: Air Disaster,General Entertainment,Full,Plex AU,,Active
+McLeod's Daughters,Westerns & Country,Full,Xumo,,Active
 Medical Detectives,Crime & Mystery,Full,Pluto,,Active
 Metal.Rocks,General Entertainment,Full,Plex AU,,Active
+MGM Presents,Movies,Full,Xumo,,Active
+MGM Presents: Action,Movies,Full,Xumo,,Active
+MGM Presents: Westerns,Westerns & Country,Full,Xumo,,Active
 Midsomer Murders,Drama,Full,Pluto,,Active
 Million Dollar Dream Home,Lifestyle,Full,Plex AU,,Active
 Million Dollar Listing Vault,General Entertainment,Full,Pluto,,Active
@@ -288,8 +353,11 @@ Modern Marvels,General Entertainment,Full,Plex AU,,Active
 MODUS Super Series Darts,Sport,Full,Pluto,,Active
 Mona The Vampire,Kids & Animation,Full,Pluto,,Active
 Monster Jam,Sport,Full,Plex AU,Roku,Active
+Moonbug Kids,Other,Full,Roku,,Active
 More U,General Entertainment,Full,Plex AU,,Active
 Most Haunted,Crime & Mystery,Full,Plex AU,,Active
+Movie Hub,Sports,Full,Roku,,Active
+Movie Hub Action,Sports,Full,Roku,,Active
 Movieitaly Channel,Movies,Full,Plex AU,,Active
 MOVIESPHERE,Movies,Full,Plex AU,,Active
 Mr Bean Animated (Australia),Comedy,Full,Curated,,Active
@@ -301,15 +369,21 @@ MTV Jersey Shore,General Entertainment,Full,Pluto,,Active
 MTV Reality,General Entertainment,Full,Pluto,,Active
 MTV Ridiculousness,General Entertainment,Full,Pluto,,Active
 MTV Spankin' New,Music,Full,Pluto,,Active
+Murdoch Mysteries,Action & Drama,Full,Xumo,,Active
 Mutant X,General Entertainment,Full,Plex AU,,Active
+My Little Pony,Kids,Full,Plex AU,,Active
 Mythbusters,General Entertainment,Full,Plex AU,,Active
 Mythical 24/7,General Entertainment,Full,Plex AU,,Active
 Narcos,Drama,Full,Pluto,,Active
 Naruto,Kids & Animation,Full,Pluto,,Active
+NASCAR Channel,Automotive,Full,Plex AU,,Active
 Nash Bridges,Drama,Full,Pluto,,Active
 Nashville,General Entertainment,Full,Plex AU,,Active
+Nature Moments,Documentary,Full,Roku,,Active
 Naturetime (Australia),Factual,Full,Curated,,Active
+NBC Comedy Vault,Comedy,Full,Xumo,,Active
 NBC News NOW,News & Business,Full,Pluto,,Active
+NBC Sports NOW,Sports,Full,Xumo,,Active
 NCIS,General Entertainment,Full,Pluto,,Active
 NCIS: Los Angeles,General Entertainment,Full,Pluto,,Active
 NEW KFOOD,Lifestyle,Full,Plex AU,,Active
@@ -328,23 +402,32 @@ Nosey,General Entertainment,Full,Plex AU,,Active
 Nosey Escándalos,General Entertainment,Full,Plex AU,,Active
 Nothin' But 90s,General Entertainment,Full,Plex AU,,Active
 Novelisima,General Entertainment,Full,Plex AU,,Active
+ONE Championship,Combat Sports,Full,Xumo,,Active
 One Piece,Kids & Animation,Full,Pluto,,Active
 Operation Repo,General Entertainment,Full,Plex AU,,Active
 Outdoor Channel (Australia) Geo,Factual,Full,Curated,,Active
+OuterSphere by Lionsgate,Horror & Sci-Fi,Full,Xumo,,Active
 OUTflix Proud,General Entertainment,Full,Plex AU,,Active
+Oxygen True Crime Archives,Crime TV,Full,Xumo,,Active
 Pac-12 Insider,General Entertainment,Full,Plex AU,,Active
+Pam Grier's Soul Flix,Sports,Full,Roku,,Active
 Paramount Movie Channel,Movies,Full,Pluto,,Active
+Paranormal Chronicles,Documentary,Full,Roku,,Active
+Paternity Court,TV & Entertainment,Full,Roku,,Active
+PBS Antiques Roadshow,Auction,Full,Roku,,Active
 PBS History,Factual,Full,Plex AU,,Active
 PBS Kids (Australia) find correct aus,Kids & Animation,Full,Curated,,Active
 PBS Nature,Factual,Full,Pluto,,Active
 PBS Science,Factual,Full,Plex AU,,Active
 PeliMex,General Entertainment,Full,Plex AU,,Active
+Penn & Teller: Fool Us,TV & Entertainment,Full,Roku,,Active
 People are Awesome,General Entertainment,Full,Plex AU,,Active
 Peppa Pig,Kids & Animation,Full,Pluto,,Active
 Perry Mason,General Entertainment,Full,Pluto,,Active
 Pet Club TV (Australia),General Entertainment,Full,Curated,,Active
 PFL MMA,Sport,Full,Plex AU,,Active
 PGA TOUR,General Entertainment,Full,Plex AU,,Active
+PickleballTV,Sports,Full,Plex AU,,Active
 PickleTV,General Entertainment,Full,Plex AU,,Active
 Pitufo TV,General Entertainment,Full,Plex AU,,Active
 Pluto TV Action Movies,Movies,Full,Pluto,,Active
@@ -367,8 +450,11 @@ Poker Night TV,General Entertainment,Full,Plex AU,,Active
 PokerGO,General Entertainment,Full,Plex AU,,Active
 POP,General Entertainment,Full,Plex AU,,Active
 Pop Adult,General Entertainment,Full,Plex AU,,Active
+PopCorn Central,Sports,Full,Roku,,Active
 Popular Science,Factual,Full,Plex AU,,Active
+Portlandia,Comedy,Full,Xumo,,Active
 Powder TV,General Entertainment,Full,Plex AU,,Active
+Power Rangers,Kids,Full,Plex AU,,Active
 Powernation,General Entertainment,Full,Plex AU,,Active
 Preston & Brianna,General Entertainment,Full,Plex AU,,Active
 Project Runway (Australia),General Entertainment,Full,Curated,,Active
@@ -385,7 +471,10 @@ Real Crime,Crime & Mystery,Full,Plex AU,,Active
 Real Crime Uncovered,Crime & Mystery,Full,Plex AU,,Active
 Real Emergency,General Entertainment,Full,Plex AU,,Active
 Real Housewives Vault,General Entertainment,Full,Pluto,,Active
+Real Madrid TV,Sports,Full,Xumo,,Active
 Real Wild,Factual,Full,Plex AU,,Active
+Red Bull TV,Sports,Full,Roku,,Active
+Reelz Famous and Infamous,TV & Entertainment,Full,Roku,,Active
 Relic Hunter,General Entertainment,Full,Plex AU,,Active
 Remember the ‘80s,General Entertainment,Full,Plex AU,,Active
 Revry,General Entertainment,Full,Plex AU,,Active
@@ -395,22 +484,31 @@ Robot Wars by Mech+,General Entertainment,Full,Plex AU,,Active
 Rookie Blue,General Entertainment,Full,Plex AU,,Active
 Rugby Pass TV,Sport,Full,Pluto,,Active
 Ryan and Friends,General Entertainment,Full,Plex AU,,Active
+Ryz Sports Network,Sports,Full,Roku,,Active
 Sailor Moon,Kids & Animation,Full,Pluto,,Active
+Sam and Colby,Comedy,Full,Roku,,Active
+Saved by the Bell,Comedy,Full,Xumo,,Active
 Scare Tactics,General Entertainment,Full,Pluto,,Active
-Scares by Shudder,Movies,Full,Roku,,Active
 Scripps News,News & Business,Full,Pluto,,Active
+Scripps Sports Network,Sports,Full,Xumo,,Active
 Sea Patrol,General Entertainment,Full,Pluto,,Active
+Sesame Street,Kids,Full,Xumo,,Active
+Shades of Black,Music,Full,Roku,,Active
 Shemaroo Bollywood,General Entertainment,Full,Plex AU,,Active
 Sheriffs: El Dorado County,General Entertainment,Full,Plex AU,,Active
+Shout! Movies,Movies,Full,Plex AU,,Active
+SI TV,Sports,Full,Plex AU,,Active
 SKWAD,General Entertainment,Full,Plex AU,,Active
 Sky News,News & Business,Full,Pluto,,Active
 SLOPES,General Entertainment,Full,Plex AU,,Active
 Smithsonian Channel Selects,Factual,Full,Pluto,,Active
 Smooth Jazz,General Entertainment,Full,Plex AU,,Active
 Smurf TV,General Entertainment,Full,Plex AU,,Active
+SNL Vault,TV & Entertainment,Full,Roku,,Active
 Sonic The Hedgehog,General Entertainment,Full,Plex AU,,Active
 Sonic TV,General Entertainment,Full,Plex AU,,Active
 South Park,General Entertainment,Full,Pluto,,Active
+SPARK TV,Romance,Full,Roku,,Active
 Sparkle Movies - Light & Love,Movies,Full,Plex AU,,Active
 SPEEDVISION,General Entertainment,Full,Plex AU,,Active
 SpongeBob SquarePants,General Entertainment,Full,Pluto,,Active
@@ -436,14 +534,21 @@ Stingray Naturescape,Music,Full,Plex AU,,Active
 Stingray Pop Adult,Music,Channel only,Samsung,,Active
 Stingray Soul Storm,Music,Full,Plex AU,,Active
 Stingray Spa,Music,Channel only,Samsung,,Active
+Stokes Twins,Comedy,Full,Roku,,Active
 Storage Wars by A&E,General Entertainment,Full,Pluto,,Active
+Stories by AMC,Action & Drama,Full,Xumo,,Active
 Strawberry Shortcake,General Entertainment,Full,Plex AU,,Active
 Strongman Champions,General Entertainment,Full,Plex AU,,Active
+Super Mario Brothers,Animated,Full,Roku,,Active
+Super Simple Songs,Children-Music,Full,Roku,,Active
+Supermarket Sweep,Game Show,Full,Roku,,Active
 Surf Cinema,Movies,Full,Plex AU,,Active
 Surfer TV,General Entertainment,Full,Plex AU,,Active
 Survivor,General Entertainment,Full,Pluto,,Active
 SWAC TV,General Entertainment,Full,Plex AU,,Active
+Tastemade Home,Cooking,Full,Roku,,Active
 Taxi,General Entertainment,Full,Pluto,,Active
+Team USA TV,Sports,Full,Roku,,Active
 Teen Mom,General Entertainment,Full,Pluto,,Active
 Teletubbies,General Entertainment,Full,Plex AU,,Active
 Tennis TV,Sport,Full,Plex AU,,Active
@@ -471,17 +576,20 @@ The Jamie Oliver Channel,Lifestyle,Full,Pluto,,Active
 The Judge Judy Channel,General Entertainment,Full,Pluto,,Active
 The Kids in the Hall,Kids & Animation,Full,Plex AU,,Active
 The Martha Stewart Channel,General Entertainment,Full,Plex AU,,Active
+The Masked Singer,TV & Entertainment,Full,Roku,,Active
 The NBA Channel,Sport,Full,Pluto,,Active
 The New Detectives,Crime & Mystery,Full,Pluto,,Active
 The Osbournes,General Entertainment,Full,Plex AU,,Active
 The Outer Limits,General Entertainment,Full,Pluto,,Active
 The Pet Collective,General Entertainment,Full,Plex AU,,Active
 The Price is Right,Game Shows,Full,Pluto,,Active
-The Price Is Right: The Barker Era,Game Shows,Full,Pluto,Roku,Active
+The Price is Right: The Barker Era,Game Shows,Full,Pluto,Roku,Active
 The Prof G Channel,General Entertainment,Full,Plex AU,,Active
 The Raccoons,Kids & Animation,Full,Pluto,,Active
 The Real Housewives,General Entertainment,Full,Pluto,,Active
+The Red Green Channel,Comedy,Full,Roku,,Active
 The Reuters 60,General Entertainment,Full,Plex AU,,Active
+The Rifleman,Westerns & Country,Full,Xumo,,Active
 The Smurfs,Kids & Animation,Full,Pluto,,Active
 The Spa,General Entertainment,Full,Plex AU,,Active
 The Twilight Zone,General Entertainment,Full,Pluto,,Active
@@ -489,6 +597,7 @@ The Walking Dead Universe,Drama,Full,Pluto,,Active
 The Weather Network,News & Business,Full,Pluto,,Active
 The Wicked Tuna Channel,General Entertainment,Full,Plex AU,,Active
 The Wiggles,General Entertainment,Full,Plex AU,,Active
+The World Poker Tour,General Entertainment,Full,Plex AU,,Active
 The World Poker Tour,General Entertainment,Full,Plex AU,,Active
 The X-Files,General Entertainment,Full,Pluto,,Active
 This Old House,Lifestyle,Full,Pluto,,Active
@@ -499,6 +608,7 @@ Today's K-Pop,General Entertainment,Full,Plex AU,,Active
 Toon Goggles,General Entertainment,Full,Plex AU,,Active
 Top Chef,Lifestyle,Full,Pluto,,Active
 Top Gear,General Entertainment,Full,Pluto,,Active
+Top Rank Classics,Sports,Full,Roku,,Active
 Tosh.0,Comedy,Full,Pluto,,Active
 TOTALLY TURTLES,Kids & Animation,Full,Pluto,,Active
 Touched By An Angel,General Entertainment,Full,Pluto,,Active
@@ -508,6 +618,8 @@ TRACE UK,General Entertainment,Full,Plex AU,,Active
 TRACE Urban,General Entertainment,Full,Plex AU,,Active
 Trailers From Hell,General Entertainment,Full,Plex AU,,Active
 Travel Escapes,Lifestyle,Full,Plex AU,,Active
+Triton Poker,Card Games,Full,Roku,,Active
+TruBlu Crime Channel,Documentary,Full,Roku,,Active
 True Crime Now,Crime & Mystery,Full,Plex AU,,Active
 True History,Factual,Full,Plex AU,,Active
 TV5MONDE Chefs,Lifestyle,Full,Plex AU,,Active
@@ -515,7 +627,11 @@ TV5MONDE Voyage,General Entertainment,Full,Plex AU,,Active
 UEFA Champions League,Sport,Full,Pluto,,Active
 UFC,Sport,Full,Plex AU,,Active
 Unbeaten,General Entertainment,Full,Plex AU,,Active
+Unbeaten Sports,3X3 Basketball,Full,Roku,,Active
 Undercover Boss,General Entertainment,Full,Plex AU,,Active
+Universal Action,Action & Drama,Full,Xumo,,Active
+Universal Crime,Crime TV,Full,Xumo,,Active
+Universal Movies,Movies,Full,Xumo,,Active
 Unsolved Mysteries (Australia),Crime & Mystery,Full,Curated,,Active
 Unspeakable,General Entertainment,Full,Plex AU,,Active
 Untold Stories of the ER,General Entertainment,Full,Plex AU,,Active
@@ -527,9 +643,11 @@ Watch it SCREAM,General Entertainment,Full,Plex AU,,Active
 Waypoint TV,General Entertainment,Full,Plex AU,,Active
 WeatherSpy,News & Business,Full,Plex AU,,Active
 Weeds / Nurse Jackie,Drama,Full,Pluto,,Active
+Weeds & Nurse Jackie,Action & Drama,Full,Plex AU,,Active
 Western Bound,Movies,Full,Plex AU,,Active
 Whose Line Is It Anyway?,General Entertainment,Full,Pluto,,Active
 WildEarth,Factual,Full,Plex AU,,Active
+Willow Sports,Sports,Full,Plex AU,,Active
 WipeoutXtra,General Entertainment,Full,Plex AU,,Active
 Wired2Fish,General Entertainment,Full,Plex AU,,Active
 Women Behind Bars,General Entertainment,Full,Plex AU,,Active
@@ -539,9 +657,11 @@ World Billiards TV,Sport,Full,Plex AU,,Active
 World of Love Island,General Entertainment,Full,Pluto,,Active
 World Surf League 24/7,General Entertainment,Full,Plex AU,,Active
 World War TV,General Entertainment,Full,Pluto,,Active
+World's Wildest Police Videos,Crime TV,Full,Xumo,,Active
 XFC TV,General Entertainment,Full,Plex AU,,Active
 XITE Gospel,Music,Full,Pluto,,Active
 Xtreme Caution,General Entertainment,Full,Plex AU,,Active
+Xumo Free Game Show TV,Game Shows,Full,Xumo,,Active
 Y2K,General Entertainment,Full,Plex AU,,Active
 Yahoo Finance,News & Business,Full,Plex AU,,Active
 Yo! MTV,Music,Full,Pluto,,Active
