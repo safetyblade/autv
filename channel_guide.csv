@@ -89,6 +89,10 @@ Channel number,Channel name,Genre,EPG,Source,Alternate source,Status
 260,Willow Sports,Sport,Full,Plex AU,,Active
 261,Women's Sports Network,Sport,Full,Plex AU,,Active
 262,World Billiards TV,Sport,Full,Plex AU,,Active
+263,NASCAR,Sport,Full,Tubi,,Active
+264,NHL,Sport,Full,Tubi,,Active
+265,Stadium,Sport,Full,Tubi,,Active
+266,UEFA.tv,Sport,Full,Tubi,,Active
 300,173 Universal Westerns,Movies,Full,Curated,,Active
 301,182 MyTime Movie Network,Movies,Full,Curated,,Active
 302,Action Hollywood Movies,Movies,Full,Plex AU,,Active
@@ -293,6 +297,7 @@ Channel number,Channel name,Genre,EPG,Source,Alternate source,Status
 1027,Top Chef,Lifestyle & Food,Full,Pluto,,Active
 1028,Travel Escapes,Lifestyle & Food,Full,Plex AU,,Active
 1029,TV5MONDE Chefs,Lifestyle & Food,Full,Plex AU,,Active
+1030,Gordon Ramsay,Lifestyle & Food,Full,Tubi,,Active
 1100,170 He-Man & Masters Of The Universe,Kids & Animation,Full,Curated,,Active
 1101,261 Winx Club TV,Kids & Animation,Full,Curated,,Active
 1102,272 Cocobi,Kids & Animation,Full,Curated,,Active
