@@ -1,4 +1,4 @@
-name: Refresh merged playlist
+name: Refresh playlists
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: refresh-playlist
+  group: refresh-playlists
   cancel-in-progress: true
 
 jobs:
@@ -21,35 +21,34 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Download Plex Australia playlist
+      - name: Download base playlist
         shell: bash
         run: |
           set -euo pipefail
-          curl --fail --silent --show-error --location             --retry 3 --retry-delay 5             --connect-timeout 15 --max-time 60             "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plex_au.m3u"             --output plex_upstream.m3u
+          curl --fail --silent --show-error --location             --retry 3 --retry-delay 5             --connect-timeout 15 --max-time 60             "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plex_au.m3u"             --output base_upstream.m3u
 
-      - name: Download Samsung TV Plus Australia playlist
+      - name: Download secondary playlist
         shell: bash
         run: |
           set -euo pipefail
-          curl --fail --silent --show-error --location             --retry 3 --retry-delay 5             --connect-timeout 15 --max-time 60             "https://www.apsattv.com/ssungaus.m3u"             --output samsung_au_upstream.m3u
+          curl --fail --silent --show-error --location             --retry 3 --retry-delay 5             --connect-timeout 15 --max-time 60             "https://www.apsattv.com/ssungaus.m3u"             --output secondary_upstream.m3u
 
-      - name: Build merged playlist
+      - name: Build production and test playlists
         run: python3 scripts/merge.py
 
-      - name: Remove temporary upstream files
-        run: rm -f plex_upstream.m3u samsung_au_upstream.m3u
+      - name: Remove temporary files
+        run: rm -f base_upstream.m3u secondary_upstream.m3u
 
-      - name: Commit only when playlist changed
+      - name: Commit generated playlists only when changed
         shell: bash
         run: |
           set -euo pipefail
-          if git diff --quiet -- playlist.m3u; then
+          if git diff --quiet -- playlist.m3u test-playlist.m3u; then
             echo "No playlist changes."
             exit 0
           fi
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add playlist.m3u
-          git commit -m "chore: refresh live TV playlist"
+          git add playlist.m3u test-playlist.m3u
+          git commit -m "chore: refresh generated playlists"
           git push
