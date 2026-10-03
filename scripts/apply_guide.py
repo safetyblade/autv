@@ -1,6 +1,7 @@
 from pathlib import Path
 import csv
 import re
+import unicodedata
 
 PLAYLIST = Path("playlist.m3u")
 GUIDE = Path("channel_guide.csv")
@@ -39,11 +40,21 @@ def set_attr(extinf, key, value):
 def set_name(extinf, name):
     return re.sub(r",(.*)$", f",{name}", extinf)
 
+def canonical(value):
+    value = unicodedata.normalize("NFKD", value or "").encode("ascii", "ignore").decode()
+    value = value.casefold().strip()
+    value = re.sub(r"^\\d+\\s+", "", value)
+    value = re.sub(r"\\s*\\((?:australia|au)\\)\\s*", " ", value)
+    value = re.sub(r"\\s+geo\\b", " ", value)
+    value = value.replace("&", " and ")
+    value = re.sub(r"[^a-z0-9]+", " ", value)
+    return re.sub(r"\\s+", " ", value).strip()
+
 with GUIDE.open(newline="", encoding="utf-8-sig") as handle:
     rows = list(csv.DictReader(handle))
 
 guide_all = {
-    row["Channel name"].strip().casefold(): row
+    canonical(row["Channel name"]): row
     for row in rows
     if row.get("Channel name")
 }
@@ -59,14 +70,14 @@ missing = []
 seen_names = set()
 
 for position, (name, extinf, url) in enumerate(entries):
-    logical_name = name.casefold()
+    logical_name = canonical(name)
     if logical_name in seen_names:
         continue
     seen_names.add(logical_name)
     guide_row = guide_all.get(logical_name)
     if guide_row and guide_row.get("Status", "Active").strip().casefold() != "active":
         continue
-    row = guide.get(name.casefold())
+    row = guide.get(logical_name)
     if row:
         channel_no = int(row["Channel number"])
         genre = row["Genre"].strip() or "General Entertainment"
