@@ -1500,4 +1500,7 @@
   <channel id="rok-vix-liga-mx">
     <display-name>ViX Lo Mejor de Liga MX</display-name>
   </channel>
+  <channel id="NewJapanProWrestlingWorld.jp">
+    <display-name>New Japan Pro Wrestling World</display-name>
+  </channel>
 </tv>
