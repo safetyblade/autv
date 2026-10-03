@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tv generator-info-name="autv">
-  <channel id="autv.entertainment-hub-australia">
-    <display-name>Entertainment Hub (Australia)</display-name>
-  </channel>
   <channel id="autv.don-t-tell-the-bride-au-geo">
     <display-name>Don't Tell The Bride (AU) Geo</display-name>
   </channel>
@@ -33,9 +30,6 @@
   <channel id="autv.infast-australia">
     <display-name>INFAST (Australia)</display-name>
   </channel>
-  <channel id="autv.introuble-australia">
-    <display-name>INTROUBLE (Australia)</display-name>
-  </channel>
   <channel id="autv.haunt-tv-australia">
     <display-name>Haunt TV (Australia)</display-name>
   </channel>
@@ -60,27 +54,6 @@
   <channel id="autv.naturetime-australia">
     <display-name>Naturetime (Australia)</display-name>
   </channel>
-  <channel id="autv.red-bull-tv-australia">
-    <display-name>Red Bull TV (Australia)</display-name>
-  </channel>
-  <channel id="autv.vevo-pop-australia">
-    <display-name>Vevo Pop (Australia)</display-name>
-  </channel>
-  <channel id="autv.vevo-2k-australia">
-    <display-name>Vevo 2K (Australia)</display-name>
-  </channel>
-  <channel id="autv.vevo-90s-australia">
-    <display-name>Vevo 90s (Australia)</display-name>
-  </channel>
-  <channel id="autv.vevo-80s-australia">
-    <display-name>Vevo 80s (Australia)</display-name>
-  </channel>
-  <channel id="autv.vevo-70s-australia">
-    <display-name>Vevo 70s (Australia)</display-name>
-  </channel>
-  <channel id="autv.vevo-country-australia">
-    <display-name>Vevo Country (Australia)</display-name>
-  </channel>
   <channel id="autv.stingray-classic-rock">
     <display-name>Stingray Classic Rock</display-name>
   </channel>
@@ -99,16 +72,146 @@
   <channel id="autv.pbs-kids-australia-find-correct-aus">
     <display-name>PBS Kids (Australia) find correct aus</display-name>
   </channel>
-  <channel id="autv.caillou-australia">
-    <display-name>Caillou (Australia)</display-name>
-  </channel>
-  <channel id="autv.duck-tv-australia">
-    <display-name>Duck TV (Australia)</display-name>
-  </channel>
   <channel id="autv.kartoon-channel-australia">
     <display-name>Kartoon Channel (Australia)</display-name>
   </channel>
   <channel id="autv.stingray-spa">
     <display-name>Stingray Spa</display-name>
+  </channel>
+  <channel id="autv.105-news24-now">
+    <display-name>105 News24 Now</display-name>
+    <icon src="https://d3bd0tgyk368z1.cloudfront.net/skynews/N24_SubBrands_NOW_Stacked_RGB_400x200.png" />
+  </channel>
+  <channel id="autv.110-leadstory-breaking-news">
+    <display-name>110 LeadStory Breaking News</display-name>
+    <icon src="https://d3bd0tgyk368z1.cloudfront.net/Images/Logo-breakingnews.png" />
+  </channel>
+  <channel id="autv.112-breaking-finance-news">
+    <display-name>112 Breaking Finance News</display-name>
+    <icon src="https://d3bd0tgyk368z1.cloudfront.net/leadstory/FinanceNews/LeadStory_Breaking-Finance-News_CBALogo_400x200_final.jpg" />
+  </channel>
+  <channel id="autv.370-awe-plus">
+    <display-name>370 AWE Plus</display-name>
+    <icon src="https://dvvlqr1rtlak3.cloudfront.net/ZEE/ZeeNews/AWE-Plus_400x200.png" />
+  </channel>
+  <channel id="autv.377-autentic-travel">
+    <display-name>377 Autentic Travel</display-name>
+    <icon src="http://img.platform.wurl.dev/channel/1517/lg/980216/LG-Logo-PNG-100x100_v2.png" />
+  </channel>
+  <channel id="autv.378-travelxp">
+    <display-name>378 Travelxp</display-name>
+    <icon src="http://img.platform.wurl.dev/channel/473/lg/1db7f7/LG-Logo-PNG-100x100_v1.png" />
+  </channel>
+  <channel id="autv.357-smart-healthy-green-living">
+    <display-name>357 Smart Healthy Green Living</display-name>
+    <icon src="https://d2mxb63djushzm.cloudfront.net/Images/LG_ChannelLogo_SHGL.png" />
+  </channel>
+  <channel id="autv.299-wfn">
+    <display-name>299 WFN</display-name>
+    <icon src="http://accio.its-newid.net/rt_channel/newid_rt041/lg_channels/img/channel_logo/default/channel_logo.png" />
+  </channel>
+  <channel id="autv.375-love-wine">
+    <display-name>375 Love Wine</display-name>
+    <icon src="https://d1lvk5a9p6ko2q.cloudfront.net/WINE_logo_LG_500x200.png" />
+  </channel>
+  <channel id="autv.367-globetrotter">
+    <display-name>367 Globetrotter</display-name>
+    <icon src="https://d2mxb63djushzm.cloudfront.net/images/GLOBETROTTER400x200.png" />
+  </channel>
+  <channel id="autv.178-the-incredible-hulk">
+    <display-name>178 The Incredible Hulk</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984054/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.172-hercules-the-legendary-journeys">
+    <display-name>172 Hercules: The Legendary Journeys</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984057/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.171-xena-warrior-princess">
+    <display-name>171 Xena Warrior Princess</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984056/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.176-the-bionic-woman">
+    <display-name>176 The Bionic Woman</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984058/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.174-the-lone-ranger">
+    <display-name>174 The Lone Ranger</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984052/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.179-ironside">
+    <display-name>179 Ironside</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984055/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.175-the-six-million-dollar-man">
+    <display-name>175 The Six-Million Dollar Man</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984053/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.173-universal-westerns">
+    <display-name>173 Universal Westerns</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984051/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.177-lassie">
+    <display-name>177 Lassie</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984050/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.182-mytime-movie-network">
+    <display-name>182 MyTime Movie Network</display-name>
+    <icon src="https://d23edfjfpc1xrv.cloudfront.net/MT_logo_200x200.png" />
+  </channel>
+  <channel id="autv.170-he-man-masters-of-the-universe">
+    <display-name>170 He-Man &amp; Masters Of The Universe</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99984060/400x200.png?type=white_cropped" />
+  </channel>
+  <channel id="autv.141-10-drama-nsw">
+    <display-name>141 10 Drama NSW</display-name>
+    <icon src="https://10.com.au/ip/s3/2025/06/25/a1dd1ff9b4d062a9bcdaafde684b30d5-1384580.png" />
+  </channel>
+  <channel id="autv.191-younghollywood">
+    <display-name>191 YoungHollywood</display-name>
+    <icon src="https://dtuq5o0udz92b.cloudfront.net/YH-LG_Logo_300x200.png" />
+  </channel>
+  <channel id="autv.142-10-comedy-nsw">
+    <display-name>142 10 Comedy NSW</display-name>
+    <icon src="https://10.com.au/ip/s3/2025/06/25/861b025a0af95c74523333b2c0eb8549-1384587.png" />
+  </channel>
+  <channel id="autv.291-earthtouch">
+    <display-name>291 earthtouch</display-name>
+    <icon src="https://dbbafpr18dnj5.cloudfront.net/Images/S3/AMG01823C1/ETTV_Logo_White.png" />
+  </channel>
+  <channel id="autv.272-cocobi">
+    <display-name>272 Cocobi</display-name>
+    <icon src="http://accio.its-newid.net/channel/newid_104/lg_channels/img/channel_logo/default/channel_logo.png?ver=20230915160427" />
+  </channel>
+  <channel id="autv.273-robocar-poli">
+    <display-name>273 Robocar POLI</display-name>
+    <icon src="http://accio.its-newid.net/channel/newid_108/lg_channels/img/channel_logo/default/channel_logo.png" />
+  </channel>
+  <channel id="autv.261-winx-club-tv">
+    <display-name>261 Winx Club TV</display-name>
+    <icon src="https://d3bd0tgyk368z1.cloudfront.net/feeds/Images/Winx_Club_TV_400x200.png" />
+  </channel>
+  <channel id="autv.305-autentic-history">
+    <display-name>305 Autentic History</display-name>
+    <icon src="http://img.platform.wurl.dev/channel/1501/lg/3fe535/LG-Logo-PNG-100x100_v2.png" />
+  </channel>
+  <channel id="autv.301-docsville">
+    <display-name>301 Docsville</display-name>
+    <icon src="https://d2mxb63djushzm.cloudfront.net/images/DOCSVILLE400x200.png" />
+  </channel>
+  <channel id="autv.345-mma-tv">
+    <display-name>345 MMA TV</display-name>
+    <icon src="https://media.tvup.cloud/canales/generic_cd_6294d284c044ca001e71987d.png?width=200&amp;height=200" />
+  </channel>
+  <channel id="autv.342-horse-country">
+    <display-name>342 Horse &amp; Country</display-name>
+    <icon src="https://d2mxb63djushzm.cloudfront.net/images/hnc_logo.png" />
+  </channel>
+  <channel id="autv.343-trace-stars">
+    <display-name>343 Trace Stars</display-name>
+    <icon src="https://d3dj3gmzxw0r4q.cloudfront.net/Trace_SportStars/LG_Ch_Logo_460x200.png" />
+  </channel>
+  <channel id="autv.143-nickelodeon-nsw">
+    <display-name>143 Nickelodeon NSW</display-name>
+    <icon src="https://10.com.au/ip/s3/2023/07/31/9bf17d41aaafa3d5f0c416dfed96ef08-1252730.png" />
   </channel>
 </tv>
