@@ -18,7 +18,6 @@ The published M3U points to this file automatically.
 
 It currently merges programme data for:
 - Plex AU
-- future selected Plex US / UK / Canada / NZ channels
 - selected Pluto US / UK / Canada channels
 
 Only channels present in the final playlist are retained in the generated EPG.
