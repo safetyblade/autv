@@ -2,16 +2,16 @@
 # Direct/resolver-backed channels tested or approved for AU TV.
 # Pluto channels use community redirects to current Pluto HLS manifests.
 
-#EXTINF:-1 tvg-id="pluto.nick.jr.club" tvg-name="Nick Jr Club" tvg-logo="https://images.pluto.tv/channels/5ddd7cb2cbb9010009b4fe32/colorLogoPNG.png" group-title="Pluto",Nick Jr Club
+#EXTINF:-1 tvg-id="5ddd7cb2cbb9010009b4fe32" tvg-name="Nick Jr Club" tvg-logo="https://images.pluto.tv/channels/5ddd7cb2cbb9010009b4fe32/colorLogoPNG.png" group-title="Pluto",Nick Jr Club
 https://jmp2.uk/plu-5ddd7cb2cbb9010009b4fe32.m3u8
 
-#EXTINF:-1 tvg-id="pluto.mtv.reality" tvg-name="MTV Reality" tvg-logo="https://images.pluto.tv/channels/64f89fcfd661bb00081ba45c/colorLogoPNG.png" group-title="Pluto",MTV Reality
+#EXTINF:-1 tvg-id="64f89fcfd661bb00081ba45c" tvg-name="MTV Reality" tvg-logo="https://images.pluto.tv/channels/64f89fcfd661bb00081ba45c/colorLogoPNG.png" group-title="Pluto",MTV Reality
 https://jmp2.uk/plu-64f89fcfd661bb00081ba45c.m3u8
 
-#EXTINF:-1 tvg-id="pluto.survivor" tvg-name="Survivor" tvg-logo="https://images.pluto.tv/channels/5f21e7b24744c60007c1f6fc/colorLogoPNG.png" group-title="Pluto",Survivor
+#EXTINF:-1 tvg-id="5f21e7b24744c60007c1f6fc" tvg-name="Survivor" tvg-logo="https://images.pluto.tv/channels/5f21e7b24744c60007c1f6fc/colorLogoPNG.png" group-title="Pluto",Survivor
 https://jmp2.uk/plu-5f21e7b24744c60007c1f6fc.m3u8
 
-#EXTINF:-1 tvg-id="pluto.south.park" tvg-name="South Park" tvg-logo="https://images.pluto.tv/channels/64edf6eaa7ec0d000812f58c/colorLogoPNG.png" group-title="Pluto",South Park
+#EXTINF:-1 tvg-id="64edf6eaa7ec0d000812f58c" tvg-name="South Park" tvg-logo="https://images.pluto.tv/channels/64edf6eaa7ec0d000812f58c/colorLogoPNG.png" group-title="Pluto",South Park
 https://jmp2.uk/plu-64edf6eaa7ec0d000812f58c.m3u8
 
 #EXTINF:-1 tvg-id="pluto.48.hours" tvg-name="48 Hours" tvg-logo="https://images.pluto.tv/channels/62e925bc68d18a00077bb990/colorLogoPNG.png" group-title="Pluto",48 Hours
