@@ -22,22 +22,22 @@ jobs:
           curl --fail --silent --show-error --location "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plex_au.m3u" --output base_upstream.m3u
           curl --fail --silent --show-error --location "https://www.apsattv.com/ssungaus.m3u" --output secondary_upstream.m3u
 
-      - name: Build playlist and curated XMLTV
+      - name: Build playlist
         run: python3 scripts/merge.py
 
-      - name: Publish generated files
+      - name: Publish playlist
         shell: bash
         run: |
           set -euo pipefail
           rm -f base_upstream.m3u secondary_upstream.m3u
 
-          if git diff --quiet -- playlist.m3u curated.xml; then
-            echo "No generated file changes."
+          if git diff --quiet -- playlist.m3u; then
+            echo "No playlist changes."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add playlist.m3u curated.xml
+          git add playlist.m3u
           git commit -m "chore: refresh playlist"
           git push
