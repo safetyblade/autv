@@ -1,10 +1,12 @@
 # AU TV
 
-A personal FAST/IPTV playlist for Android/Google TV, built around a stable Australian base plus manually curated channels from additional FAST services.
+A personal FAST/IPTV lineup designed to behave like a traditional television service rather than a raw streaming catalogue.
 
-## Published playlist
+The project curates a fixed channel lineup, assigns human-designed channel numbers and genres, combines available programme-guide data, and publishes a single M3U + EPG for TV apps.
 
-Use this M3U in TVirl:
+## Published files
+
+Playlist:
 
 `https://raw.githubusercontent.com/safetyblade/autv/main/playlist.m3u`
 
@@ -12,26 +14,35 @@ Combined EPG:
 
 `https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz`
 
-The M3U already points to the combined EPG.
+The playlist already points to the combined EPG.
 
-## Project model
+## How the project works
 
-The project has two separate layers:
+The system has three layers:
 
-1. **Source acquisition** — Plex AU plus selected channels from Samsung, LG, Pluto, Roku, Xumo, Tubi and custom direct feeds.
-2. **Guide control** — `channel_guide.csv` owns the final channel number, genre, display order and project metadata.
+1. **Acquisition** — approved channels are pulled from a set of supported FAST/catalogue inputs plus a small number of curated direct feeds.
+2. **Guide control** — `channel_guide.csv` is the authoritative record of what belongs in AU TV and how it should appear.
+3. **Generation** — the refresh workflow builds the playlist, applies the guide, combines available EPG data and publishes the generated files.
 
-Upstream source category/order/channel numbers are not authoritative.
+The acquisition implementation is intentionally kept separate from the user-facing guide. Upstream numbering, ordering and genre labels are never authoritative.
 
-Every refresh:
+## Channel guide
 
-1. downloads the current source playlists and EPG files;
-2. builds the working playlist from the selected-channel files;
-3. applies `channel_guide.csv` to rewrite `tvg-chno`, `group-title` and display order;
-4. builds the filtered combined EPG;
-5. publishes the generated files.
+`channel_guide.csv` is the master control file and the basis for all future guide presentation.
 
-The physical order of `playlist.m3u` is also sorted by our channel number so the order remains useful even if a TV app does not display `tvg-chno` consistently.
+It contains:
+
+- **Channel number** — final channel number and physical playlist order.
+- **Channel name** — final user-facing display name.
+- **Genre** — one of the canonical top-level guide genres.
+- **Subgenre** — internal ordering lane within that genre.
+- **EPG** — whether programme-guide coverage is expected.
+- **Source** — primary working source used for maintenance.
+- **Alternate source** — known working fallback where useful.
+- **Status** — whether the channel belongs in the active lineup.
+- **Description** — concise explanation of the channel.
+
+The guide represents the **working lineup only**. Failed tests and rejected channels are not retained as guide rows.
 
 ## Channel-number blocks
 
@@ -49,108 +60,68 @@ The physical order of `playlist.m3u` is also sorted by our channel number so the
 | 1200–1299 | Kids & Animation |
 | 1300–1399 | Music |
 
-See `CHANNEL_GUIDE.md` for the detailed guide rules and maintenance model.
+Each genre is then ordered by approved subgenres and editorial priority rather than alphabetically.
 
-## Source stack
+See `CHANNEL_GUIDE.md` for the detailed taxonomy and ordering model.
 
-### Base
-- Plex AU — retained as the main starting catalogue.
+## Playlist generation
 
-### Curated sources
-- Samsung TV Plus
-- LG Channels
-- Pluto TV
-- Roku Channel
-- Xumo Play
-- Tubi
-- Custom direct feeds
+A refresh performs the following steps:
 
-Each source is only useful when it adds something genuinely worthwhile or provides a better working alternate stream.
+1. obtain the current versions of the approved channel inputs;
+2. select only approved channels;
+3. merge the working streams;
+4. apply `channel_guide.csv`;
+5. remove anything not present in the guide;
+6. write final channel numbers, names and genres;
+7. physically sort the M3U by channel number;
+8. combine available EPG data;
+9. publish the generated playlist and EPG.
 
-Tubi remains intentionally wired into the project even with a small selected set because it has already proven useful as an alternate-source/rescue option for channels such as Watch AEW.
-
-## Selection files
-
-- `selected_channels.txt` — Samsung
-- `selected_lg_channels.txt` — LG
-- `selected_pluto_channels.txt` — Pluto
-- `selected_roku_channels.txt` — Roku
-- `selected_xumo_channels.txt` — Xumo
-- `selected_tubi_channels.txt` — Tubi
-- `custom.m3u` — direct/manual feeds
-
-## Channel guide
-
-`channel_guide.csv` is the master metadata file.
-
-Current fields:
-
-- **Channel number** — our final channel number and sort order.
-- **Channel name** — final display name.
-- **Genre** — one of the project's 11 simple canonical genres, not the source service's genre.
-- **EPG** — whether useful programme-guide data is available.
-- **Source** — primary working source.
-- **Alternate source** — known usable alternate when relevant.
-- **Status** — normally Active for channels intended to remain in the build.
-- **Description** — plain-English summary of what kind of channel it is.
-
-The guide is intended to describe the actual working channel lineup, not record every failed source attempt.
+This means the generated playlist cannot grow simply because an upstream catalogue grows.
 
 ## EPG
 
-The combined EPG is filtered to channels that exist in the final playlist.
+The combined EPG is filtered to channels in the final playlist.
 
-Current programme-guide inputs include:
-- Plex AU
-- Pluto US / UK / Canada
-- Roku
-- Xumo
-- Tubi
+EPG matching prefers the channel's exact provider ID. Where a curated or renamed channel uses a project ID, the builder can use a conservative unique-name match to recover programme data without changing the final channel identity.
 
-`curated.xml` remains a lightweight fallback channel-definition file for curated channels.
+The EPG build reports:
+
+- exact-ID matches;
+- safe name-fallback matches;
+- channels with programme data;
+- channels still missing programme data.
+
+Some channels are intentionally marked **Channel only** where a useful schedule is not available.
 
 ## Refresh workflow
 
-Always start a **fresh** run:
+Start a fresh run from:
 
 **Actions → Refresh playlist → Run workflow**
 
-Do not use **Re-run jobs** on an old Action run.
+The refresh workflow rebuilds the published playlist and EPG from the current guide and approved channel selections.
 
-After the run:
-1. rescan/refresh TVirl;
-2. Android TV may leave newly added channels disabled by default;
-3. enable new channels in the Live Channels/TV channel settings if they imported but are hidden;
-4. remove channels that repeatedly fail playback.
+After refreshing:
 
-## Import log
-
-The **Build playlist** step reports entries such as:
-
-- `ADDED SAMSUNG: ...`
-- `ADDED LG: ...`
-- `ADDED PLUTO: ...`
-- `ADDED ROKU: ...`
-- `ADDED XUMO: ...`
-- `ADDED TUBI: ...`
-- `NOT FOUND ...`
-
-`ADDED` means the current source contained the channel. It does not by itself prove the stream plays from Australia.
+1. refresh/rescan the playlist in the TV app;
+2. confirm newly added channels are enabled;
+3. test any new or changed feeds;
+4. remove channels that do not reliably deliver the intended service.
 
 ## Curation rules
 
-- Prefer genuinely additive channels over raw catalogue size.
-- Movies, game shows and sports are high-value lanes.
-- Genre taxonomy is intentionally simple: News, Sport, Movies, Game Shows, Crime, Comedy, Entertainment, Reality & Lifestyle, Factual, Kids & Animation, Music.
-- Recognisable binge/franchise FAST channels are useful.
-- News/weather/local duplication is low value.
-- Non-English feeds are normally excluded.
-- Likely duplicates are treated as duplicates.
-- Previously rejected low-value channels remain low value unless there is a clear reason to revisit them.
-- Failed source attempts do not block trying the same channel from another provider.
-- Alternate sources are useful when a preferred feed fails.
-- Tubi, Xumo, Roku, Pluto, Samsung and LG can all be revisited for targeted searches.
+- The final lineup is designed for use, not catalogue size.
+- The taxonomy stays deliberately simple.
+- Internal subgenres create a sensible old-school TV order inside each genre.
+- Australian/local content is prioritised where useful.
+- Non-English channels are generally excluded, except where specifically approved for Sport.
+- A logical channel should appear only once unless two feeds are genuinely different services.
+- Failed channels are removed from the working guide.
+- Source information is maintenance metadata; the viewing experience is driven by the final guide.
+- The guide, not any upstream catalogue, is authoritative.
 
 ## Core rule
 
-**Discover → compare → test → keep only what works → assign our genre/number → refresh.**
+**Discover → compare → test → keep only what works → place it in the guide → refresh.**
