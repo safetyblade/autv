@@ -39,3 +39,17 @@ If a refresh fails, the last committed production playlist remains available.
 5. Refresh again to publish it into `playlist.m3u`.
 
 This keeps an unverified or incompatible stream from breaking the main TV guide.
+
+
+## Test changes locally on Windows
+
+For normal testing, use your PC instead of GitHub Actions.
+
+1. Clone or pull this repository.
+2. Double-click `scripts/test-local.bat`.
+3. The script downloads the current source playlists, builds `playlist.m3u` and `test-playlist.m3u`, then opens the repository folder.
+4. Open `test-playlist.m3u` in VLC and test the candidate channel before publishing it.
+
+The local script does not use GitHub Actions minutes.
+
+GitHub Actions is **manual-only**. Use it only after a candidate has passed local testing and you want the hosted playlist refreshed.
