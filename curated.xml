@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tv generator-info-name="autv">
+  <channel id="autv.entertainment-hub-australia">
+    <display-name>Entertainment Hub (Australia)</display-name>
+  </channel>
+  <channel id="autv.don-t-tell-the-bride-au-geo">
+    <display-name>Don't Tell The Bride (AU) Geo</display-name>
+  </channel>
+  <channel id="autv.project-runway-australia">
+    <display-name>Project Runway (Australia)</display-name>
+  </channel>
+  <channel id="autv.8-out-of-10-cats-australia">
+    <display-name>8 Out of 10 Cats (Australia)</display-name>
+  </channel>
+  <channel id="autv.pointless-australia">
+    <display-name>Pointless (Australia)</display-name>
+  </channel>
+  <channel id="autv.anger-management-australia">
+    <display-name>Anger Management (Australia)</display-name>
+  </channel>
+  <channel id="autv.mr-bean-animated-australia">
+    <display-name>Mr Bean Animated (Australia)</display-name>
+  </channel>
+  <channel id="autv.dry-bar-comedy-australia">
+    <display-name>Dry Bar Comedy (Australia)</display-name>
+  </channel>
+  <channel id="autv.the-asylum-australia">
+    <display-name>The Asylum (Australia)</display-name>
+  </channel>
+  <channel id="autv.choppertown-australia">
+    <display-name>ChopperTown (Australia)</display-name>
+  </channel>
+  <channel id="autv.infast-australia">
+    <display-name>INFAST (Australia)</display-name>
+  </channel>
+  <channel id="autv.introuble-australia">
+    <display-name>INTROUBLE (Australia)</display-name>
+  </channel>
+  <channel id="autv.haunt-tv-australia">
+    <display-name>Haunt TV (Australia)</display-name>
+  </channel>
+  <channel id="autv.escape-to-the-country-australia">
+    <display-name>Escape to the Country (Australia)</display-name>
+  </channel>
+  <channel id="autv.outdoor-channel-australia-geo">
+    <display-name>Outdoor Channel (Australia) Geo</display-name>
+  </channel>
+  <channel id="autv.pet-club-tv-australia">
+    <display-name>Pet Club TV (Australia)</display-name>
+  </channel>
+  <channel id="autv.inwild-australia">
+    <display-name>INWILD (Australia)</display-name>
+  </channel>
+  <channel id="autv.inwonder-australia">
+    <display-name>INWONDER (Australia)</display-name>
+  </channel>
+  <channel id="autv.unsolved-mysteries-australia">
+    <display-name>Unsolved Mysteries (Australia)</display-name>
+  </channel>
+  <channel id="autv.naturetime-australia">
+    <display-name>Naturetime (Australia)</display-name>
+  </channel>
+  <channel id="autv.red-bull-tv-australia">
+    <display-name>Red Bull TV (Australia)</display-name>
+  </channel>
+  <channel id="autv.vevo-pop-australia">
+    <display-name>Vevo Pop (Australia)</display-name>
+  </channel>
+  <channel id="autv.vevo-2k-australia">
+    <display-name>Vevo 2K (Australia)</display-name>
+  </channel>
+  <channel id="autv.vevo-90s-australia">
+    <display-name>Vevo 90s (Australia)</display-name>
+  </channel>
+  <channel id="autv.vevo-80s-australia">
+    <display-name>Vevo 80s (Australia)</display-name>
+  </channel>
+  <channel id="autv.vevo-70s-australia">
+    <display-name>Vevo 70s (Australia)</display-name>
+  </channel>
+  <channel id="autv.vevo-country-australia">
+    <display-name>Vevo Country (Australia)</display-name>
+  </channel>
+  <channel id="autv.stingray-classic-rock">
+    <display-name>Stingray Classic Rock</display-name>
+  </channel>
+  <channel id="autv.stingray-hit-list">
+    <display-name>Stingray Hit list</display-name>
+  </channel>
+  <channel id="autv.stingray-pop-adult">
+    <display-name>Stingray Pop Adult</display-name>
+  </channel>
+  <channel id="autv.stingray-2000s">
+    <display-name>Stingray 2000s</display-name>
+  </channel>
+  <channel id="autv.stingray-easy-listening">
+    <display-name>Stingray Easy Listening</display-name>
+  </channel>
+  <channel id="autv.pbs-kids-australia-find-correct-aus">
+    <display-name>PBS Kids (Australia) find correct aus</display-name>
+  </channel>
+  <channel id="autv.caillou-australia">
+    <display-name>Caillou (Australia)</display-name>
+  </channel>
+  <channel id="autv.duck-tv-australia">
+    <display-name>Duck TV (Australia)</display-name>
+  </channel>
+  <channel id="autv.kartoon-channel-australia">
+    <display-name>Kartoon Channel (Australia)</display-name>
+  </channel>
+  <channel id="autv.stingray-spa">
+    <display-name>Stingray Spa</display-name>
+  </channel>
+</tv>
