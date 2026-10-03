@@ -21,6 +21,7 @@ jobs:
           set -euo pipefail
           curl --fail --silent --show-error --location "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plex_au.m3u" --output base_upstream.m3u
           curl --fail --silent --show-error --location "https://www.apsattv.com/ssungaus.m3u" --output secondary_upstream.m3u
+          curl --fail --silent --show-error --location "https://www.apsattv.com/aulg.m3u" --output lg_upstream.m3u
 
       - name: Build playlist
         run: python3 scripts/merge.py
@@ -29,7 +30,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -f base_upstream.m3u secondary_upstream.m3u
+          rm -f base_upstream.m3u secondary_upstream.m3u lg_upstream.m3u
 
           if git diff --quiet -- playlist.m3u curated.xml; then
             echo "No generated file changes."
