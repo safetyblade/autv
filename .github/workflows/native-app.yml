@@ -2,12 +2,6 @@ name: Native app
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - "android/**"
-      - "native/**"
-      - "guide.json"
-      - ".github/workflows/native-app.yml"
 
 permissions:
   contents: read
