@@ -7,4 +7,4 @@ android {
     compileSdk = 36
     defaultConfig { minSdk = 24 }
 }
-dependencies { implementation("androidx.core:core-ktx:1.19.1") }
+dependencies { implementation("androidx.core:core-ktx:1.17.0") }
