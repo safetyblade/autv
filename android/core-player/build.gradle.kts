@@ -1,0 +1,14 @@
+plugins {
+    id("com.android.library")
+    id("org.jetbrains.kotlin.android")
+}
+android {
+    namespace = "dev.prestwich.autv.player"
+    compileSdk = 36
+    defaultConfig { minSdk = 24 }
+}
+dependencies {
+    implementation("androidx.media3:media3-exoplayer:1.11.1")
+    implementation("androidx.media3:media3-exoplayer-hls:1.11.1")
+    implementation("androidx.media3:media3-ui:1.11.1")
+}
