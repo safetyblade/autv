@@ -102,3 +102,11 @@ Close, toggle, Back and outside touch; auto-hide and touch/OK wake-up; hidden
 channel keys and CH buttons; current-channel focus and category skipping;
 number/name/programme search; channel logos/progress and Cast/guide bounds; and portrait/landscape screenshots using deterministic
 channel/EPG fixtures. Production files are never modified to run these tests.
+
+## Platform additions
+
+See [PLATFORM-FEATURES.md](PLATFORM-FEATURES.md) for mobile PiP, the retained
+player/direct-tuning contract, the TV home preview row and the **separate**
+Kogan TV-input diagnostic APK, including exact device checks. The production
+APK does not depend on that experiment. Android TV PiP and Watch Next remain
+deferred.

@@ -64,6 +64,7 @@ internal fun AuTvScreen(
     onSelect: (Channel) -> Unit, onCloseGuide: () -> Unit, onOpenGuide: () -> Unit,
     onRetry: () -> Unit, onNext: () -> Unit, onPrevious: () -> Unit,
     onChromeVisibilityChanged: (Boolean) -> Unit = {},
+    pictureInPicture: Boolean = false, notice: String? = null, onTuneNumber: (Int) -> Unit = {},
 ) {
     val isTv = LocalConfiguration.current.uiMode and Configuration.UI_MODE_TYPE_MASK == Configuration.UI_MODE_TYPE_TELEVISION
     val landscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -81,6 +82,10 @@ internal fun AuTvScreen(
     var query by rememberSaveable { mutableStateOf("") }
     var chrome by remember { mutableStateOf(true) }
     var interaction by remember { mutableIntStateOf(0) }
+    var digits by remember { mutableStateOf("") }
+    LaunchedEffect(digits) {
+        if (digits.isNotEmpty()) { delay(1_500); digits.toIntOrNull()?.let(onTuneNumber); digits = "" }
+    }
     var now by remember { mutableLongStateOf(System.currentTimeMillis()) }
     fun wake() { chrome = true; interaction++ }
     fun chooseCategory(value: String) {
@@ -96,13 +101,13 @@ internal fun AuTvScreen(
         chrome = true
         if (!guideOpen && windowFocused) { delay(3_500); chrome = false }
     }
-    LaunchedEffect(chrome, guideOpen) {
-        onChromeVisibilityChanged(chrome || guideOpen)
-        if (!chrome) rootFocus.requestFocus()
+    LaunchedEffect(chrome, guideOpen, pictureInPicture) {
+        onChromeVisibilityChanged(!pictureInPicture && (chrome || guideOpen))
+        if (!chrome && !pictureInPicture) rootFocus.requestFocus()
     }
-    BackHandler(enabled = guideOpen) { wake(); onCloseGuide() }
-    LaunchedEffect(guideOpen, guide, windowFocused) {
-        if (!windowFocused) return@LaunchedEffect
+    BackHandler(enabled = guideOpen && !pictureInPicture) { wake(); onCloseGuide() }
+    LaunchedEffect(guideOpen, guide, windowFocused, pictureInPicture) {
+        if (!windowFocused || pictureInPicture) return@LaunchedEffect
         wake()
         if (guideOpen) {
             if (isTv) inputMode.requestInputMode(InputMode.Keyboard)
@@ -129,7 +134,14 @@ internal fun AuTvScreen(
                     if (event.nativeKeyEvent.action != KeyEvent.ACTION_DOWN) false else {
                         val wasHidden = !chrome
                         wake()
-                        when (event.nativeKeyEvent.keyCode) {
+                        when {
+                            isTv && !guideOpen && event.nativeKeyEvent.keyCode in KeyEvent.KEYCODE_0..KeyEvent.KEYCODE_9 -> {
+                                digits = (digits + (event.nativeKeyEvent.keyCode - KeyEvent.KEYCODE_0)).takeLast(4); true
+                            }
+                            digits.isNotEmpty() && event.nativeKeyEvent.keyCode in listOf(KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER) -> {
+                                digits.toIntOrNull()?.let(onTuneNumber); digits = ""; true
+                            }
+                            else -> when (event.nativeKeyEvent.keyCode) {
                             KeyEvent.KEYCODE_CHANNEL_UP -> { onNext(); true }
                             KeyEvent.KEYCODE_CHANNEL_DOWN -> { onPrevious(); true }
                             KeyEvent.KEYCODE_GUIDE, KeyEvent.KEYCODE_MENU -> { if (guideOpen) onCloseGuide() else onOpenGuide(); true }
@@ -140,6 +152,7 @@ internal fun AuTvScreen(
                                 if (guideOpen) { chooseCategory(GuideBrowse.categories[(GuideBrowse.categories.indexOf(category) + 1) % GuideBrowse.categories.size]); true } else false
                             }
                             else -> wasHidden && event.nativeKeyEvent.keyCode in listOf(KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_DPAD_UP, KeyEvent.KEYCODE_DPAD_DOWN, KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT)
+                            }
                         }
                     }
                 }
@@ -149,13 +162,14 @@ internal fun AuTvScreen(
                 AndroidView(factory = { ctx -> PlayerView(ctx).apply {
                     this.player = player; useController = false; isFocusable = false; isFocusableInTouchMode = false
                 } }, modifier = Modifier.fillMaxSize().testTag("video"))
-                AnimatedVisibility(visible = chrome || guideOpen, enter = fadeIn(tween(180)), exit = fadeOut(tween(250))) {
+                if (!pictureInPicture) AnimatedVisibility(visible = chrome || guideOpen, enter = fadeIn(tween(180)), exit = fadeOut(tween(250))) {
                     Box(Modifier.fillMaxSize().testTag("chrome")) {
                         Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Ink.copy(alpha = 0.82f), Color.Transparent, Ink.copy(alpha = 0.92f)))))
                         Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing).padding(horizontal = if (isTv) 32.dp else 12.dp)) {
                             Row(Modifier.fillMaxWidth().height(if (keyboardOpen && landscape) 48.dp else 60.dp), verticalAlignment = Alignment.CenterVertically) {
                                 Image(painterResource(R.drawable.autv_logo), "AUTV logo", Modifier.size(32.dp))
                                 Text("AUTV", Modifier.padding(start = 10.dp).weight(1f), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                                if (digits.isNotEmpty()) Text("Tune $digits", color = Silver, modifier = Modifier.padding(end = 12.dp))
                                 CastControl(isTv, onInteraction = { wake() })
                             }
                             BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
@@ -183,6 +197,7 @@ internal fun AuTvScreen(
                                                 Text("Channel guide", Modifier.weight(1f), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
                                                 TextButton(onClick = { wake(); onCloseGuide() }, modifier = Modifier.focusRequester(closeFocus).testTag("close-guide")) { Text("Close") }
                                             }
+                                            notice?.let { Text(it, color = Muted, style = MaterialTheme.typography.bodySmall) }
                                             OutlinedTextField(value = query, onValueChange = { query = it; wake(); scope.launch { listState.scrollToItem(0) } },
                                                 placeholder = { Text("Search channels or programmes", style = MaterialTheme.typography.bodySmall) }, singleLine = true,
                                                 modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("guide-search"),

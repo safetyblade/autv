@@ -1,91 +1,94 @@
 package dev.prestwich.autv
 
+import android.app.PictureInPictureParams
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.res.Configuration
+import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
+import android.util.Rational
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.*
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.media3.common.Player
-import androidx.media3.common.PlaybackException
-import dev.prestwich.autv.data.*
-import dev.prestwich.autv.guide.GuideNavigator
-import dev.prestwich.autv.player.AuTvPlayer
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import dev.prestwich.autv.guide.TuneTarget
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var auPlayer: AuTvPlayer
-
+open class MainActivity : AppCompatActivity() {
+    internal lateinit var playback: PlaybackModel; private set
+    private var pipUi by mutableStateOf(false)
+    private val pipListener = object : Player.Listener {
+        override fun onIsPlayingChanged(isPlaying: Boolean) { updatePipParams() }
+        override fun onPlaybackStateChanged(state: Int) { updatePipParams() }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        auPlayer = AuTvPlayer(this)
+        playback = ViewModelProvider(this, object : androidx.lifecycle.ViewModelProvider.Factory {
+            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T = modelClass.cast(createPlaybackModel())!!
+        })[PlaybackModel::class.java]
+        playback.player.addListener(pipListener)
+        if (savedInstanceState == null && ChannelIntents.isTuneRequest(intent)) playback.request(ChannelIntents.target(intent))
+        pipUi = Build.VERSION.SDK_INT >= 26 && isInPictureInPictureMode
         setContent {
-            var guide by remember { mutableStateOf<Guide?>(null) }
-            var selected by remember { mutableStateOf<Channel?>(null) }
-            var guideOpen by remember { mutableStateOf(true) }
-            var loadError by remember { mutableStateOf(false) }
-            var attempt by remember { mutableIntStateOf(0) }
-            var epg by remember { mutableStateOf(Epg(emptyMap())) }
-            val failed = remember { mutableStateMapOf<Int, String>() }
-            var buffering by remember { mutableStateOf(false) }
-
-            fun tune(channel: Channel) {
-                if (channel.streamUrl.isNullOrBlank()) return
-                selected = channel
-                failed.remove(channel.number)
-                buffering = true
-                auPlayer.play(channel.streamUrl, channel.number)
-            }
-            DisposableEffect(Unit) {
-                val listener = object : Player.Listener {
-                    override fun onPlayerError(error: PlaybackException) {
-                        // Associate the result with the actual media item, not a newer selection.
-                        auPlayer.player.currentMediaItem?.mediaId?.toIntOrNull()?.let {
-                            failed[it] = "Playback failed · select to retry"
-                        }
-                        buffering = false
-                    }
-                    override fun onPlaybackStateChanged(state: Int) {
-                        buffering = state == Player.STATE_BUFFERING
-                        if (state == Player.STATE_READY) auPlayer.player.currentMediaItem?.mediaId?.toIntOrNull()?.let { failed.remove(it) }
-                    }
-                }
-                auPlayer.player.addListener(listener)
-                onDispose { auPlayer.player.removeListener(listener) }
-            }
-            LaunchedEffect(attempt) {
-                loadError = false
-                try {
-                    val loaded = withContext(Dispatchers.IO) { GuideRepository().load() }
-                    guide = loaded
-                    loaded.channels.firstOrNull { !it.streamUrl.isNullOrBlank() }?.let { tune(it) }
-                } catch (error: Exception) {
-                    if (error is CancellationException) throw error
-                    loadError = true
-                }
-            }
-            LaunchedEffect(Unit) {
-                try { epg = withContext(Dispatchers.IO) { EpgRepository().load() } }
-                catch (error: Exception) { if (error is CancellationException) throw error }
-            }
-            AuTvScreen(
-                guide, selected, guideOpen, loadError, failed.toMap(), buffering, epg, auPlayer.player,
-                onSelect = { tune(it); guideOpen = false },
-                onCloseGuide = { guideOpen = false }, onOpenGuide = { guideOpen = true },
+            AuTvScreen(playback.guide, playback.selected, playback.guideOpen, playback.loadError,
+                playback.failed.toMap(), playback.buffering, playback.epg, playback.player,
+                onSelect = { playback.request(TuneTarget.Number(it.number)) },
+                onCloseGuide = { playback.guideOpen = false }, onOpenGuide = { playback.guideOpen = true },
                 onChromeVisibilityChanged = { visible -> setPlayerSystemBars(window, visible) },
-                onRetry = { attempt++ },
-                onNext = { GuideNavigator(guide?.channels.orEmpty()).next(selected)?.let { tune(it); guideOpen = false } },
-                onPrevious = { GuideNavigator(guide?.channels.orEmpty()).previous(selected)?.let { tune(it); guideOpen = false } },
-            )
+                onRetry = playback::reload, onNext = playback::next, onPrevious = playback::previous,
+                onTuneNumber = { playback.request(TuneTarget.Number(it)) }, pictureInPicture = pipUi, notice = playback.notice)
         }
+        updatePipParams()
     }
-    override fun onStop() { auPlayer.player.pause(); super.onStop() }
-    override fun onStart() { super.onStart(); if (auPlayer.player.mediaItemCount > 0) auPlayer.player.play() }
-    override fun onDestroy() { auPlayer.release(); super.onDestroy() }
+    protected open fun createPlaybackModel() = PlaybackModel(application)
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent); setIntent(intent)
+        if (ChannelIntents.isTuneRequest(intent)) playback.request(ChannelIntents.target(intent))
+    }
+    internal fun mobilePipSupported(): Boolean = Build.VERSION.SDK_INT >= 26 &&
+        resources.configuration.uiMode and Configuration.UI_MODE_TYPE_MASK != Configuration.UI_MODE_TYPE_TELEVISION &&
+        !packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK) &&
+        packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
+    protected open fun automaticPipAllowed() = true
+    private fun pipEligible() = automaticPipAllowed() && mobilePipSupported() && playback.selected?.streamUrl != null && playback.player.isPlaying
+    private fun pipParams(): PictureInPictureParams {
+        val bounds = Rect(); window.decorView.getGlobalVisibleRect(bounds)
+        val builder = PictureInPictureParams.Builder().setAspectRatio(Rational(16, 9)).setSourceRectHint(bounds)
+        if (Build.VERSION.SDK_INT >= 31) builder.setAutoEnterEnabled(pipEligible()).setSeamlessResizeEnabled(true)
+        return builder.build()
+    }
+    internal fun updatePipParams() {
+        if (mobilePipSupported()) runCatching { setPictureInPictureParams(pipParams()) }
+    }
+    internal fun enterMobilePip(): Boolean {
+        if (!pipEligible()) return false
+        pipUi = true
+        val entered = runCatching { enterPictureInPictureMode(pipParams()) }.getOrDefault(false)
+        if (!entered) pipUi = false
+        return entered
+    }
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        if (Build.VERSION.SDK_INT < 31) enterMobilePip()
+        else if (pipEligible()) pipUi = true // Auto-entry: strip the chrome before the resize animation.
+    }
+    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+        pipUi = isInPictureInPictureMode
+        if (!isInPictureInPictureMode && !lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)) playback.pause()
+    }
+    override fun onResume() { super.onResume(); pipUi = Build.VERSION.SDK_INT >= 26 && isInPictureInPictureMode; updatePipParams() }
+    override fun onStop() {
+        if (Build.VERSION.SDK_INT < 26 || !isInPictureInPictureMode) playback.pause()
+        super.onStop()
+    }
+    override fun onStart() { super.onStart(); if (::playback.isInitialized) playback.resume() }
+    override fun onDestroy() { playback.player.removeListener(pipListener); super.onDestroy() }
 }
 
 internal fun setPlayerSystemBars(window: android.view.Window, visible: Boolean) {

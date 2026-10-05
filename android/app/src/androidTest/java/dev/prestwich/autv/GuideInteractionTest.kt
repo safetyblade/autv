@@ -16,6 +16,7 @@ import org.junit.Assert.assertTrue
 @OptIn(ExperimentalTestApi::class)
 class GuideInteractionTest {
     @get:Rule val compose = createAndroidComposeRule<ComponentActivity>()
+    private val pip = mutableStateOf(false)
     private fun channel(number: Int, name: String, genre: String, url: String? = "https://example.com/live.m3u8") =
         Channel(number, name, genre, "", "", "Full", url != null, url, "id-$number", "android.resource://dev.prestwich.autv/drawable/app_icon")
 
@@ -40,7 +41,8 @@ class GuideInteractionTest {
                     onSelect = { selected = it; opened = false }, onCloseGuide = { opened = false }, onOpenGuide = { opened = true }, onRetry = {},
                     onNext = { GuideNavigator(channels).next(selected)?.let { selected = it; opened = false } },
                     onPrevious = { GuideNavigator(channels).previous(selected)?.let { selected = it; opened = false } },
-                    onChromeVisibilityChanged = { setPlayerSystemBars(compose.activity.window, it) })
+                    onChromeVisibilityChanged = { setPlayerSystemBars(compose.activity.window, it) }, pictureInPicture = pip.value,
+                    onTuneNumber = { number -> channels.firstOrNull { it.number == number && !it.streamUrl.isNullOrBlank() }?.let { selected = it; opened = false } })
             }
         }
     }
@@ -143,6 +145,30 @@ class GuideInteractionTest {
         val panel = compose.onNodeWithTag("guide-panel").fetchSemanticsNode().boundsInRoot
         assertTrue(cast.bottom <= panel.top)
         screenshot("guide")
+    }
+
+    @Test fun pipRemovesAllChromeAndRestoresGuideState() {
+        launch()
+        compose.runOnIdle { pip.value = true }
+        compose.onNodeWithTag("video").assertIsDisplayed()
+        compose.onNodeWithTag("chrome").assertDoesNotExist()
+        compose.onNodeWithTag("guide-panel").assertDoesNotExist()
+        compose.onNodeWithTag("cast-control").assertDoesNotExist()
+        compose.runOnIdle { pip.value = false }
+        compose.onNodeWithTag("guide-panel").assertIsDisplayed()
+        compose.onNodeWithTag("channel-419").assertIsDisplayed()
+    }
+
+    @Test fun tvNumericSelectionCallsTheSameTuningCallback() {
+        launch(tv = true)
+        compose.onNodeWithTag("close-guide").performClick()
+        compose.onNodeWithTag("app-root").performKeyInput {
+            pressKey(androidx.compose.ui.input.key.Key.One)
+            pressKey(androidx.compose.ui.input.key.Key.Zero)
+            pressKey(androidx.compose.ui.input.key.Key.Zero)
+            pressKey(androidx.compose.ui.input.key.Key.Enter)
+        }
+        compose.onNodeWithText("100  ABC NEWS").assertIsDisplayed()
     }
 
     private fun screenshot(name: String) {
