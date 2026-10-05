@@ -102,7 +102,10 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         playLocal(channel, retry)
     }
     private fun playLocal(channel: Channel, retry: Boolean = false) {
-        if (!retry && player.currentMediaItem?.mediaId == channel.number.toString() && player.playbackState in listOf(Player.STATE_READY, Player.STATE_BUFFERING)) {
+        // Reuse only the same identity AND stream. A refreshed catalogue may replace a URL.
+        if (!retry && player.currentMediaItem?.mediaId == channel.number.toString() &&
+            player.currentMediaItem?.localConfiguration?.uri?.toString() == channel.streamUrl && player.playerError == null &&
+            player.playbackState in listOf(Player.STATE_READY, Player.STATE_BUFFERING)) {
             if (foreground) player.play(); return
         }
         buffering = true

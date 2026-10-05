@@ -65,10 +65,11 @@ without changing the branding area.
 
 Controls appear at playback start and fade after 3.5 seconds without input.
 Touch or D-pad centre/OK restores them; hidden playback has no persistent
-buttons, panels or system bars. Opening the guide pins the chrome. Cast stays
+buttons, panels or system bars. Opening the guide pins the chrome. Phone Cast stays
 in the safe-area header above the drawer in both orientations. CH − and CH +
 are available on screen; hardware channel keys tune even while controls are
-hidden. Back closes the guide first. Close, the guide toggle and handset
+hidden. Back closes the guide, then hides visible chrome, before normal Android
+exit. Close, the guide toggle and handset
 outside touch also dismiss it.
 
 The guide opens scrolled and focused at the playing channel. It retains the
@@ -98,6 +99,25 @@ XMLTV display-name match provides a safe fallback when IDs differ; ambiguous
 name matches are ignored. Missing,
 expired or placeholder programme data displays a neutral fallback rather than
 blocking playback. Logo image failures also have a local brand fallback.
+
+The TV guide uses the same dark card/chip design in a larger centred overlay;
+there is no permanent rail, grid or bottom control bar. Remote focus has a
+strong outline and raised contrast. Left/right browses category chips; down
+enters the channel list; up from its first playable row returns to categories.
+OK/Enter activates the focused control, and closing the guide returns focus to
+the transient Guide button. The player view blocks native descendant focus so
+the video surface cannot take focus behind an overlay.
+
+Phone landscape uses 54% of the available content width, a combined compact
+search/Close header, shorter category chips and denser rows with concise
+programme metadata. Guide-open bottom controls are removed to free list space.
+Portrait retains its larger search field and programme cards.
+
+`PlaybackInteractionTest` dispatches remote keys through the real activity and
+checks the retained player's media ID, URL and playing state for guide tuning,
+CH keys/buttons and direct selection. A phone touch test checks actual media
+replacement too. Debug-only fixture activities use distinct HLS asset URLs;
+they never replace the production runtime catalogue.
 
 Cast uses Google's Default Media Receiver and loads the tuned live HLS channel
 through the retained shared player state. CH keys, guide selection and direct

@@ -11,9 +11,9 @@ class AuTvPlayer(context: Context) {
     fun play(url: String?, channelNumber: Int? = null) {
         if (url.isNullOrBlank()) return
         // Provider HLS endpoints (including Plex) need not end in .m3u8.
-        player.setMediaItem(MediaItem.Builder().setMediaId(channelNumber?.toString() ?: url).setUri(url).setMimeType(MimeTypes.APPLICATION_M3U8).build())
+        player.setMediaItem(MediaItem.Builder().setMediaId(channelNumber?.toString() ?: url).setUri(url).setMimeType(MimeTypes.APPLICATION_M3U8).build(), true)
         player.prepare()
-        player.playWhenReady = true
+        player.play()
     }
     fun release() = player.release()
 }

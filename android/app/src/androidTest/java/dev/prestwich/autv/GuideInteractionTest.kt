@@ -171,6 +171,24 @@ class GuideInteractionTest {
         compose.onNodeWithText("100  ABC NEWS").assertIsDisplayed()
     }
 
+    @Test fun landscapeGuideUsesHalfWidthAndKeepsMultipleRowsAndVideoVisible() {
+        org.junit.Assume.assumeTrue(compose.activity.resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE)
+        launch()
+        val root = compose.onNodeWithTag("app-root").fetchSemanticsNode().boundsInRoot
+        val panel = compose.onNodeWithTag("guide-panel").fetchSemanticsNode().boundsInRoot
+        assertTrue(panel.width / root.width in 0.45f..0.60f)
+        compose.onNodeWithTag("channel-419").assertIsDisplayed()
+        compose.onNodeWithTag("channel-500").assertIsDisplayed()
+        compose.onNodeWithTag("channel-600").assertIsDisplayed()
+        compose.onNodeWithTag("ch-plus").assertDoesNotExist()
+        compose.onNodeWithTag("video").assertIsDisplayed()
+        compose.onNodeWithTag("guide-categories").assertIsDisplayed()
+        compose.onNodeWithTag("channel-600").performClick()
+        compose.onNodeWithTag("guide-panel").assertDoesNotExist()
+        compose.onNodeWithText("600  Comedy Central").assertIsDisplayed()
+        screenshot("landscape-responsive")
+    }
+
     private fun screenshot(name: String) {
         val bitmap = androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot()
         val orientation = if (compose.activity.resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE) "landscape" else "portrait"
