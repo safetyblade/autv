@@ -1,0 +1,231 @@
+name: Build formatted TV Guide
+
+on:
+  push:
+    paths:
+      - ".github/workflows/tv-guide-docx.yml"
+      - "channel_guide.csv"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install python-docx
+      - name: Build Word guide
+        shell: python
+        run: |
+          import csv
+          from collections import Counter
+          from docx import Document
+          from docx.shared import Inches, Pt, RGBColor
+          from docx.enum.text import WD_ALIGN_PARAGRAPH
+          from docx.enum.section import WD_SECTION
+          from docx.enum.table import WD_TABLE_ALIGNMENT, WD_CELL_VERTICAL_ALIGNMENT
+          from docx.oxml import OxmlElement
+          from docx.oxml.ns import qn
+
+          BG="070A10"; STONE="CEC4B4"; PAPER="F4F0E8"; INK="11151D"; MUTED="666B73"; WHITE="FFFFFF"
+
+          def shade(cell, fill):
+              tcPr=cell._tc.get_or_add_tcPr()
+              shd=tcPr.find(qn("w:shd"))
+              if shd is None:
+                  shd=OxmlElement("w:shd"); tcPr.append(shd)
+              shd.set(qn("w:fill"), fill)
+
+          def margins(section, top=.55, bottom=.55, left=.65, right=.65):
+              section.top_margin=Inches(top); section.bottom_margin=Inches(bottom)
+              section.left_margin=Inches(left); section.right_margin=Inches(right)
+
+          def set_repeat_table_header(row):
+              trPr=row._tr.get_or_add_trPr()
+              tblHeader=OxmlElement("w:tblHeader"); tblHeader.set(qn("w:val"),"true"); trPr.append(tblHeader)
+
+          def page_break(doc):
+              doc.add_page_break()
+
+          with open("channel_guide.csv", newline="", encoding="utf-8-sig") as f:
+              rows=[r for r in csv.DictReader(f) if r["Status"].strip()=="Active"]
+          rows.sort(key=lambda r:int(r["Channel number"]))
+          counts=Counter(r["Genre"] for r in rows)
+
+          genres=[
+              ("News","100-199"),("Sport","200-299"),("Movies","300-399"),("Game Shows","400-499"),
+              ("Crime","500-599"),("Comedy","600-699"),("Entertainment","700-999"),
+              ("Reality & Lifestyle","1000-1099"),("Factual","1100-1199"),
+              ("Kids & Animation","1200-1299"),("Music","1300-1399")
+          ]
+
+          doc=Document()
+          margins(doc.sections[0],.45,.45,.55,.55)
+          styles=doc.styles
+          normal=styles["Normal"]
+          normal.font.name="Aptos"; normal.font.size=Pt(9); normal.font.color.rgb=RGBColor.from_string(INK)
+          normal.paragraph_format.space_after=Pt(4)
+          for nm,size in [("Title",30),("Heading 1",22),("Heading 2",14),("Heading 3",10)]:
+              st=styles[nm]; st.font.name="Aptos Display"; st.font.size=Pt(size); st.font.bold=True; st.font.color.rgb=RGBColor.from_string(INK)
+              st.paragraph_format.space_before=Pt(8); st.paragraph_format.space_after=Pt(5)
+
+          # Cover
+          t=doc.add_table(rows=1,cols=1); t.alignment=WD_TABLE_ALIGNMENT.CENTER; t.autofit=False
+          c=t.cell(0,0); c.width=Inches(7.1); shade(c,BG); c.vertical_alignment=WD_CELL_VERTICAL_ALIGNMENT.CENTER
+          p=c.paragraphs[0]; p.alignment=WD_ALIGN_PARAGRAPH.CENTER
+          p.paragraph_format.space_before=Pt(150); p.paragraph_format.space_after=Pt(12)
+          r=p.add_run("AU TV GUIDE"); r.bold=True; r.font.size=Pt(38); r.font.name="Aptos Display"; r.font.color.rgb=RGBColor.from_string(STONE)
+          p=c.add_paragraph(); p.alignment=WD_ALIGN_PARAGRAPH.CENTER
+          r=p.add_run("THE COMPLETE CHANNEL DIRECTORY"); r.bold=True; r.font.size=Pt(16); r.font.color.rgb=RGBColor.from_string(WHITE)
+          p=c.add_paragraph(); p.alignment=WD_ALIGN_PARAGRAPH.CENTER
+          r=p.add_run("2026 EDITION  |  UPDATED 5 OCTOBER"); r.bold=True; r.font.size=Pt(11); r.font.color.rgb=RGBColor.from_string(STONE)
+          p=c.add_paragraph(); p.alignment=WD_ALIGN_PARAGRAPH.CENTER; p.paragraph_format.space_before=Pt(22)
+          r=p.add_run(f"{len(rows)} curated live channels in one simple television lineup."); r.font.size=Pt(13); r.font.color.rgb=RGBColor.from_string(WHITE)
+          p=c.add_paragraph(); p.alignment=WD_ALIGN_PARAGRAPH.CENTER
+          r=p.add_run("Channel numbers  •  descriptions  •  genre sections  •  quick setup"); r.font.size=Pt(10); r.font.color.rgb=RGBColor.from_string(STONE)
+          p=c.add_paragraph(); p.alignment=WD_ALIGN_PARAGRAPH.CENTER; p.paragraph_format.space_before=Pt(105); p.paragraph_format.space_after=Pt(150)
+          r=p.add_run("AU TV is designed to feel like television again: turn it on, pick a number, and watch."); r.italic=True; r.font.size=Pt(11); r.font.color.rgb=RGBColor.from_string(WHITE)
+
+          page_break(doc)
+
+          # Identity page
+          h=doc.add_heading("AU TV",0); h.alignment=WD_ALIGN_PARAGRAPH.CENTER
+          p=doc.add_paragraph("HOME TELEVISION • CURATED FAST • ONE GUIDE"); p.alignment=WD_ALIGN_PARAGRAPH.CENTER
+          p.runs[0].font.color.rgb=RGBColor.from_string(MUTED)
+          doc.add_paragraph("")
+          box=doc.add_table(rows=1,cols=1); box.alignment=WD_TABLE_ALIGNMENT.CENTER
+          c=box.cell(0,0); shade(c,PAPER)
+          p=c.paragraphs[0]; p.alignment=WD_ALIGN_PARAGRAPH.CENTER; p.paragraph_format.space_before=Pt(18)
+          r=p.add_run("APP VERSION 0.4.0"); r.bold=True; r.font.size=Pt(15); r.font.color.rgb=RGBColor.from_string(INK)
+          p=c.add_paragraph("Native Android TV / Google TV viewing is now the primary household experience.")
+          p.alignment=WD_ALIGN_PARAGRAPH.CENTER
+          p=c.add_paragraph("The M3U + XMLTV setup remains available for legacy TV-input apps.")
+          p.alignment=WD_ALIGN_PARAGRAPH.CENTER; p.paragraph_format.space_after=Pt(18)
+          doc.add_paragraph("")
+          p=doc.add_paragraph("This edition is generated from the authoritative AU TV channel guide. Source-provider details are intentionally kept out of the household viewing guide.")
+          p.alignment=WD_ALIGN_PARAGRAPH.CENTER
+
+          page_break(doc)
+
+          # Quick start
+          doc.add_heading("QUICK START",0)
+          doc.add_paragraph("Get AU TV running on an Android TV / Google TV device in a few minutes.")
+          quick=[
+              ("1. Install AU TV v0.4.0","Install the current AU TV APK on the Android TV / Google TV device."),
+              ("2. Open AU TV","The app loads the published AU TV channel guide and current playlist data."),
+              ("3. Browse or search","Browse by genre, search for a channel or programme, or enter a channel number directly."),
+              ("4. Tune","Select a channel to play it. Use the in-player guide and channel controls to move around without returning to the launcher."),
+              ("5. Refresh after lineup changes","Reopen or reload the guide after an AU TV refresh so new channels and numbering are picked up."),
+              ("6. Legacy setup if needed","For a TV that still uses a TV-input app, import the AU TV playlist below. The playlist already references the combined programme guide.")
+          ]
+          for title,body in quick:
+              p=doc.add_paragraph(); r=p.add_run(title); r.bold=True; r.font.size=Pt(11); r.font.color.rgb=RGBColor.from_string(INK)
+              p=doc.add_paragraph(body); p.paragraph_format.left_indent=Inches(.18)
+          doc.add_paragraph("Legacy playlist",style="Heading 2")
+          doc.add_paragraph("https://raw.githubusercontent.com/safetyblade/autv/main/playlist.m3u")
+          doc.add_paragraph("Legacy EPG (only if requested separately)",style="Heading 2")
+          doc.add_paragraph("https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz")
+
+          page_break(doc)
+
+          # How to use
+          doc.add_heading("HOW TO USE THIS GUIDE",0)
+          for title,body in [
+              ("Channel numbers","Numbers are deliberately grouped by genre. They are the fastest way to navigate AU TV and are not inherited from upstream services."),
+              ("Genre blocks","News starts at 100, Sport at 200, Movies at 300 and so on. Entertainment has the larger 700-999 block."),
+              ("Subgenres","Within each genre, related channels sit together so the lineup reads like an old-school television service rather than an alphabetical catalogue."),
+              ("Programme guide","Full means programme data is expected. Channel only means the channel is retained even where a dependable schedule is not available."),
+              ("Descriptions","Descriptions explain what the channel is for without exposing maintenance/source details."),
+              ("Updates","The authoritative channel guide controls this directory. When channels change, this document is regenerated rather than manually patched.")
+          ]:
+              p=doc.add_paragraph(); r=p.add_run(title.upper()); r.bold=True; r.font.color.rgb=RGBColor.from_string(INK)
+              doc.add_paragraph(body)
+
+          page_break(doc)
+
+          # Contents
+          doc.add_heading("CONTENTS",0)
+          doc.add_paragraph("Browse by the same channel-number blocks used on the TV.")
+          for label in ["Quick Start","How to Use This Guide","Channel Lineup at a Glance"]:
+              p=doc.add_paragraph(label); p.paragraph_format.space_after=Pt(7)
+          for g,rg in genres:
+              subset=[r for r in rows if r["Genre"]==g]
+              if subset:
+                  lo=subset[0]["Channel number"]; hi=subset[-1]["Channel number"]
+                  doc.add_paragraph(f"{lo}-{hi}  {g} ({len(subset)} channels)")
+          doc.add_paragraph("Notes & Future Channels")
+
+          page_break(doc)
+
+          # at a glance
+          doc.add_heading("CHANNEL LINEUP AT A GLANCE",0)
+          tab=doc.add_table(rows=1,cols=3); tab.alignment=WD_TABLE_ALIGNMENT.CENTER
+          hdr=tab.rows[0].cells
+          for i,v in enumerate(["BLOCK","GENRE","CHANNELS"]):
+              hdr[i].text=v; shade(hdr[i],BG)
+              for run in hdr[i].paragraphs[0].runs: run.font.color.rgb=RGBColor.from_string(STONE); run.bold=True
+          set_repeat_table_header(tab.rows[0])
+          for g,rg in genres:
+              cells=tab.add_row().cells
+              cells[0].text=rg; cells[1].text=g; cells[2].text=str(counts[g])
+              for c in cells: c.vertical_alignment=WD_CELL_VERTICAL_ALIGNMENT.CENTER
+          doc.add_paragraph("")
+          p=doc.add_paragraph(f"TOTAL ACTIVE CHANNELS: {len(rows)}"); p.runs[0].bold=True; p.runs[0].font.size=Pt(14)
+          doc.add_paragraph("5 October update: Sport now contains 95 channels, including the retained wrestling lineup at 200-203: Watch AEW, CW Presents WWE NXT, TNA Wrestling Channel and TNA Wrestling Xumo.")
+
+          # sections
+          for genre,rg in genres:
+              page_break(doc)
+              subset=[r for r in rows if r["Genre"]==genre]
+              h=doc.add_heading(genre.upper(),0)
+              p=doc.add_paragraph(f"{subset[0]['Channel number']}-{subset[-1]['Channel number']}  •  {len(subset)} CHANNELS")
+              p.runs[0].bold=True; p.runs[0].font.color.rgb=RGBColor.from_string(MUTED)
+              last_sub=None
+              for r0 in subset:
+                  if r0["Subgenre"] != last_sub:
+                      last_sub=r0["Subgenre"]
+                      p=doc.add_paragraph()
+                      p.paragraph_format.space_before=Pt(10); p.paragraph_format.space_after=Pt(3)
+                      rr=p.add_run(last_sub.upper()); rr.bold=True; rr.font.size=Pt(9); rr.font.color.rgb=RGBColor.from_string(MUTED)
+                  table=doc.add_table(rows=1,cols=2)
+                  table.autofit=False
+                  table.columns[0].width=Inches(.72); table.columns[1].width=Inches(6.05)
+                  c0,c1=table.rows[0].cells
+                  shade(c0,BG); shade(c1,PAPER)
+                  p=c0.paragraphs[0]; p.alignment=WD_ALIGN_PARAGRAPH.CENTER
+                  rr=p.add_run(r0["Channel number"]); rr.bold=True; rr.font.size=Pt(12); rr.font.color.rgb=RGBColor.from_string(STONE)
+                  p=c1.paragraphs[0]; p.paragraph_format.space_after=Pt(1)
+                  rr=p.add_run(r0["Channel name"]); rr.bold=True; rr.font.size=Pt(10); rr.font.color.rgb=RGBColor.from_string(INK)
+                  epg=r0["EPG"].strip()
+                  rr=p.add_run(f"   {epg}"); rr.font.size=Pt(7.5); rr.font.color.rgb=RGBColor.from_string(MUTED)
+                  p=c1.add_paragraph(r0["Description"].strip() or "Curated AU TV channel.")
+                  p.paragraph_format.space_after=Pt(2); p.runs[0].font.size=Pt(8.2)
+                  sp=doc.add_paragraph(""); sp.paragraph_format.space_after=Pt(1); sp.paragraph_format.line_spacing=Pt(1)
+
+          page_break(doc)
+          doc.add_heading("NOTES & FUTURE CHANNELS",0)
+          doc.add_paragraph("AU TV remains a curated working lineup. Failed or rejected test feeds are not kept here as clutter.")
+          doc.add_paragraph("Future additions should be placed into the existing genre and subgenre structure, given a stable channel number, tested on the household devices, and only then promoted into the authoritative guide.")
+          doc.add_paragraph("")
+          p=doc.add_paragraph("Visual system"); p.runs[0].bold=True; p.runs[0].font.size=Pt(13)
+          doc.add_paragraph("The guide now follows the native AU TV application: near-black #070A10, warm stone #CEC4B4, restrained typography and strong channel-number navigation. Genre structure does the organisational work; rainbow category colours are intentionally avoided.")
+
+          # footer
+          for section in doc.sections:
+              margins(section,.45,.45,.55,.55)
+              f=section.footer.paragraphs[0]; f.alignment=WD_ALIGN_PARAGRAPH.CENTER
+              rr=f.add_run("AU TV • HOME GUIDE • v0.4.0 • 5 OCTOBER 2026"); rr.font.size=Pt(7); rr.font.color.rgb=RGBColor.from_string(MUTED)
+
+          out="AU TV Guide 2026 - Complete Channel Directory - Updated 5 Oct 2026.docx"
+          doc.save(out)
+          print(out, len(rows), dict(counts))
+      - uses: actions/upload-artifact@v4
+        with:
+          name: au-tv-guide-word
+          path: "AU TV Guide 2026 - Complete Channel Directory - Updated 5 Oct 2026.docx"
+          if-no-files-found: error
