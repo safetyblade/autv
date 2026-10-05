@@ -74,6 +74,16 @@ Each genre is then ordered by approved subgenres and editorial priority rather t
 
 See `CHANNEL_GUIDE.md` for the detailed taxonomy and ordering model.
 
+## Channel discovery and review
+
+New or changed channels are reviewed through a controlled discovery pipeline before they can enter the live guide.
+
+- `CHANNEL_DISCOVERY_PROCESS.md` defines the weekly, monthly and targeted search process, reconciliation rules, browser/device QA gates and release checks.
+- `channel_candidates.csv` is the persistent candidate register for discoveries, failures, duplicates, watchlist items and channels awaiting testing.
+- Search results and provider catalogues are evidence only; `channel_guide.csv` remains the authority for the active lineup.
+
+The live lineup must never grow automatically because an upstream provider adds channels.
+
 ## Playlist generation
 
 A refresh performs the following steps:
