@@ -6,4 +6,4 @@ dependencyResolutionManagement {
     repositories { google(); mavenCentral() }
 }
 rootProject.name = "AUTV"
-include(":app", ":core-data", ":core-guide", ":core-player", ":tif-probe")
+include(":app", ":core-data", ":core-guide", ":core-player")
