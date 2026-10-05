@@ -920,10 +920,6 @@
     <display-name>Tiny House Nation</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/05731f39-c980-4c30-97d0-9874d9999fe8/Tiny_House_Nation_Logo_STACKED_COLOR_RDX.png" />
   </channel>
-  <channel id="697140a85d851f5e69414688-606605549dbfca002d2ae873">
-    <display-name>TNA Wrestling Channel</display-name>
-    <icon src="https://provider-static.plex.tv/epg/cms/production/5d4f68c3-82af-45e7-b2c4-39aff69f3ce0/TNAWrestling_Plex_LogoforDarkBG_1500x1000_-_Alex_TushinghamRDX.png" />
-  </channel>
   <channel id="697140a85d851f5e69414688-62ee6eae271f393d2d9f7096">
     <display-name>Today's K-Pop</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/9508b18a-0b6a-4281-888a-bde4bbfe10cd/Todays_K_Pop.png" />
@@ -2263,6 +2259,10 @@
     <display-name>ONE Championship</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951530/168x168.png?type=color_onBlack" />
   </channel>
+  <channel id="99991341">
+    <display-name>TNA Wrestling Channel</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99991341/168x168.png?type=color_onBlack" />
+  </channel>
   <channel id="99951469">
     <display-name>HBO Boxing</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951469/168x168.png?type=color_onBlack" />
@@ -2686,13 +2686,5 @@
   <channel id="autv.343-trace-stars">
     <display-name>Trace Stars</display-name>
     <icon src="https://d3dj3gmzxw0r4q.cloudfront.net/Trace_SportStars/LG_Ch_Logo_460x200.png" />
-  </channel>
-  <channel id="99991341">
-    <display-name>TNA Wrestling Channel (Xumo Test)</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99991341/168x168.png?type=color_onBlack" />
-  </channel>
-  <channel id="8346c21c4b5b032cca68a74933e7642b">
-    <display-name>Watch AEW (Roku Test)</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/8346c21c4b5b032cca68a74933e7642b/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1779304614728_all_elite_wrestling_logo_hud.png" />
   </channel>
 </tv>
