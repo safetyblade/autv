@@ -38,6 +38,27 @@ The APK supports Android 7.0/API 24 and later, with both ordinary and Android TV
 launchers. The manual-only `Native app` workflow runs the build and tests and
 uploads `autv-debug`. No production refresh workflow or output is changed.
 
+## Download APKs on a PC
+
+Use GitHub-hosted downloads rather than chat/workspace artifact links:
+
+1. Sign in to GitHub and open [Native app builds](https://github.com/safetyblade/autv/actions/workflows/native-app.yml).
+2. Choose **Run workflow**, select the branch containing the native changes,
+   then run it. This workflow remains manual-only.
+3. Open the completed run. Under **Artifacts**, download `autv-debug` for the
+   normal AU TV app. Download `autv-kogan-input-probe-debug` only for the separate
+   Kogan diagnostic experiment.
+4. Extract the downloaded ZIPs on the PC. Copy `app-debug.apk` (and optionally
+   `tif-probe-debug.apk`) onto the USB drive. Install the main app first.
+
+The jobs run independently, so a probe failure does not prevent downloading a
+successful main build. Downloads require a signed-in GitHub account with access
+to the repository. Artifacts request 90-day retention (repository/organization
+limits may shorten it); rerun the workflow when they expire. Each run builds the
+selected branch, so publish the local native commits before requesting a build.
+GitHub Releases are a future option for permanent, versioned downloads; this
+workflow does not publish releases or modify production endpoints.
+
 ## Pass 3: playback chrome and navigable guide
 
 The player uses near-black/navy video chrome, smoked surfaces and restrained
