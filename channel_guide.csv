@@ -23,8 +23,8 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 121,Yahoo Finance,News,Business / Finance,Full,Plex AU,,Active,"Rolling news, current affairs, weather or business coverage."
 122,The Weather Network,News,Weather,Full,Pluto,,Active,"Rolling news, current affairs, weather or business coverage."
 123,WeatherSpy,News,Weather,Full,Plex AU,,Active,"Rolling news, current affairs, weather or business coverage."
-200,Watch AEW,Sport,Wrestling & Combat,Channel only,Tubi,,Active,"AEW wrestling FAST channel, currently sourced from Tubi."
-201,TNA Wrestling Channel,Sport,Wrestling & Combat,Full,Plex AU,Roku,Active,24/7 TNA wrestling channel with matches and archive programming.
+200,Watch AEW,Sport,Wrestling & Combat,Channel only,Tubi,Roku,Active,"24/7 AEW FAST channel. Tubi remains primary; Roku carries the same feed as a tested fallback."
+201,TNA Wrestling Channel,Sport,Wrestling & Combat,Full,Xumo,Plex AU,Active,"24/7 TNA wrestling channel. Xumo is the retained source after device QA showed newer/different programme rotation; Plex AU remains fallback."
 202,UFC,Sport,Wrestling & Combat,Full,Plex AU,,Active,Combat-sports channel featuring UFC programming and fight content.
 203,PFL MMA,Sport,Wrestling & Combat,Full,Plex AU,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
 204,ONE Championship,Sport,Wrestling & Combat,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
@@ -637,6 +637,4 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1326,Stingray Naturescape,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
 1327,Stingray Holidayscapes,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
 1328,ZenLIFE by Stingray,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-293,CW Presents WWE NXT,Sport,Wrestling & Combat,Full,Roku,,Active,"WWE NXT FAST channel from The CW/Roku feed for current-era NXT programming and Live Channels QA."
-294,TNA Wrestling Channel (Xumo Test),Sport,Wrestling & Combat,Full,Xumo,Plex AU,Active,"Temporary Xumo TNA comparison feed to assess recency and rotation against the retained Plex AU TNA channel."
-295,Watch AEW (Roku Test),Sport,Wrestling & Combat,Full,Roku,Tubi,Active,"Temporary Roku AEW comparison feed to assess reliability and programme rotation against the retained Tubi Watch AEW channel."
+293,CW Presents WWE NXT,Sport,Wrestling & Combat,Full,Roku,,Active,"WWE NXT FAST channel carrying current-era NXT archive programming; retained after successful Live Channels device QA."
