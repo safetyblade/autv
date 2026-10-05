@@ -20,10 +20,6 @@
     <display-name>Action Hollywood Movies</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/c94e3220-9a45-42e9-8bdb-01fc43e0f27c/white_textAction_Hollywood_Movies_logo_dark_-_Angela_Chan.png" />
   </channel>
-  <channel id="697140a85d851f5e69414688-69d6d88b1790acff6189dea5">
-    <display-name>AddictaTV</display-name>
-    <icon src="https://provider-static.plex.tv/epg/cms/production/377dc2cb-53dd-4034-84e1-125be2b086c0/2WHITEaddictaTV_Logo_Transparency-Backgroud-Official-Brand_1500x1000px.png" />
-  </channel>
   <channel id="697140a85d851f5e69414688-6533e9b1df3ccc650a965646">
     <display-name>Adventure Earth</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/7e7eaa4b-57dd-43dd-80b7-55161ce05135/Adventure_Earth_ChannelLogo_White_1500x1000_Tilman.png" />
@@ -535,10 +531,6 @@
   <channel id="697140a85d851f5e69414688-692719bf5d6063fc5b96b699">
     <display-name>Most Haunted</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/abcea44a-b25a-4c68-9d9a-7d8d815175ac/Most_HauntedLIGHT_LOGO__3_.png" />
-  </channel>
-  <channel id="697140a85d851f5e69414688-65d90ec99c7a6da8c3ce57eb">
-    <display-name>Movieitaly Channel</display-name>
-    <icon src="https://provider-static.plex.tv/epg/cms/production/cd9cec29-1cdc-4cd0-b7c2-cdd8fc377536/Color_White_MI_LOGO1_-_Simona_CampobassoRDX.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-6623c78128a167c6e5b3079c">
     <display-name>MOVIESPHERE</display-name>
@@ -1148,9 +1140,6 @@
   </channel>
   <channel id="autv.stingray-easy-listening">
     <display-name>Stingray Easy Listening</display-name>
-  </channel>
-  <channel id="autv.pbs-kids-australia-find-correct-aus">
-    <display-name>PBS Kids (Australia) find correct aus</display-name>
   </channel>
   <channel id="autv.kartoon-channel-australia">
     <display-name>Kartoon Channel (Australia)</display-name>
@@ -1970,6 +1959,10 @@
     <display-name>Willow Sports</display-name>
     <icon src="https://images.pluto.tv/channels/6972546cc62833833a187f50/colorLogoPNG_1770648792020.png" />
   </channel>
+  <channel id="ac0caef9123a35df3b884b139340a597">
+    <display-name>CW Presents WWE NXT</display-name>
+    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/ac0caef9123a35df3b884b139340a597/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1783457806003_cw_presents_wwe_nxt_logo_hud.png" />
+  </channel>
   <channel id="c0b79a332cfd90b8eeb6d4a0dcb63674">
     <display-name>Top Rank Classics</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/c0b79a332cfd90b8eeb6d4a0dcb63674/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1730998467166_TRClassics_HUD.png" />
@@ -2009,10 +2002,6 @@
   <channel id="ffe5d9e0480d1c5e1dcead3abd966ac7">
     <display-name>Let's Make a Deal</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/ffe5d9e0480d1c5e1dcead3abd966ac7/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1741793674388_LMAD_HUDLogoCenterAligned_260x147.png" />
-  </channel>
-  <channel id="62b4eba68f3051c68d2beb22dc94ebbc">
-    <display-name>Supermarket Sweep</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/62b4eba68f3051c68d2beb22dc94ebbc/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1669151901470_ROKU_SMS_HUD-MONO_260X147.png" />
   </channel>
   <channel id="3580b15015379c4256440b0e119d46ed">
     <display-name>America's Got Talent</display-name>
@@ -2394,34 +2383,6 @@
     <display-name>Love After Lockup We TV</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951479/168x168.png?type=color_onBlack" />
   </channel>
-  <channel id="99951413">
-    <display-name>NASCAR Channel</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951413/168x168.png?type=color_onBlack" />
-  </channel>
-  <channel id="99951411">
-    <display-name>Shout! Movies</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951411/168x168.png?type=color_onBlack" />
-  </channel>
-  <channel id="99951596">
-    <display-name>Great American RomComs</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951596/168x168.png?type=color_onBlack" />
-  </channel>
-  <channel id="99951393">
-    <display-name>Bizarre Foods with Andrew Zimmern</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951393/168x168.png?type=color_onBlack" />
-  </channel>
-  <channel id="99951384">
-    <display-name>Bachelor Nation</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951384/168x168.png?type=color_onBlack" />
-  </channel>
-  <channel id="99951442">
-    <display-name>My Little Pony</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951442/168x168.png?type=color_onBlack" />
-  </channel>
-  <channel id="99951441">
-    <display-name>Power Rangers</display-name>
-    <icon src="https://image.xumo.com/v1/channels/channel/99951441/168x168.png?type=color_onBlack" />
-  </channel>
   <channel id="400000294">
     <display-name>Watch AEW</display-name>
     <icon src="https://canvas-lb.tubitv.com/opts/yeAV3-c2XWfYzw==/e9cd4624-20d8-421b-b5ed-282769cf2f57/CHgQeDoFMS4xLjlAAQ==" />
@@ -2433,10 +2394,6 @@
   <channel id="400000008">
     <display-name>NHL</display-name>
     <icon src="https://canvas-lb.tubitv.com/opts/8h7HYVpDz2amhw==/085bca04-c806-4a7f-bb0c-d38fe352f3e3/CHgQeDoFMS4xLjlAAQ==" />
-  </channel>
-  <channel id="613763">
-    <display-name>Stadium</display-name>
-    <icon src="https://canvas-lb.tubitv.com/opts/-NtXXHY5Foetwg==/ffec7159-bf94-4c51-9544-5162e5a57b2f/CHgQeDoFMS4xLjlAAQ==" />
   </channel>
   <channel id="400000304">
     <display-name>UEFA.tv</display-name>
@@ -2718,9 +2675,6 @@
     <display-name>Robocar POLI</display-name>
     <icon src="http://accio.its-newid.net/channel/newid_108/lg_channels/img/channel_logo/default/channel_logo.png" />
   </channel>
-  <channel id="autv.pbs-kids-australia-find-correct-aus">
-    <display-name>PBS Kids (Australia)</display-name>
-  </channel>
   <channel id="autv.170-he-man-masters-of-the-universe">
     <display-name>He-Man &amp; Masters Of The Universe</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99984060/400x200.png?type=white_cropped" />
@@ -2733,8 +2687,12 @@
     <display-name>Trace Stars</display-name>
     <icon src="https://d3dj3gmzxw0r4q.cloudfront.net/Trace_SportStars/LG_Ch_Logo_460x200.png" />
   </channel>
-  <channel id="USBD4200016QR">
-    <display-name>PickleballTV</display-name>
-    <icon src="https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD4200016QR_20240520T220130SQUARE.png" />
+  <channel id="99991341">
+    <display-name>TNA Wrestling Channel (Xumo Test)</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99991341/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="8346c21c4b5b032cca68a74933e7642b">
+    <display-name>Watch AEW (Roku Test)</display-name>
+    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/8346c21c4b5b032cca68a74933e7642b/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1779304614728_all_elite_wrestling_logo_hud.png" />
   </channel>
 </tv>
