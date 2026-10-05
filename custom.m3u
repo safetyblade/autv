@@ -190,3 +190,12 @@ https://d1bl6tskrpq9ze.cloudfront.net/hls/master.m3u8?ads.xumo_channelId=9998406
 https://amg27847-amg27847c1-amgplt0049.playout.now3.amagi.tv/ts-ap-s1-n1/playlist/amg27847-amg27847c1-amgplt0049/playlist.m3u8?ads.appname=[APP_NAME]&ads.appstoreurl=[APP_STOREURL]&ads.appversion=[APP_VERSION]&ads.bundleid=[APP_BUNDLE]&ads.country=[COUNTRY]&ads.deviceid=[DEVICE_ID]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.devicetype=[DEVICE_TYPE]&ads.donotsell=[DNS]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.ip=[IP]&ads.lat=[LMT]&ads.targetad=[TARGETAD_ALLOWED]&ads.ua=[UA]&ads.usprivacy=[US_PRIVACY]&ads.coppa=0&ads.fck=[FCK]&ads.givn=[NONCE]&ads.viewsize=[VIEWSIZE]
 #EXTINF:-1 tvg-id="autv.343-trace-stars" tvg-name="Trace Stars" tvg-logo="https://d3dj3gmzxw0r4q.cloudfront.net/Trace_SportStars/LG_Ch_Logo_460x200.png" group-title="Fallback",Trace Stars
 https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01131-tracetv-tracesportstar-lgau/playlist.m3u8?ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.usprivacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.coppa=0&ads.targetad=[TARGETAD_ALLOWED]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.dmake=[DEVICE_MAKE]
+
+
+# ---- Wrestling source comparison tests ----
+# Temporary A/B candidates for Live Channels QA. Remove or promote after testing.
+#EXTINF:-1 tvg-id="99991341" tvg-name="TNA Wrestling Channel (Xumo Test)" tvg-logo="https://image.xumo.com/v1/channels/channel/99991341/168x168.png?type=color_onBlack" group-title="Sport",TNA Wrestling Channel (Xumo Test)
+https://live-content.xumo.com/2073/content/XM0DSIUCO6UB8Y/23356260/master.m3u8
+
+#EXTINF:-1 tvg-id="8346c21c4b5b032cca68a74933e7642b" tvg-name="Watch AEW (Roku Test)" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/8346c21c4b5b032cca68a74933e7642b/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1779304614728_all_elite_wrestling_logo_hud.png" group-title="Sport",Watch AEW (Roku Test)
+https://jmp2.uk/rok-8346c21c4b5b032cca68a74933e7642b.m3u8
