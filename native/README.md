@@ -99,10 +99,12 @@ name matches are ignored. Missing,
 expired or placeholder programme data displays a neutral fallback rather than
 blocking playback. Logo image failures also have a local brand fallback.
 
-Cast discovery/session selection uses Google's Default Media Receiver; remote
-media loading and phone-to-TV controller synchronization remain future work.
-Provider access, codecs and live Cast discovery need testing on the intended
-hardware/network.
+Cast uses Google's Default Media Receiver and loads the tuned live HLS channel
+through the retained shared player state. CH keys, guide selection and direct
+tuning retune the receiver. Confirmed receiver playback stops local decoding;
+disconnect or a failed remote load restores local playback. See
+[CAST-PLAYBACK.md](CAST-PLAYBACK.md) for diagnostics, stream checks and the
+remaining physical-receiver validation.
 
 ## Validation
 

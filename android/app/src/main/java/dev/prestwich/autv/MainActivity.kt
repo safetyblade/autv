@@ -17,6 +17,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.media3.common.Player
 import dev.prestwich.autv.guide.TuneTarget
+import dev.prestwich.autv.guide.CastPhase
 
 open class MainActivity : AppCompatActivity() {
     internal lateinit var playback: PlaybackModel; private set
@@ -35,13 +36,15 @@ open class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null && ChannelIntents.isTuneRequest(intent)) playback.request(ChannelIntents.target(intent))
         pipUi = Build.VERSION.SDK_INT >= 26 && isInPictureInPictureMode
         setContent {
+            LaunchedEffect(playback.castPlayback) { updatePipParams() }
             AuTvScreen(playback.guide, playback.selected, playback.guideOpen, playback.loadError,
                 playback.failed.toMap(), playback.buffering, playback.epg, playback.player,
                 onSelect = { playback.request(TuneTarget.Number(it.number)) },
                 onCloseGuide = { playback.guideOpen = false }, onOpenGuide = { playback.guideOpen = true },
                 onChromeVisibilityChanged = { visible -> setPlayerSystemBars(window, visible) },
                 onRetry = playback::reload, onNext = playback::next, onPrevious = playback::previous,
-                onTuneNumber = { playback.request(TuneTarget.Number(it)) }, pictureInPicture = pipUi, notice = playback.notice)
+                onTuneNumber = { playback.request(TuneTarget.Number(it)) }, pictureInPicture = pipUi, notice = playback.notice,
+                castPlayback = playback.castPlayback)
         }
         updatePipParams()
     }
@@ -55,7 +58,7 @@ open class MainActivity : AppCompatActivity() {
         !packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK) &&
         packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
     protected open fun automaticPipAllowed() = true
-    private fun pipEligible() = automaticPipAllowed() && mobilePipSupported() && playback.selected?.streamUrl != null && playback.player.isPlaying
+    private fun pipEligible() = automaticPipAllowed() && mobilePipSupported() && playback.castPlayback.phase == CastPhase.DISCONNECTED && playback.selected?.streamUrl != null && playback.player.isPlaying
     private fun pipParams(): PictureInPictureParams {
         val bounds = Rect(); window.decorView.getGlobalVisibleRect(bounds)
         val builder = PictureInPictureParams.Builder().setAspectRatio(Rational(16, 9)).setSourceRectHint(bounds)

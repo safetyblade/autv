@@ -65,6 +65,7 @@ internal fun AuTvScreen(
     onRetry: () -> Unit, onNext: () -> Unit, onPrevious: () -> Unit,
     onChromeVisibilityChanged: (Boolean) -> Unit = {},
     pictureInPicture: Boolean = false, notice: String? = null, onTuneNumber: (Int) -> Unit = {},
+    castPlayback: dev.prestwich.autv.guide.CastPlayback = dev.prestwich.autv.guide.CastPlayback(),
 ) {
     val isTv = LocalConfiguration.current.uiMode and Configuration.UI_MODE_TYPE_MASK == Configuration.UI_MODE_TYPE_TELEVISION
     val landscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -97,7 +98,7 @@ internal fun AuTvScreen(
         GuideBrowse.filter(guide?.channels.orEmpty(), category, query, epg, now)
     }
     LaunchedEffect(Unit) { while (true) { now = System.currentTimeMillis(); delay(15_000) } }
-    LaunchedEffect(guideOpen, interaction, selected?.number, buffering, failed[selected?.number], windowFocused) {
+    LaunchedEffect(guideOpen, interaction, selected?.number, buffering, failed[selected?.number], windowFocused, castPlayback.phase) {
         chrome = true
         if (!guideOpen && windowFocused) { delay(3_500); chrome = false }
     }
@@ -168,7 +169,19 @@ internal fun AuTvScreen(
                         Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing).padding(horizontal = if (isTv) 32.dp else 12.dp)) {
                             Row(Modifier.fillMaxWidth().height(if (keyboardOpen && landscape) 48.dp else 60.dp), verticalAlignment = Alignment.CenterVertically) {
                                 Image(painterResource(R.drawable.autv_logo), "AUTV logo", Modifier.size(32.dp))
-                                Text("AUTV", Modifier.padding(start = 10.dp).weight(1f), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                                Column(Modifier.padding(start = 10.dp).weight(1f)) {
+                                    Text("AUTV", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                                    if (castPlayback.phase != dev.prestwich.autv.guide.CastPhase.DISCONNECTED) Text(
+                                        when (castPlayback.phase) {
+                                            dev.prestwich.autv.guide.CastPhase.CONNECTED -> "Connected to ${castPlayback.receiver}"
+                                            dev.prestwich.autv.guide.CastPhase.LOAD_REQUESTED -> "Sending to ${castPlayback.receiver}…"
+                                            dev.prestwich.autv.guide.CastPhase.LOAD_ACCEPTED -> "Starting on ${castPlayback.receiver}…"
+                                            dev.prestwich.autv.guide.CastPhase.PLAYING -> "Playing on ${castPlayback.receiver}"
+                                            dev.prestwich.autv.guide.CastPhase.PAUSED -> "Paused on ${castPlayback.receiver}"
+                                            else -> "Cast failed · playing locally"
+                                        }, color = Silver, style = MaterialTheme.typography.labelSmall, maxLines = 1,
+                                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis, modifier = Modifier.testTag("cast-status"))
+                                }
                                 if (digits.isNotEmpty()) Text("Tune $digits", color = Silver, modifier = Modifier.padding(end = 12.dp))
                                 CastControl(isTv, onInteraction = { wake() })
                             }
@@ -184,6 +197,7 @@ internal fun AuTvScreen(
                                     Spacer(Modifier.height(12.dp))
                                     ProgrammeInfo(epg.at(selected, now), now)
                                     if (buffering) Text("Connecting…", color = Muted, style = MaterialTheme.typography.labelSmall)
+                                    castPlayback.error?.let { Text(it, color = Color(0xFFD8B3AD), style = MaterialTheme.typography.bodySmall, modifier = Modifier.testTag("cast-error")) }
                                     failed[selected?.number]?.let { Text("Could not play this channel. Select it in the guide to retry.", color = Color(0xFFD8B3AD), style = MaterialTheme.typography.bodySmall) }
                                 }
                                 if (guideOpen) {
@@ -198,6 +212,7 @@ internal fun AuTvScreen(
                                                 TextButton(onClick = { wake(); onCloseGuide() }, modifier = Modifier.focusRequester(closeFocus).testTag("close-guide")) { Text("Close") }
                                             }
                                             notice?.let { Text(it, color = Muted, style = MaterialTheme.typography.bodySmall) }
+                                            castPlayback.error?.let { Text(it, color = Color(0xFFD8B3AD), style = MaterialTheme.typography.bodySmall) }
                                             OutlinedTextField(value = query, onValueChange = { query = it; wake(); scope.launch { listState.scrollToItem(0) } },
                                                 placeholder = { Text("Search channels or programmes", style = MaterialTheme.typography.bodySmall) }, singleLine = true,
                                                 modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("guide-search"),

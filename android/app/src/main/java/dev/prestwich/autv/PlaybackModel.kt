@@ -9,12 +9,15 @@ import androidx.media3.common.PlaybackException
 import dev.prestwich.autv.data.*
 import dev.prestwich.autv.guide.*
 import dev.prestwich.autv.player.AuTvPlayer
+import dev.prestwich.autv.cast.CastSender
+import dev.prestwich.autv.cast.CastConnection
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 /** Activity-retained state: UI transitions and PiP never create another playback engine. */
-class PlaybackModel(application: Application, private val guideLoader: () -> Guide, private val epgLoader: () -> Epg) : AndroidViewModel(application) {
+class PlaybackModel(application: Application, private val guideLoader: () -> Guide, private val epgLoader: () -> Epg,
+    senderFactory: (((CastPlayback) -> Unit) -> CastConnection)? = null) : AndroidViewModel(application) {
     constructor(application: Application) : this(application, { GuideRepository().load() }, { EpgRepository().load() })
     val holder = AuTvPlayer(application)
     val player = holder.player
@@ -26,6 +29,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     var buffering by mutableStateOf(false); private set
     var playing by mutableStateOf(false); private set
     var notice by mutableStateOf<String?>(null); private set
+    var castPlayback by mutableStateOf(CastPlayback()); private set
     val failed = mutableStateMapOf<Int, String>()
     private val preferences = application.getSharedPreferences("playback", 0)
     private var pending: TuneTarget? = null
@@ -33,6 +37,9 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     private var loading = false
     private var homeJob: Job? = null
     private val homeMutex = Mutex()
+    private var foreground = true
+    private val castSender = senderFactory?.invoke(::onCastChanged) ?: CastSender(application, viewModelScope, { selected },
+        { epg.at(it, System.currentTimeMillis()).now }, ::onCastChanged)
     private val listener = object : Player.Listener {
         override fun onPlayerError(error: PlaybackException) {
             player.currentMediaItem?.mediaId?.toIntOrNull()?.let { failed[it] = "Playback failed" }
@@ -51,6 +58,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
             try { epg = withContext(Dispatchers.IO) { epgLoader() } }
             catch (error: Exception) { if (error is CancellationException) throw error }
         }
+        castSender.start()
     }
     fun reload() {
         if (loading) return
@@ -84,21 +92,42 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         val retry = failed.remove(channel.number) != null
         selected = channel
         preferences.edit().putInt("channel", channel.number).apply()
+        if (castSender.connected) {
+            // Same selection path for guide, number/deep link and CH keys. Do not start the
+            // new channel locally while the receiver is already responsible for playback.
+            if (!castPlayback.ownsPlayback) playLocal(channel)
+            castSender.load(channel)
+            return
+        }
+        playLocal(channel, retry)
+    }
+    private fun playLocal(channel: Channel, retry: Boolean = false) {
         if (!retry && player.currentMediaItem?.mediaId == channel.number.toString() && player.playbackState in listOf(Player.STATE_READY, Player.STATE_BUFFERING)) {
-            player.play(); return
+            if (foreground) player.play(); return
         }
         buffering = true
         holder.play(channel.streamUrl, channel.number)
+        if (!foreground) player.pause()
     }
     fun next() { GuideNavigator(guide?.channels.orEmpty()).next(selected)?.let { request(TuneTarget.Number(it.number)) } }
     fun previous() { GuideNavigator(guide?.channels.orEmpty()).previous(selected)?.let { request(TuneTarget.Number(it.number)) } }
-    fun resume() { if (player.mediaItemCount > 0) player.play() }
-    fun pause() = player.pause()
+    fun resume() { foreground = true; if (!castPlayback.ownsPlayback && player.mediaItemCount > 0) player.play() }
+    fun pause() { foreground = false; player.pause() } // Never pauses the receiver when the sender backgrounds.
+    private fun onCastChanged(state: CastPlayback) {
+        val wasRemote = castPlayback.ownsPlayback
+        castPlayback = state
+        if (state.ownsPlayback) {
+            player.stop() // Release local decoding/buffering only after receiver status confirms ownership.
+            buffering = false
+        } else if (state.phase == CastPhase.FAILED || (state.phase == CastPhase.DISCONNECTED && wasRemote)) {
+            selected?.let { playLocal(it, retry = true) }
+        }
+    }
     private fun publishHome() {
         val catalogue = guide ?: return
         val recent = selected?.number
         homeJob?.cancel()
         homeJob = viewModelScope.launch { homeMutex.withLock { withContext(Dispatchers.IO) { TvHomePublisher(getApplication()).publish(catalogue, recent) } } }
     }
-    override fun onCleared() { player.removeListener(listener); holder.release() }
+    override fun onCleared() { castSender.release(); player.removeListener(listener); holder.release() }
 }
