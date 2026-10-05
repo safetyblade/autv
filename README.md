@@ -4,6 +4,12 @@ A personal FAST/IPTV lineup designed to behave like a traditional television ser
 
 The project curates a fixed channel lineup, assigns human-designed channel numbers and genres, combines available programme-guide data, and publishes a single M3U + EPG for TV apps.
 
+## AU TV app
+
+The household's primary viewing path is now the native **AU TV app v0.4.0** for Android TV / Google TV. It consumes the published project guide and playlist data, supports remote-first guide navigation and direct tuning, and keeps the existing published M3U + EPG available for legacy TV-input setups.
+
+See `TV_GUIDE.md` for the household quick-start guide and complete numbered channel directory.
+
 ## Published files
 
 Playlist:
@@ -46,7 +52,7 @@ The guide represents the **working lineup only**. Failed tests and rejected chan
 
 ## Current lineup
 
-The current guide contains **638 active channels**. Channel numbers are intentionally grouped into the canonical genre ranges below. A refresh may temporarily publish fewer channels when an upstream feed is unavailable; that does not change the guide's intended lineup.
+The current guide contains **640 active channels**. Channel numbers are intentionally grouped into the canonical genre ranges below. A refresh may temporarily publish fewer channels when an upstream feed is unavailable; that does not change the guide's intended lineup.
 
 ## Channel-number blocks
 
