@@ -21,6 +21,7 @@ android {
     kotlinOptions { jvmTarget = "17" }
 }
 dependencies {
+    implementation("androidx.appcompat:appcompat:1.7.1")
     implementation(project(":core-data"))
     implementation(project(":core-guide"))
     implementation(project(":core-player"))

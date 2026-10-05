@@ -21,6 +21,8 @@ jobs:
           gradle-version: "8.13"
       - name: Build AU TV debug APK
         run: gradle -p android :app:assembleDebug
+      - name: Test guide loading and channel navigation
+        run: gradle -p android :core-data:testDebugUnitTest :core-guide:testDebugUnitTest
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:

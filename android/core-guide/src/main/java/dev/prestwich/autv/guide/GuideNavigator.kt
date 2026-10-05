@@ -13,13 +13,14 @@ class GuideNavigator(channels: List<Channel>) {
 
     private fun seek(current: Channel?, direction: Int): Channel? {
         if (ordered.isEmpty()) return null
-        val start = current?.let { c -> ordered.indexOfFirst { it.number == c.number } } ?: -1
+        val currentIndex = current?.let { c -> ordered.indexOfFirst { it.number == c.number } } ?: -1
+        val start = if (currentIndex >= 0) currentIndex else if (direction > 0) -1 else 0
         for (offset in 1..ordered.size) {
             val index = if (direction > 0) (start + offset + ordered.size) % ordered.size
                         else (start - offset + ordered.size * 2) % ordered.size
             val candidate = ordered[index]
-            if (candidate.available) return candidate
+            if (candidate.available && !candidate.streamUrl.isNullOrBlank()) return candidate
         }
-        return current
+        return null
     }
 }

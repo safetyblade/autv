@@ -3,6 +3,7 @@ package dev.prestwich.autv.data
 import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
+import java.net.URI
 
 data class Channel(
     val number: Int,
@@ -27,29 +28,41 @@ class GuideRepository(private val endpoint: String = GUIDE_ENDPOINT) {
         connection.setRequestProperty("Accept", "application/json")
         try {
             val body = connection.inputStream.bufferedReader().use { it.readText() }
-            val root = JSONObject(body)
-            val array = root.getJSONArray("channels")
-            val channels = buildList {
-                for (i in 0 until array.length()) {
-                    val item = array.getJSONObject(i)
-                    add(Channel(
-                        number = item.getInt("number"),
-                        name = item.getString("name"),
-                        genre = item.getString("genre"),
-                        subgenre = item.getString("subgenre"),
-                        description = item.optString("description"),
-                        epg = item.optString("epg"),
-                        available = item.optBoolean("available"),
-                        streamUrl = item.optString("streamUrl").takeIf { it.isNotBlank() && it != "null" },
-                        tvgId = item.optString("tvgId").takeIf { it.isNotBlank() && it != "null" },
-                        logoUrl = item.optString("logoUrl").takeIf { it.isNotBlank() && it != "null" },
-                    ))
-                }
-            }
-            return Guide(root.optInt("activeCount", channels.size), root.optInt("availableCount", channels.count { it.available }), channels.sortedBy { it.number })
+            return parse(body)
         } finally {
             connection.disconnect()
         }
+    }
+
+    internal fun parse(body: String): Guide {
+        val array = JSONObject(body).getJSONArray("channels")
+        val channels = buildList {
+            for (i in 0 until array.length()) {
+                val item = array.optJSONObject(i) ?: continue
+                val number = item.optInt("number", -1)
+                val name = item.optString("name").trim()
+                if (number < 0 || name.isBlank() || name == "null") continue
+                val streamUrl = item.optString("streamUrl").takeIf {
+                    runCatching {
+                        val uri = URI(it)
+                        uri.scheme in listOf("https", "http") && !uri.host.isNullOrBlank()
+                    }.getOrDefault(false)
+                }
+                add(Channel(
+                    number = number,
+                    name = name,
+                    genre = item.optString("genre"),
+                    subgenre = item.optString("subgenre"),
+                    description = item.optString("description"),
+                    epg = item.optString("epg"),
+                    available = item.optBoolean("available") && streamUrl != null,
+                    streamUrl = streamUrl,
+                    tvgId = item.optString("tvgId").takeIf { it.isNotBlank() && it != "null" },
+                    logoUrl = item.optString("logoUrl").takeIf { it.isNotBlank() && it != "null" },
+                ))
+            }
+        }.distinctBy { it.number }.sortedBy { it.number }
+        return Guide(channels.size, channels.count { it.available }, channels)
     }
 
     companion object {
