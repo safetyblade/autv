@@ -1,6 +1,5 @@
 from pathlib import Path
 import csv
-from datetime import datetime, timedelta, timezone
 import gzip
 import re
 import unicodedata
@@ -90,16 +89,6 @@ def add_android_category(programme, category):
     if category.casefold() not in existing:
         ET.SubElement(programme, "category").text = category
 
-def placeholder_programme(target_id, target_name, category, start, stop):
-    programme = ET.Element("programme", {
-        "channel": target_id,
-        "start": start.strftime("%Y%m%d%H%M%S +0000"),
-        "stop": stop.strftime("%Y%m%d%H%M%S +0000"),
-    })
-    ET.SubElement(programme, "title").text = target_name
-    ET.SubElement(programme, "desc").text = "Live channel"
-    add_android_category(programme, category)
-    return programme
 
 playlist = playlist_channels()
 playlist_names = {cid: name for cid, name in playlist}
@@ -141,22 +130,13 @@ for source in EPG_SOURCES:
 root = ET.Element("tv", {"generator-info-name": "autv"})
 covered = set()
 fallback_matches = {}
-placeholder_ids = set()
-missing_real_epg = []
-
-now = datetime.now(timezone.utc)
-placeholder_start = now - timedelta(hours=6)
-placeholder_stop = now + timedelta(days=8)
+missing = []
 
 for target_id, target_name in playlist:
     guide_genre = guide_genre_by_name.get(canonical(target_name), "")
     android_category = ANDROID_GENRE.get(guide_genre, "Entertainment")
 
-    source_id = (
-        target_id
-        if target_id in source_channels and programmes_by_id.get(target_id)
-        else None
-    )
+    source_id = target_id if target_id in source_channels else None
 
     if source_id is None:
         candidates = [
@@ -167,57 +147,41 @@ for target_id, target_name in playlist:
             source_id = candidates[0]
             fallback_matches[target_id] = source_id
 
-    if source_id is not None:
-        channel = ET.fromstring(ET.tostring(source_channels[source_id], encoding="utf-8"))
-        channel.set("id", target_id)
-        root.append(channel)
-
-        for programme in programmes_by_id.get(source_id, []):
-            cloned = ET.fromstring(ET.tostring(programme, encoding="utf-8"))
-            cloned.set("channel", target_id)
-            add_android_category(cloned, android_category)
-            root.append(cloned)
-
-        covered.add(target_id)
+    if source_id is None:
+        missing.append((target_id, target_name))
         continue
 
-    # No usable programme schedule: still publish a valid channel definition plus
-    # a lightweight current programme so Android/Live Channels can classify it.
-    channel = ET.Element("channel", {"id": target_id})
-    ET.SubElement(channel, "display-name").text = target_name
+    channel = ET.fromstring(ET.tostring(source_channels[source_id], encoding="utf-8"))
+    channel.set("id", target_id)
     root.append(channel)
-    root.append(placeholder_programme(
-        target_id,
-        target_name,
-        android_category,
-        placeholder_start,
-        placeholder_stop,
-    ))
-    placeholder_ids.add(target_id)
-    missing_real_epg.append((target_id, target_name))
+
+    for programme in programmes_by_id.get(source_id, []):
+        cloned = ET.fromstring(ET.tostring(programme, encoding="utf-8"))
+        cloned.set("channel", target_id)
+        add_android_category(cloned, android_category)
+        root.append(cloned)
+
     covered.add(target_id)
 
 xml_bytes = ET.tostring(root, encoding="utf-8", xml_declaration=True)
 with gzip.open(OUTPUT, "wb", compresslevel=9) as handle:
     handle.write(xml_bytes)
 
-real_programme_count = sum(
+programme_count = sum(
     len(programmes_by_id.get(fallback_matches.get(cid, cid), []))
     for cid in covered
-    if cid not in placeholder_ids
 )
-programme_count = real_programme_count + len(placeholder_ids)
 
 print(f"Wrote {OUTPUT} for {len(covered)} channels with {programme_count} programmes")
 print(f"Playlist channels: {len(playlist)}")
-print(f"EPG exact-ID matches: {len(covered) - len(fallback_matches) - len(placeholder_ids)}")
+print(f"EPG exact-ID matches: {len(covered) - len(fallback_matches)}")
 print(f"EPG name-fallback matches: {len(fallback_matches)}")
-print(f"EPG placeholder channels: {len(placeholder_ids)}")
+print(f"EPG missing: {len(missing)}")
 if fallback_matches:
     print("Fallback matches:")
     for target_id, source_id in sorted(fallback_matches.items()):
         print(f"  {playlist_names.get(target_id, target_id)} <- {source_id}")
-if missing_real_epg:
-    print("Placeholder EPG:")
-    for target_id, name in missing_real_epg:
+if missing:
+    print("Missing EPG:")
+    for target_id, name in missing:
         print(f"  {name} [{target_id}]")
