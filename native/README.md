@@ -46,13 +46,10 @@ Use GitHub-hosted downloads rather than chat/workspace artifact links:
 2. Choose **Run workflow**, select the branch containing the native changes,
    then run it. This workflow remains manual-only.
 3. Open the completed run. Under **Artifacts**, download `autv-debug` for the
-   normal AU TV app. Download `autv-kogan-input-probe-debug` only for the separate
-   Kogan diagnostic experiment.
-4. Extract the downloaded ZIPs on the PC. Copy `app-debug.apk` (and optionally
-   `tif-probe-debug.apk`) onto the USB drive. Install the main app first.
+   normal AU TV app.
+4. Extract the downloaded ZIPs on the PC. Copy `app-debug.apk` onto the USB drive. Install the main app first.
 
-The jobs run independently, so a probe failure does not prevent downloading a
-successful main build. Downloads require a signed-in GitHub account with access
+Downloads require a signed-in GitHub account with access
 to the repository. Artifacts request 90-day retention (repository/organization
 limits may shorten it); rerun the workflow when they expire. Each run builds the
 selected branch, so publish the local native commits before requesting a build.
@@ -127,7 +124,5 @@ channel/EPG fixtures. Production files are never modified to run these tests.
 ## Platform additions
 
 See [PLATFORM-FEATURES.md](PLATFORM-FEATURES.md) for mobile PiP, the retained
-player/direct-tuning contract, the TV home preview row and the **separate**
-Kogan TV-input diagnostic APK, including exact device checks. The production
-APK does not depend on that experiment. Android TV PiP and Watch Next remain
-deferred.
+player/direct-tuning contract and the TV home preview row. Android TV PiP and
+Watch Next remain deferred.
