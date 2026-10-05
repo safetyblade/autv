@@ -9,8 +9,8 @@
     "epg": "https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz",
     "guide": "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
   },
-  "activeCount": 639,
-  "availableCount": 637,
+  "activeCount": 640,
+  "availableCount": 638,
   "channels": [
     {
       "number": 100,
@@ -314,10 +314,34 @@
     },
     {
       "number": 201,
+      "name": "CW Presents WWE NXT",
+      "genre": "Sport",
+      "subgenre": "Wrestling & Combat",
+      "description": "WWE NXT FAST channel carrying current-era NXT archive programming; retained after successful Live Channels device QA.",
+      "epg": "Full",
+      "available": true,
+      "streamUrl": "https://jmp2.uk/rok-ac0caef9123a35df3b884b139340a597.m3u8",
+      "tvgId": "ac0caef9123a35df3b884b139340a597",
+      "logoUrl": "https://images.sr.roku.com/idType/roku-trc/context/trc/id/ac0caef9123a35df3b884b139340a597/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1783457806003_cw_presents_wwe_nxt_logo_hud.png"
+    },
+    {
+      "number": 202,
       "name": "TNA Wrestling Channel",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
-      "description": "24/7 TNA wrestling channel. Xumo is the retained source after device QA showed newer/different programme rotation; Plex AU remains fallback.",
+      "description": "Original 24/7 TNA wrestling feed retained from Plex AU, with Roku as fallback.",
+      "epg": "Full",
+      "available": true,
+      "streamUrl": "https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-606605549dbfca002d2ae873/?X-Plex-Token=k14F95Hg6jVssBsKVzhJ",
+      "tvgId": "697140a85d851f5e69414688-606605549dbfca002d2ae873",
+      "logoUrl": "https://provider-static.plex.tv/epg/cms/production/5d4f68c3-82af-45e7-b2c4-39aff69f3ce0/TNAWrestling_Plex_LogoforDarkBG_1500x1000_-_Alex_TushinghamRDX.png"
+    },
+    {
+      "number": 203,
+      "name": "TNA Wrestling Xumo",
+      "genre": "Sport",
+      "subgenre": "Wrestling & Combat",
+      "description": "Second TNA wrestling feed retained after device QA showed different/newer programme rotation from the original TNA channel.",
       "epg": "Full",
       "available": true,
       "streamUrl": "https://live-content.xumo.com/2073/content/XM0DSIUCO6UB8Y/23356260/master.m3u8",
@@ -325,7 +349,7 @@
       "logoUrl": "https://image.xumo.com/v1/channels/channel/99991341/168x168.png?type=color_onBlack"
     },
     {
-      "number": 202,
+      "number": 204,
       "name": "UFC",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
@@ -337,7 +361,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/c2e95493-6f98-4a65-be46-d17200ea068a/UFC_logo_WHT_1500x1000.png"
     },
     {
-      "number": 203,
+      "number": 205,
       "name": "PFL MMA",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
@@ -349,7 +373,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/96dd0531-b500-4bd4-93ca-763cbf46defe/1500x1000_PFL_SHIELD_DARK_BG_-_Allie_Dinsmore.png"
     },
     {
-      "number": 204,
+      "number": 206,
       "name": "ONE Championship",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
@@ -361,7 +385,7 @@
       "logoUrl": "https://image.xumo.com/v1/channels/channel/99951530/168x168.png?type=color_onBlack"
     },
     {
-      "number": 205,
+      "number": 207,
       "name": "GLORY Kickboxing",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
@@ -373,7 +397,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/24dfa4e0-5cba-4f17-afce-f325404ba01a/GLORY_Logo_Light_Nicholas_Olsen.png"
     },
     {
-      "number": 206,
+      "number": 208,
       "name": "Bellator MMA",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
@@ -385,7 +409,7 @@
       "logoUrl": "https://images.pluto.tv/channels/5ebc8688f3697d00072f7cf8/colorLogoPNG.png"
     },
     {
-      "number": 207,
+      "number": 209,
       "name": "345 MMA TV",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
@@ -397,7 +421,7 @@
       "logoUrl": "https://media.tvup.cloud/canales/generic_cd_6294d284c044ca001e71987d.png?width=200&height=200"
     },
     {
-      "number": 208,
+      "number": 210,
       "name": "DAZN Ringside",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
@@ -409,7 +433,7 @@
       "logoUrl": "https://images.pluto.tv/channels/649b6898f2ec0000081a9460/colorLogoPNG.png"
     },
     {
-      "number": 209,
+      "number": 211,
       "name": "HBO Boxing",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
@@ -421,7 +445,7 @@
       "logoUrl": "https://image.xumo.com/v1/channels/channel/99951469/168x168.png?type=color_onBlack"
     },
     {
-      "number": 210,
+      "number": 212,
       "name": "Top Rank Classics",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
@@ -433,7 +457,7 @@
       "logoUrl": "https://images.sr.roku.com/idType/roku-trc/context/trc/id/c0b79a332cfd90b8eeb6d4a0dcb63674/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1730998467166_TRClassics_HUD.png"
     },
     {
-      "number": 211,
+      "number": 213,
       "name": "XFC TV",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
@@ -445,7 +469,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/90cd03c9-281a-4eea-964b-6a9ce5c8d07c/XFCTV_channel_logo_dark_-_Dana_Foster.png"
     },
     {
-      "number": 212,
+      "number": 214,
       "name": "Fight Network",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
@@ -457,7 +481,7 @@
       "logoUrl": "https://provider-static.plex.tv/f/epg/channels/logos/gracenote/f6e88714b4dae6026720d36ad9de611f.png"
     },
     {
-      "number": 213,
+      "number": 215,
       "name": "Lucha Plus",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
@@ -469,7 +493,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/e8b87f4f-ebc1-4996-b732-b70118521f61/Plex_Channel_Logo_Color_-_Juan_Miguel_Bassalik_WHT_TEXT.png"
     },
     {
-      "number": 214,
+      "number": 216,
       "name": "FIFA+",
       "genre": "Sport",
       "subgenre": "Football",
@@ -481,7 +505,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/2c509e78-5c38-43b6-94cf-f25e1bff3765/FIFA__Logo_Rectangle_1500x1000_WHT.png"
     },
     {
-      "number": 215,
+      "number": 217,
       "name": "UEFA Champions League",
       "genre": "Sport",
       "subgenre": "Football",
@@ -493,7 +517,7 @@
       "logoUrl": "https://images.pluto.tv/channels/65ea8b928145cb0008509426/colorLogoPNG.png"
     },
     {
-      "number": 216,
+      "number": 218,
       "name": "UEFA.tv",
       "genre": "Sport",
       "subgenre": "Football",
@@ -505,7 +529,7 @@
       "logoUrl": "https://canvas-lb.tubitv.com/opts/vYU_W6gGesX41A==/f137edcb-de3c-4b3c-9e41-ef2cc6f8d156/CHgQeDoFMS4xLjlAAQ=="
     },
     {
-      "number": 217,
+      "number": 219,
       "name": "Real Madrid TV",
       "genre": "Sport",
       "subgenre": "Football",
@@ -517,7 +541,7 @@
       "logoUrl": "https://image.xumo.com/v1/channels/channel/99951381/168x168.png?type=color_onBlack"
     },
     {
-      "number": 218,
+      "number": 220,
       "name": "TOP BAR\u00c7A",
       "genre": "Sport",
       "subgenre": "Football",
@@ -529,7 +553,7 @@
       "logoUrl": null
     },
     {
-      "number": 219,
+      "number": 221,
       "name": "Man City 24/7",
       "genre": "Sport",
       "subgenre": "Football",
@@ -541,7 +565,7 @@
       "logoUrl": null
     },
     {
-      "number": 220,
+      "number": 222,
       "name": "INTER 24/7",
       "genre": "Sport",
       "subgenre": "Football",
@@ -553,7 +577,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/57fe10fd-e61b-4796-9afa-1cb853548709/channel_logo_dark.png_-_Ingrid_Barresi.png"
     },
     {
-      "number": 221,
+      "number": 223,
       "name": "FIFA+ Women",
       "genre": "Sport",
       "subgenre": "Football",
@@ -565,7 +589,7 @@
       "logoUrl": null
     },
     {
-      "number": 222,
+      "number": 224,
       "name": "GFN Football",
       "genre": "Sport",
       "subgenre": "Football",
@@ -577,7 +601,7 @@
       "logoUrl": null
     },
     {
-      "number": 223,
+      "number": 225,
       "name": "ViX Lo Mejor de Liga MX",
       "genre": "Sport",
       "subgenre": "Football",
@@ -589,7 +613,7 @@
       "logoUrl": null
     },
     {
-      "number": 224,
+      "number": 226,
       "name": "beIN SPORTS XTRA",
       "genre": "Sport",
       "subgenre": "Football",
@@ -601,7 +625,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/2188ad12-5a12-4fd1-b1be-8b104513f0ec/BSXtra_logo_fordark_bg_1500x1000.png"
     },
     {
-      "number": 225,
+      "number": 227,
       "name": "Rugby Pass TV",
       "genre": "Sport",
       "subgenre": "Football",
@@ -613,7 +637,7 @@
       "logoUrl": "https://images.pluto.tv/channels/66f137cb483d460008ece053/colorLogoPNG.png"
     },
     {
-      "number": 226,
+      "number": 228,
       "name": "The NBA Channel",
       "genre": "Sport",
       "subgenre": "Basketball",
@@ -625,7 +649,7 @@
       "logoUrl": "https://images.pluto.tv/channels/6792c30abc03978b9b8bb832/colorLogoPNG_1747950897785.png"
     },
     {
-      "number": 227,
+      "number": 229,
       "name": "Hoop TV",
       "genre": "Sport",
       "subgenre": "Basketball",
@@ -637,7 +661,7 @@
       "logoUrl": null
     },
     {
-      "number": 228,
+      "number": 230,
       "name": "NFL Channel",
       "genre": "Sport",
       "subgenre": "US Major Sports",
@@ -649,7 +673,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/585a58ca-c568-4bb8-bfc7-3000ac8d5fc5/NFL_WHITE.png"
     },
     {
-      "number": 229,
+      "number": 231,
       "name": "NFL Super Bowl Champions",
       "genre": "Sport",
       "subgenre": "US Major Sports",
@@ -661,7 +685,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/ecd94149-87df-46a3-8864-545c91f2d9d1/NFLSuperBowlChampions_Logo_White_1500x1000_-_Harry_Marshall.png"
     },
     {
-      "number": 230,
+      "number": 232,
       "name": "MLB",
       "genre": "Sport",
       "subgenre": "US Major Sports",
@@ -673,7 +697,7 @@
       "logoUrl": "https://images.pluto.tv/channels/5e66968a70f34c0007d050be/colorLogoPNG.png"
     },
     {
-      "number": 231,
+      "number": 233,
       "name": "NHL",
       "genre": "Sport",
       "subgenre": "US Major Sports",
@@ -685,7 +709,7 @@
       "logoUrl": "https://canvas-lb.tubitv.com/opts/8h7HYVpDz2amhw==/085bca04-c806-4a7f-bb0c-d38fe352f3e3/CHgQeDoFMS4xLjlAAQ=="
     },
     {
-      "number": 232,
+      "number": 234,
       "name": "Hard Knocks",
       "genre": "Sport",
       "subgenre": "US Major Sports",
@@ -697,7 +721,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/images/ott_channels/logos/hardknocks_logo_dark.png"
     },
     {
-      "number": 233,
+      "number": 235,
       "name": "NASCAR",
       "genre": "Sport",
       "subgenre": "Motorsport",
@@ -709,7 +733,7 @@
       "logoUrl": "https://canvas-lb.tubitv.com/opts/1hBihc5u12jjfA==/7739dd1a-423d-4a56-92c7-d27129356eb0/CHgQeDoFMS4xLjlAAQ=="
     },
     {
-      "number": 234,
+      "number": 236,
       "name": "Monster Jam",
       "genre": "Sport",
       "subgenre": "Motorsport",
@@ -721,7 +745,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/23824964-562b-4498-9eaa-d6262cb7e0c3/Monster_Jam_Logo_on_Transparent_1500x1000_Casey_Murawski.png"
     },
     {
-      "number": 235,
+      "number": 237,
       "name": "FloRacing 24/7",
       "genre": "Sport",
       "subgenre": "Motorsport",
@@ -733,7 +757,7 @@
       "logoUrl": "https://images.sr.roku.com/idType/roku-trc/context/trc/id/58e6bfd1c4819af32ead547dbc82e1f8/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1771353198884_FloRacing_HUDLogo.png"
     },
     {
-      "number": 236,
+      "number": 238,
       "name": "Racing America",
       "genre": "Sport",
       "subgenre": "Motorsport",
@@ -745,7 +769,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/58d6bf78-1acf-4d3e-8e82-fdf0f7b5137a/Plex_Logo_Light_1500x1000_-_Jillian_Schwartz.png"
     },
     {
-      "number": 237,
+      "number": 239,
       "name": "Rally TV",
       "genre": "Sport",
       "subgenre": "Motorsport",
@@ -757,7 +781,7 @@
       "logoUrl": "https://images.pluto.tv/channels/696e024a7e92438c27a425a8/colorLogoPNG_1770892518087.png"
     },
     {
-      "number": 238,
+      "number": 240,
       "name": "Red Bull TV",
       "genre": "Sport",
       "subgenre": "Motorsport",
@@ -769,7 +793,7 @@
       "logoUrl": "https://images.sr.roku.com/idType/roku-trc/context/trc/id/c5e8a74546771de365652cd053f73351/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1747061731258_260x147_hud_rbtv_logo.png"
     },
     {
-      "number": 239,
+      "number": 241,
       "name": "NHRA TV",
       "genre": "Sport",
       "subgenre": "Motorsport",
@@ -781,7 +805,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/images/ott_channels/logos/NHRA_logo_dark.png"
     },
     {
-      "number": 240,
+      "number": 242,
       "name": "RACER International",
       "genre": "Sport",
       "subgenre": "Motorsport",
@@ -793,7 +817,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/dd4e5871-4347-49e3-9ea1-a8770ea9c518/RACER_Intl_logo_1500x1000.png"
     },
     {
-      "number": 241,
+      "number": 243,
       "name": "Tennis TV",
       "genre": "Sport",
       "subgenre": "Racquet & Golf",
@@ -805,7 +829,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/b0aa99bd-2d1a-4823-a864-7b0fa0d60613/tennis_white_logo.png"
     },
     {
-      "number": 242,
+      "number": 244,
       "name": "Tennis+",
       "genre": "Sport",
       "subgenre": "Racquet & Golf",
@@ -817,7 +841,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/704e7af1-90a0-4ad4-94de-af2559c19fa6/1_Tennis_Plus_Logo__Dark_Mode__1500x1000px.png"
     },
     {
-      "number": 243,
+      "number": 245,
       "name": "TennisChannel 2",
       "genre": "Sport",
       "subgenre": "Racquet & Golf",
@@ -829,7 +853,7 @@
       "logoUrl": "https://images.pluto.tv/channels/681109b688b9d85d0938c6ba/colorLogoPNG_1747434868944.png"
     },
     {
-      "number": 244,
+      "number": 246,
       "name": "GolfPass",
       "genre": "Sport",
       "subgenre": "Racquet & Golf",
@@ -841,7 +865,7 @@
       "logoUrl": "https://images.pluto.tv/channels/65493029ab052400089e9d2f/colorLogoPNG_1766432879705.png"
     },
     {
-      "number": 245,
+      "number": 247,
       "name": "PickleTV",
       "genre": "Sport",
       "subgenre": "Racquet & Golf",
@@ -853,7 +877,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/6b1c4bff-1077-4ba0-a8d6-f4c39365f126/PickleTV_1500x1000_3_ChannelLogoLight_Casey_Murawskirdx.png"
     },
     {
-      "number": 246,
+      "number": 248,
       "name": "PGA TOUR",
       "genre": "Sport",
       "subgenre": "Racquet & Golf",
@@ -865,7 +889,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/eed7be0b-c44c-4afa-bfa4-66b9536ace9a/PGA_TOUR_PrimaryLogo_Color_RGB_Reverse_654_-_Lily_MorrisonRDX.png"
     },
     {
-      "number": 247,
+      "number": 249,
       "name": "MODUS Super Series Darts",
       "genre": "Sport",
       "subgenre": "Cue, Darts & Poker",
@@ -877,7 +901,7 @@
       "logoUrl": "https://images.pluto.tv/channels/671645c4529ac900080c9a0b/colorLogoPNG.png"
     },
     {
-      "number": 248,
+      "number": 250,
       "name": "Pluto TV Snooker 900",
       "genre": "Sport",
       "subgenre": "Cue, Darts & Poker",
@@ -889,7 +913,7 @@
       "logoUrl": "https://images.pluto.tv/channels/639b4f75d3d35c0007d37b30/colorLogoPNG_1759333260607.png"
     },
     {
-      "number": 249,
+      "number": 251,
       "name": "Billiard TV",
       "genre": "Sport",
       "subgenre": "Cue, Darts & Poker",
@@ -901,7 +925,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/7a0799ac-c06c-417e-a1d1-3fade474e07d/Plex_billiard__1500x1000__color_rdxfds__1_.png"
     },
     {
-      "number": 250,
+      "number": 252,
       "name": "World Billiards TV",
       "genre": "Sport",
       "subgenre": "Cue, Darts & Poker",
@@ -913,7 +937,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/55d069fe-0219-447a-a712-e3ecaed26241/_Plex__WBT_Logo_Dark_Mode.png"
     },
     {
-      "number": 251,
+      "number": 253,
       "name": "Triton Poker",
       "genre": "Sport",
       "subgenre": "Cue, Darts & Poker",
@@ -925,7 +949,7 @@
       "logoUrl": "https://images.sr.roku.com/idType/roku-trc/context/trc/id/3b1bd759566ea4c0fe9d7d6eb354d23d/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1783457506047_triton_poker_logo_hud.png"
     },
     {
-      "number": 252,
+      "number": 254,
       "name": "Poker Night TV",
       "genre": "Sport",
       "subgenre": "Cue, Darts & Poker",
@@ -937,7 +961,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/e081c886-d798-4438-855b-2f1fb10c50ee/poker-night-tv.png"
     },
     {
-      "number": 253,
+      "number": 255,
       "name": "The World Poker Tour",
       "genre": "Sport",
       "subgenre": "Cue, Darts & Poker",
@@ -949,7 +973,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/c40e4f88-6f5c-4f2a-8d54-e6812e25771c/wpt_logo.png"
     },
     {
-      "number": 254,
+      "number": 256,
       "name": "PokerGO",
       "genre": "Sport",
       "subgenre": "Cue, Darts & Poker",
@@ -961,7 +985,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/a2ff31a8-9b9a-4b7b-9aa5-71c0bc166632/1500x1000_LightBG_-_Aidan_Perrizo_white.png"
     },
     {
-      "number": 255,
+      "number": 257,
       "name": "World Surf League 24/7",
       "genre": "Sport",
       "subgenre": "Outdoor & Surf",
@@ -973,7 +997,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/b4cf623f-e45e-4706-ba5c-fdf92a9e1e44/WSL_WHITE_LOGO.png"
     },
     {
-      "number": 256,
+      "number": 258,
       "name": "Waypoint TV",
       "genre": "Sport",
       "subgenre": "Outdoor & Surf",
@@ -985,7 +1009,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/images/ott_channels/logos/waypointtv_logo_dark.png"
     },
     {
-      "number": 257,
+      "number": 259,
       "name": "Wired2Fish",
       "genre": "Sport",
       "subgenre": "Outdoor & Surf",
@@ -997,7 +1021,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/146827c9-ba03-4f25-86b2-d99c501e8227/wired2fish_white.png"
     },
     {
-      "number": 258,
+      "number": 260,
       "name": "Gone Fishing",
       "genre": "Sport",
       "subgenre": "Outdoor & Surf",
@@ -1009,7 +1033,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/e91b406b-11dc-43b4-96eb-a775852a8b98/Gone_Fishing_whiteRDX.png"
     },
     {
-      "number": 259,
+      "number": 261,
       "name": "Field & Stream TV",
       "genre": "Sport",
       "subgenre": "Outdoor & Surf",
@@ -1021,7 +1045,7 @@
       "logoUrl": "https://image.xumo.com/v1/channels/channel/99991374/168x168.png?type=color_onBlack"
     },
     {
-      "number": 260,
+      "number": 262,
       "name": "Powder TV",
       "genre": "Sport",
       "subgenre": "Outdoor & Surf",
@@ -1033,7 +1057,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/103b18dc-d465-46d3-b1e6-7a5a88a5c583/PLEX_1500X1000_PNG_WHT_POWDER_TV_Logo.png"
     },
     {
-      "number": 261,
+      "number": 263,
       "name": "PursuitUP",
       "genre": "Sport",
       "subgenre": "Outdoor & Surf",
@@ -1045,7 +1069,7 @@
       "logoUrl": "https://provider-static.plex.tv/8/epg/channels/logos/gracenote/8248dd05395e0b18c87a4a92d5b9cb84.png"
     },
     {
-      "number": 262,
+      "number": 264,
       "name": "SLOPES",
       "genre": "Sport",
       "subgenre": "Outdoor & Surf",
@@ -1057,7 +1081,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/a8716411-7f01-4f8b-bde3-e8390a6d14ce/SLOPES_logo_dark.png"
     },
     {
-      "number": 263,
+      "number": 265,
       "name": "Surfer TV",
       "genre": "Sport",
       "subgenre": "Outdoor & Surf",
@@ -1069,7 +1093,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/228a3200-2cb9-44a1-b076-3f12aae543da/PLEX_1500X1000_PNG_tBLUE_RDX.png"
     },
     {
-      "number": 264,
+      "number": 266,
       "name": "WFN",
       "genre": "Sport",
       "subgenre": "Outdoor & Surf",
@@ -1081,7 +1105,7 @@
       "logoUrl": "http://accio.its-newid.net/rt_channel/newid_rt041/lg_channels/img/channel_logo/default/channel_logo.png"
     },
     {
-      "number": 265,
+      "number": 267,
       "name": "Outdoor Channel (Australia)",
       "genre": "Sport",
       "subgenre": "Outdoor & Surf",
@@ -1093,7 +1117,7 @@
       "logoUrl": null
     },
     {
-      "number": 266,
+      "number": 268,
       "name": "Strongman Champions",
       "genre": "Sport",
       "subgenre": "Niche & Competition",
@@ -1105,7 +1129,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/80fb7204-c306-4759-a0d7-c4e829650c22/StrongmanChampionsLeague_Channel-Logo-Light-1500px.png"
     },
     {
-      "number": 267,
+      "number": 269,
       "name": "ACL Cornhole TV",
       "genre": "Sport",
       "subgenre": "Niche & Competition",
@@ -1117,7 +1141,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/d1076185-58d6-411b-ba73-1126837074dd/Plex_cornhole__1500x1000_white_-_Brendan_Canning_white_rdx.png"
     },
     {
-      "number": 268,
+      "number": 270,
       "name": "Bowling TV",
       "genre": "Sport",
       "subgenre": "Niche & Competition",
@@ -1129,7 +1153,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/573ed04e-775e-41c9-a367-81b9597eff00/Channel_Logo_Color_Evann_D___AdamoRDX_WHT_LETTERS.png"
     },
     {
-      "number": 269,
+      "number": 271,
       "name": "Team USA TV",
       "genre": "Sport",
       "subgenre": "Niche & Competition",
@@ -1141,7 +1165,7 @@
       "logoUrl": "https://images.sr.roku.com/idType/roku-trc/context/trc/id/257afd66cee15a1ca2125fc377e87cc2/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1718724430937_TeamUSATV_HUDLogo_260x147.png"
     },
     {
-      "number": 270,
+      "number": 272,
       "name": "Women's Sports Network",
       "genre": "Sport",
       "subgenre": "Niche & Competition",
@@ -1153,7 +1177,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/5c5587dd-f93b-42db-b0dc-6b7a78801c3d/WSNLogoColor_1500x1000.png"
     },
     {
-      "number": 271,
+      "number": 273,
       "name": "SWAC TV",
       "genre": "Sport",
       "subgenre": "Niche & Competition",
@@ -1165,7 +1189,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/45a49345-6902-4cf0-8b4b-d6c6fa73d191/SWAC_WHT_LETTERSLogo.png"
     },
     {
-      "number": 272,
+      "number": 274,
       "name": "FOX Sports",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1177,7 +1201,7 @@
       "logoUrl": "https://images.pluto.tv/channels/5a74b8e1e22a61737979c6bf/colorLogoPNG.png"
     },
     {
-      "number": 273,
+      "number": 275,
       "name": "NBC Sports NOW",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1189,7 +1213,7 @@
       "logoUrl": "https://image.xumo.com/v1/channels/channel/99951253/168x168.png?type=color_onBlack"
     },
     {
-      "number": 274,
+      "number": 276,
       "name": "CBS Sports HQ",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1201,7 +1225,7 @@
       "logoUrl": "https://images.pluto.tv/channels/5e9f2c05172a0f0007db4786/colorLogoPNG_1731837352945.png"
     },
     {
-      "number": 275,
+      "number": 277,
       "name": "Fubo Sports Network",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1213,7 +1237,7 @@
       "logoUrl": "https://images.sr.roku.com/idType/roku-trc/context/trc/id/b4273871759a5631bd536d2214f175e5/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1761774127737_Roku-FSN-Logo-efefef.png"
     },
     {
-      "number": 276,
+      "number": 278,
       "name": "Scripps Sports Network",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1225,7 +1249,7 @@
       "logoUrl": "https://image.xumo.com/v1/channels/channel/99951538/168x168.png?type=color_onBlack"
     },
     {
-      "number": 277,
+      "number": 279,
       "name": "Stadium",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1237,7 +1261,7 @@
       "logoUrl": null
     },
     {
-      "number": 278,
+      "number": 280,
       "name": "SportsGrid",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1249,7 +1273,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/ed88a8cc-a1f4-445a-a2bc-9fbb4c7104de/SG-LIVE-WHITE-ON-ALPHA-1500x1000.png"
     },
     {
-      "number": 279,
+      "number": 281,
       "name": "FTF Sports",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1261,7 +1285,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/aa1c5515-a30f-4790-a384-ca23a3ba0740/FTFSportsWHT.png"
     },
     {
-      "number": 280,
+      "number": 282,
       "name": "SI TV",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1273,7 +1297,7 @@
       "logoUrl": "https://images.pluto.tv/channels/6a8d96aa2cfd341eb5809214/colorLogoPNG_1790272809808.png"
     },
     {
-      "number": 281,
+      "number": 283,
       "name": "Breaking Sports News",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1285,7 +1309,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/67de790e-0829-41e6-ad58-806d578ff301/breakingLight_Logo__3__WHITE_TEXT.png"
     },
     {
-      "number": 282,
+      "number": 284,
       "name": "Ryz Sports Network",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1297,7 +1321,7 @@
       "logoUrl": "https://images.sr.roku.com/idType/roku-trc/context/trc/id/5f9c59c52f0ad475d90a33fdfd14d651/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1755024648037_Ryz_Roku_EPG_DarkBG_V3.png"
     },
     {
-      "number": 283,
+      "number": 285,
       "name": "Unbeaten Sports",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1309,7 +1333,7 @@
       "logoUrl": "https://images.sr.roku.com/idType/roku-trc/context/trc/id/98cafb7f4b01848a967fda4bd2225bd7/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1783443201350_unbeaten_sports_logo_hud.png"
     },
     {
-      "number": 284,
+      "number": 286,
       "name": "ACC Digital Network",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1321,7 +1345,7 @@
       "logoUrl": "https://image.xumo.com/v1/channels/channel/99991315/168x168.png?type=color_onBlack"
     },
     {
-      "number": 285,
+      "number": 287,
       "name": "Big 12 Studios",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1333,7 +1357,7 @@
       "logoUrl": "https://image.xumo.com/v1/channels/channel/99951359/168x168.png?type=color_onBlack"
     },
     {
-      "number": 286,
+      "number": 288,
       "name": "FloHockey 24/7",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1345,7 +1369,7 @@
       "logoUrl": "https://images.pluto.tv/channels/6a67825875fd5e3828e83703/colorLogoPNG_1785780851784.png"
     },
     {
-      "number": 287,
+      "number": 289,
       "name": "Willow Sports",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1357,7 +1381,7 @@
       "logoUrl": "https://images.pluto.tv/channels/6972546cc62833833a187f50/colorLogoPNG_1770648792020.png"
     },
     {
-      "number": 288,
+      "number": 290,
       "name": "CombaTV",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1369,7 +1393,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/2230b4ec-e410-4f49-b5b2-8ac4dfd20c5c/combatv_logo_dark_-_Jordan_Warkol.png"
     },
     {
-      "number": 289,
+      "number": 291,
       "name": "Cricket Gold",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1381,7 +1405,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/d041b4b4-65f0-4862-8d26-a0be4c984e2e/Cricket_Gold_Logo_1-1RDX.png"
     },
     {
-      "number": 290,
+      "number": 292,
       "name": "FUEL TV",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1393,7 +1417,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/b3f56031-6337-4d19-a487-9edefea3ce28/CHANNEL_LOGO_3X2.png"
     },
     {
-      "number": 291,
+      "number": 293,
       "name": "Pac-12 Insider",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -1405,7 +1429,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/a3c09b3c-9f7e-40e9-b14e-5174a45ad551/P12_Insider_blue_-_Sean_Kent.png"
     },
     {
-      "number": 292,
+      "number": 294,
       "name": "Trace Stars",
       "genre": "Sport",
       "subgenre": "General Sports",
@@ -7667,18 +7691,6 @@
       "streamUrl": "https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-66fd3e25216b603e031725fe/?X-Plex-Token=k14F95Hg6jVssBsKVzhJ",
       "tvgId": "697140a85d851f5e69414688-66fd3e25216b603e031725fe",
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/6e254786-1243-462b-bf6c-75d21b68582d/10423_ZL_Plex_Launch-assets_Channel-Logo_1500x1000_V01-White_-_Sacha_Portaria.png"
-    },
-    {
-      "number": 293,
-      "name": "CW Presents WWE NXT",
-      "genre": "Sport",
-      "subgenre": "Wrestling & Combat",
-      "description": "WWE NXT FAST channel carrying current-era NXT archive programming; retained after successful Live Channels device QA.",
-      "epg": "Full",
-      "available": true,
-      "streamUrl": "https://jmp2.uk/rok-ac0caef9123a35df3b884b139340a597.m3u8",
-      "tvgId": "ac0caef9123a35df3b884b139340a597",
-      "logoUrl": "https://images.sr.roku.com/idType/roku-trc/context/trc/id/ac0caef9123a35df3b884b139340a597/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1783457806003_cw_presents_wwe_nxt_logo_hud.png"
     }
   ]
 }
