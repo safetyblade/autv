@@ -16,7 +16,14 @@ import org.xml.sax.helpers.DefaultHandler
 data class Programme(val title: String, val start: Long, val stop: Long)
 data class NowNext(val now: Programme?, val next: Programme?)
 
-class Epg(val programmes: Map<String, List<Programme>>) {
+class Epg(val programmes: Map<String, List<Programme>>, val channelNames: Map<String, Set<String>> = emptyMap()) {
+    fun at(channel: Channel?, time: Long): NowNext {
+        if (channel == null) return NowNext(null, null)
+        if (channel.tvgId != null && programmes.containsKey(channel.tvgId)) return at(channel.tvgId, time)
+        fun identity(name: String) = name.lowercase(Locale.ROOT).replace(Regex("""[^\p{L}\p{N}]"""), "")
+        val matches = channelNames.filterValues { names -> names.any { identity(it) == identity(channel.name) } }.keys
+        return at(matches.singleOrNull(), time)
+    }
     fun at(id: String?, time: Long): NowNext {
         val schedule = programmes[id].orEmpty()
         return NowNext(schedule.firstOrNull { it.start <= time && time < it.stop }, schedule.firstOrNull { it.start > time })
@@ -34,6 +41,7 @@ class EpgRepository {
 
     internal fun parse(input: InputStream): Epg {
         val result = mutableMapOf<String, MutableList<Programme>>()
+        val names = mutableMapOf<String, MutableSet<String>>()
         val format = SimpleDateFormat("yyyyMMddHHmmss Z", Locale.US).apply {
             isLenient = false
             timeZone = TimeZone.getTimeZone("UTC")
@@ -48,8 +56,10 @@ class EpgRepository {
             var stop: Long? = null
             var title = ""
             var description = ""
+            var channelId: String? = null
             val text = StringBuilder()
             override fun startElement(uri: String?, localName: String?, qName: String, attributes: Attributes) {
+                if (qName == "channel") channelId = attributes.getValue("id")
                 if (qName == "programme") {
                     id = attributes.getValue("channel")
                     start = timestamp(attributes.getValue("start"))
@@ -60,6 +70,8 @@ class EpgRepository {
             }
             override fun characters(ch: CharArray, offset: Int, length: Int) { text.append(ch, offset, length) }
             override fun endElement(uri: String?, localName: String?, qName: String) {
+                if (qName == "display-name") channelId?.let { names.getOrPut(it) { mutableSetOf() }.add(text.toString().trim()) }
+                if (qName == "channel") channelId = null
                 if (qName == "title") title = text.toString().trim()
                 if (qName == "desc") description = text.toString().trim()
                 if (qName == "programme") {
@@ -79,6 +91,6 @@ class EpgRepository {
         reader.contentHandler = handler
         reader.setEntityResolver { _, _ -> InputSource(StringReader("")) }
         reader.parse(InputSource(input))
-        return Epg(result.mapValues { (_, entries) -> entries.sortedBy { it.start } })
+        return Epg(result.mapValues { (_, entries) -> entries.sortedBy { it.start } }, names)
     }
 }

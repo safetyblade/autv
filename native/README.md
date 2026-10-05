@@ -38,20 +38,28 @@ The APK supports Android 7.0/API 24 and later, with both ordinary and Android TV
 launchers. The manual-only `Native app` workflow runs the build and tests and
 uploads `autv-debug`. No production refresh workflow or output is changed.
 
-## Pass 2: controls and programme guide
+## Pass 3: playback chrome and navigable guide
 
-The player screen has a navy/teal AU TV identity, a channel-logo area, now/next
-programme titles and a dark channel drawer. Replace
-`android/app/src/main/res/drawable/autv_logo.xml` with your own logo asset to
-customize the branding without changing the UI structure.
+The player uses near-black/navy video chrome, smoked surfaces and restrained
+champagne/silver focus accents. Replace
+`android/app/src/main/res/drawable/autv_logo.xml` with a final AUTV logo asset
+without changing the branding area.
 
-The header holds Cast outside the guide drawer and within system safe-area
-insets in both orientations. Phone controls remain below the drawer: CH −,
-Guide/Close guide and CH +. Back closes the guide before leaving the app, and
-handset users can tap the scrim outside the drawer to dismiss it. On TV,
-D-pad navigation selects channel rows; Guide/Menu toggles the drawer and
-channel keys tune directly. The Close button is initially focused on opening,
-and the list scrolls to the selected channel.
+Controls appear at playback start and fade after 3.5 seconds without input.
+Touch or D-pad centre/OK restores them; hidden playback has no persistent
+buttons, panels or system bars. Opening the guide pins the chrome. Cast stays
+in the safe-area header above the drawer in both orientations. CH − and CH +
+are available on screen; hardware channel keys tune even while controls are
+hidden. Back closes the guide first. Close, the guide toggle and handset
+outside touch also dismiss it.
+
+The guide opens scrolled and focused at the playing channel. It retains the
+chosen category if that category contains the channel, otherwise switches to
+its canonical genre. All and the eleven canonical genre filters support touch
+and D-pad navigation; Page Up/Down or controller shoulder buttons skip between
+categories. Search matches channel number, name and current programme title.
+Rows prioritize logos, channel numbers, current programme times/progress and
+next programme, with a restrained genre fallback when EPG is missing.
 
 `guide.json` defines the editorial lineup and numbers. `playlist.m3u` supplies
 stream URLs, provider IDs and logos, reconciled by unique channel name or ID
@@ -67,7 +75,9 @@ production file.
   Selecting it again retries; other channels remain usable.
 
 `epg.xml.gz` loads separately from the lineup. XMLTV provider IDs and timezone
-information determine now/next, refreshed on screen every 30 seconds. Missing,
+information determine now/next, refreshed on screen every 15 seconds. A unique
+XMLTV display-name match provides a safe fallback when IDs differ; ambiguous
+name matches are ignored. Missing,
 expired or placeholder programme data displays a neutral fallback rather than
 blocking playback. Logo image failures also have a local brand fallback.
 
@@ -84,9 +94,11 @@ gradle -p android :core-data:testDebugUnitTest :core-guide:testDebugUnitTest
 gradle -p android :app:connectedDebugAndroidTest
 ```
 
-JVM tests cover snapshot numbering drift, stream-known availability, malformed
+JVM tests also cover canonical category filtering, programme-title search,
+category retention and ID/name EPG resolution. They cover snapshot numbering drift, stream-known availability, malformed
 rows/URLs, sorting, empty guides, navigation wraparound and XMLTV timezone and
 placeholder handling. Compose instrumentation tests cover guide dismissal via
-Close, toggle, Back and outside touch; CH buttons; channel/OK keys; Ink Master
-selection; Cast/guide bounds; and portrait/landscape screenshots using deterministic
+Close, toggle, Back and outside touch; auto-hide and touch/OK wake-up; hidden
+channel keys and CH buttons; current-channel focus and category skipping;
+number/name/programme search; channel logos/progress and Cast/guide bounds; and portrait/landscape screenshots using deterministic
 channel/EPG fixtures. Production files are never modified to run these tests.

@@ -21,4 +21,22 @@ class EpgRepositoryTest {
         assertTrue(epg.programmes["broken"].isNullOrEmpty())
         assertNull(epg.at("missing", first.start).now)
     }
+    @Test fun nameFallbackIsUniqueAndExactProviderIdWins() {
+        val show = Programme("Name-matched programme", 100, 200)
+        val exact = Programme("Exact-ID programme", 100, 200)
+        val channel = Channel(419, "Ink Master", "Game Shows", "", "", "", true, "https://example.com/live", "old-id", null)
+        val fallback = Epg(mapOf("ink" to listOf(show)), mapOf("ink" to setOf("INK MASTER")))
+        assertEquals(show, fallback.at(channel, 150).now)
+        val ambiguous = Epg(mapOf("ink" to listOf(show)), mapOf("ink" to setOf("Ink Master"), "other" to setOf("Ink Master")))
+        assertNull(ambiguous.at(channel, 150).now)
+        val withExact = Epg(mapOf("old-id" to listOf(exact), "ink" to listOf(show)), mapOf("ink" to setOf("Ink Master")))
+        assertEquals(exact, withExact.at(channel, 150).now)
+    }
+
+    @Test fun xmltvDisplayNamesSupportFallbackWithoutChangingChannelIdentity() {
+        val xml = """<tv><channel id="ink"><display-name>Ink Master</display-name></channel>
+            <programme channel="ink" start="20261005100000 +0000" stop="20261005110000 +0000"><title>Episode</title></programme></tv>"""
+        val epg = EpgRepository().parse(xml.byteInputStream())
+        assertEquals(setOf("Ink Master"), epg.channelNames["ink"])
+    }
 }
