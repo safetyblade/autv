@@ -12,7 +12,7 @@ class GuideRepositoryTest {
         ]}""")
         assertEquals(listOf(100, 200, 300), guide.channels.map { it.number })
         assertEquals(3, guide.activeCount)
-        assertEquals(1, guide.availableCount)
+        assertEquals(2, guide.availableCount)
         assertFalse(guide.channels.last().available)
     }
 
@@ -29,5 +29,24 @@ class GuideRepositoryTest {
 
     @Test fun emptyGuideIsValid() {
         assertTrue(GuideRepository().parse("""{"channels":[]}""").channels.isEmpty())
+    }
+    @Test fun playlistRestoresInkMasterDespiteNumberDrift() {
+        val repo = GuideRepository()
+        val guide = repo.parse("""{"channels":[{"number":419,"name":"Ink Master","available":false,"streamUrl":null}]}""")
+        val playlist = """#EXTM3U
+#EXTINF:-1 tvg-chno="418" tvg-id="ink" tvg-name="Ink Master" tvg-logo="https://example.com/logo.png",Ink Master
+https://example.com/ink.m3u8
+"""
+        val channel = repo.mergePlaylist(guide, playlist).channels.single()
+        assertEquals(419, channel.number)
+        assertTrue(channel.available)
+        assertEquals("https://example.com/ink.m3u8", channel.streamUrl)
+        assertEquals("ink", channel.tvgId)
+        assertEquals("https://example.com/logo.png", channel.logoUrl)
+    }
+
+    @Test fun declaredUnavailableStillAllowsAnExistingStream() {
+        val guide = GuideRepository().parse("""{"channels":[{"number":419,"name":"Ink Master","available":false,"streamUrl":"https://example.com/ink.m3u8"}]}""")
+        assertTrue(guide.channels.single().available)
     }
 }

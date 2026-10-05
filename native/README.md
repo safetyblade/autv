@@ -38,34 +38,55 @@ The APK supports Android 7.0/API 24 and later, with both ordinary and Android TV
 launchers. The manual-only `Native app` workflow runs the build and tests and
 uploads `autv-debug`. No production refresh workflow or output is changed.
 
-## Device smoke test
+## Pass 2: controls and programme guide
 
-1. Launch AU TV with Internet access. It loads the existing published `guide.json`
-   over HTTPS and sorts channels by number. A failed load offers Retry.
-2. Use D-pad up/down and OK to choose a channel. Unavailable rows are labelled and
-   disabled; missing or invalid stream URLs cannot block the rest of the guide.
-3. Use channel up/down to tune, skipping unavailable channels and wrapping at the
-   ends. Touch users have CH −, CH + and Guide buttons.
-4. Use Guide/Menu to toggle the overlay, OK during playback to open it, and Back
-   to close it. Test opening the guide again after scrolling.
-5. Test an available HLS feed. Media3 uses an explicit HLS media type, including
-   for extensionless provider URLs. Playback errors offer a message while other
-   channels remain selectable. Playback pauses while the app is in the background.
-6. On a sender-capable phone/tablet with Google Play services, open the Cast
-   chooser. Its framework uses Google's Default Media Receiver (`CC1AD845`);
-   no custom receiver is needed. Cast initialization failure does not block TV
-   browsing or local playback.
+The player screen has a navy/teal AU TV identity, a channel-logo area, now/next
+programme titles and a dark channel drawer. Replace
+`android/app/src/main/res/drawable/autv_logo.xml` with your own logo asset to
+customize the branding without changing the UI structure.
 
-The proof includes Cast discovery/session selection, not remote media loading or
-phone-to-TV controller synchronization. Device playback, remote focus behaviour,
-Cast discovery and provider geography/codec compatibility require device testing.
-Full EPG, now/next, numeric tuning and genre browsing remain future work.
+The header holds Cast outside the guide drawer and within system safe-area
+insets in both orientations. Phone controls remain below the drawer: CH −,
+Guide/Close guide and CH +. Back closes the guide before leaving the app, and
+handset users can tap the scrim outside the drawer to dismiss it. On TV,
+D-pad navigation selects channel rows; Guide/Menu toggles the drawer and
+channel keys tune directly. The Close button is initially focused on opening,
+and the list scrolls to the selected channel.
 
-## Tests and boundaries
+`guide.json` defines the editorial lineup and numbers. `playlist.m3u` supplies
+stream URLs, provider IDs and logos, reconciled by unique channel name or ID
+rather than assuming that snapshot channel numbers agree. For example, Ink
+Master is guide channel 419 but has a playlist stream under 418. The native
+client preserves 419 and restores its stream and logo without changing either
+production file.
 
-Six JVM tests cover mixed availability, missing and malformed rows/URLs, sorting,
-counts, empty guides, channel skipping and wraparound. Availability counts are
-derived from usable rows; there is deliberately no requirement that every guide
-channel be playable. Guide loading uses connection/read timeouts and releases its
-connection. The player module exposes the stable Media3 `Player` interface rather
-than leaking its private ExoPlayer implementation onto the app's compile classpath.
+- **Guide only:** no stream URL has been found.
+- **Stream known:** a URL exists; playback can be attempted even if a stale
+  guide availability flag says false.
+- **Playback failed:** Media3 reported an actual error for that channel.
+  Selecting it again retries; other channels remain usable.
+
+`epg.xml.gz` loads separately from the lineup. XMLTV provider IDs and timezone
+information determine now/next, refreshed on screen every 30 seconds. Missing,
+expired or placeholder programme data displays a neutral fallback rather than
+blocking playback. Logo image failures also have a local brand fallback.
+
+Cast discovery/session selection uses Google's Default Media Receiver; remote
+media loading and phone-to-TV controller synchronization remain future work.
+Provider access, codecs and live Cast discovery need testing on the intended
+hardware/network.
+
+## Validation
+
+```sh
+gradle -p android :app:assembleDebug
+gradle -p android :core-data:testDebugUnitTest :core-guide:testDebugUnitTest
+gradle -p android :app:connectedDebugAndroidTest
+```
+
+JVM tests cover snapshot numbering drift, stream-known availability, malformed
+rows/URLs, sorting, empty guides, navigation wraparound and XMLTV timezone and
+placeholder handling. Compose instrumentation tests cover guide dismissal via
+Close, toggle, Back and outside touch; CH buttons; channel/OK keys; Ink Master
+selection; Cast/guide bounds; and portrait/landscape screenshots using deterministic
+channel/EPG fixtures. Production files are never modified to run these tests.

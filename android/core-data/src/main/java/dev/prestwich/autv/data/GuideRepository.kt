@@ -28,7 +28,8 @@ class GuideRepository(private val endpoint: String = GUIDE_ENDPOINT) {
         connection.setRequestProperty("Accept", "application/json")
         try {
             val body = connection.inputStream.bufferedReader().use { it.readText() }
-            return parse(body)
+            val guide = parse(body)
+            return runCatching { mergePlaylist(guide, download(PLAYLIST_ENDPOINT)) }.getOrDefault(guide)
         } finally {
             connection.disconnect()
         }
@@ -55,7 +56,7 @@ class GuideRepository(private val endpoint: String = GUIDE_ENDPOINT) {
                     subgenre = item.optString("subgenre"),
                     description = item.optString("description"),
                     epg = item.optString("epg"),
-                    available = item.optBoolean("available") && streamUrl != null,
+                    available = streamUrl != null,
                     streamUrl = streamUrl,
                     tvgId = item.optString("tvgId").takeIf { it.isNotBlank() && it != "null" },
                     logoUrl = item.optString("logoUrl").takeIf { it.isNotBlank() && it != "null" },
@@ -65,7 +66,30 @@ class GuideRepository(private val endpoint: String = GUIDE_ENDPOINT) {
         return Guide(channels.size, channels.count { it.available }, channels)
     }
 
+    internal fun mergePlaylist(guide: Guide, text: String): Guide {
+        val entries = Playlist.parse(text)
+        val channels = guide.channels.map { channel ->
+            // Numbers in published snapshots can drift. Prefer a unique identity match.
+            val match = entries.filter { Playlist.key(it.name) == Playlist.key(channel.name) }.singleOrNull()
+                ?: entries.filter { channel.tvgId != null && it.id == channel.tvgId }.singleOrNull()
+            if (match == null) channel else channel.copy(
+                available = true, streamUrl = match.url,
+                tvgId = match.id ?: channel.tvgId, logoUrl = match.logo ?: channel.logoUrl,
+            )
+        }
+        return Guide(channels.size, channels.count { it.available }, channels)
+    }
+
+    private fun download(endpoint: String): String {
+        val connection = URL(endpoint).openConnection() as HttpURLConnection
+        connection.connectTimeout = 10_000
+        connection.readTimeout = 20_000
+        return try { connection.inputStream.bufferedReader().use { it.readText() } }
+        finally { connection.disconnect() }
+    }
+
     companion object {
+        const val PLAYLIST_ENDPOINT = "https://raw.githubusercontent.com/safetyblade/autv/main/playlist.m3u"
         const val GUIDE_ENDPOINT = "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
     }
 }

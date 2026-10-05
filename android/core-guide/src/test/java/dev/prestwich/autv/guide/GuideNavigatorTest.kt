@@ -11,7 +11,7 @@ class GuideNavigatorTest {
     @Test fun navigationSkipsUnavailableAndMissingStreamsAndWraps() {
         val first = channel(100)
         val last = channel(400)
-        val navigator = GuideNavigator(listOf(last, channel(200, false), channel(300, true, null), first))
+        val navigator = GuideNavigator(listOf(last, channel(200, false, null), channel(300, true, null), first))
         assertEquals(last, navigator.next(first))
         assertEquals(first, navigator.next(last))
         assertEquals(last, navigator.previous(first))
@@ -30,9 +30,13 @@ class GuideNavigatorTest {
 
     @Test fun emptyAndEntirelyUnavailableGuidesDoNotTune() {
         assertNull(GuideNavigator(emptyList()).next(null))
-        val unavailable = channel(100, false)
+        val unavailable = channel(100, false, null)
         val navigator = GuideNavigator(listOf(unavailable))
         assertNull(navigator.next(unavailable))
         assertNull(navigator.previous(null))
+    }
+    @Test fun falseAvailabilityFlagDoesNotBlockKnownStream() {
+        val inkMaster = channel(419, false)
+        assertEquals(inkMaster, GuideNavigator(listOf(inkMaster)).next(null))
     }
 }

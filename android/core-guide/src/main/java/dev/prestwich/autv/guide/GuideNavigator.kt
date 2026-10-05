@@ -19,7 +19,7 @@ class GuideNavigator(channels: List<Channel>) {
             val index = if (direction > 0) (start + offset + ordered.size) % ordered.size
                         else (start - offset + ordered.size * 2) % ordered.size
             val candidate = ordered[index]
-            if (candidate.available && !candidate.streamUrl.isNullOrBlank()) return candidate
+            if (!candidate.streamUrl.isNullOrBlank()) return candidate
         }
         return null
     }
