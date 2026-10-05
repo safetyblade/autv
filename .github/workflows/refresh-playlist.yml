@@ -46,19 +46,22 @@ jobs:
       - name: Build combined EPG
         run: python3 scripts/build_epg.py
 
+      - name: Build native guide snapshot
+        run: python3 native/tools/build_guide.py
+
       - name: Publish generated files
         shell: bash
         run: |
           set -euo pipefail
           rm -f base_upstream.m3u secondary_upstream.m3u lg_upstream.m3u pluto_us_upstream.m3u pluto_ca_upstream.m3u pluto_gb_upstream.m3u roku_upstream.m3u epg_plex_*.xml.gz epg_pluto_*.xml.gz epg_roku_*.xml.gz xumo_upstream.m3u epg_xumo.xml.gz tubi_upstream.m3u epg_tubi.xml epg_samsung_all.xml.gz
 
-          if git diff --quiet -- playlist.m3u curated.xml epg.xml.gz; then
+          if git diff --quiet -- playlist.m3u curated.xml epg.xml.gz guide.json; then
             echo "No generated file changes."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add playlist.m3u curated.xml epg.xml.gz
+          git add playlist.m3u curated.xml epg.xml.gz guide.json
           git commit -m "chore: refresh playlist"
           git push
