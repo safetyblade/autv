@@ -202,8 +202,6 @@ https://a-cdn.klowdtv.com/live2/lsn_720p/playlist.m3u8
 #EXTINF:-1 tvg-id="ac0caef9123a35df3b884b139340a597" tvg-name="CW Presents WWE NXT" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/ac0caef9123a35df3b884b139340a597/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1783457806003_cw_presents_wwe_nxt_logo_hud.png" group-title="Sport",CW Presents WWE NXT
 https://aka-live1050.delivery.roku.com/34b065a4-682e-4e46-97f1-5c9a26aab12a/t2-origin/out/v1/live.m3u8
 
-#EXTINF:-1 tvg-id="68c85164b7af374ee483210f" tvg-name="Wrestling Central" group-title="Sport",Wrestling Central
-https://stitcher-ipv4.pluto.tv/v1/stitch/embed/hls/channel/68c85164b7af374ee483210f/master.m3u8?deviceType=samsung-tvplus&deviceMake=samsung&deviceModel=samsung&deviceVersion=unknown&appVersion=unknown&deviceLat=0&deviceLon=0&deviceDNT=1&deviceId=autv&advertisingId=autv&us_privacy=1YNY&profileLimit=&profileFloor=&embedPartner=samsung-tvplus
 
 #EXTINF:-1 tvg-id="US600011Q2" tvg-name="Formula 1 Channel" group-title="Sport",Formula 1 Channel
-https://jmp2.uk/plu-65c69ee3d77d450008c80438.m3u8
+https://jmp2.uk/stvp-US600011Q2
