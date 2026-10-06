@@ -2,7 +2,7 @@
 
 **Edition:** 5 October 2026  
 **AU TV app:** v0.4.0  
-**Active channels:** 642
+**Active channels:** 641
 
 > A home television guide for the curated AU TV lineup. The channel numbers and descriptions below are generated from the authoritative working guide.
 
@@ -45,7 +45,7 @@ Channel numbers are grouped by genre rather than assigned alphabetically. Inside
 - **202 — TNA Wrestling Channel** remains the original TNA service.
 - **203 — TNA Wrestling Xumo** is retained as a separate channel because device QA confirmed a materially different/newer programme rotation.
 - **200 — Watch AEW** remains the lead wrestling channel; the duplicate comparison feed was removed rather than creating a second logical AEW channel.
-- Full guide count is now **642 channels**; Sport is now **97 channels**.
+- Full guide count is now **641 channels**; Sport is now **96 channels**.
 
 ## Channel guide
 
@@ -799,13 +799,7 @@ Sports channel featuring athlete, competition and sports-entertainment programmi
 
 **Guide:** Full  
 
-### 295 — SportsTVPlus
-
-24/7 sports FAST channel with a broad mix of niche and live sports programming.
-
-**Guide:** Channel only  
-
-### 296 — LacrosseTV
+### 295 — LacrosseTV
 
 24/7 lacrosse channel with games, highlights and related programming.
 
