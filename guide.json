@@ -1448,7 +1448,7 @@
       "description": "24/7 sports FAST channel with a broad mix of niche and live sports programming.",
       "epg": "Channel only",
       "available": true,
-      "streamUrl": "https://dai.google.com/linear/hls/event/9FKrAqCfRvGfn3tPbVFO-g/master.m3u8",
+      "streamUrl": "https://d3s7x6kmqcnb6b.cloudfront.net/d/distro001a/NKXQTWMREOB2XFJRLAHO/hls3/now,-1m/m.m3u8",
       "tvgId": "SportsTVPlus.us",
       "logoUrl": null
     },
