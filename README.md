@@ -52,7 +52,7 @@ The guide represents the **working lineup only**. Failed tests and rejected chan
 
 ## Current lineup
 
-The current guide contains **643 active channels**. Channel numbers are intentionally grouped into the canonical genre ranges below. A refresh may temporarily publish fewer channels when an upstream feed is unavailable; that does not change the guide's intended lineup.
+The current guide contains **642 active channels**. Channel numbers are intentionally grouped into the canonical genre ranges below. A refresh may temporarily publish fewer channels when an upstream feed is unavailable; that does not change the guide's intended lineup.
 
 ## Channel-number blocks
 
