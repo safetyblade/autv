@@ -235,7 +235,7 @@ Second TNA wrestling feed retained after device QA showed different/newer progra
 
 **Guide:** Full  
 
-### 204 — Wrestling Central
+### 297 — Wrestling Central
 
 24/7 wrestling FAST channel carrying WOW and NWA programming.
 
