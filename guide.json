@@ -9,8 +9,8 @@
     "epg": "https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz",
     "guide": "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
   },
-  "activeCount": 641,
-  "availableCount": 605,
+  "activeCount": 642,
+  "availableCount": 606,
   "channels": [
     {
       "number": 100,
@@ -1439,6 +1439,30 @@
       "streamUrl": "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01131-tracetv-tracesportstar-lgau/playlist.m3u8?ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.usprivacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.coppa=0&ads.targetad=[TARGETAD_ALLOWED]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.dmake=[DEVICE_MAKE]",
       "tvgId": "autv.343-trace-stars",
       "logoUrl": "https://d3dj3gmzxw0r4q.cloudfront.net/Trace_SportStars/LG_Ch_Logo_460x200.png"
+    },
+    {
+      "number": 295,
+      "name": "SportsTVPlus",
+      "genre": "Sport",
+      "subgenre": "Niche & Competition",
+      "description": "24/7 sports FAST channel with a broad mix of niche and live sports programming.",
+      "epg": "Channel only",
+      "available": true,
+      "streamUrl": "https://dai.google.com/linear/hls/event/9FKrAqCfRvGfn3tPbVFO-g/master.m3u8",
+      "tvgId": "SportsTVPlus.us",
+      "logoUrl": null
+    },
+    {
+      "number": 296,
+      "name": "LacrosseTV",
+      "genre": "Sport",
+      "subgenre": "Niche & Competition",
+      "description": "24/7 lacrosse channel with games, highlights and related programming.",
+      "epg": "Channel only",
+      "available": true,
+      "streamUrl": "https://a-cdn.klowdtv.com/live2/lsn_720p/playlist.m3u8",
+      "tvgId": "LacrosseTV.us",
+      "logoUrl": null
     },
     {
       "number": 300,
@@ -7691,18 +7715,6 @@
       "streamUrl": "https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-66fd3e25216b603e031725fe/?X-Plex-Token=6o2_mczJ9gsBoVyHTENZ",
       "tvgId": "697140a85d851f5e69414688-66fd3e25216b603e031725fe",
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/6e254786-1243-462b-bf6c-75d21b68582d/10423_ZL_Plex_Launch-assets_Channel-Logo_1500x1000_V01-White_-_Sacha_Portaria.png"
-    },
-    {
-      "number": 295,
-      "name": "TG4",
-      "genre": "Sport",
-      "subgenre": "Niche & Competition",
-      "description": "Irish television channel added for Gaelic football, hurling and other Irish sport; some programmes may be rights-restricted outside Ireland.",
-      "epg": "Channel only",
-      "available": true,
-      "streamUrl": "https://fastly.live.brightcove.com/6384196213112/eu-west-1/1555966122001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoieDl2YzlnLmVncmVzcy55ODN1ZWIiLCJhY2NvdW50X2lkIjoiMTU1NTk2NjEyMjAwMSIsImVobiI6ImZhc3RseS5saXZlLmJyaWdodGNvdmUuY29tIiwiaXNzIjoiYmxpdmUtcGxheWJhY2stc291cmNlLWFwaSIsInN1YiI6InBhdGhtYXB0b2tlbiIsImF1ZCI6WyIxNTU1OTY2MTIyMDAxIl0sImp0aSI6IjYzODQxOTYyMTMxMTIifQ.Co2xR3kmJBoxTaFTpwU0b37lJ05vNt-y32-SwfM26EA/chunklist.m3u8",
-      "tvgId": "TG4.ie",
-      "logoUrl": null
     }
   ]
 }
