@@ -6,7 +6,7 @@ The authoritative data lives in `channel_guide.csv`. The generated playlist is r
 
 ## Current guide snapshot
 
-The current authoritative guide contains **642 active channels**.
+The current authoritative guide contains **643 active channels**.
 
 | Genre | Active channels |
 | --- | ---: |
