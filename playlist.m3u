@@ -229,8 +229,6 @@ https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-62ffc5cfa6ca
 https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-646c0dfbfb58444e4e1e262d/?X-Plex-Token=6o2_mczJ9gsBoVyHTENZ
 #EXTINF:-1 tvg-chno="294" tvg-id="autv.343-trace-stars" tvg-name="Trace Stars" tvg-logo="https://d3dj3gmzxw0r4q.cloudfront.net/Trace_SportStars/LG_Ch_Logo_460x200.png" group-title="Sport",Trace Stars
 https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01131-tracetv-tracesportstar-lgau/playlist.m3u8?ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.usprivacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.coppa=0&ads.targetad=[TARGETAD_ALLOWED]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.dmake=[DEVICE_MAKE]
-#EXTINF:-1 tvg-chno="295" tvg-id="SportsTVPlus.us" tvg-name="SportsTVPlus" group-title="Sport",SportsTVPlus
-https://d3s7x6kmqcnb6b.cloudfront.net/d/distro001a/NKXQTWMREOB2XFJRLAHO/hls3/now,-1m/m.m3u8
 #EXTINF:-1 tvg-chno="296" tvg-id="LacrosseTV.us" tvg-name="LacrosseTV" group-title="Sport",LacrosseTV
 https://a-cdn.klowdtv.com/live2/lsn_720p/playlist.m3u8
 #EXTINF:-1 tvg-chno="300" tvg-id="99951573" tvg-name="MGM Presents" tvg-logo="https://image.xumo.com/v1/channels/channel/99951573/168x168.png?type=color_onBlack" group-title="Movies",MGM Presents
