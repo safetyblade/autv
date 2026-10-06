@@ -2,11 +2,6 @@ name: Refresh playlist
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - "custom.m3u"
-      - "channel_guide.csv"
-      - ".github/workflows/refresh-playlist.yml"
 
 permissions:
   contents: write
