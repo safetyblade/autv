@@ -2,7 +2,7 @@
 
 **Edition:** 5 October 2026  
 **AU TV app:** v0.4.0  
-**Active channels:** 642
+**Active channels:** 643
 
 > A home television guide for the curated AU TV lineup. The channel numbers and descriptions below are generated from the authoritative working guide.
 
@@ -45,7 +45,7 @@ Channel numbers are grouped by genre rather than assigned alphabetically. Inside
 - **202 — TNA Wrestling Channel** remains the original TNA service.
 - **203 — TNA Wrestling Xumo** is retained as a separate channel because device QA confirmed a materially different/newer programme rotation.
 - **200 — Watch AEW** remains the lead wrestling channel; the duplicate comparison feed was removed rather than creating a second logical AEW channel.
-- Full guide count is now **642 channels**; Sport is now **97 channels**.
+- Full guide count is now **643 channels**; Sport is now **98 channels**.
 
 ## Channel guide
 
@@ -816,6 +816,12 @@ Sports channel featuring athlete, competition and sports-entertainment programmi
 **Channel block 300–399**
 
 ## Major / Broad Movies
+
+### 296 — Formula 1 Channel
+
+24/7 Formula 1 FAST channel with race replays, archive races, highlights and related programming.
+
+**Guide:** Channel only  
 
 ### 300 — MGM Presents
 
