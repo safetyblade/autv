@@ -356,9 +356,9 @@
       "description": "Combat-sports channel featuring UFC programming and fight content.",
       "epg": "Full",
       "available": true,
-      "streamUrl": "https://stitcher-ipv4.pluto.tv/v1/stitch/embed/hls/channel/68c85164b7af374ee483210f/master.m3u8?deviceType=samsung-tvplus&deviceMake=samsung&deviceModel=samsung&deviceVersion=unknown&appVersion=unknown&deviceLat=0&deviceLon=0&deviceDNT=1&deviceId=autv&advertisingId=autv&us_privacy=1YNY&profileLimit=&profileFloor=&embedPartner=samsung-tvplus",
-      "tvgId": "68c85164b7af374ee483210f",
-      "logoUrl": null
+      "streamUrl": "https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-66ccac69fdf9cd3a568ef135/?X-Plex-Token=6o2_mczJ9gsBoVyHTENZ",
+      "tvgId": "697140a85d851f5e69414688-66ccac69fdf9cd3a568ef135",
+      "logoUrl": "https://provider-static.plex.tv/epg/cms/production/c2e95493-6f98-4a65-be46-d17200ea068a/UFC_logo_WHT_1500x1000.png"
     },
     {
       "number": 205,
@@ -542,7 +542,7 @@
     },
     {
       "number": 220,
-      "name": "TOP BAR\u00c7A",
+      "name": "TOP BARÇA",
       "genre": "Sport",
       "subgenre": "Football",
       "description": "Football FAST channel focused on club, league or competition programming.",
@@ -1451,6 +1451,30 @@
       "streamUrl": "https://a-cdn.klowdtv.com/live2/lsn_720p/playlist.m3u8",
       "tvgId": "LacrosseTV.us",
       "logoUrl": null
+    },
+    {
+      "number": 296,
+      "name": "Formula 1 Channel",
+      "genre": "Sport",
+      "subgenre": "Motorsport",
+      "description": "24/7 Formula 1 FAST channel with race replays, archive races, highlights and related programming.",
+      "epg": "Channel only",
+      "available": true,
+      "streamUrl": "https://jmp2.uk/stvp-US600011Q2",
+      "tvgId": "US600011Q2",
+      "logoUrl": null
+    },
+    {
+      "number": 297,
+      "name": "Wrestling Central",
+      "genre": "Sport",
+      "subgenre": "Wrestling & Combat",
+      "description": "24/7 wrestling FAST channel carrying WOW and NWA programming.",
+      "epg": "Channel only",
+      "available": true,
+      "streamUrl": "https://stitcher-ipv4.pluto.tv/v1/stitch/embed/hls/channel/68c85164b7af374ee483210f/master.m3u8?deviceType=samsung-tvplus&deviceMake=samsung&deviceModel=samsung&deviceVersion=unknown&appVersion=unknown&deviceLat=0&deviceLon=0&deviceDNT=1&deviceId=autv&advertisingId=autv&us_privacy=1YNY&profileLimit=&profileFloor=&embedPartner=samsung-tvplus",
+      "tvgId": "68c85164b7af374ee483210f",
+      "logoUrl": "https://images.pluto.tv/channels/68c85164b7af374ee483210f/colorLogoPNG.png"
     },
     {
       "number": 300,
@@ -6446,7 +6470,7 @@
     },
     {
       "number": 1130,
-      "name": "I Survived\u2026",
+      "name": "I Survived…",
       "genre": "Factual",
       "subgenre": "Survival / Disaster / Real World",
       "description": "General entertainment FAST channel with mixed or broad programming.",
@@ -6926,7 +6950,7 @@
     },
     {
       "number": 1215,
-      "name": "Pok\u00e9mon",
+      "name": "Pokémon",
       "genre": "Kids & Animation",
       "subgenre": "Kids / Family Animation",
       "description": "Kids, family and animation programming.",
@@ -7418,7 +7442,7 @@
     },
     {
       "number": 1305,
-      "name": "Remember the \u201880s",
+      "name": "Remember the ‘80s",
       "genre": "Music",
       "subgenre": "Hits / Pop / Decades",
       "description": "1980s music channel featuring hits and music videos from the decade.",
@@ -7703,30 +7727,6 @@
       "streamUrl": "https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-66fd3e25216b603e031725fe/?X-Plex-Token=6o2_mczJ9gsBoVyHTENZ",
       "tvgId": "697140a85d851f5e69414688-66fd3e25216b603e031725fe",
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/6e254786-1243-462b-bf6c-75d21b68582d/10423_ZL_Plex_Launch-assets_Channel-Logo_1500x1000_V01-White_-_Sacha_Portaria.png"
-    },
-    {
-      "number": 204,
-      "name": "Wrestling Central",
-      "genre": "Sport",
-      "subgenre": "Wrestling & Combat",
-      "description": "24/7 wrestling FAST channel carrying WOW and NWA programming.",
-      "epg": "Channel only",
-      "available": true,
-      "streamUrl": "https://stitcher-ipv4.pluto.tv/v1/stitch/embed/hls/channel/68c85164b7af374ee483210f/master.m3u8?deviceType=samsung-tvplus&deviceMake=samsung&deviceModel=samsung&deviceVersion=unknown&appVersion=unknown&deviceLat=0&deviceLon=0&deviceDNT=1&deviceId=autv&advertisingId=autv&us_privacy=1YNY&profileLimit=&profileFloor=&embedPartner=samsung-tvplus",
-      "tvgId": "68c85164b7af374ee483210f",
-      "logoUrl": null
-    },
-    {
-      "number": 296,
-      "name": "Formula 1 Channel",
-      "genre": "Sport",
-      "subgenre": "Motorsport",
-      "description": "24/7 Formula 1 FAST channel with race replays, archive races, highlights and related programming.",
-      "epg": "Channel only",
-      "available": true,
-      "streamUrl": "https://jmp2.uk/stvp-US600011Q2",
-      "tvgId": "US600011Q2",
-      "logoUrl": null
     }
   ]
 }
