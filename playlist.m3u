@@ -48,7 +48,7 @@ https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-5f0ff266d71d
 #EXTINF:-1 tvg-chno="200" tvg-id="400000294" tvg-name="Watch AEW" tvg-logo="https://canvas-lb.tubitv.com/opts/yeAV3-c2XWfYzw==/e9cd4624-20d8-421b-b5ed-282769cf2f57/CHgQeDoFMS4xLjlAAQ==" group-title="Sport",Watch AEW
 https://live-manifest.production-public.tubi.io/live/512cbe42-c22e-40c8-90e3-7d62684f51a7/playlist.m3u8
 #EXTINF:-1 tvg-chno="201" tvg-id="ac0caef9123a35df3b884b139340a597" tvg-name="CW Presents WWE NXT" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/ac0caef9123a35df3b884b139340a597/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1783457806003_cw_presents_wwe_nxt_logo_hud.png" group-title="Sport",CW Presents WWE NXT
-https://jmp2.uk/rok-ac0caef9123a35df3b884b139340a597.m3u8
+https://aka-live1050.delivery.roku.com/34b065a4-682e-4e46-97f1-5c9a26aab12a/t2-origin/out/v1/live.m3u8
 #EXTINF:-1 tvg-chno="202" tvg-id="697140a85d851f5e69414688-606605549dbfca002d2ae873" tvg-name="TNA Wrestling Channel" tvg-logo="https://provider-static.plex.tv/epg/cms/production/5d4f68c3-82af-45e7-b2c4-39aff69f3ce0/TNAWrestling_Plex_LogoforDarkBG_1500x1000_-_Alex_TushinghamRDX.png" group-title="Sport",TNA Wrestling Channel
 https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-606605549dbfca002d2ae873/?X-Plex-Token=6o2_mczJ9gsBoVyHTENZ
 #EXTINF:-1 tvg-chno="203" tvg-id="99991341" tvg-name="TNA Wrestling Xumo" tvg-logo="https://image.xumo.com/v1/channels/channel/99991341/168x168.png?type=color_onBlack" group-title="Sport",TNA Wrestling Xumo
