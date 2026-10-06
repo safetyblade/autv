@@ -52,7 +52,7 @@ The guide represents the **working lineup only**. Failed tests and rejected chan
 
 ## Current lineup
 
-The current guide contains **640 active channels**. Channel numbers are intentionally grouped into the canonical genre ranges below. A refresh may temporarily publish fewer channels when an upstream feed is unavailable; that does not change the guide's intended lineup.
+The current guide contains **642 active channels**. Channel numbers are intentionally grouped into the canonical genre ranges below. A refresh may temporarily publish fewer channels when an upstream feed is unavailable; that does not change the guide's intended lineup.
 
 ## Channel-number blocks
 
@@ -74,15 +74,9 @@ Each genre is then ordered by approved subgenres and editorial priority rather t
 
 See `CHANNEL_GUIDE.md` for the detailed taxonomy and ordering model.
 
-## Channel discovery and review
+## Channel changes
 
-New or changed channels are reviewed through a controlled discovery pipeline before they can enter the live guide.
-
-- `CHANNEL_DISCOVERY_PROCESS.md` defines the weekly, monthly and targeted search process, reconciliation rules, browser/device QA gates and release checks.
-- `channel_candidates.csv` is the persistent candidate register for discoveries, failures, duplicates, watchlist items and channels awaiting testing.
-- Search results and provider catalogues are evidence only; `channel_guide.csv` remains the authority for the active lineup.
-
-The live lineup must never grow automatically because an upstream provider adds channels.
+Research and source investigation are intentionally kept outside this repository. The repository records only the active lineup, approved source configuration and generated outputs.
 
 ## Playlist generation
 
