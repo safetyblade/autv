@@ -90,6 +90,7 @@ internal fun AuTvScreen(
     val scope = rememberCoroutineScope()
     var category by rememberSaveable { mutableStateOf("All") }
     var query by rememberSaveable { mutableStateOf("") }
+    var committedQuery by remember { mutableStateOf("") }
     var chrome by remember { mutableStateOf(true) }
     var interaction by remember { mutableIntStateOf(0) }
     var wakeKey by remember { mutableIntStateOf(-1) }
@@ -110,8 +111,23 @@ internal fun AuTvScreen(
         }
         wake()
     }
-    val filtered = remember(guide, category, query, epg, now) {
-        GuideBrowse.filter(guide?.channels.orEmpty(), category, query, epg, now)
+    val channelsByCategory = remember(guide) {
+        val channels = guide?.channels.orEmpty()
+        buildMap<String, List<Channel>> {
+            put("All", channels)
+            GuideBrowse.categories.drop(1).forEach { genre -> put(genre, channels.filter { it.genre == genre }) }
+        }
+    }
+    val categoryChannels = channelsByCategory[category].orEmpty()
+    LaunchedEffect(query) {
+        delay(180)
+        committedQuery = query
+    }
+    val filtered = remember(categoryChannels, committedQuery, epg, now) {
+        GuideBrowse.filter(categoryChannels, "All", committedQuery, epg, now)
+    }
+    LaunchedEffect(committedQuery) {
+        if (guideOpen && committedQuery.isNotEmpty()) listState.scrollToItem(0)
     }
     LaunchedEffect(Unit) { while (true) { now = System.currentTimeMillis(); delay(15_000) } }
     LaunchedEffect(windowFocused) { if (windowFocused) wake() }
@@ -135,6 +151,7 @@ internal fun AuTvScreen(
         if (guideOpen) {
             if (isTv) inputMode.requestInputMode(InputMode.Keyboard)
             query = ""
+            committedQuery = ""
             category = if (isTv) selected?.genre?.takeIf { it in GuideBrowse.categories } ?: "All"
                 else GuideBrowse.categoryForPlaying(category, selected)
             withFrameNanos { }
@@ -256,7 +273,7 @@ internal fun AuTvScreen(
                                             notice?.let { Text(it, color = Muted, style = MaterialTheme.typography.bodySmall) }
                                             castPlayback.error?.let { Text(it, color = Color(0xFFD8B3AD), style = MaterialTheme.typography.bodySmall) }
                                             if (compact) Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                                                BasicTextField(value = query, onValueChange = { query = it; wake(); scope.launch { listState.scrollToItem(0) } },
+                                                BasicTextField(value = query, onValueChange = { query = it; wake() },
                                                     singleLine = true, textStyle = MaterialTheme.typography.bodyMedium.copy(color = WarmWhite), cursorBrush = androidx.compose.ui.graphics.SolidColor(Silver),
                                                     modifier = Modifier.weight(1f).height(40.dp).background(Ink.copy(alpha = 0.4f), RoundedCornerShape(8.dp))
                                                         .border(1.dp, Muted.copy(alpha = 0.4f), RoundedCornerShape(8.dp)).focusRequester(searchFocus).testTag("guide-search"),
@@ -267,7 +284,7 @@ internal fun AuTvScreen(
                                                     } })
                                                 TextButton(onClick = { keyboard?.hide(); wake(); onCloseGuide() }, modifier = Modifier.focusRequester(closeFocus).testTag("close-guide"),
                                                     contentPadding = PaddingValues(horizontal = 8.dp)) { Text("Close") }
-                                            } else OutlinedTextField(value = query, onValueChange = { query = it; wake(); scope.launch { listState.scrollToItem(0) } },
+                                            } else OutlinedTextField(value = query, onValueChange = { query = it; wake() },
                                                 placeholder = { Text("Search channels or programmes", style = MaterialTheme.typography.bodySmall) }, singleLine = true,
                                                 modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).focusRequester(searchFocus)
                                                     .focusProperties { down = categoryFocus; right = closeFocus }.testTag("guide-search"),
