@@ -317,7 +317,7 @@
       "name": "CW Presents WWE NXT",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
-      "description": "WWE NXT FAST channel carrying current-era NXT archive programming; retained after successful Live Channels device QA.",
+      "description": "WWE NXT FAST channel carrying current-era NXT archive programming.",
       "epg": "Full",
       "available": true,
       "streamUrl": "https://aka-live1050.delivery.roku.com/34b065a4-682e-4e46-97f1-5c9a26aab12a/t2-origin/out/v1/live.m3u8",

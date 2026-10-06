@@ -1831,10 +1831,6 @@
     <display-name>Willow Sports</display-name>
     <icon src="https://images.pluto.tv/channels/6972546cc62833833a187f50/colorLogoPNG_1770648792020.png" />
   </channel>
-  <channel id="ac0caef9123a35df3b884b139340a597">
-    <display-name>CW Presents WWE NXT</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/ac0caef9123a35df3b884b139340a597/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1783457806003_cw_presents_wwe_nxt_logo_hud.png" />
-  </channel>
   <channel id="c0b79a332cfd90b8eeb6d4a0dcb63674">
     <display-name>Top Rank Classics</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/c0b79a332cfd90b8eeb6d4a0dcb63674/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1730998467166_TRClassics_HUD.png" />
@@ -2564,5 +2560,9 @@
   </channel>
   <channel id="LacrosseTV.us">
     <display-name>LacrosseTV</display-name>
+  </channel>
+  <channel id="ac0caef9123a35df3b884b139340a597">
+    <display-name>CW Presents WWE NXT</display-name>
+    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/ac0caef9123a35df3b884b139340a597/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1783457806003_cw_presents_wwe_nxt_logo_hud.png" />
   </channel>
 </tv>
