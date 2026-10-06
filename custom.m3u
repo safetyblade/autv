@@ -202,7 +202,5 @@ https://a-cdn.klowdtv.com/live2/lsn_720p/playlist.m3u8
 #EXTINF:-1 tvg-id="ac0caef9123a35df3b884b139340a597" tvg-name="CW Presents WWE NXT" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/ac0caef9123a35df3b884b139340a597/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1783457806003_cw_presents_wwe_nxt_logo_hud.png" group-title="Sport",CW Presents WWE NXT
 https://aka-live1050.delivery.roku.com/34b065a4-682e-4e46-97f1-5c9a26aab12a/t2-origin/out/v1/live.m3u8
 
-#EXTINF:-1 tvg-id="65c69ee3d77d450008c80438" tvg-name="Formula 1 Channel" group-title="Sport",Formula 1 Channel
-https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/65c69ee3d77d450008c80438/master.m3u8?appName=web&appVersion=unknown&clientTime=0&deviceDNT=0&deviceId=6c28f172-30d3-11ef-9cf5-e9ddff8ff496&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&serverSideAds=false&sid=922e06a8-1ba6-4236-9931-06d471735996
-#EXTINF:-1 tvg-id="64b67f7cbc3ab400084e51f2" tvg-name="DAZN Fights" group-title="Sport",DAZN Fights
-https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/64b67f7cbc3ab400084e51f2/master.m3u8?appName=web&appVersion=unknown&clientTime=0&deviceDNT=0&deviceId=bc83a563-4b91-11ef-8a44-83c5e90e038f&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&serverSideAds=false&sid=283bb308-deba-4f01-981e-1818495429a9
+#EXTINF:-1 tvg-id="68c85164b7af374ee483210f" tvg-name="Wrestling Central" group-title="Sport",Wrestling Central
+https://stitcher-ipv4.pluto.tv/v1/stitch/embed/hls/channel/68c85164b7af374ee483210f/master.m3u8?deviceType=samsung-tvplus&deviceMake=samsung&deviceModel=samsung&deviceVersion=unknown&appVersion=unknown&deviceLat=0&deviceLon=0&deviceDNT=1&deviceId=autv&advertisingId=autv&us_privacy=1YNY&profileLimit=&profileFloor=&embedPartner=samsung-tvplus
