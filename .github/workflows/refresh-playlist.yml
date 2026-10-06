@@ -2,9 +2,6 @@ name: Refresh playlist
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - "custom.m3u"
 
 permissions:
   contents: write
