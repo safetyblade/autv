@@ -2,11 +2,6 @@ name: Native app
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - "android/app/src/main/java/dev/prestwich/autv/PlayerScreen.kt"
-      - "android/core-data/src/main/java/dev/prestwich/autv/data/EpgRepository.kt"
-      - ".github/workflows/native-app.yml"
 
 permissions:
   contents: read
