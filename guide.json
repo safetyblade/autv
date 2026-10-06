@@ -542,7 +542,7 @@
     },
     {
       "number": 220,
-      "name": "TOP BARÇA",
+      "name": "TOP BAR\u00c7A",
       "genre": "Sport",
       "subgenre": "Football",
       "description": "Football FAST channel focused on club, league or competition programming.",
@@ -1462,7 +1462,7 @@
       "available": true,
       "streamUrl": "https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/65c69ee3d77d450008c80438/master.m3u8?appName=web&appVersion=unknown&clientTime=0&deviceDNT=0&deviceId=6c28f172-30d3-11ef-9cf5-e9ddff8ff496&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&serverSideAds=false&sid=922e06a8-1ba6-4236-9931-06d471735996",
       "tvgId": "65c69ee3d77d450008c80438",
-      "logoUrl": "https://images.pluto.tv/channels/65c69ee3d77d450008c80438/colorLogoPNG.png"
+      "logoUrl": null
     },
     {
       "number": 297,
@@ -1474,7 +1474,7 @@
       "available": true,
       "streamUrl": "https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/64b67f7cbc3ab400084e51f2/master.m3u8?appName=web&appVersion=unknown&clientTime=0&deviceDNT=0&deviceId=bc83a563-4b91-11ef-8a44-83c5e90e038f&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&serverSideAds=false&sid=283bb308-deba-4f01-981e-1818495429a9",
       "tvgId": "64b67f7cbc3ab400084e51f2",
-      "logoUrl": "https://images.pluto.tv/channels/64b67f7cbc3ab400084e51f2/colorLogoPNG.png"
+      "logoUrl": null
     },
     {
       "number": 300,
@@ -6470,7 +6470,7 @@
     },
     {
       "number": 1130,
-      "name": "I Survived…",
+      "name": "I Survived\u2026",
       "genre": "Factual",
       "subgenre": "Survival / Disaster / Real World",
       "description": "General entertainment FAST channel with mixed or broad programming.",
@@ -6950,7 +6950,7 @@
     },
     {
       "number": 1215,
-      "name": "Pokémon",
+      "name": "Pok\u00e9mon",
       "genre": "Kids & Animation",
       "subgenre": "Kids / Family Animation",
       "description": "Kids, family and animation programming.",
@@ -7442,7 +7442,7 @@
     },
     {
       "number": 1305,
-      "name": "Remember the ‘80s",
+      "name": "Remember the \u201880s",
       "genre": "Music",
       "subgenre": "Hits / Pop / Decades",
       "description": "1980s music channel featuring hits and music videos from the decade.",
