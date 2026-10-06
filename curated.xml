@@ -2559,4 +2559,7 @@
     <display-name>TNA Wrestling Xumo</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99991341/168x168.png?type=color_onBlack" />
   </channel>
+  <channel id="TG4.ie">
+    <display-name>TG4</display-name>
+  </channel>
 </tv>
