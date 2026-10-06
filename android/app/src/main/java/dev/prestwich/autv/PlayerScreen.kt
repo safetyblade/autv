@@ -101,13 +101,14 @@ internal fun AuTvScreen(
     var now by remember { mutableLongStateOf(System.currentTimeMillis()) }
     fun wake() { chrome = true; interaction++ }
     fun chooseCategory(value: String) {
+        if (category == value) return
         category = value
         scope.launch {
-            withFrameNanos { }
-            categoryState.scrollToItem(GuideBrowse.categories.indexOf(value).coerceAtLeast(0))
             listState.scrollToItem(0)
-            withFrameNanos { }
-            if (isTv) categoryFocus.requestFocus()
+            if (isTv) {
+                categoryState.scrollToItem(GuideBrowse.categories.indexOf(value).coerceAtLeast(0))
+                categoryFocus.requestFocus()
+            }
         }
         wake()
     }
@@ -121,10 +122,17 @@ internal fun AuTvScreen(
     val categoryChannels = channelsByCategory[category].orEmpty()
     // Keep text entry immediate; only commit the expensive catalogue/programme search after a short pause.
     LaunchedEffect(query) {
-        delay(180)
-        committedQuery = query
+        if (query.isBlank()) {
+            committedQuery = ""
+        } else {
+            delay(180)
+            committedQuery = query
+        }
     }
-    val filtered = remember(categoryChannels, committedQuery, epg, now) {
+    // Normal guide browsing should not rebuild the channel list every time the 15-second
+    // programme-progress clock ticks. Only programme-title searches need a time key.
+    val searchClock = if (committedQuery.isBlank()) 0L else now / 60_000L
+    val filtered = remember(categoryChannels, committedQuery, epg, searchClock) {
         GuideBrowse.filter(categoryChannels, "All", committedQuery, epg, now)
     }
     LaunchedEffect(committedQuery) {
@@ -290,7 +298,7 @@ internal fun AuTvScreen(
                                                 modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).focusRequester(searchFocus)
                                                     .focusProperties { down = categoryFocus; right = closeFocus }.testTag("guide-search"),
                                                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), keyboardActions = KeyboardActions(onSearch = { keyboard?.hide() }),
-                                                trailingIcon = { if (query.isNotEmpty()) TextButton(onClick = { query = ""; wake() }) { Text("Clear") } }, shape = RoundedCornerShape(12.dp))
+                                                trailingIcon = { if (query.isNotEmpty()) TextButton(onClick = { query = ""; committedQuery = ""; wake() }) { Text("Clear") } }, shape = RoundedCornerShape(12.dp))
                                             LazyRow(state = categoryState, horizontalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.padding(vertical = if (compact) 0.dp else 4.dp).testTag("guide-categories")) {
                                                 items(GuideBrowse.categories) { genre ->
                                                     var focused by remember { mutableStateOf(false) }
