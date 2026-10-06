@@ -197,6 +197,6 @@ https://live-content.xumo.com/2073/content/XM0DSIUCO6UB8Y/23356260/master.m3u8
 
 # ---- Niche sports ----
 #EXTINF:-1 tvg-id="SportsTVPlus.us" tvg-name="SportsTVPlus" group-title="Sport",SportsTVPlus
-https://dai.google.com/linear/hls/event/9FKrAqCfRvGfn3tPbVFO-g/master.m3u8
+https://d3s7x6kmqcnb6b.cloudfront.net/d/distro001a/NKXQTWMREOB2XFJRLAHO/hls3/now,-1m/m.m3u8
 #EXTINF:-1 tvg-id="LacrosseTV.us" tvg-name="LacrosseTV" group-title="Sport",LacrosseTV
 https://a-cdn.klowdtv.com/live2/lsn_720p/playlist.m3u8
