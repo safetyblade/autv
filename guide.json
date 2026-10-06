@@ -9,8 +9,8 @@
     "epg": "https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz",
     "guide": "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
   },
-  "activeCount": 642,
-  "availableCount": 606,
+  "activeCount": 643,
+  "availableCount": 607,
   "channels": [
     {
       "number": 100,
@@ -1463,6 +1463,18 @@
       "streamUrl": "https://a-cdn.klowdtv.com/live2/lsn_720p/playlist.m3u8",
       "tvgId": "LacrosseTV.us",
       "logoUrl": null
+    },
+    {
+      "number": 296,
+      "name": "Formula 1 Channel",
+      "genre": "Sport",
+      "subgenre": "Motorsport",
+      "description": "24/7 Formula 1 FAST channel with race replays, archive races, highlights and related programming.",
+      "epg": "Channel only",
+      "available": true,
+      "streamUrl": "https://jmp2.uk/stvp-US600011Q2",
+      "tvgId": "US600011Q2",
+      "logoUrl": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/US600011Q2_20260421T143343SQUARE.png"
     },
     {
       "number": 300,
