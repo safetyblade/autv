@@ -119,6 +119,7 @@ internal fun AuTvScreen(
         }
     }
     val categoryChannels = channelsByCategory[category].orEmpty()
+    // Keep text entry immediate; only commit the expensive catalogue/programme search after a short pause.
     LaunchedEffect(query) {
         delay(180)
         committedQuery = query
