@@ -55,7 +55,7 @@ https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-606605549dbf
 https://live-content.xumo.com/2073/content/XM0DSIUCO6UB8Y/23356260/master.m3u8
 #EXTINF:-1 tvg-chno="204" tvg-id="697140a85d851f5e69414688-66ccac69fdf9cd3a568ef135" tvg-name="UFC" tvg-logo="https://provider-static.plex.tv/epg/cms/production/c2e95493-6f98-4a65-be46-d17200ea068a/UFC_logo_WHT_1500x1000.png" group-title="Sport",UFC
 https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-66ccac69fdf9cd3a568ef135/?X-Plex-Token=6o2_mczJ9gsBoVyHTENZ
-#EXTINF:-1 tvg-chno="204" tvg-id="68c85164b7af374ee483210f" tvg-name="Wrestling Central" group-title="Sport",Wrestling Central
+#EXTINF:-1 tvg-chno="297" tvg-id="68c85164b7af374ee483210f" tvg-name="Wrestling Central" group-title="Sport",Wrestling Central
 https://stitcher-ipv4.pluto.tv/v1/stitch/embed/hls/channel/68c85164b7af374ee483210f/master.m3u8?deviceType=samsung-tvplus&deviceMake=samsung&deviceModel=samsung&deviceVersion=unknown&appVersion=unknown&deviceLat=0&deviceLon=0&deviceDNT=1&deviceId=autv&advertisingId=autv&us_privacy=1YNY&profileLimit=&profileFloor=&embedPartner=samsung-tvplus
 #EXTINF:-1 tvg-chno="205" tvg-id="697140a85d851f5e69414688-643f0ecd76de2b4015ae6c01" tvg-name="PFL MMA" tvg-logo="https://provider-static.plex.tv/epg/cms/production/96dd0531-b500-4bd4-93ca-763cbf46defe/1500x1000_PFL_SHIELD_DARK_BG_-_Allie_Dinsmore.png" group-title="Sport",PFL MMA
 https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-643f0ecd76de2b4015ae6c01/?X-Plex-Token=6o2_mczJ9gsBoVyHTENZ
