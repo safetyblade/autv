@@ -2,6 +2,9 @@ name: Native app
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - "android/**"
 
 permissions:
   contents: read
