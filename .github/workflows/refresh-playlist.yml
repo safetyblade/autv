@@ -6,6 +6,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: refresh-playlist
+  cancel-in-progress: true
+
 jobs:
   refresh:
     runs-on: ubuntu-latest
@@ -64,4 +68,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add playlist.m3u curated.xml epg.xml.gz guide.json
           git commit -m "chore: refresh playlist"
-          git push
+
+          # Avoid a late push failure if main moved while the refresh was running.
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
