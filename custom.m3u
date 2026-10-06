@@ -195,3 +195,8 @@ https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01131-tracetv-tracesportstar-lgau/p
 #EXTINF:-1 tvg-id="99991341" tvg-name="TNA Wrestling Xumo" tvg-logo="https://image.xumo.com/v1/channels/channel/99991341/168x168.png?type=color_onBlack" group-title="Sport",TNA Wrestling Xumo
 https://live-content.xumo.com/2073/content/XM0DSIUCO6UB8Y/23356260/master.m3u8
 
+# ---- Niche sports ----
+#EXTINF:-1 tvg-id="SportsTVPlus.us" tvg-name="SportsTVPlus" group-title="Sport",SportsTVPlus
+https://dai.google.com/linear/hls/event/9FKrAqCfRvGfn3tPbVFO-g/master.m3u8
+#EXTINF:-1 tvg-id="LacrosseTV.us" tvg-name="LacrosseTV" group-title="Sport",LacrosseTV
+https://a-cdn.klowdtv.com/live2/lsn_720p/playlist.m3u8
