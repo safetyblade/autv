@@ -201,3 +201,6 @@ https://live-content.xumo.com/2073/content/XM0DSIUCO6UB8Y/23356260/master.m3u8
 https://d3s7x6kmqcnb6b.cloudfront.net/d/distro001a/NKXQTWMREOB2XFJRLAHO/hls3/now,-1m/m.m3u8
 #EXTINF:-1 tvg-id="LacrosseTV.us" tvg-name="LacrosseTV" group-title="Sport",LacrosseTV
 https://a-cdn.klowdtv.com/live2/lsn_720p/playlist.m3u8
+
+#EXTINF:-1 tvg-id="ac0caef9123a35df3b884b139340a597" tvg-name="CW Presents WWE NXT" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/ac0caef9123a35df3b884b139340a597/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1783457806003_cw_presents_wwe_nxt_logo_hud.png" group-title="Sport",CW Presents WWE NXT
+https://aka-live1050.delivery.roku.com/34b065a4-682e-4e46-97f1-5c9a26aab12a/t2-origin/out/v1/live.m3u8
