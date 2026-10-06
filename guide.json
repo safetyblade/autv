@@ -9,8 +9,8 @@
     "epg": "https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz",
     "guide": "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
   },
-  "activeCount": 642,
-  "availableCount": 606,
+  "activeCount": 643,
+  "availableCount": 607,
   "channels": [
     {
       "number": 100,
@@ -1451,6 +1451,30 @@
       "streamUrl": "https://a-cdn.klowdtv.com/live2/lsn_720p/playlist.m3u8",
       "tvgId": "LacrosseTV.us",
       "logoUrl": null
+    },
+    {
+      "number": 296,
+      "name": "Formula 1 Channel",
+      "genre": "Sport",
+      "subgenre": "Motorsport",
+      "description": "24/7 Formula 1 FAST channel with race replays, archive races, highlights and related programming.",
+      "epg": "Channel only",
+      "available": true,
+      "streamUrl": "https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/65c69ee3d77d450008c80438/master.m3u8?appName=web&appVersion=unknown&clientTime=0&deviceDNT=0&deviceId=6c28f172-30d3-11ef-9cf5-e9ddff8ff496&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&serverSideAds=false&sid=922e06a8-1ba6-4236-9931-06d471735996",
+      "tvgId": "65c69ee3d77d450008c80438",
+      "logoUrl": "https://images.pluto.tv/channels/65c69ee3d77d450008c80438/colorLogoPNG.png"
+    },
+    {
+      "number": 297,
+      "name": "DAZN Fights",
+      "genre": "Sport",
+      "subgenre": "Wrestling & Combat",
+      "description": "24/7 combat-sports FAST channel from DAZN.",
+      "epg": "Channel only",
+      "available": true,
+      "streamUrl": "https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/64b67f7cbc3ab400084e51f2/master.m3u8?appName=web&appVersion=unknown&clientTime=0&deviceDNT=0&deviceId=bc83a563-4b91-11ef-8a44-83c5e90e038f&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&serverSideAds=false&sid=283bb308-deba-4f01-981e-1818495429a9",
+      "tvgId": "64b67f7cbc3ab400084e51f2",
+      "logoUrl": "https://images.pluto.tv/channels/64b67f7cbc3ab400084e51f2/colorLogoPNG.png"
     },
     {
       "number": 300,
