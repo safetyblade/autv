@@ -32,7 +32,21 @@ class Epg(val programmes: Map<String, List<Programme>>, val channelNames: Map<St
     }
     fun at(id: String?, time: Long): NowNext {
         val schedule = programmes[id].orEmpty()
-        return NowNext(schedule.firstOrNull { it.start <= time && time < it.stop }, schedule.firstOrNull { it.start > time })
+        if (schedule.isEmpty()) return NowNext(null, null)
+
+        // Schedules are sorted by start time during parsing. Find the first programme
+        // that starts after 'time' so guide rows/search do O(log n) work instead of
+        // scanning the same schedule twice on every lookup.
+        var low = 0
+        var high = schedule.size
+        while (low < high) {
+            val mid = (low + high) ushr 1
+            if (schedule[mid].start <= time) low = mid + 1 else high = mid
+        }
+
+        val current = schedule.getOrNull(low - 1)?.takeIf { time < it.stop }
+        val next = schedule.getOrNull(low)
+        return NowNext(current, next)
     }
 }
 
