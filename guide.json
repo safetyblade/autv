@@ -320,7 +320,7 @@
       "description": "WWE NXT FAST channel carrying current-era NXT archive programming; retained after successful Live Channels device QA.",
       "epg": "Full",
       "available": true,
-      "streamUrl": "https://jmp2.uk/rok-ac0caef9123a35df3b884b139340a597.m3u8",
+      "streamUrl": "https://aka-live1050.delivery.roku.com/34b065a4-682e-4e46-97f1-5c9a26aab12a/t2-origin/out/v1/live.m3u8",
       "tvgId": "ac0caef9123a35df3b884b139340a597",
       "logoUrl": "https://images.sr.roku.com/idType/roku-trc/context/trc/id/ac0caef9123a35df3b884b139340a597/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1783457806003_cw_presents_wwe_nxt_logo_hud.png"
     },
