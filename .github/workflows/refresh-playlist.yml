@@ -6,8 +6,6 @@ on:
     paths:
       - "custom.m3u"
       - "channel_guide.csv"
-  push:
-    paths:
       - ".github/workflows/refresh-playlist.yml"
 
 permissions:
