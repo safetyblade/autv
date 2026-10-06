@@ -17,12 +17,18 @@ data class Programme(val title: String, val start: Long, val stop: Long)
 data class NowNext(val now: Programme?, val next: Programme?)
 
 class Epg(val programmes: Map<String, List<Programme>>, val channelNames: Map<String, Set<String>> = emptyMap()) {
+    private fun identity(name: String) = name.lowercase(Locale.ROOT).replace(Regex("""[^\p{L}\p{N}]"""), "")
+    private val idsByNormalizedName: Map<String, String> = buildMap {
+        val candidates = mutableMapOf<String, MutableSet<String>>()
+        channelNames.forEach { (id, names) ->
+            names.forEach { name -> candidates.getOrPut(identity(name)) { mutableSetOf() }.add(id) }
+        }
+        candidates.forEach { (name, ids) -> if (ids.size == 1) put(name, ids.first()) }
+    }
     fun at(channel: Channel?, time: Long): NowNext {
         if (channel == null) return NowNext(null, null)
         if (channel.tvgId != null && programmes.containsKey(channel.tvgId)) return at(channel.tvgId, time)
-        fun identity(name: String) = name.lowercase(Locale.ROOT).replace(Regex("""[^\p{L}\p{N}]"""), "")
-        val matches = channelNames.filterValues { names -> names.any { identity(it) == identity(channel.name) } }.keys
-        return at(matches.singleOrNull(), time)
+        return at(idsByNormalizedName[identity(channel.name)], time)
     }
     fun at(id: String?, time: Long): NowNext {
         val schedule = programmes[id].orEmpty()
