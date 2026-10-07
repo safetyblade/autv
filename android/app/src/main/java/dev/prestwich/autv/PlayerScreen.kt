@@ -154,7 +154,7 @@ internal fun AuTvScreen(
     BackHandler(enabled = !pictureInPicture && (guideOpen || chrome)) {
         if (guideOpen) { wake(); onCloseGuide() } else chrome = false
     }
-    LaunchedEffect(guideOpen, guide, pictureInPicture) {
+    LaunchedEffect(guideOpen, guide != null, pictureInPicture) {
         if (pictureInPicture) return@LaunchedEffect
         wake()
         if (guideOpen) {

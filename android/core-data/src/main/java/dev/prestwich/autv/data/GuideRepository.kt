@@ -20,19 +20,27 @@ data class Channel(
 
 data class Guide(val activeCount: Int, val availableCount: Int, val channels: List<Channel>)
 
-class GuideRepository(private val endpoint: String = GUIDE_ENDPOINT) {
-    fun load(): Guide {
-        val connection = URL(endpoint).openConnection() as HttpURLConnection
-        connection.connectTimeout = 10_000
-        connection.readTimeout = 20_000
-        connection.setRequestProperty("Accept", "application/json")
-        try {
-            val body = connection.inputStream.bufferedReader().use { it.readText() }
-            val guide = parse(body)
-            return runCatching { mergePlaylist(guide, download(PLAYLIST_ENDPOINT)) }.getOrDefault(guide)
-        } finally {
-            connection.disconnect()
+class GuideRepository(
+    private val endpoint: String = GUIDE_ENDPOINT,
+    private val fetch: (String) -> String = ::download,
+) {
+    /** JSON alone is the first usable catalogue. Playlist IO is explicitly separate. */
+    fun load(): Guide = validated(fetch(endpoint))
+    fun reconcile(guide: Guide): Guide = mergePlaylist(guide, fetch(PLAYLIST_ENDPOINT))
+
+    internal fun validated(body: String): Guide {
+        val rows = JSONObject(body).getJSONArray("channels")
+        require(rows.length() > 0) { "The remote guide is empty" }
+        val numbers = mutableSetOf<Int>()
+        for (index in 0 until rows.length()) {
+            val row = rows.getJSONObject(index)
+            val number = row.get("number")
+            require(number is Number && number.toDouble() == number.toInt().toDouble() && number.toInt() >= 0) { "Invalid channel number" }
+            require(numbers.add(number.toInt())) { "Duplicate channel number" }
+            require(row.get("name") is String && row.getString("name").trim().let { it.isNotEmpty() && it != "null" }) { "Missing channel name" }
         }
+        // A missing/invalid stream is still a legitimate guide-only channel.
+        return parse(body)
     }
 
     internal fun parse(body: String): Guide {
@@ -80,15 +88,32 @@ class GuideRepository(private val endpoint: String = GUIDE_ENDPOINT) {
         return Guide(channels.size, channels.count { it.available }, channels)
     }
 
-    private fun download(endpoint: String): String {
-        val connection = URL(endpoint).openConnection() as HttpURLConnection
-        connection.connectTimeout = 10_000
-        connection.readTimeout = 20_000
-        return try { connection.inputStream.bufferedReader().use { it.readText() } }
-        finally { connection.disconnect() }
-    }
-
     companion object {
+        const val REQUEST_TIMEOUT_MS = 30_000L
+        private const val MAX_BYTES = 8 * 1024 * 1024
+        private fun download(endpoint: String): String {
+            val connection = URL(endpoint).openConnection() as HttpURLConnection
+            connection.connectTimeout = 10_000
+            connection.readTimeout = 20_000
+            connection.setRequestProperty("Accept", "application/json, audio/x-mpegurl, text/plain")
+            val deadline = System.nanoTime() + REQUEST_TIMEOUT_MS * 1_000_000
+            return try {
+                require(connection.responseCode in 200..299) { "Guide service HTTP ${connection.responseCode}" }
+                connection.inputStream.use { input ->
+                    val output = java.io.ByteArrayOutputStream()
+                    val buffer = ByteArray(8192)
+                    while (true) {
+                        check(System.nanoTime() < deadline) { "Guide service request timed out" }
+                        val size = input.read(buffer)
+                        if (size < 0) break
+                        require(output.size() + size <= MAX_BYTES) { "Guide service response is too large" }
+                        output.write(buffer, 0, size)
+                    }
+                    output.toString("UTF-8")
+                }
+            } finally { connection.disconnect() }
+        }
+
         const val PLAYLIST_ENDPOINT = "https://raw.githubusercontent.com/safetyblade/autv/main/playlist.m3u"
         const val GUIDE_ENDPOINT = "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
     }

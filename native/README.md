@@ -4,7 +4,7 @@ This directory is an additive client layer for the existing AU TV service.
 
 ## Safety boundary
 
-The existing service remains authoritative and untouched:
+The existing service remains authoritative:
 
 - `playlist.m3u` remains the Live Channels / TVirl playlist endpoint.
 - `epg.xml.gz` remains the XMLTV endpoint.
@@ -16,6 +16,33 @@ The native work consumes those outputs. It does not replace or refactor them.
 ## New client endpoint
 
 `guide.json` is an application-facing index joining the active channel guide to the currently published playlist. Channels can remain in the intended guide with `available: false`; clients must degrade gracefully.
+
+## Startup and last-known-good guide
+
+`guide.json` alone is sufficient to display the catalogue. Startup reads the
+private `filesDir/channel-guide-v1.json` cache without waiting for network access,
+then refreshes JSON in the background. A successfully validated, non-empty remote
+snapshot atomically replaces the cache; malformed/duplicate/empty snapshots leave
+the last good file intact. Channel stream availability is not a validity guard.
+
+The model exposes `LOADING`, `CACHED`, `READY` and `ERROR` startup states.
+The cache read has a two-second UI deadline and JSON refresh has a thirty-second
+UI deadline. Without a usable cache, remote failure leads to the existing Retry
+state. With a cache, failure leaves the cached guide usable. A timed-out blocking
+network worker cannot delay publication of the error/fallback state or apply a
+late result.
+
+Playlist reconciliation runs only after JSON has been published. Its failure
+cannot hide the guide. Metadata updates keep the retained Media3 player and do
+not reset search, category, scroll, overlay state or restart unchanged media.
+Fresh catalogues replace old channel membership, so withdrawn channels disappear.
+
+`native/tools/build_guide.py` validates the complete CSV (field counts, required
+values and unique channel numbers) before atomically regenerating JSON exclusively
+from Active rows. It never reads/merges the old generated JSON. The existing
+refresh workflow already invokes this generator and fails before publication if
+validation fails. In this cleanup, unverified 296/297 were withdrawn from the
+native guide and playlist; no replacement source was introduced.
 
 ## Prototype target
 
@@ -36,7 +63,7 @@ adb install -r android/app/build/outputs/apk/debug/app-debug.apk
 
 The APK supports Android 7.0/API 24 and later, with both ordinary and Android TV
 launchers. The manual-only `Native app` workflow runs the build and tests and
-uploads `autv-debug`. No production refresh workflow or output is changed.
+uploads `autv-debug`. The production refresh architecture is not changed.
 
 ## Download APKs on a PC
 
@@ -132,7 +159,14 @@ remaining physical-receiver validation.
 gradle -p android :app:assembleDebug
 gradle -p android :core-data:testDebugUnitTest :core-guide:testDebugUnitTest
 gradle -p android :app:connectedDebugAndroidTest
+PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s native/tools -p "test_*.py"
 ```
+
+JVM startup tests cover cache-first publication, remote success/failure/timeout,
+playlist failure after JSON publication, cache integrity and replacement.
+`GuideRefreshIntegrationTest` checks real model/player/media retention across a
+cached-to-remote metadata refresh on an Android device. Generator tests cover
+malformed CSV, duplicates, missing fields and withdrawal despite stale playlists.
 
 JVM tests also cover canonical category filtering, programme-title search,
 category retention and ID/name EPG resolution. They cover snapshot numbering drift, stream-known availability, malformed

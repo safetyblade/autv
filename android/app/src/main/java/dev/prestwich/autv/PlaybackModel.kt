@@ -17,8 +17,14 @@ import kotlinx.coroutines.sync.withLock
 
 /** Activity-retained state: UI transitions and PiP never create another playback engine. */
 class PlaybackModel(application: Application, private val guideLoader: () -> Guide, private val epgLoader: () -> Epg,
-    senderFactory: (((CastPlayback) -> Unit) -> CastConnection)? = null) : AndroidViewModel(application) {
-    constructor(application: Application) : this(application, { GuideRepository().load() }, { EpgRepository().load() })
+    senderFactory: (((CastPlayback) -> Unit) -> CastConnection)? = null,
+    guideCache: GuideCache? = null, playlistLoader: ((Guide) -> Guide)? = null) : AndroidViewModel(application) {
+    constructor(application: Application) : this(application, { GuideRepository().load() }, { EpgRepository().load() },
+        guideCache = FileGuideCache(java.io.File(application.filesDir, "channel-guide-v1.json")),
+        playlistLoader = { GuideRepository().reconcile(it) })
+    private val startup = GuideStartup(guideCache, guideLoader, playlistLoader)
+    var startupState by mutableStateOf(GuideStartupState.LOADING); private set
+    var refreshFailed by mutableStateOf(false); private set
     val holder = AuTvPlayer(application)
     val player = holder.player
     var guide by mutableStateOf<Guide?>(null); private set
@@ -38,6 +44,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     private var homeJob: Job? = null
     private val homeMutex = Mutex()
     private var foreground = true
+    private var initialSelectionPending = true
     private val castSender = senderFactory?.invoke(::onCastChanged) ?: CastSender(application, viewModelScope, { selected },
         { epg.at(it, System.currentTimeMillis()).now }, ::onCastChanged)
     private val listener = object : Player.Listener {
@@ -65,19 +72,45 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         loading = true; loadError = false
         viewModelScope.launch {
             try {
-                val loaded = withContext(Dispatchers.IO) { guideLoader() }
-                guide = loaded
-                if (hasPending) { hasPending = false; applyRequest(pending) }
-                else if (selected == null) {
-                    val recent = ChannelTuning.resolve(loaded.channels, TuneTarget.Number(preferences.getInt("channel", -1)))
-                    (recent ?: loaded.channels.firstOrNull { !it.streamUrl.isNullOrBlank() })?.let { tune(it) }
+                startup.refresh(guide) { update ->
+                    startupState = update.state
+                    refreshFailed = update.refreshFailed
+                    loadError = update.state == GuideStartupState.ERROR
+                    update.guide?.let { applyGuide(it) }
+                    // A target absent from the cache may still exist in the fresh catalogue.
+                    if (hasPending && (update.state == GuideStartupState.READY || update.refreshFailed)) {
+                        hasPending = false; applyRequest(pending)
+                    }
                 }
-                publishHome()
-            } catch (error: Exception) {
-                if (error is CancellationException) throw error
-                loadError = true
             } finally { loading = false }
         }
+    }
+    private fun applyGuide(loaded: Guide) {
+        if (guide == loaded) return
+        val previous = selected
+        guide = loaded
+        if (hasPending) {
+            pending?.let { ChannelTuning.resolve(loaded.channels, it) }?.let {
+                hasPending = false; applyRequest(pending)
+            }
+        } else if (previous == null && initialSelectionPending) {
+            val recent = ChannelTuning.resolve(loaded.channels, TuneTarget.Number(preferences.getInt("channel", -1)))
+            (recent ?: loaded.channels.firstOrNull { !it.streamUrl.isNullOrBlank() })?.let { tune(it) }
+        } else if (previous != null) {
+            val refreshed = previous.tvgId?.let { id -> loaded.channels.singleOrNull { it.tvgId == id } }
+                ?: loaded.channels.singleOrNull { it.number == previous.number && it.name == previous.name }
+            if (refreshed == null || refreshed.streamUrl.isNullOrBlank()) {
+                selected = refreshed
+                player.stop(); player.clearMediaItems(); buffering = false; guideOpen = true
+                notice = "That channel is no longer available. Choose another channel."
+            } else if (refreshed.streamUrl != previous.streamUrl || refreshed.number != previous.number) {
+                tune(refreshed)
+            } else {
+                // Metadata refresh does not replace media or restart a local/Cast session.
+                selected = refreshed
+            }
+        }
+        publishHome()
     }
     fun request(target: TuneTarget?) {
         if (guide == null) { pending = target; hasPending = true; guideOpen = true }
@@ -89,6 +122,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         tune(channel); guideOpen = false; notice = null; publishHome()
     }
     private fun tune(channel: Channel) {
+        initialSelectionPending = false
         val retry = failed.remove(channel.number) != null
         selected = channel
         preferences.edit().putInt("channel", channel.number).apply()
