@@ -31,6 +31,8 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.font.FontWeight
@@ -349,6 +351,7 @@ private fun ChannelRow(channel: Channel, selected: Boolean, failed: String?, sch
     var focused by remember { mutableStateOf(false) }
     val known = !channel.streamUrl.isNullOrBlank()
     Row(modifier.fillMaxWidth().focusProperties { canFocus = known }.onFocusChanged { focused = it.isFocused }
+        .semantics { this.selected = selected }
         .background(if (focused && tv) Silver.copy(alpha = 0.22f) else if (selected || focused) Color.White.copy(alpha = 0.075f) else Color.Black.copy(alpha = 0.18f), RoundedCornerShape(12.dp))
         .border(if (focused && tv) 3.dp else if (focused) 2.dp else 1.dp, if (focused) WarmWhite else if (selected) Silver.copy(alpha = 0.55f) else Color.White.copy(alpha = 0.06f), RoundedCornerShape(12.dp))
         .clickable(enabled = known) { onSelect(channel) }.padding(if (compact) 6.dp else 10.dp).testTag("channel-${channel.number}"), verticalAlignment = Alignment.Top) {
@@ -377,7 +380,7 @@ private fun ProgrammeInfo(schedule: NowNext, now: Long, fallback: String = "Live
     if (current != null) {
         if (!compact) Text("${clock(current.start)} – ${clock(current.stop)}", color = Muted, style = MaterialTheme.typography.labelSmall)
         LinearProgressIndicator(progress = { ((now - current.start).toDouble() / (current.stop - current.start).coerceAtLeast(1)).toFloat().coerceIn(0f, 1f) },
-            modifier = Modifier.fillMaxWidth().padding(vertical = if (compact) 2.dp else 5.dp).height(2.dp).testTag("programme-progress"), color = Silver, trackColor = Color.White.copy(alpha = 0.12f))
+            modifier = Modifier.fillMaxWidth().padding(vertical = if (compact) 2.dp else 5.dp).height(2.dp).semantics { contentDescription = "Programme progress" }.testTag("programme-progress"), color = Silver, trackColor = Color.White.copy(alpha = 0.12f))
     }
     schedule.next?.let { Text("Next  ${clock(it.start)} · ${it.title}", color = Muted, style = MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis) }
 }
@@ -386,7 +389,7 @@ private fun ProgrammeInfo(schedule: NowNext, now: Long, fallback: String = "Live
 private fun ChannelLogo(channel: Channel?, modifier: Modifier) {
     Box(modifier.background(Color.White.copy(alpha = 0.04f), RoundedCornerShape(8.dp)).padding(4.dp), contentAlignment = Alignment.Center) {
         if (channel?.logoUrl != null) AsyncImage(model = channel.logoUrl, contentDescription = "${channel.name} logo", modifier = Modifier.fillMaxSize(), error = painterResource(R.drawable.autv_logo))
-        else Image(painterResource(R.drawable.autv_logo), "Channel logo", Modifier.fillMaxSize())
+        else Image(painterResource(R.drawable.autv_logo), channel?.let { "${it.name} logo" } ?: "Channel logo", Modifier.fillMaxSize())
     }
 }
 
