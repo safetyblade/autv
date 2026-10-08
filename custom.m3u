@@ -192,8 +192,8 @@ https://amg27847-amg27847c1-amgplt0049.playout.now3.amagi.tv/ts-ap-s1-n1/playlis
 https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01131-tracetv-tracesportstar-lgau/playlist.m3u8?ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.usprivacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.coppa=0&ads.targetad=[TARGETAD_ALLOWED]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.dmake=[DEVICE_MAKE]
 
 # ---- Retained alternate wrestling feed ----
-#EXTINF:-1 tvg-id="99991341" tvg-name="TNA Wrestling Xumo" tvg-logo="https://image.xumo.com/v1/channels/channel/99991341/168x168.png?type=color_onBlack" group-title="Sport",TNA Wrestling Xumo
-https://live-content.xumo.com/2073/content/XM0DSIUCO6UB8Y/23356260/master.m3u8
+#EXTINF:-1 tvg-id="62ea4dadce395f0007086df2" tvg-name="TNA Wrestling Pluto" group-title="Sport",TNA Wrestling Pluto
+https://jmp2.uk/plu-62ea4dadce395f0007086df2.m3u8
 
 # ---- Niche sports ----
 #EXTINF:-1 tvg-id="LacrosseTV.us" tvg-name="LacrosseTV" group-title="Sport",LacrosseTV
