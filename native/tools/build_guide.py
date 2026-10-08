@@ -73,6 +73,12 @@ def build(guide=GUIDE, playlist=PLAYLIST, output=OUTPUT):
     for row in rows:
         number = int(row["Channel number"])
         stream = streams.get(str(number))
+        if row["Status"].casefold() == "app test" and number == 297:
+            stream = {
+                "streamUrl": "https://therokuchannel.roku.com/watch/439096119777e0f33894343b551bece4",
+                "tvgId": "439096119777e0f33894343b551bece4",
+                "logoUrl": None,
+            }
         channels.append({
             "number": number, "name": row["Channel name"], "genre": row["Genre"],
             "subgenre": row["Subgenre"], "description": row["Description"], "epg": row["EPG"],
@@ -81,7 +87,7 @@ def build(guide=GUIDE, playlist=PLAYLIST, output=OUTPUT):
         })
     channels.sort(key=lambda channel: channel["number"])
     if {channel["number"] for channel in channels} != {int(row["Channel number"]) for row in rows}:
-        raise ValueError("Generated channels do not exactly match Active CSV rows")
+        raise ValueError("Generated channels do not exactly match publishable CSV rows")
     payload = {
         "schemaVersion": 1,
         "generatedFrom": {"channelGuide": "channel_guide.csv", "playlist": "playlist.m3u"},
