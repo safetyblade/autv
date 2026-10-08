@@ -169,7 +169,13 @@ internal fun AuTvScreen(
             categoryState.scrollToItem(GuideBrowse.categories.indexOf(category).coerceAtLeast(0))
             val rows = GuideBrowse.filter(guide?.channels.orEmpty(), category, "", epg, now)
             val index = rows.indexOfFirst { it.number == selected?.number }
-            if (index >= 0) listState.scrollToItem(index)
+            if (index >= 0) {
+                listState.scrollToItem(index, 0)
+                // Compose can preserve a previous partial-row offset while the category/filter
+                // recomposes. Re-assert the selected row at a clean boundary after layout.
+                withFrameNanos { }
+                listState.scrollToItem(index, 0)
+            }
             withFrameNanos { }
             if (isTv) {
                 if (index >= 0 && !selected?.streamUrl.isNullOrBlank()) selectedFocus.requestFocus() else closeFocus.requestFocus()
@@ -301,7 +307,8 @@ internal fun AuTvScreen(
                                                     .focusProperties { down = categoryFocus; right = closeFocus }.testTag("guide-search"),
                                                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), keyboardActions = KeyboardActions(onSearch = { keyboard?.hide() }),
                                                 trailingIcon = { if (query.isNotEmpty()) TextButton(onClick = { query = ""; committedQuery = ""; wake() }, modifier = Modifier.semantics { contentDescription = "Clear search query" }) { Text("Clear") } }, shape = RoundedCornerShape(12.dp))
-                                            LazyRow(state = categoryState, horizontalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.padding(vertical = if (compact) 0.dp else 4.dp).testTag("guide-categories")) {
+                                            LazyRow(state = categoryState, horizontalArrangement = Arrangement.spacedBy(6.dp), contentPadding = PaddingValues(end = 24.dp),
+                                                modifier = Modifier.padding(vertical = if (compact) 0.dp else 4.dp).testTag("guide-categories")) {
                                                 items(GuideBrowse.categories) { genre ->
                                                     var focused by remember { mutableStateOf(false) }
                                                     FilterChip(selected = category == genre, onClick = { chooseCategory(genre) }, label = { Text(genre, style = MaterialTheme.typography.labelMedium) },
