@@ -248,10 +248,10 @@ internal fun AuTvScreen(
                                 if (digits.isNotEmpty()) Text("Tune $digits", color = Silver, modifier = Modifier.padding(end = 12.dp))
                                 if (!isTv) CastControl(false, onInteraction = { wake() }, compact = landscape)
                                 else if (!guideOpen) {
-                                    FocusButton("CH −", { wake(); onPrevious() }, Modifier.focusRequester(previousFocus).focusProperties { right = guideControlFocus }.testTag("ch-minus"), playable)
+                                    FocusButton("CH −", { wake(); onPrevious() }, Modifier.focusRequester(previousFocus).focusProperties { right = guideControlFocus }.semantics { contentDescription = "Previous channel" }.testTag("ch-minus"), playable)
                                     FocusButton("Guide", { wake(); onOpenGuide() }, Modifier.padding(horizontal = 8.dp).focusRequester(guideControlFocus)
-                                        .focusProperties { left = previousFocus; right = nextFocus }.testTag("guide-toggle"))
-                                    FocusButton("CH +", { wake(); onNext() }, Modifier.focusRequester(nextFocus).focusProperties { left = guideControlFocus }.testTag("ch-plus"), playable)
+                                        .focusProperties { left = previousFocus; right = nextFocus }.semantics { contentDescription = "Open channel guide" }.testTag("guide-toggle"))
+                                    FocusButton("CH +", { wake(); onNext() }, Modifier.focusRequester(nextFocus).focusProperties { left = guideControlFocus }.semantics { contentDescription = "Next channel" }.testTag("ch-plus"), playable)
                                 }
                             }
                             BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
@@ -340,9 +340,9 @@ internal fun AuTvScreen(
                                 }
                             }
                             if (!isTv && !guideOpen && !keyboardOpen) Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                OutlinedButton(onClick = { wake(); onPrevious() }, enabled = playable, modifier = Modifier.weight(1f).heightIn(min = 48.dp).testTag("ch-minus")) { Text("CH −") }
-                                OutlinedButton(onClick = { wake(); if (guideOpen) onCloseGuide() else onOpenGuide() }, modifier = Modifier.weight(1.2f).heightIn(min = 48.dp).testTag("guide-toggle")) { Text(if (guideOpen) "Close guide" else "Guide") }
-                                OutlinedButton(onClick = { wake(); onNext() }, enabled = playable, modifier = Modifier.weight(1f).heightIn(min = 48.dp).testTag("ch-plus")) { Text("CH +") }
+                                OutlinedButton(onClick = { wake(); onPrevious() }, enabled = playable, modifier = Modifier.weight(1f).heightIn(min = 48.dp).semantics { contentDescription = "Previous channel" }.testTag("ch-minus")) { Text("CH −") }
+                                OutlinedButton(onClick = { wake(); if (guideOpen) onCloseGuide() else onOpenGuide() }, modifier = Modifier.weight(1.2f).heightIn(min = 48.dp).semantics { contentDescription = if (guideOpen) "Close channel guide" else "Open channel guide" }.testTag("guide-toggle")) { Text(if (guideOpen) "Close guide" else "Guide") }
+                                OutlinedButton(onClick = { wake(); onNext() }, enabled = playable, modifier = Modifier.weight(1f).heightIn(min = 48.dp).semantics { contentDescription = "Next channel" }.testTag("ch-plus")) { Text("CH +") }
                             }
                         }
                     }
@@ -386,8 +386,10 @@ private fun ProgrammeInfo(schedule: NowNext, now: Long, fallback: String = "Live
     }
     if (current != null) {
         if (!compact) Text("${clock(current.start)} – ${clock(current.stop)}", color = Muted, style = MaterialTheme.typography.labelSmall)
-        LinearProgressIndicator(progress = { ((now - current.start).toDouble() / (current.stop - current.start).coerceAtLeast(1)).toFloat().coerceIn(0f, 1f) },
-            modifier = Modifier.fillMaxWidth().padding(vertical = if (compact) 2.dp else 5.dp).height(2.dp).semantics { contentDescription = "Programme progress" }.testTag("programme-progress"), color = Silver, trackColor = Color.White.copy(alpha = 0.12f))
+        val progress = ((now - current.start).toDouble() / (current.stop - current.start).coerceAtLeast(1)).toFloat().coerceIn(0f, 1f)
+        val progressPct = (progress * 100).toInt()
+        LinearProgressIndicator(progress = { progress },
+            modifier = Modifier.fillMaxWidth().padding(vertical = if (compact) 2.dp else 5.dp).height(2.dp).semantics { contentDescription = "Programme progress, $progressPct% complete" }.testTag("programme-progress"), color = Silver, trackColor = Color.White.copy(alpha = 0.12f))
     }
     schedule.next?.let { Text("Next  ${clock(it.start)} · ${it.title}", color = Muted, style = MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis) }
 }
