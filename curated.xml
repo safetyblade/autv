@@ -137,7 +137,7 @@
     <icon src="https://provider-static.plex.tv/d/epg/channels/logos/gracenote/d300a0c0dd6ffb82aca554ff87e8a364.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-693cbba358076a970420f597">
-    <display-name>Cesar's Pack Leader TV</display-name>
+    <display-name>Cesar&apos;s Pack Leader TV</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/e24d3a4c-4948-4155-82c5-b7eec0fa50b8/Cesar_Logo_Transparent_WHTRDX.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-64f115ad2173e54397ce0d40">
@@ -233,7 +233,7 @@
     <icon src="https://provider-static.plex.tv/epg/cms/production/9300cb7f-9eef-4e0f-b0d3-d7469da72cda/EASY_LISTENING.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-618ab2f275913b296fbe56dd">
-    <display-name>Eddie's Wonderland</display-name>
+    <display-name>Eddie&apos;s Wonderland</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/a27f5de6-ea10-48ad-ab05-6a5c3e63d46c/Eddies-Wonderland_logo_dark.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-62ee74af52f7d73061eec491">
@@ -365,7 +365,7 @@
     <icon src="https://provider-static.plex.tv/epg/cms/production/4f771dfa-0588-46f0-9a02-25dc76dd4abe/Logo_Heartland_White_1500x1000RDX.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-68dcb9f59beaa3a402966db8">
-    <display-name>Hell's Kitchen</display-name>
+    <display-name>Hell&apos;s Kitchen</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/dbfb2f5c-2f61-4bc6-a6ce-ba692926421f/HellsKitchen_Logo_White_1500X1000.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-6616cbcc0360e123d9f3f366">
@@ -413,7 +413,7 @@
     <icon src="https://provider-static.plex.tv/epg/cms/production/2e34b413-32fc-4600-8b29-94562670814c/Hunter_Logo_Dark.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-6a10ad97b05301ef36a6a8e6">
-    <display-name>I Shouldn't Be Alive</display-name>
+    <display-name>I Shouldn&apos;t Be Alive</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/048549fe-9723-418a-be64-e06a2901d377/IShouldntBeAlive_Logo_White_1500x1000_-_Harry_Marshall.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-6a30094150e72a483a631e6f">
@@ -593,7 +593,7 @@
     <icon src="https://provider-static.plex.tv/epg/cms/production/cd9c928b-8bf5-408f-b640-a6d1b97a6a69/nosey_green.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-62f13eeded056a1db9ef3d54">
-    <display-name>Nothin' But 90s</display-name>
+    <display-name>Nothin&apos; But 90s</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/d5318898-f807-4c7f-b2b4-c4173aaae1ea/Nothin_But_90s.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-6578e7b5eef129f30fb38df7">
@@ -921,7 +921,7 @@
     <icon src="https://provider-static.plex.tv/epg/cms/production/05731f39-c980-4c30-97d0-9874d9999fe8/Tiny_House_Nation_Logo_STACKED_COLOR_RDX.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-62ee6eae271f393d2d9f7096">
-    <display-name>Today's K-Pop</display-name>
+    <display-name>Today&apos;s K-Pop</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/9508b18a-0b6a-4281-888a-bde4bbfe10cd/Todays_K_Pop.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-5eea605574085f0040ddc794">
@@ -1033,7 +1033,7 @@
     <icon src="https://provider-static.plex.tv/epg/cms/production/f73474ef-6388-4d5e-ade8-5f81f78cb5f8/WomenBehindBars_Logo_Colorrdx.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-630fa9e577ec3866def38fa2">
-    <display-name>Women's Sports Network</display-name>
+    <display-name>Women&apos;s Sports Network</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/5c5587dd-f93b-42db-b0dc-6b7a78801c3d/WSNLogoColor_1500x1000.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-5f74cf83ffbe690040689f4d">
@@ -1073,7 +1073,7 @@
     <icon src="https://provider-static.plex.tv/epg/cms/production/6e254786-1243-462b-bf6c-75d21b68582d/10423_ZL_Plex_Launch-assets_Channel-Logo_1500x1000_V01-White_-_Sacha_Portaria.png" />
   </channel>
   <channel id="autv.don-t-tell-the-bride-au-geo">
-    <display-name>Don't Tell The Bride (AU) Geo</display-name>
+    <display-name>Don&apos;t Tell The Bride (AU) Geo</display-name>
   </channel>
   <channel id="autv.project-runway-australia">
     <display-name>Project Runway (Australia)</display-name>
@@ -1560,7 +1560,7 @@
     <icon src="https://images.pluto.tv/channels/5d81607ab737153ea3c1c80e/colorLogoPNG.png" />
   </channel>
   <channel id="68939e206727ec919bb39061">
-    <display-name>Hogan's Heroes</display-name>
+    <display-name>Hogan&apos;s Heroes</display-name>
     <icon src="https://images.pluto.tv/channels/68939e206727ec919bb39061/colorLogoPNG_1757523507747.png" />
   </channel>
   <channel id="6a2b0edf201df02a8bfea30a">
@@ -1624,7 +1624,7 @@
     <icon src="https://images.pluto.tv/channels/60fb01a24795a6000762fe83/colorLogoPNG.png" />
   </channel>
   <channel id="65e23f340d4561000821540d">
-    <display-name>Mister Rogers' Neighborhood</display-name>
+    <display-name>Mister Rogers&apos; Neighborhood</display-name>
     <icon src="https://images.pluto.tv/channels/65e23f340d4561000821540d/colorLogoPNG.png" />
   </channel>
   <channel id="5ca6748a37b88b269472dad9">
@@ -1676,7 +1676,7 @@
     <icon src="https://images.pluto.tv/channels/6793eaa4bc03978b9bc63db1/colorLogoPNG_1746815871603.png" />
   </channel>
   <channel id="5e84f54a82f05300080e6746">
-    <display-name>America's Test Kitchen</display-name>
+    <display-name>America&apos;s Test Kitchen</display-name>
     <icon src="https://images.pluto.tv/channels/5e84f54a82f05300080e6746/colorLogoPNG.png" />
   </channel>
   <channel id="69173ce8abd4703b27f71d44">
@@ -1820,7 +1820,7 @@
     <icon src="https://images.pluto.tv/channels/5d14fc31252d35decbc4080b/colorLogoPNG.png" />
   </channel>
   <channel id="5d14fdb8ca91eedee1633117">
-    <display-name>MTV Spankin' New</display-name>
+    <display-name>MTV Spankin&apos; New</display-name>
     <icon src="https://images.pluto.tv/channels/5d14fdb8ca91eedee1633117/colorLogoPNG.png" />
   </channel>
   <channel id="6a8d96aa2cfd341eb5809214">
@@ -1868,11 +1868,15 @@
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/15cc44e50d8453e18f21ea37713319c5/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1660071204893_1605145912343_EN_Logo_WhiteonBlack_260x147.png" />
   </channel>
   <channel id="ffe5d9e0480d1c5e1dcead3abd966ac7">
-    <display-name>Let's Make a Deal</display-name>
+    <display-name>Let&apos;s Make a Deal</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/ffe5d9e0480d1c5e1dcead3abd966ac7/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1741793674388_LMAD_HUDLogoCenterAligned_260x147.png" />
   </channel>
+  <channel id="62b4eba68f3051c68d2beb22dc94ebbc">
+    <display-name>Supermarket Sweep</display-name>
+    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/62b4eba68f3051c68d2beb22dc94ebbc/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1669151901470_ROKU_SMS_HUD-MONO_260X147.png" />
+  </channel>
   <channel id="3580b15015379c4256440b0e119d46ed">
-    <display-name>America's Got Talent</display-name>
+    <display-name>America&apos;s Got Talent</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/3580b15015379c4256440b0e119d46ed/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1775265472400_AGT_HUD_260x147_CenterAligned.png" />
   </channel>
   <channel id="eec9d131b4095083a23c485d804c8b2d">
@@ -1891,10 +1895,6 @@
     <display-name>FilmRise British TV</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/dead0e7a46da533c94c61c8710ef3418/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1766001306928_RokuChannel_FilmRiseBritishTV_HUD_Logo_260x147.png" />
   </channel>
-  <channel id="e2e10d08139b56aba73a448f5555b6fd">
-    <display-name>FilmRise Classic TV</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/e2e10d08139b56aba73a448f5555b6fd/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1673450928764_FilmRise-ClassicTV_260x147_copy.png" />
-  </channel>
   <channel id="6a0629e467b5502c906136dadac290a0">
     <display-name>FilmRise Horror</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/6a0629e467b5502c906136dadac290a0/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1774448513257_RokuChannel_FilmRiseHorror_HUD_Logo_260x147.png" />
@@ -1908,7 +1908,7 @@
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/16722bc43ef05012afa2297def830266/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1774448547651_RokuChannel_FilmRiseMysteries_HUD_Logo_260x147.png" />
   </channel>
   <channel id="e7b30e2a58409242100d0edd2bfebbfd">
-    <display-name>Pam Grier's Soul Flix</display-name>
+    <display-name>Pam Grier&apos;s Soul Flix</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/e7b30e2a58409242100d0edd2bfebbfd/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1734494082178_PGSF_HUDAthanasiosTsiris.png" />
   </channel>
   <channel id="d32267711c6a5cf36520716c96b5b3fa">
@@ -1964,7 +1964,7 @@
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/a4d5fe37a0f5592dee5dbbb242d73fac/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1731689489118_Roku_GUHH_WEtv_HUD1_260x147_efefef.png" />
   </channel>
   <channel id="b8c4f2efe56a512890042011e5cc0884">
-    <display-name>Hell's Kitchen | Kitchen Nightmares</display-name>
+    <display-name>Hell&apos;s Kitchen | Kitchen Nightmares</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/b8c4f2efe56a512890042011e5cc0884/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1673453935313_FilmRise-Cooking_260x147_copy.png" />
   </channel>
   <channel id="923cd8e7aa1e5a5898aad41fdf6a0f0f">
@@ -2015,9 +2015,9 @@
     <display-name>SNL Vault</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/9349c516ca6456b9b5ed7e20cb1c1384/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1758302529388_snlvault_260x147_HUD.png" />
   </channel>
-  <channel id="b0d5db7f498f56fcaf1f8289eea6ea4d">
-    <display-name>Spark TV - Luz &amp; Amor</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/b0d5db7f498f56fcaf1f8289eea6ea4d/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1658958888898_1651872075315_Anthony_Straga_-_SparkTV_ROKU-US-SPANISH_HUD-2_v2.png" />
+  <channel id="eb1dbd690001553eacdf32d7b155b933">
+    <display-name>SPARK TV</display-name>
+    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/eb1dbd690001553eacdf32d7b155b933/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1659742235158_Whitt_Hansen_-_SparkTVLogo_HUD_2_v2.png" />
   </channel>
   <channel id="34e2d8f442ab5fa3aed29436c2f8ed63">
     <display-name>Shades of Black</display-name>
@@ -2042,6 +2042,10 @@
   <channel id="ada4254a1dd65c138f62e7c45affb45c">
     <display-name>GARDEN with Monty Don</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/ada4254a1dd65c138f62e7c45affb45c/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1777303688429_GWMD_Rebrand_HUD_Logo.png" />
+  </channel>
+  <channel id="5a1dec25daac971f191b10e808ec0c5d">
+    <display-name>Tastemade Home</display-name>
+    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/5a1dec25daac971f191b10e808ec0c5d/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1744402817287_260x147_TastemadeHome_LogoInfoHUD_Roku.png" />
   </channel>
   <channel id="b182852fa5860ed0017de42c7b9ce05a">
     <display-name>Nature Moments</display-name>
@@ -2208,7 +2212,7 @@
     <icon src="https://image.xumo.com/v1/channels/channel/99991320/168x168.png?type=color_onBlack" />
   </channel>
   <channel id="99951544">
-    <display-name>World's Wildest Police Videos</display-name>
+    <display-name>World&apos;s Wildest Police Videos</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951544/168x168.png?type=color_onBlack" />
   </channel>
   <channel id="99951550">
@@ -2224,7 +2228,7 @@
     <icon src="https://image.xumo.com/v1/channels/channel/99951575/168x168.png?type=color_onBlack" />
   </channel>
   <channel id="99951138">
-    <display-name>McLeod's Daughters</display-name>
+    <display-name>McLeod&apos;s Daughters</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951138/168x168.png?type=color_onBlack" />
   </channel>
   <channel id="99951216">
@@ -2288,7 +2292,7 @@
     <icon src="https://images.pluto.tv/channels/62e925bc68d18a00077bb990/colorLogoPNG.png" />
   </channel>
   <channel id="68757c45759366af05b3b199">
-    <display-name>America's Next Top Model</display-name>
+    <display-name>America&apos;s Next Top Model</display-name>
     <icon src="https://images.pluto.tv/channels/68679fc6bb46d0bdd38ac9a4/colorLogoPNG.png" />
   </channel>
   <channel id="60f754f98185580007eb0754">
@@ -2348,7 +2352,7 @@
     <icon src="https://images.pluto.tv/channels/691b023a7613e09a8b209539/colorLogoPNG.png" />
   </channel>
   <channel id="5ef3977e5d773400077de284">
-    <display-name>Three's Company</display-name>
+    <display-name>Three&apos;s Company</display-name>
     <icon src="https://images.pluto.tv/channels/64ca723a2bc49300081a8966/colorLogoPNG.png" />
   </channel>
   <channel id="636adc255bcf470007d6e0e2">
@@ -2501,7 +2505,7 @@
     <icon src="https://d2mxb63djushzm.cloudfront.net/images/hnc_logo.png" />
   </channel>
   <channel id="autv.don-t-tell-the-bride-au-geo">
-    <display-name>Don't Tell The Bride (Australia)</display-name>
+    <display-name>Don&apos;t Tell The Bride (Australia)</display-name>
   </channel>
   <channel id="autv.375-love-wine">
     <display-name>Love Wine</display-name>
@@ -2561,11 +2565,5 @@
   <channel id="ac0caef9123a35df3b884b139340a597">
     <display-name>CW Presents WWE NXT</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/ac0caef9123a35df3b884b139340a597/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1783457806003_cw_presents_wwe_nxt_logo_hud.png" />
-  </channel>
-  <channel id="68c85164b7af374ee483210f">
-    <display-name>Wrestling Central</display-name>
-  </channel>
-  <channel id="US600011Q2">
-    <display-name>Formula 1 Channel</display-name>
   </channel>
 </tv>
