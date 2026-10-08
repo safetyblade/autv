@@ -26,7 +26,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 200,Watch AEW,Sport,Wrestling & Combat,Channel only,Tubi,Roku,Active,24/7 AEW FAST channel. Tubi remains primary; Roku carries the same feed as a tested fallback.
 201,CW Presents WWE NXT,Sport,Wrestling & Combat,Full,Curated,Roku,Active,WWE NXT FAST channel carrying current-era NXT archive programming.
 202,TNA Wrestling Channel,Sport,Wrestling & Combat,Channel only,Roku,Pluto US,Active,"TNA Wrestling FAST channel using Roku as primary test source; Pluto US retained as alternate."
-203,TNA Wrestling Samsung,Sport,Wrestling & Combat,Channel only,Samsung US,Samsung CA,Active,"Second independent TNA Wrestling FAST channel using Samsung TV Plus US; Samsung Canada retained as alternate."
+203,TNA Wrestling Samsung,Sport,Wrestling & Combat,Channel only,Samsung CA,Samsung US,Active,"Second independent TNA Wrestling FAST channel; Samsung Canada is the current device test after Samsung US failed."
 204,UFC,Sport,Wrestling & Combat,Full,Plex AU,,Active,Combat-sports channel featuring UFC programming and fight content.
 205,PFL MMA,Sport,Wrestling & Combat,Full,Plex AU,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
 206,ONE Championship,Sport,Wrestling & Combat,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
@@ -95,8 +95,8 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 269,ACL Cornhole TV,Sport,Niche & Competition,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 270,Bowling TV,Sport,Niche & Competition,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 271,Team USA TV,Sport,Niche & Competition,Full,Roku,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-272,Women's Sports Network,Sport,Niche & Competition,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-273,SWAC TV,Sport,Niche & Competition,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+272,Women's Sports Network,Sport,Niche & Competition,Full,Tubi,Samsung US / Pluto US,Active,"Women's Sports Network FAST channel; direct Tubi HLS is primary after the Plex tokenised feed failed."
+273,SWAC TV,Sport,Niche & Competition,Full,FAST distribution,Plex / Xumo / Prime / Google TV / Dingo,Active,"Current SWAC TV FAST channel; previous Plex token failed. Re-source in progress across current FAST distributors."
 274,FOX Sports,Sport,General Sports,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 275,NBC Sports NOW,Sport,General Sports,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 276,CBS Sports HQ,Sport,General Sports,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
