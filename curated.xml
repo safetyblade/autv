@@ -1895,6 +1895,10 @@
     <display-name>FilmRise British TV</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/dead0e7a46da533c94c61c8710ef3418/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1766001306928_RokuChannel_FilmRiseBritishTV_HUD_Logo_260x147.png" />
   </channel>
+  <channel id="e2e10d08139b56aba73a448f5555b6fd">
+    <display-name>FilmRise Classic TV</display-name>
+    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/e2e10d08139b56aba73a448f5555b6fd/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1673450928764_FilmRise-ClassicTV_260x147_copy.png" />
+  </channel>
   <channel id="6a0629e467b5502c906136dadac290a0">
     <display-name>FilmRise Horror</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/6a0629e467b5502c906136dadac290a0/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1774448513257_RokuChannel_FilmRiseHorror_HUD_Logo_260x147.png" />
@@ -1974,10 +1978,6 @@
   <channel id="285f3ba210e8561fa5261af0871ace90">
     <display-name>Haunt TV</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/285f3ba210e8561fa5261af0871ace90/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1659563088420_HauntTVLogo_260x147_copy.png" />
-  </channel>
-  <channel id="856fca464da0544784204ba8f6161dac">
-    <display-name>PBS Antiques Roadshow</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/856fca464da0544784204ba8f6161dac/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1772722216448_260x147_CenterAligned.png" />
   </channel>
   <channel id="fac7a914e241bef68c80c2f6e549458e">
     <display-name>ALF</display-name>
@@ -2565,5 +2565,13 @@
   <channel id="ac0caef9123a35df3b884b139340a597">
     <display-name>CW Presents WWE NXT</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/ac0caef9123a35df3b884b139340a597/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1783457806003_cw_presents_wwe_nxt_logo_hud.png" />
+  </channel>
+  <channel id="685a996c7c4f2ad40cb4f276">
+    <display-name>Dragon Ball</display-name>
+    <icon src="https://images.pluto.tv/channels/685a996c7c4f2ad40cb4f276/colorLogoPNG_1756876796024.png" />
+  </channel>
+  <channel id="68e8fd7c3ede4398bc69af93">
+    <display-name>Dragon Ball Z</display-name>
+    <icon src="https://images.pluto.tv/channels/68e8fd7c3ede4398bc69af93/colorLogoPNG_1775550158845.png" />
   </channel>
 </tv>
