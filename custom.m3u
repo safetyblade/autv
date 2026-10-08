@@ -206,3 +206,7 @@ https://jmp2.uk/rok-6d8659091f745b8b864f438f06c56fae.m3u8
 
 #EXTINF:-1 tvg-id="USBB1000001XP" tvg-name="TNA Wrestling Samsung" tvg-logo="https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB1000001XP_20250428T223407SQUARE.png" group-title="Sport",TNA Wrestling Samsung
 https://jmp2.uk/stvp-USBB1000001XP
+
+# ---- Wrestling Central Roku trial ----
+#EXTINF:-1 tvg-id="439096119777e0f33894343b551bece4" tvg-name="Wrestling Central" group-title="Sport",Wrestling Central
+https://jmp2.uk/rok-439096119777e0f33894343b551bece4.m3u8
