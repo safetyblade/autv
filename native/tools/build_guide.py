@@ -13,8 +13,14 @@ REQUIRED = [field for field in HEADERS if field != "Alternate source"]
 
 
 def attr(line: str, key: str) -> str:
-    match = re.search(rf'{re.escape(key)}="([^"]*)"', line)
-    return match.group(1) if match else ""
+    # Fast string search for key="value" pattern in M3U header lines, avoiding regex overhead
+    marker = f'{key}="'
+    idx = line.find(marker)
+    if idx == -1:
+        return ""
+    start = idx + len(marker)
+    end = line.find('"', start)
+    return line[start:end] if end != -1 else ""
 
 
 def playlist_by_channel(path=PLAYLIST):
