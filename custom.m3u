@@ -214,3 +214,13 @@ https://jmp2.uk/rok-439096119777e0f33894343b551bece4.m3u8
 # ---- Women's Sports Network direct fallback ----
 #EXTINF:-1 tvg-id="WomensSportsNetwork.us@SD" tvg-name="Women's Sports Network" group-title="Sport",Women's Sports Network
 https://aegis-cloudfront-1.tubi.video/e974981b-bbcd-42a3-a6c1-6c25e14f10bd/playlist.m3u8
+
+# ---- Sports direct overrides after Plex transport failures ----
+#EXTINF:-1 tvg-id="CricketGold.au@SD" tvg-name="Cricket Gold" group-title="Sport",Cricket Gold
+https://streams2.sofast.tv/ptnr-yupptv/title-cricketgold/v1/master/611d79b11b77e2f571934fd80ca1413453772ac7/b2048bb8-1686-4432-aa50-647245383e0c/manifest.m3u8
+
+#EXTINF:-1 tvg-id="FUELTV.pt@AU" tvg-name="FUEL TV" group-title="Sport",FUEL TV
+https://amg01074-fueltv-fueltvau-samsungau-g09kq.amagi.tv/playlist/amg01074-fueltv-fueltvau-samsungau/playlist.m3u8
+
+#EXTINF:-1 tvg-id="USBA300034DB" tvg-name="Pac-12 Insider" group-title="Sport",Pac-12 Insider
+https://jmp2.uk/stvp-USBA300034DB
