@@ -542,7 +542,7 @@
     },
     {
       "number": 220,
-      "name": "TOP BARÇA",
+      "name": "TOP BAR\u00c7A",
       "genre": "Sport",
       "subgenre": "Football",
       "description": "Football FAST channel focused on club, league or competition programming.",
@@ -6446,7 +6446,7 @@
     },
     {
       "number": 1130,
-      "name": "I Survived…",
+      "name": "I Survived\u2026",
       "genre": "Factual",
       "subgenre": "Survival / Disaster / Real World",
       "description": "General entertainment FAST channel with mixed or broad programming.",
@@ -6926,7 +6926,7 @@
     },
     {
       "number": 1215,
-      "name": "Pokémon",
+      "name": "Pok\u00e9mon",
       "genre": "Kids & Animation",
       "subgenre": "Kids / Family Animation",
       "description": "Kids, family and animation programming.",
@@ -7418,7 +7418,7 @@
     },
     {
       "number": 1305,
-      "name": "Remember the ‘80s",
+      "name": "Remember the \u201880s",
       "genre": "Music",
       "subgenre": "Hits / Pop / Decades",
       "description": "1980s music channel featuring hits and music videos from the decade.",
