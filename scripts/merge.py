@@ -127,6 +127,8 @@ def main():
     extras = []
     xml_channels = []
 
+    # Custom entries are authoritative overrides. apply_guide.py keeps the first
+    # matching logical channel name, so add custom before provider selections.
     missing_plex = add_selected("PLEX", plex_entries, SELECTED_PLEX, extras, xml_channels)
     missing_samsung = add_selected("SAMSUNG", samsung_entries, SELECTED_SAMSUNG, extras, xml_channels)
     missing_lg = add_selected("LG", lg_entries, SELECTED_LG, extras, xml_channels)
