@@ -9,8 +9,8 @@
     "epg": "https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz",
     "guide": "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
   },
-  "activeCount": 641,
-  "availableCount": 607,
+  "activeCount": 642,
+  "availableCount": 608,
   "channels": [
     {
       "number": 100,
@@ -542,7 +542,7 @@
     },
     {
       "number": 220,
-      "name": "TOP BAR\u00c7A",
+      "name": "TOP BARÇA",
       "genre": "Sport",
       "subgenre": "Football",
       "description": "Football FAST channel focused on club, league or competition programming.",
@@ -1450,6 +1450,18 @@
       "available": true,
       "streamUrl": "https://a-cdn.klowdtv.com/live2/lsn_720p/playlist.m3u8",
       "tvgId": "LacrosseTV.us",
+      "logoUrl": null
+    },
+    {
+      "number": 297,
+      "name": "Wrestling Central",
+      "genre": "Sport",
+      "subgenre": "Wrestling & Combat",
+      "description": "24/7 NWA and WOW Wrestling Central FAST channel; Roku channel 208 source under Australian device test.",
+      "epg": "Full",
+      "available": true,
+      "streamUrl": "https://jmp2.uk/rok-439096119777e0f33894343b551bece4.m3u8",
+      "tvgId": "439096119777e0f33894343b551bece4",
       "logoUrl": null
     },
     {
@@ -6446,7 +6458,7 @@
     },
     {
       "number": 1130,
-      "name": "I Survived\u2026",
+      "name": "I Survived…",
       "genre": "Factual",
       "subgenre": "Survival / Disaster / Real World",
       "description": "General entertainment FAST channel with mixed or broad programming.",
@@ -6926,7 +6938,7 @@
     },
     {
       "number": 1215,
-      "name": "Pok\u00e9mon",
+      "name": "Pokémon",
       "genre": "Kids & Animation",
       "subgenre": "Kids / Family Animation",
       "description": "Kids, family and animation programming.",
@@ -7418,7 +7430,7 @@
     },
     {
       "number": 1305,
-      "name": "Remember the \u201880s",
+      "name": "Remember the ‘80s",
       "genre": "Music",
       "subgenre": "Hits / Pop / Decades",
       "description": "1980s music channel featuring hits and music videos from the decade.",
