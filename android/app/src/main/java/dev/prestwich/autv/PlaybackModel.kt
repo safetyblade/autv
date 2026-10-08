@@ -23,6 +23,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         guideCache = FileGuideCache(java.io.File(application.filesDir, "channel-guide-v1.json")),
         playlistLoader = { GuideRepository().reconcile(it) })
     private val startup = GuideStartup(guideCache, guideLoader, playlistLoader)
+    private val rokuResolver = RokuChannelResolver()
     var startupState by mutableStateOf(GuideStartupState.LOADING); private set
     var refreshFailed by mutableStateOf(false); private set
     val holder = AuTvPlayer(application)
@@ -136,6 +137,31 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         playLocal(channel, retry)
     }
     private fun playLocal(channel: Channel, retry: Boolean = false) {
+        // Wrestling Central exists in Roku's live catalogue but is not exposed by the
+        // static Roku M3U mirror. Resolve its current playback URL when tuned.
+        if (channel.number == 297) {
+            buffering = true
+            viewModelScope.launch {
+                try {
+                    val resolved = withContext(Dispatchers.IO) {
+                        rokuResolver.resolve(channel.tvgId ?: "439096119777e0f33894343b551bece4")
+                    }
+                    if (selected?.number != channel.number) return@launch
+                    failed.remove(channel.number)
+                    holder.play(resolved, channel.number)
+                    if (!foreground) player.pause()
+                } catch (error: Exception) {
+                    if (error is CancellationException) throw error
+                    if (selected?.number == channel.number) {
+                        failed[channel.number] = "Playback failed"
+                        buffering = false
+                        notice = "Wrestling Central could not be resolved from Roku. Try again."
+                    }
+                }
+            }
+            return
+        }
+
         // Reuse only the same identity AND stream. A refreshed catalogue may replace a URL.
         if (!retry && player.currentMediaItem?.mediaId == channel.number.toString() &&
             player.currentMediaItem?.localConfiguration?.uri?.toString() == channel.streamUrl && player.playerError == null &&
