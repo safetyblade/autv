@@ -9,8 +9,8 @@
     "epg": "https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz",
     "guide": "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
   },
-  "activeCount": 640,
-  "availableCount": 606,
+  "activeCount": 642,
+  "availableCount": 607,
   "channels": [
     {
       "number": 100,
@@ -338,14 +338,14 @@
     },
     {
       "number": 203,
-      "name": "TNA Wrestling Samsung",
+      "name": "TNA Wrestling DistroTV",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
-      "description": "Second independent TNA FAST feed using direct Samsung CDN HLS; portable static source.",
+      "description": "Second independent TNA FAST feed using direct Amagi/DistroTV HLS; portable static source.",
       "epg": "Channel only",
       "available": true,
-      "streamUrl": "https://dpltey7dr5q2g.cloudfront.net/TNA_Wrestling.m3u8",
-      "tvgId": "TNAWrestlingChannel.us@SD",
+      "streamUrl": "https://amg00966-amg00966c1-distrotv-us-7706.playouts.now.amagi.tv/playlist/amg00966-anthem-tnawrestling-distrotvus/playlist.m3u8",
+      "tvgId": "tna-wrestling-channel",
       "logoUrl": null
     },
     {
@@ -1381,6 +1381,18 @@
       "logoUrl": "https://images.pluto.tv/channels/6972546cc62833833a187f50/colorLogoPNG_1770648792020.png"
     },
     {
+      "number": 290,
+      "name": "CombaTV",
+      "genre": "Sport",
+      "subgenre": "General Sports",
+      "description": "CombaTV restored using direct Ottera HLS network 1153 after Plex transport failure.",
+      "epg": "Full",
+      "available": true,
+      "streamUrl": "https://stream.ads.ottera.tv/playlist.m3u8?network_id=1153",
+      "tvgId": "CombaTV",
+      "logoUrl": null
+    },
+    {
       "number": 291,
       "name": "Cricket Gold",
       "genre": "Sport",
@@ -1438,6 +1450,18 @@
       "available": true,
       "streamUrl": "https://a-cdn.klowdtv.com/live2/lsn_720p/playlist.m3u8",
       "tvgId": "LacrosseTV.us",
+      "logoUrl": null
+    },
+    {
+      "number": 297,
+      "name": "Wrestling Central",
+      "genre": "Sport",
+      "subgenre": "Wrestling & Combat",
+      "description": "Isolated native-app Roku resolver test for official Wrestling Central channel 208; deliberately excluded from generic M3U.",
+      "epg": "Full",
+      "available": false,
+      "streamUrl": null,
+      "tvgId": "439096119777e0f33894343b551bece4",
       "logoUrl": null
     },
     {
