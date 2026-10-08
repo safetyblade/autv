@@ -329,24 +329,24 @@
       "name": "TNA Wrestling Channel",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
-      "description": "Original 24/7 TNA wrestling feed retained from Plex AU, with Roku as fallback.",
-      "epg": "Full",
+      "description": "TNA Wrestling FAST channel using Roku as primary test source; Pluto US retained as alternate.",
+      "epg": "Channel only",
       "available": true,
-      "streamUrl": "https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-606605549dbfca002d2ae873/?X-Plex-Token=BWbHfscW_JXA2zYa5kUs",
-      "tvgId": "697140a85d851f5e69414688-606605549dbfca002d2ae873",
-      "logoUrl": "https://provider-static.plex.tv/epg/cms/production/5d4f68c3-82af-45e7-b2c4-39aff69f3ce0/TNAWrestling_Plex_LogoforDarkBG_1500x1000_-_Alex_TushinghamRDX.png"
+      "streamUrl": "https://jmp2.uk/rok-6d8659091f745b8b864f438f06c56fae.m3u8",
+      "tvgId": "6d8659091f745b8b864f438f06c56fae",
+      "logoUrl": "https://images.sr.roku.com/idType/roku-trc/context/trc/id/6d8659091f745b8b864f438f06c56fae/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1709314978559_TNAWrestling_Roku_WhiteLogo_CenterAligned_260x147.png"
     },
     {
       "number": 203,
-      "name": "TNA Wrestling Pluto",
+      "name": "TNA Wrestling Samsung",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
-      "description": "Second TNA wrestling feed under device QA; Pluto Canada linear source replacing fixed-start Xumo feed.",
+      "description": "Second independent TNA Wrestling FAST channel using Samsung TV Plus US; Samsung Canada retained as alternate.",
       "epg": "Channel only",
       "available": true,
-      "streamUrl": "https://jmp2.uk/plu-62ea4dadce395f0007086df2.m3u8",
-      "tvgId": "62ea4dadce395f0007086df2",
-      "logoUrl": null
+      "streamUrl": "https://jmp2.uk/stvp-USBB1000001XP",
+      "tvgId": "USBB1000001XP",
+      "logoUrl": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB1000001XP_20250428T223407SQUARE.png"
     },
     {
       "number": 204,
@@ -542,7 +542,7 @@
     },
     {
       "number": 220,
-      "name": "TOP BAR\u00c7A",
+      "name": "TOP BARÇA",
       "genre": "Sport",
       "subgenre": "Football",
       "description": "Football FAST channel focused on club, league or competition programming.",
@@ -6446,7 +6446,7 @@
     },
     {
       "number": 1130,
-      "name": "I Survived\u2026",
+      "name": "I Survived…",
       "genre": "Factual",
       "subgenre": "Survival / Disaster / Real World",
       "description": "General entertainment FAST channel with mixed or broad programming.",
@@ -6926,7 +6926,7 @@
     },
     {
       "number": 1215,
-      "name": "Pok\u00e9mon",
+      "name": "Pokémon",
       "genre": "Kids & Animation",
       "subgenre": "Kids / Family Animation",
       "description": "Kids, family and animation programming.",
@@ -7418,7 +7418,7 @@
     },
     {
       "number": 1305,
-      "name": "Remember the \u201880s",
+      "name": "Remember the ‘80s",
       "genre": "Music",
       "subgenre": "Hits / Pop / Decades",
       "description": "1980s music channel featuring hits and music videos from the decade.",
