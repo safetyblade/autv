@@ -2566,11 +2566,22 @@
     <display-name>TNA Wrestling Roku</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/6d8659091f745b8b864f438f06c56fae/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1709314978559_TNAWrestling_Roku_WhiteLogo_CenterAligned_260x147.png" />
   </channel>
-  <channel id="USBB1000001XP">
+  <channel id="CABA3700006IC">
     <display-name>TNA Wrestling Samsung</display-name>
-    <icon src="https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB1000001XP_20250428T223407SQUARE.png" />
   </channel>
   <channel id="439096119777e0f33894343b551bece4">
     <display-name>Wrestling Central</display-name>
+  </channel>
+  <channel id="WomensSportsNetwork.us@SD">
+    <display-name>Women&apos;s Sports Network</display-name>
+  </channel>
+  <channel id="CricketGold.au@SD">
+    <display-name>Cricket Gold</display-name>
+  </channel>
+  <channel id="FUELTV.pt@AU">
+    <display-name>FUEL TV</display-name>
+  </channel>
+  <channel id="USBA300034DB">
+    <display-name>Pac-12 Insider</display-name>
   </channel>
 </tv>
