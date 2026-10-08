@@ -338,15 +338,15 @@
     },
     {
       "number": 203,
-      "name": "TNA Wrestling Xumo",
+      "name": "TNA Wrestling Pluto",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
-      "description": "Second TNA wrestling feed retained after device QA showed different/newer programme rotation from the original TNA channel.",
-      "epg": "Full",
+      "description": "Second TNA wrestling feed under device QA; Pluto Canada linear source replacing fixed-start Xumo feed.",
+      "epg": "Channel only",
       "available": true,
-      "streamUrl": "https://live-content.xumo.com/2073/content/XM0DSIUCO6UB8Y/23356260/master.m3u8",
-      "tvgId": "99991341",
-      "logoUrl": "https://image.xumo.com/v1/channels/channel/99991341/168x168.png?type=color_onBlack"
+      "streamUrl": "https://jmp2.uk/plu-62ea4dadce395f0007086df2.m3u8",
+      "tvgId": "62ea4dadce395f0007086df2",
+      "logoUrl": null
     },
     {
       "number": 204,
