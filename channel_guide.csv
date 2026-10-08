@@ -113,10 +113,10 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 287,Big 12 Studios,Sport,General Sports,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 288,FloHockey 24/7,Sport,General Sports,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 289,Willow Sports,Sport,General Sports,Full,Pluto,Plex AU,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-290,CombaTV,Sport,General Sports,Full,Plex AU,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
-291,Cricket Gold,Sport,General Sports,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-292,FUEL TV,Sport,General Sports,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-293,Pac-12 Insider,Sport,General Sports,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
+290,CombaTV,Sport,General Sports,Full,Plex AU,,Active,"Plex transport failed in October 2026; temporarily quarantined pending a verified non-Plex source."
+291,Cricket Gold,Sport,General Sports,Full,SOFAST AU,Plex AU,Active,"Cricket Gold direct SOFAST feed replacing failed Plex transport."
+292,FUEL TV,Sport,General Sports,Full,Samsung AU,Plex AU,Active,"FUEL TV direct Australian Amagi/Samsung feed replacing failed Plex transport."
+293,Pac-12 Insider,Sport,General Sports,Full,Samsung US,Plex AU,Active,"Pac-12 Insider Samsung TV Plus feed replacing failed Plex transport; channel remains active in 2026."
 294,Trace Stars,Sport,General Sports,Full,Curated,,Active,"Sports channel featuring athlete, competition and sports-entertainment programming."
 295,LacrosseTV,Sport,Niche & Competition,Channel only,Curated,,Active,"24/7 lacrosse channel with games, highlights and related programming."
 300,MGM Presents,Movies,Major / Broad Movies,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
