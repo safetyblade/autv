@@ -59,15 +59,15 @@ def active_rows(path):
             if number in seen:
                 raise ValueError(f"CSV line {reader.line_num}: duplicate channel number {number}")
             seen.add(number)
-            if row["Status"].casefold() == "active":
+            if row["Status"].casefold() in {"active", "app test"}:
                 rows.append(row)
     if not rows:
-        raise ValueError("No Active channels; refusing to publish an empty guide")
+        raise ValueError("No Active/App Test channels; refusing to publish an empty guide")
     return rows
 
 
 def build(guide=GUIDE, playlist=PLAYLIST, output=OUTPUT):
-    rows = active_rows(guide)  # Validate every row before touching any output.
+    rows = active_rows(guide)  # Native guide includes Active plus isolated App Test rows.
     streams = playlist_by_channel(playlist)
     channels = []
     for row in rows:
