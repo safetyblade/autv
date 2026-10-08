@@ -9,8 +9,8 @@
     "epg": "https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz",
     "guide": "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
   },
-  "activeCount": 643,
-  "availableCount": 609,
+  "activeCount": 641,
+  "availableCount": 607,
   "channels": [
     {
       "number": 100,
@@ -542,7 +542,7 @@
     },
     {
       "number": 220,
-      "name": "TOP BAR\u00c7A",
+      "name": "TOP BARÇA",
       "genre": "Sport",
       "subgenre": "Football",
       "description": "Football FAST channel focused on club, league or competition programming.",
@@ -6446,7 +6446,7 @@
     },
     {
       "number": 1130,
-      "name": "I Survived\u2026",
+      "name": "I Survived…",
       "genre": "Factual",
       "subgenre": "Survival / Disaster / Real World",
       "description": "General entertainment FAST channel with mixed or broad programming.",
@@ -6926,7 +6926,7 @@
     },
     {
       "number": 1215,
-      "name": "Pok\u00e9mon",
+      "name": "Pokémon",
       "genre": "Kids & Animation",
       "subgenre": "Kids / Family Animation",
       "description": "Kids, family and animation programming.",
@@ -7357,30 +7357,6 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/557e2a37-20f0-4e1f-8dc5-b99cbebaa33e/FilmRise_Unspeakable_Color_LogoRDX.png"
     },
     {
-      "number": 1251,
-      "name": "Dragon Ball",
-      "genre": "Kids & Animation",
-      "subgenre": "Anime",
-      "description": "Dedicated Dragon Ball FAST channel; regional Pluto feed under Australian device test.",
-      "epg": "Channel only",
-      "available": true,
-      "streamUrl": "https://jmp2.uk/plu-685a996c7c4f2ad40cb4f276.m3u8",
-      "tvgId": "685a996c7c4f2ad40cb4f276",
-      "logoUrl": "https://images.pluto.tv/channels/685a996c7c4f2ad40cb4f276/colorLogoPNG_1756876796024.png"
-    },
-    {
-      "number": 1252,
-      "name": "Dragon Ball Z",
-      "genre": "Kids & Animation",
-      "subgenre": "Anime",
-      "description": "Dedicated Dragon Ball Z FAST channel; regional Pluto feed under Australian device test.",
-      "epg": "Channel only",
-      "available": true,
-      "streamUrl": "https://jmp2.uk/plu-68e8fd7c3ede4398bc69af93.m3u8",
-      "tvgId": "68e8fd7c3ede4398bc69af93",
-      "logoUrl": "https://images.pluto.tv/channels/68e8fd7c3ede4398bc69af93/colorLogoPNG_1775550158845.png"
-    },
-    {
       "number": 1300,
       "name": "Stingray Greatest Hits",
       "genre": "Music",
@@ -7442,7 +7418,7 @@
     },
     {
       "number": 1305,
-      "name": "Remember the \u201880s",
+      "name": "Remember the ‘80s",
       "genre": "Music",
       "subgenre": "Hits / Pop / Decades",
       "description": "1980s music channel featuring hits and music videos from the decade.",
