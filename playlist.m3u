@@ -1155,10 +1155,6 @@ https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-68e0388d8bbd
 https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-5f91c4ea96a391002df9a664/?X-Plex-Token=BWbHfscW_JXA2zYa5kUs
 #EXTINF:-1 tvg-chno="1250" tvg-id="697140a85d851f5e69414688-6674baf1a9c715b93ca6ca90" tvg-name="Unspeakable" tvg-logo="https://provider-static.plex.tv/epg/cms/production/557e2a37-20f0-4e1f-8dc5-b99cbebaa33e/FilmRise_Unspeakable_Color_LogoRDX.png" group-title="Kids & Animation",Unspeakable
 https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-6674baf1a9c715b93ca6ca90/?X-Plex-Token=BWbHfscW_JXA2zYa5kUs
-#EXTINF:-1 tvg-chno="1251" tvg-id="685a996c7c4f2ad40cb4f276" tvg-name="Dragon Ball" tvg-logo="https://images.pluto.tv/channels/685a996c7c4f2ad40cb4f276/colorLogoPNG_1756876796024.png" group-title="Kids & Animation",Dragon Ball
-https://jmp2.uk/plu-685a996c7c4f2ad40cb4f276.m3u8
-#EXTINF:-1 tvg-chno="1252" tvg-id="68e8fd7c3ede4398bc69af93" tvg-name="Dragon Ball Z" tvg-logo="https://images.pluto.tv/channels/68e8fd7c3ede4398bc69af93/colorLogoPNG_1775550158845.png" group-title="Kids & Animation",Dragon Ball Z
-https://jmp2.uk/plu-68e8fd7c3ede4398bc69af93.m3u8
 #EXTINF:-1 tvg-chno="1300" tvg-id="697140a85d851f5e69414688-61aa97d4113e1e5137fd5325" tvg-name="Stingray Greatest Hits" tvg-logo="https://provider-static.plex.tv/epg/cms/production/40e1a688-aa45-4510-8110-53f3657e01d4/13212_SM_Plex_Logos_Greatest-Hits_1500x1000_V01-white_-_Olivia_bronfman.png" group-title="Music",Stingray Greatest Hits
 https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-61aa97d4113e1e5137fd5325/?X-Plex-Token=BWbHfscW_JXA2zYa5kUs
 #EXTINF:-1 tvg-chno="1301" tvg-id="autv.stingray-hit-list" tvg-name="Stingray Hit List" group-title="Music",Stingray Hit List
