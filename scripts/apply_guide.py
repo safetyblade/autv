@@ -34,11 +34,11 @@ def set_attr(extinf, key, value):
     pattern = rf'{re.escape(key)}="[^"]*"'
     replacement = f'{key}="{value}"'
     if re.search(pattern, extinf):
-        return re.sub(pattern, replacement, extinf)
+        return re.sub(pattern, lambda _: replacement, extinf)
     return extinf.replace("#EXTINF:-1", f'#EXTINF:-1 {replacement}', 1)
 
 def set_name(extinf, name):
-    return re.sub(r",(.*)$", f",{name}", extinf)
+    return re.sub(r",(.*)$", lambda _: f",{name}", extinf)
 
 def canonical(value):
     value = unicodedata.normalize("NFKD", value or "").encode("ascii", "ignore").decode()

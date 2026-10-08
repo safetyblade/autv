@@ -1,0 +1,4 @@
+## 2025-05-18 - Python re.sub Replacement Injection and Escape Sequences
+**Vulnerability:** Unsanitized user/CSV string values passed as the `replacement` argument in Python's `re.sub(pattern, replacement, string)` process backslash escape sequences (e.g. `\1`, `\g<name>`). When channel metadata or names contain backslashes or group references, `re.sub` raises `re.error: bad escape` or injects captured groups into the output.
+**Learning:** Python's `re.sub()` treats non-callable replacement strings as regex template strings, interpreting backslash sequences as group references rather than literal characters.
+**Prevention:** Always pass a callable (such as `lambda _: replacement` or `lambda m: replacement`) as the replacement argument to `re.sub()` when substituting dynamic or external string values.
