@@ -298,7 +298,7 @@ internal fun AuTvScreen(
                                                 modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).focusRequester(searchFocus)
                                                     .focusProperties { down = categoryFocus; right = closeFocus }.testTag("guide-search"),
                                                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), keyboardActions = KeyboardActions(onSearch = { keyboard?.hide() }),
-                                                trailingIcon = { if (query.isNotEmpty()) TextButton(onClick = { query = ""; committedQuery = ""; wake() }) { Text("Clear") } }, shape = RoundedCornerShape(12.dp))
+                                                trailingIcon = { if (query.isNotEmpty()) TextButton(onClick = { query = ""; committedQuery = ""; wake() }, modifier = Modifier.semantics { contentDescription = "Clear search query" }) { Text("Clear") } }, shape = RoundedCornerShape(12.dp))
                                             LazyRow(state = categoryState, horizontalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.padding(vertical = if (compact) 0.dp else 4.dp).testTag("guide-categories")) {
                                                 items(GuideBrowse.categories) { genre ->
                                                     var focused by remember { mutableStateOf(false) }
