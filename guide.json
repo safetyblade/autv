@@ -341,12 +341,12 @@
       "name": "TNA Wrestling Samsung",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
-      "description": "Second independent TNA Wrestling FAST channel using Samsung TV Plus US; Samsung Canada retained as alternate.",
+      "description": "Second independent TNA Wrestling FAST channel; Samsung Canada is the current device test after Samsung US failed.",
       "epg": "Channel only",
       "available": true,
-      "streamUrl": "https://jmp2.uk/stvp-USBB1000001XP",
-      "tvgId": "USBB1000001XP",
-      "logoUrl": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB1000001XP_20250428T223407SQUARE.png"
+      "streamUrl": "https://jmp2.uk/stvp-CABA3700006IC",
+      "tvgId": "CABA3700006IC",
+      "logoUrl": null
     },
     {
       "number": 204,
@@ -542,7 +542,7 @@
     },
     {
       "number": 220,
-      "name": "TOP BAR\u00c7A",
+      "name": "TOP BARÇA",
       "genre": "Sport",
       "subgenre": "Football",
       "description": "Football FAST channel focused on club, league or competition programming.",
@@ -1169,22 +1169,22 @@
       "name": "Women's Sports Network",
       "genre": "Sport",
       "subgenre": "Niche & Competition",
-      "description": "Sports FAST channel featuring live events, archive coverage, highlights or sports programming.",
+      "description": "Women's Sports Network FAST channel; direct Tubi HLS is primary after the Plex tokenised feed failed.",
       "epg": "Full",
       "available": true,
-      "streamUrl": "https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-630fa9e577ec3866def38fa2/?X-Plex-Token=x5PLFqsmbZuM4bHPcoBN",
-      "tvgId": "697140a85d851f5e69414688-630fa9e577ec3866def38fa2",
-      "logoUrl": "https://provider-static.plex.tv/epg/cms/production/5c5587dd-f93b-42db-b0dc-6b7a78801c3d/WSNLogoColor_1500x1000.png"
+      "streamUrl": "https://aegis-cloudfront-1.tubi.video/e974981b-bbcd-42a3-a6c1-6c25e14f10bd/playlist.m3u8",
+      "tvgId": "WomensSportsNetwork.us@SD",
+      "logoUrl": null
     },
     {
       "number": 273,
       "name": "SWAC TV",
       "genre": "Sport",
       "subgenre": "Niche & Competition",
-      "description": "General entertainment FAST channel with mixed or broad programming.",
+      "description": "Current SWAC TV FAST channel; previous Plex token failed. Re-source in progress across current FAST distributors.",
       "epg": "Full",
-      "available": true,
-      "streamUrl": "https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-6a9512a7f534d4312a699c22/?X-Plex-Token=x5PLFqsmbZuM4bHPcoBN",
+      "available": false,
+      "streamUrl": null,
       "tvgId": "697140a85d851f5e69414688-6a9512a7f534d4312a699c22",
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/45a49345-6902-4cf0-8b4b-d6c6fa73d191/SWAC_WHT_LETTERSLogo.png"
     },
@@ -6458,7 +6458,7 @@
     },
     {
       "number": 1130,
-      "name": "I Survived\u2026",
+      "name": "I Survived…",
       "genre": "Factual",
       "subgenre": "Survival / Disaster / Real World",
       "description": "General entertainment FAST channel with mixed or broad programming.",
@@ -6938,7 +6938,7 @@
     },
     {
       "number": 1215,
-      "name": "Pok\u00e9mon",
+      "name": "Pokémon",
       "genre": "Kids & Animation",
       "subgenre": "Kids / Family Animation",
       "description": "Kids, family and animation programming.",
@@ -7430,7 +7430,7 @@
     },
     {
       "number": 1305,
-      "name": "Remember the \u201880s",
+      "name": "Remember the ‘80s",
       "genre": "Music",
       "subgenre": "Hits / Pop / Decades",
       "description": "1980s music channel featuring hits and music videos from the decade.",
