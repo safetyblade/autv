@@ -1979,6 +1979,10 @@
     <display-name>Haunt TV</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/285f3ba210e8561fa5261af0871ace90/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1659563088420_HauntTVLogo_260x147_copy.png" />
   </channel>
+  <channel id="856fca464da0544784204ba8f6161dac">
+    <display-name>PBS Antiques Roadshow</display-name>
+    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/856fca464da0544784204ba8f6161dac/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1772722216448_260x147_CenterAligned.png" />
+  </channel>
   <channel id="fac7a914e241bef68c80c2f6e549458e">
     <display-name>ALF</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/fac7a914e241bef68c80c2f6e549458e/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1786973976928_alf_logo_hud.png" />
@@ -2022,10 +2026,6 @@
   <channel id="34e2d8f442ab5fa3aed29436c2f8ed63">
     <display-name>Shades of Black</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/34e2d8f442ab5fa3aed29436c2f8ed63/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1665448180798_ShadesOfBlack_Logo_Roku_EFEF_260x147_%25281%2529.png" />
-  </channel>
-  <channel id="223627443ebe5007b1b9461cc1ea297e">
-    <display-name>Life with Derek</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/223627443ebe5007b1b9461cc1ea297e/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1788370831477_US_ROKU_LIFEWITHDEREK_INFOHUD_260x147.png" />
   </channel>
   <channel id="e9d183acab06314b2bcddbb7ed391e70">
     <display-name>Candyjar</display-name>
@@ -2569,5 +2569,8 @@
   <channel id="USBB1000001XP">
     <display-name>TNA Wrestling Samsung</display-name>
     <icon src="https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBB1000001XP_20250428T223407SQUARE.png" />
+  </channel>
+  <channel id="439096119777e0f33894343b551bece4">
+    <display-name>Wrestling Central</display-name>
   </channel>
 </tv>
