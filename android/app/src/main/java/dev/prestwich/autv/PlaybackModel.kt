@@ -23,6 +23,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         guideCache = FileGuideCache(java.io.File(application.filesDir, "channel-guide-v1.json")),
         playlistLoader = { GuideRepository().reconcile(it) })
     private val startup = GuideStartup(guideCache, guideLoader, playlistLoader)
+    private val rokuResolver = RokuChannelResolver()
     var startupState by mutableStateOf(GuideStartupState.LOADING); private set
     var refreshFailed by mutableStateOf(false); private set
     val holder = AuTvPlayer(application)
@@ -99,7 +100,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         } else if (previous != null) {
             val refreshed = previous.tvgId?.let { id -> loaded.channels.singleOrNull { it.tvgId == id } }
                 ?: loaded.channels.singleOrNull { it.number == previous.number && it.name == previous.name }
-            if (refreshed == null || refreshed.streamUrl.isNullOrBlank()) {
+            if (refreshed == null || (refreshed.streamUrl.isNullOrBlank() && refreshed.number != 297)) {
                 selected = refreshed
                 player.stop(); player.clearMediaItems(); buffering = false; guideOpen = true
                 notice = "That channel is no longer available. Choose another channel."
@@ -126,6 +127,14 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         val retry = failed.remove(channel.number) != null
         selected = channel
         preferences.edit().putInt("channel", channel.number).apply()
+
+        // Channel 297 is an isolated native-only resolver experiment. Keep it out
+        // of Cast and out of the generic playlist path so no other channel changes.
+        if (channel.number == 297) {
+            playLocal(channel, retry)
+            return
+        }
+
         if (castSender.connected) {
             // Same selection path for guide, number/deep link and CH keys. Do not start the
             // new channel locally while the receiver is already responsible for playback.
@@ -136,6 +145,29 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         playLocal(channel, retry)
     }
     private fun playLocal(channel: Channel, retry: Boolean = false) {
+        if (channel.number == 297) {
+            buffering = true
+            viewModelScope.launch {
+                try {
+                    val resolved = withContext(Dispatchers.IO) {
+                        rokuResolver.resolve(channel.tvgId ?: "439096119777e0f33894343b551bece4")
+                    }
+                    if (selected?.number != 297) return@launch
+                    failed.remove(297)
+                    holder.play(resolved, 297)
+                    if (!foreground) player.pause()
+                } catch (error: Exception) {
+                    if (error is CancellationException) throw error
+                    if (selected?.number == 297) {
+                        failed[297] = "Playback failed"
+                        buffering = false
+                        notice = "Wrestling Central Roku test failed to resolve. Other channels are unaffected."
+                    }
+                }
+            }
+            return
+        }
+
         // Reuse only the same identity AND stream. A refreshed catalogue may replace a URL.
         if (!retry && player.currentMediaItem?.mediaId == channel.number.toString() &&
             player.currentMediaItem?.localConfiguration?.uri?.toString() == channel.streamUrl && player.playerError == null &&
