@@ -2566,11 +2566,8 @@
     <display-name>TNA Wrestling Roku</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/6d8659091f745b8b864f438f06c56fae/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1709314978559_TNAWrestling_Roku_WhiteLogo_CenterAligned_260x147.png" />
   </channel>
-  <channel id="CABA3700006IC">
-    <display-name>TNA Wrestling Samsung</display-name>
-  </channel>
-  <channel id="439096119777e0f33894343b551bece4">
-    <display-name>Wrestling Central</display-name>
+  <channel id="tna-wrestling-channel">
+    <display-name>TNA Wrestling DistroTV</display-name>
   </channel>
   <channel id="WomensSportsNetwork.us@SD">
     <display-name>Women&apos;s Sports Network</display-name>
@@ -2583,5 +2580,11 @@
   </channel>
   <channel id="USBA300034DB">
     <display-name>Pac-12 Insider</display-name>
+  </channel>
+  <channel id="2194">
+    <display-name>SWAC TV</display-name>
+  </channel>
+  <channel id="CombaTV">
+    <display-name>CombaTV</display-name>
   </channel>
 </tv>
