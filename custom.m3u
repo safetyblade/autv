@@ -204,8 +204,8 @@ https://aka-live1050.delivery.roku.com/34b065a4-682e-4e46-97f1-5c9a26aab12a/t2-o
 #EXTINF:-1 tvg-id="6d8659091f745b8b864f438f06c56fae" tvg-name="TNA Wrestling Roku" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/6d8659091f745b8b864f438f06c56fae/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1709314978559_TNAWrestling_Roku_WhiteLogo_CenterAligned_260x147.png" group-title="Sport",TNA Wrestling Channel
 https://jmp2.uk/rok-6d8659091f745b8b864f438f06c56fae.m3u8
 
-#EXTINF:-1 tvg-id="CABA3700006IC" tvg-name="TNA Wrestling Samsung" group-title="Sport",TNA Wrestling Samsung
-https://jmp2.uk/stvp-CABA3700006IC
+#EXTINF:-1 tvg-id="TNAWrestlingChannel.us@SD" tvg-name="TNA Wrestling Channel" group-title="Sport",TNA Wrestling Channel
+https://dpltey7dr5q2g.cloudfront.net/TNA_Wrestling.m3u8
 
 # ---- Wrestling Central Roku trial ----
 #EXTINF:-1 tvg-id="439096119777e0f33894343b551bece4" tvg-name="Wrestling Central" group-title="Sport",Wrestling Central
@@ -224,3 +224,7 @@ https://amg01074-fueltv-fueltvau-samsungau-g09kq.amagi.tv/playlist/amg01074-fuel
 
 #EXTINF:-1 tvg-id="USBA300034DB" tvg-name="Pac-12 Insider" group-title="Sport",Pac-12 Insider
 https://jmp2.uk/stvp-USBA300034DB
+
+# ---- SWAC TV direct portable feed ----
+#EXTINF:-1 tvg-id="2194" tvg-name="SWAC TV" group-title="Sport",SWAC TV
+https://wurltripleb.global.transmit.live/hls/6aa9c16ffbc6fbb2f59d5455/v1/eleven_swactv_2/sportstribal_eu/latest/main/hls/swacbbb.m3u8?ads.wurl_channel=1360&ads.wurl_name=SWACTV&ads.channelname=SWACTV&ads.content_genre=Basketball,Football,Sport&ads.ic=IAB17,IAB17-12,IAB17-26&ads.rating=PG-13&ads.language=US&ads.coppa=0&ads.content_livestream=1&ads.us_privacy=1NYN&ads.gdpr=0&ads.consent=0&ads.app_name=Free%20Live%20Sports&ads.app_bundle=freelivesports.tv&ads.app_store_url=&ads.ifa_type=dpid&ads.device_id=5d01d64ac5b0026957052f0330129fc6&ads.dnt=1
