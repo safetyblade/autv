@@ -204,12 +204,9 @@ https://aka-live1050.delivery.roku.com/34b065a4-682e-4e46-97f1-5c9a26aab12a/t2-o
 #EXTINF:-1 tvg-id="6d8659091f745b8b864f438f06c56fae" tvg-name="TNA Wrestling Roku" tvg-logo="https://images.sr.roku.com/idType/roku-trc/context/trc/id/6d8659091f745b8b864f438f06c56fae/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1709314978559_TNAWrestling_Roku_WhiteLogo_CenterAligned_260x147.png" group-title="Sport",TNA Wrestling Channel
 https://jmp2.uk/rok-6d8659091f745b8b864f438f06c56fae.m3u8
 
-#EXTINF:-1 tvg-id="TNAWrestlingChannel.us@SD" tvg-name="TNA Wrestling Channel" group-title="Sport",TNA Wrestling Channel
+#EXTINF:-1 tvg-id="TNAWrestlingChannel.us@SD" tvg-name="TNA Wrestling Samsung" group-title="Sport",TNA Wrestling Samsung
 https://dpltey7dr5q2g.cloudfront.net/TNA_Wrestling.m3u8
 
-# ---- Wrestling Central Roku trial ----
-#EXTINF:-1 tvg-id="439096119777e0f33894343b551bece4" tvg-name="Wrestling Central" group-title="Sport",Wrestling Central
-https://jmp2.uk/rok-439096119777e0f33894343b551bece4.m3u8
 
 # ---- Women's Sports Network direct fallback ----
 #EXTINF:-1 tvg-id="WomensSportsNetwork.us@SD" tvg-name="Women's Sports Network" group-title="Sport",Women's Sports Network
