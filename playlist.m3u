@@ -51,8 +51,8 @@ https://live-manifest.production-public.tubi.io/live/512cbe42-c22e-40c8-90e3-7d6
 https://aka-live1050.delivery.roku.com/34b065a4-682e-4e46-97f1-5c9a26aab12a/t2-origin/out/v1/live.m3u8
 #EXTINF:-1 tvg-chno="202" tvg-id="697140a85d851f5e69414688-606605549dbfca002d2ae873" tvg-name="TNA Wrestling Channel" tvg-logo="https://provider-static.plex.tv/epg/cms/production/5d4f68c3-82af-45e7-b2c4-39aff69f3ce0/TNAWrestling_Plex_LogoforDarkBG_1500x1000_-_Alex_TushinghamRDX.png" group-title="Sport",TNA Wrestling Channel
 https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-606605549dbfca002d2ae873/?X-Plex-Token=x5PLFqsmbZuM4bHPcoBN
-#EXTINF:-1 tvg-chno="203" tvg-id="TNAWrestlingChannel.us@SD" tvg-name="TNA Wrestling Samsung" group-title="Sport",TNA Wrestling Samsung
-https://dpltey7dr5q2g.cloudfront.net/TNA_Wrestling.m3u8
+#EXTINF:-1 tvg-chno="203" tvg-id="tna-wrestling-channel" tvg-name="TNA Wrestling DistroTV" group-title="Sport",TNA Wrestling DistroTV
+https://amg00966-amg00966c1-distrotv-us-7706.playouts.now.amagi.tv/playlist/amg00966-anthem-tnawrestling-distrotvus/playlist.m3u8
 #EXTINF:-1 tvg-chno="204" tvg-id="697140a85d851f5e69414688-66ccac69fdf9cd3a568ef135" tvg-name="UFC" tvg-logo="https://provider-static.plex.tv/epg/cms/production/c2e95493-6f98-4a65-be46-d17200ea068a/UFC_logo_WHT_1500x1000.png" group-title="Sport",UFC
 https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-66ccac69fdf9cd3a568ef135/?X-Plex-Token=x5PLFqsmbZuM4bHPcoBN
 #EXTINF:-1 tvg-chno="205" tvg-id="697140a85d851f5e69414688-643f0ecd76de2b4015ae6c01" tvg-name="PFL MMA" tvg-logo="https://provider-static.plex.tv/epg/cms/production/96dd0531-b500-4bd4-93ca-763cbf46defe/1500x1000_PFL_SHIELD_DARK_BG_-_Allie_Dinsmore.png" group-title="Sport",PFL MMA
@@ -1211,3 +1211,6 @@ https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-62fbf52c1567
 https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-654eb862dde2222e8ba551f1/?X-Plex-Token=x5PLFqsmbZuM4bHPcoBN
 #EXTINF:-1 tvg-chno="1328" tvg-id="697140a85d851f5e69414688-66fd3e25216b603e031725fe" tvg-name="ZenLIFE by Stingray" tvg-logo="https://provider-static.plex.tv/epg/cms/production/6e254786-1243-462b-bf6c-75d21b68582d/10423_ZL_Plex_Launch-assets_Channel-Logo_1500x1000_V01-White_-_Sacha_Portaria.png" group-title="Music",ZenLIFE by Stingray
 https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-66fd3e25216b603e031725fe/?X-Plex-Token=x5PLFqsmbZuM4bHPcoBN
+
+#EXTINF:-1 tvg-chno="290" tvg-id="CombaTV" tvg-name="CombaTV" group-title="Sport",CombaTV
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=1153
