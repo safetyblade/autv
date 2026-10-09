@@ -200,13 +200,20 @@ internal fun AuTvScreen(
                         val wasHidden = !chrome
                         wake()
                         when {
-                            isTv && !guideOpen && event.nativeKeyEvent.keyCode in KeyEvent.KEYCODE_0..KeyEvent.KEYCODE_9 -> {
-                                digits = (digits + (event.nativeKeyEvent.keyCode - KeyEvent.KEYCODE_0)).takeLast(4); true
+                            isTv && event.nativeKeyEvent.keyCode in KeyEvent.KEYCODE_0..KeyEvent.KEYCODE_9 -> {
+                                digits = (digits + (event.nativeKeyEvent.keyCode - KeyEvent.KEYCODE_0)).takeLast(4)
+                                true
                             }
                             digits.isNotEmpty() && event.nativeKeyEvent.keyCode in listOf(KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER) -> {
                                 digits.toIntOrNull()?.let(onTuneNumber); digits = ""; wakeKey = event.nativeKeyEvent.keyCode; true
                             }
                             else -> when (event.nativeKeyEvent.keyCode) {
+                            KeyEvent.KEYCODE_DPAD_UP -> {
+                                if (guideOpen && isTv && focusedGuideNumber != null) {
+                                    searchFocus.requestFocus()
+                                    true
+                                } else false
+                            }
                             KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT -> {
                                 val focusedIndex = focusedGuideNumber?.let { number -> filtered.indexOfFirst { it.number == number } } ?: -1
                                 if (guideOpen && isTv && focusedIndex >= 0) {
@@ -292,7 +299,6 @@ internal fun AuTvScreen(
                                     val compact = landscape && !isTv
                                     val panelWidth = if (isTv) maxWidth * 0.88f else if (compact) maxWidth * 0.54f else (maxWidth * 0.92f).coerceAtMost(680.dp)
                                     val firstPlayable = filtered.firstOrNull { !it.streamUrl.isNullOrBlank() }?.number
-                                    val firstVisibleGuideNumber = filtered.getOrNull(listState.firstVisibleItemIndex)?.number
                                     // Lazy rows outside the viewport have no attached focus target.
                                     val selectedVisible = listState.layoutInfo.visibleItemsInfo.any { it.key == selected?.number }
                                     val rowTarget = if (selectedVisible && !selected?.streamUrl.isNullOrBlank() || firstPlayable == selected?.number && firstPlayable != null) selectedFocus
@@ -332,10 +338,7 @@ internal fun AuTvScreen(
                                                     var focused by remember { mutableStateOf(false) }
                                                     FilterChip(selected = category == genre, onClick = { chooseCategory(genre) }, label = { Text(genre, style = MaterialTheme.typography.labelMedium) },
                                                         modifier = Modifier.then(if (category == genre) Modifier.focusRequester(categoryFocus) else Modifier)
-                                                            .focusProperties { down = rowTarget; up = searchFocus }.onFocusChanged {
-            focused = it.isFocused
-            if (it.isFocused) onFocused(channel)
-        }
+                                                            .focusProperties { down = rowTarget; up = searchFocus }.onFocusChanged { focused = it.isFocused }
                                                             .then(if (focused && isTv) Modifier.border(3.dp, WarmWhite, RoundedCornerShape(8.dp)) else Modifier)
                                                             .height(if (compact) 32.dp else 40.dp).testTag("category-$genre"))
                                                 }
@@ -352,8 +355,9 @@ internal fun AuTvScreen(
                                                                     else if (channel.number == firstPlayable) Modifier.focusRequester(firstRowFocus) else Modifier)
                                                                 .focusProperties {
                                                                     if (isTv) {
-                                                                        left = FocusRequester.Cancel; right = FocusRequester.Cancel
-                                                                        if (channel.number == firstVisibleGuideNumber || channel.number == firstPlayable) up = categoryFocus
+                                                                        left = FocusRequester.Cancel
+                                                                        right = FocusRequester.Cancel
+                                                                        up = searchFocus
                                                                     }
                                                                 }, compact = compact, tv = isTv,
                                                             onFocused = { focusedGuideNumber = it.number }) { wake(); onSelect(it) }
@@ -383,7 +387,10 @@ private fun ChannelRow(channel: Channel, selected: Boolean, failed: String?, sch
     compact: Boolean = false, tv: Boolean = false, onFocused: (Channel) -> Unit = {}, onSelect: (Channel) -> Unit) {
     var focused by remember { mutableStateOf(false) }
     val known = !channel.streamUrl.isNullOrBlank()
-    Row(modifier.fillMaxWidth().focusProperties { canFocus = known }.onFocusChanged { focused = it.isFocused }
+    Row(modifier.fillMaxWidth().focusProperties { canFocus = known }.onFocusChanged {
+            focused = it.isFocused
+            if (it.isFocused) onFocused(channel)
+        }
         .semantics { this.selected = selected }
         .background(if (focused && tv) Silver.copy(alpha = 0.22f) else if (selected || focused) Color.White.copy(alpha = 0.075f) else Color.Black.copy(alpha = 0.18f), RoundedCornerShape(12.dp))
         .border(if (focused && tv) 3.dp else if (focused) 2.dp else 1.dp, if (focused) WarmWhite else if (selected) Silver.copy(alpha = 0.55f) else Color.White.copy(alpha = 0.06f), RoundedCornerShape(12.dp))
