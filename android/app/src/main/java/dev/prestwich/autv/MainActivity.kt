@@ -8,6 +8,7 @@ import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.util.Rational
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.*
@@ -85,8 +86,14 @@ open class MainActivity : AppCompatActivity() {
         pipUi = isInPictureInPictureMode
         if (!isInPictureInPictureMode && !lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)) playback.pause()
     }
-    override fun onResume() { super.onResume(); pipUi = Build.VERSION.SDK_INT >= 26 && isInPictureInPictureMode; updatePipParams() }
+    override fun onResume() {
+        super.onResume()
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        pipUi = Build.VERSION.SDK_INT >= 26 && isInPictureInPictureMode
+        updatePipParams()
+    }
     override fun onStop() {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         if (Build.VERSION.SDK_INT < 26 || !isInPictureInPictureMode) playback.pause()
         super.onStop()
     }
