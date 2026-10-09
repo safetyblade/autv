@@ -1,3 +1,4 @@
+import copy
 from pathlib import Path
 import csv
 import gzip
@@ -107,7 +108,8 @@ for source in EPG_SOURCES:
             if elem.tag == "channel":
                 cid = elem.attrib.get("id", "")
                 if cid and cid not in source_channels:
-                    cloned = ET.fromstring(ET.tostring(elem, encoding="utf-8"))
+                    # Performance optimization: copy.deepcopy avoids expensive byte serialization/deserialization
+                    cloned = copy.deepcopy(elem)
                     source_channels[cid] = cloned
                     names = [
                         (node.text or "").strip()
@@ -122,8 +124,9 @@ for source in EPG_SOURCES:
             elif elem.tag == "programme":
                 cid = elem.attrib.get("channel", "")
                 if cid:
+                    # Performance optimization: copy.deepcopy avoids expensive byte serialization/deserialization
                     programmes_by_id.setdefault(cid, []).append(
-                        ET.fromstring(ET.tostring(elem, encoding="utf-8"))
+                        copy.deepcopy(elem)
                     )
                 elem.clear()
 
@@ -151,12 +154,13 @@ for target_id, target_name in playlist:
         missing.append((target_id, target_name))
         continue
 
-    channel = ET.fromstring(ET.tostring(source_channels[source_id], encoding="utf-8"))
+    # Performance optimization: copy.deepcopy avoids expensive byte serialization/deserialization
+    channel = copy.deepcopy(source_channels[source_id])
     channel.set("id", target_id)
     root.append(channel)
 
     for programme in programmes_by_id.get(source_id, []):
-        cloned = ET.fromstring(ET.tostring(programme, encoding="utf-8"))
+        cloned = copy.deepcopy(programme)
         cloned.set("channel", target_id)
         add_android_category(cloned, android_category)
         root.append(cloned)
