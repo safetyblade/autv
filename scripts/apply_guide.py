@@ -1,5 +1,6 @@
 from pathlib import Path
 import csv
+import functools
 import re
 import unicodedata
 
@@ -22,8 +23,9 @@ def parse_entries(text):
                     url = candidate
                     break
                 j += 1
-            name_match = re.search(r",(.*)$", line)
-            name = name_match.group(1).strip() if name_match else ""
+            # Optimization: Fast string search instead of re.search for channel display name
+            idx = line.rfind(",")
+            name = line[idx + 1:].strip() if idx != -1 else ""
             entries.append((name, line, url))
             i = j + 1
         else:
@@ -31,75 +33,86 @@ def parse_entries(text):
     return header, entries
 
 def set_attr(extinf, key, value):
-    pattern = rf'{re.escape(key)}="[^"]*"'
-    replacement = f'{key}="{value}"'
-    if re.search(pattern, extinf):
-        return re.sub(pattern, replacement, extinf)
-    return extinf.replace("#EXTINF:-1", f'#EXTINF:-1 {replacement}', 1)
+    # Optimization: Fast string search for key="value" attribute update avoiding regex overhead
+    marker = f'{key}="'
+    idx = extinf.find(marker)
+    if idx != -1:
+        val_start = idx + len(marker)
+        val_end = extinf.find('"', val_start)
+        if val_end != -1:
+            return extinf[:val_start] + str(value) + extinf[val_end:]
+    return extinf.replace("#EXTINF:-1", f'#EXTINF:-1 {key}="{value}"', 1)
 
 def set_name(extinf, name):
-    return re.sub(r",(.*)$", f",{name}", extinf)
+    # Optimization: Fast string search for setting display name after last comma
+    idx = extinf.rfind(",")
+    if idx != -1:
+        return extinf[:idx + 1] + name
+    return f"{extinf},{name}"
 
+@functools.lru_cache(maxsize=1024)
 def canonical(value):
+    # Optimization: Cache normalized strings to avoid redundant regex/unicode normalizations
     value = unicodedata.normalize("NFKD", value or "").encode("ascii", "ignore").decode()
     value = value.casefold().strip()
-    value = re.sub(r"^\\d+\\s+", "", value)
-    value = re.sub(r"\\s*\\((?:australia|au)\\)\\s*", " ", value)
-    value = re.sub(r"\\s+geo\\b", " ", value)
+    value = re.sub(r"^\d+\s+", "", value)
+    value = re.sub(r"\s*\((?:australia|au)\)\s*", " ", value)
+    value = re.sub(r"\s+geo\b", " ", value)
     value = value.replace("&", " and ")
     value = re.sub(r"[^a-z0-9]+", " ", value)
-    return re.sub(r"\\s+", " ", value).strip()
+    return re.sub(r"\s+", " ", value).strip()
 
-with GUIDE.open(newline="", encoding="utf-8-sig") as handle:
-    rows = list(csv.DictReader(handle))
+if __name__ == "__main__":
+    with GUIDE.open(newline="", encoding="utf-8-sig") as handle:
+        rows = list(csv.DictReader(handle))
 
-guide_all = {
-    canonical(row["Channel name"]): row
-    for row in rows
-    if row.get("Channel name")
-}
-guide = {
-    name: row
-    for name, row in guide_all.items()
-    if row.get("Status", "Active").strip().casefold() == "active"
-}
+    guide_all = {
+        canonical(row["Channel name"]): row
+        for row in rows
+        if row.get("Channel name")
+    }
+    guide = {
+        name: row
+        for name, row in guide_all.items()
+        if row.get("Status", "Active").strip().casefold() == "active"
+    }
 
-header, entries = parse_entries(PLAYLIST.read_text(encoding="utf-8-sig"))
-ranked = []
-missing = []
-seen_names = set()
+    header, entries = parse_entries(PLAYLIST.read_text(encoding="utf-8-sig"))
+    ranked = []
+    missing = []
+    seen_names = set()
 
-for position, (name, extinf, url) in enumerate(entries):
-    logical_name = canonical(name)
-    if logical_name in seen_names:
-        continue
-    seen_names.add(logical_name)
-    guide_row = guide_all.get(logical_name)
-    if guide_row and guide_row.get("Status", "Active").strip().casefold() != "active":
-        continue
-    row = guide.get(logical_name)
-    if row:
-        channel_no = int(row["Channel number"])
-        genre = row["Genre"].strip() or "General Entertainment"
-        display_name = row["Channel name"].strip()
-        extinf = set_attr(extinf, "tvg-chno", str(channel_no))
-        extinf = set_attr(extinf, "group-title", genre)
-        extinf = set_attr(extinf, "tvg-name", display_name)
-        extinf = set_name(extinf, display_name)
-        ranked.append((channel_no, position, extinf, url))
-    else:
-        missing.append(name)
-        continue
+    for position, (name, extinf, url) in enumerate(entries):
+        logical_name = canonical(name)
+        if logical_name in seen_names:
+            continue
+        seen_names.add(logical_name)
+        guide_row = guide_all.get(logical_name)
+        if guide_row and guide_row.get("Status", "Active").strip().casefold() != "active":
+            continue
+        row = guide.get(logical_name)
+        if row:
+            channel_no = int(row["Channel number"])
+            genre = row["Genre"].strip() or "General Entertainment"
+            display_name = row["Channel name"].strip()
+            extinf = set_attr(extinf, "tvg-chno", str(channel_no))
+            extinf = set_attr(extinf, "group-title", genre)
+            extinf = set_attr(extinf, "tvg-name", display_name)
+            extinf = set_name(extinf, display_name)
+            ranked.append((channel_no, position, extinf, url))
+        else:
+            missing.append(name)
+            continue
 
-ranked.sort(key=lambda item: (item[0], item[1]))
+    ranked.sort(key=lambda item: (item[0], item[1]))
 
-out = [header]
-for _, _, extinf, url in ranked:
-    out.extend([extinf, url])
+    out = [header]
+    for _, _, extinf, url in ranked:
+        out.extend([extinf, url])
 
-PLAYLIST.write_text("\n".join(out) + "\n", encoding="utf-8")
+    PLAYLIST.write_text("\n".join(out) + "\n", encoding="utf-8")
 
-print(f"Applied guide metadata to {len(entries) - len(missing)} channels")
-print(f"Guide-unmatched channels dropped: {len(missing)}")
-if missing:
-    print("Unmatched: " + " | ".join(missing))
+    print(f"Applied guide metadata to {len(entries) - len(missing)} channels")
+    print(f"Guide-unmatched channels dropped: {len(missing)}")
+    if missing:
+        print("Unmatched: " + " | ".join(missing))
