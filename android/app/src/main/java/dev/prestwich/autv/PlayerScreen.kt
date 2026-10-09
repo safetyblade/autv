@@ -90,6 +90,8 @@ internal fun AuTvScreen(
     val listState = rememberLazyListState()
     val categoryState = rememberLazyListState()
     val scope = rememberCoroutineScope()
+    var focusedGuideNumber by remember { mutableStateOf<Int?>(null) }
+    val guideRowFocus = remember { mutableMapOf<Int, FocusRequester>() }
     var category by rememberSaveable { mutableStateOf("All") }
     var query by rememberSaveable { mutableStateOf("") }
     var committedQuery by remember { mutableStateOf("") }
@@ -205,6 +207,22 @@ internal fun AuTvScreen(
                                 digits.toIntOrNull()?.let(onTuneNumber); digits = ""; wakeKey = event.nativeKeyEvent.keyCode; true
                             }
                             else -> when (event.nativeKeyEvent.keyCode) {
+                            KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT -> {
+                                val focusedIndex = focusedGuideNumber?.let { number -> filtered.indexOfFirst { it.number == number } } ?: -1
+                                if (guideOpen && isTv && focusedIndex >= 0) {
+                                    val delta = if (event.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) 10 else -10
+                                    val targetIndex = (focusedIndex + delta).coerceIn(0, filtered.lastIndex)
+                                    val target = filtered.getOrNull(targetIndex)
+                                    if (target != null) {
+                                        scope.launch {
+                                            listState.scrollToItem(targetIndex, 0)
+                                            withFrameNanos { }
+                                            guideRowFocus[target.number]?.requestFocus()
+                                        }
+                                    }
+                                    true
+                                } else false
+                            }
                             KeyEvent.KEYCODE_CHANNEL_UP -> { onNext(); true }
                             KeyEvent.KEYCODE_CHANNEL_DOWN -> { onPrevious(); true }
                             KeyEvent.KEYCODE_GUIDE, KeyEvent.KEYCODE_MENU -> { if (guideOpen) onCloseGuide() else onOpenGuide(); true }
@@ -274,6 +292,7 @@ internal fun AuTvScreen(
                                     val compact = landscape && !isTv
                                     val panelWidth = if (isTv) maxWidth * 0.88f else if (compact) maxWidth * 0.54f else (maxWidth * 0.92f).coerceAtMost(680.dp)
                                     val firstPlayable = filtered.firstOrNull { !it.streamUrl.isNullOrBlank() }?.number
+                                    val firstVisibleGuideNumber = filtered.getOrNull(listState.firstVisibleItemIndex)?.number
                                     // Lazy rows outside the viewport have no attached focus target.
                                     val selectedVisible = listState.layoutInfo.visibleItemsInfo.any { it.key == selected?.number }
                                     val rowTarget = if (selectedVisible && !selected?.streamUrl.isNullOrBlank() || firstPlayable == selected?.number && firstPlayable != null) selectedFocus
@@ -313,7 +332,10 @@ internal fun AuTvScreen(
                                                     var focused by remember { mutableStateOf(false) }
                                                     FilterChip(selected = category == genre, onClick = { chooseCategory(genre) }, label = { Text(genre, style = MaterialTheme.typography.labelMedium) },
                                                         modifier = Modifier.then(if (category == genre) Modifier.focusRequester(categoryFocus) else Modifier)
-                                                            .focusProperties { down = rowTarget; up = searchFocus }.onFocusChanged { focused = it.isFocused }
+                                                            .focusProperties { down = rowTarget; up = searchFocus }.onFocusChanged {
+            focused = it.isFocused
+            if (it.isFocused) onFocused(channel)
+        }
                                                             .then(if (focused && isTv) Modifier.border(3.dp, WarmWhite, RoundedCornerShape(8.dp)) else Modifier)
                                                             .height(if (compact) 32.dp else 40.dp).testTag("category-$genre"))
                                                 }
@@ -322,15 +344,19 @@ internal fun AuTvScreen(
                                                 if (filtered.isEmpty()) Text("No channels match your search.", color = Muted, modifier = Modifier.padding(12.dp))
                                                 LazyColumn(state = listState, verticalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.weight(1f).testTag("guide-list")) {
                                                     items(filtered, key = { it.number }) { channel ->
+                                                        val rowFocus = remember(channel.number) { FocusRequester() }
+                                                        guideRowFocus[channel.number] = rowFocus
                                                         ChannelRow(channel, selected?.number == channel.number, failed[channel.number], epg.at(channel, now), now,
-                                                            Modifier.then(if (channel.number == selected?.number) Modifier.focusRequester(selectedFocus)
-                                                                else if (channel.number == firstPlayable) Modifier.focusRequester(firstRowFocus) else Modifier)
+                                                            Modifier.focusRequester(rowFocus)
+                                                                .then(if (channel.number == selected?.number) Modifier.focusRequester(selectedFocus)
+                                                                    else if (channel.number == firstPlayable) Modifier.focusRequester(firstRowFocus) else Modifier)
                                                                 .focusProperties {
                                                                     if (isTv) {
                                                                         left = FocusRequester.Cancel; right = FocusRequester.Cancel
-                                                                        if (channel.number == firstPlayable) up = categoryFocus
+                                                                        if (channel.number == firstVisibleGuideNumber || channel.number == firstPlayable) up = categoryFocus
                                                                     }
-                                                                }, compact = compact, tv = isTv) { wake(); onSelect(it) }
+                                                                }, compact = compact, tv = isTv,
+                                                            onFocused = { focusedGuideNumber = it.number }) { wake(); onSelect(it) }
                                                     }
                                                 }
                                             } else if (loadError) { Text("The guide could not be loaded."); Button(onClick = onRetry) { Text("Retry") } }
@@ -354,7 +380,7 @@ internal fun AuTvScreen(
 
 @Composable
 private fun ChannelRow(channel: Channel, selected: Boolean, failed: String?, schedule: NowNext, now: Long, modifier: Modifier,
-    compact: Boolean = false, tv: Boolean = false, onSelect: (Channel) -> Unit) {
+    compact: Boolean = false, tv: Boolean = false, onFocused: (Channel) -> Unit = {}, onSelect: (Channel) -> Unit) {
     var focused by remember { mutableStateOf(false) }
     val known = !channel.streamUrl.isNullOrBlank()
     Row(modifier.fillMaxWidth().focusProperties { canFocus = known }.onFocusChanged { focused = it.isFocused }
