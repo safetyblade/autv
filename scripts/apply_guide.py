@@ -31,14 +31,18 @@ def parse_entries(text):
     return header, entries
 
 def set_attr(extinf, key, value):
+    # Sanitize value to prevent attribute breakout and line injection
+    safe_value = str(value).replace("\r", " ").replace("\n", " ").replace('"', "'")
     pattern = rf'{re.escape(key)}="[^"]*"'
-    replacement = f'{key}="{value}"'
     if re.search(pattern, extinf):
-        return re.sub(pattern, replacement, extinf)
-    return extinf.replace("#EXTINF:-1", f'#EXTINF:-1 {replacement}', 1)
+        # Use callable replacement to prevent regex backreference injection (e.g. \1)
+        return re.sub(pattern, lambda _: f'{key}="{safe_value}"', extinf)
+    return extinf.replace("#EXTINF:-1", f'#EXTINF:-1 {key}="{safe_value}"', 1)
 
 def set_name(extinf, name):
-    return re.sub(r",(.*)$", f",{name}", extinf)
+    # Sanitize name to prevent line injection and use callable replacement for backreference safety
+    safe_name = str(name).replace("\r", " ").replace("\n", " ")
+    return re.sub(r",(.*)$", lambda _: f",{safe_name}", extinf)
 
 def canonical(value):
     value = unicodedata.normalize("NFKD", value or "").encode("ascii", "ignore").decode()
