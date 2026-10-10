@@ -49,6 +49,18 @@ def set_name(extinf, name):
     if idx != -1:
         return extinf[:idx + 1] + name
     return f"{extinf},{name}"
+    # Sanitize value to prevent attribute breakout and line injection
+    safe_value = str(value).replace("\r", " ").replace("\n", " ").replace('"', "'")
+    pattern = rf'{re.escape(key)}="[^"]*"'
+    if re.search(pattern, extinf):
+        # Use callable replacement to prevent regex backreference injection (e.g. \1)
+        return re.sub(pattern, lambda _: f'{key}="{safe_value}"', extinf)
+    return extinf.replace("#EXTINF:-1", f'#EXTINF:-1 {key}="{safe_value}"', 1)
+
+def set_name(extinf, name):
+    # Sanitize name to prevent line injection and use callable replacement for backreference safety
+    safe_name = str(name).replace("\r", " ").replace("\n", " ")
+    return re.sub(r",(.*)$", lambda _: f",{safe_name}", extinf)
 
 @functools.lru_cache(maxsize=1024)
 def canonical(value):
