@@ -20,6 +20,7 @@ SELECTED_ROKU = Path("selected_roku_channels.txt")
 SELECTED_XUMO = Path("selected_xumo_channels.txt")
 SELECTED_TUBI = Path("selected_tubi_channels.txt")
 CUSTOM = Path("custom.m3u")
+DYNAMIC = Path("dynamic_sources.m3u")
 OUTPUT = Path("playlist.m3u")
 XMLTV = Path("curated.xml")
 EPG_URL = "https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz"
@@ -126,6 +127,15 @@ def main():
 
     extras = []
     xml_channels = []
+
+    # Health-checked rotating sources are generated fresh by the scheduled job.
+    # Add them first so their exact guide names win if another provider also
+    # exposes the same logical channel.
+    for name, extinf, url in parse_entries(read(DYNAMIC)):
+        m3u, xml = normalise(name, extinf, url)
+        extras.append(m3u)
+        xml_channels.append(xml)
+        print(f"ADDED DYNAMIC: {name}")
 
     # Custom entries are authoritative overrides. apply_guide.py keeps the first
     # matching logical channel name, so add custom before provider selections.
