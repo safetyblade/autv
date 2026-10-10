@@ -7,6 +7,7 @@ generic IPTV client consumes the same result.
 """
 from pathlib import Path
 import urllib.request
+import urllib.parse
 
 OUTPUT = Path("dynamic_sources.m3u")
 TIMEOUT = 12
@@ -19,7 +20,8 @@ TNA_203 = [
     ("Roku", "https://jmp2.uk/rok-6d8659091f745b8b864f438f06c56fae.m3u8"),
 ]
 
-def valid_hls(url: str) -> bool:
+def read_url(url: str, max_bytes: int = 65536) -> tuple[str, bytes]:
+    """Fetch bounded data; return final URL so relative HLS references resolve."""
     request = urllib.request.Request(
         url,
         headers={
@@ -27,14 +29,45 @@ def valid_hls(url: str) -> bool:
             "Accept": "application/vnd.apple.mpegurl, application/x-mpegURL, */*",
         },
     )
+    with urllib.request.urlopen(request, timeout=TIMEOUT) as response:
+        if not 200 <= response.status < 300:
+            raise ValueError(f"HTTP {response.status}")
+        data = response.read(max_bytes + 1)
+        if len(data) > max_bytes:
+            raise ValueError("Response exceeds inspection limit")
+        return response.url, data
+
+
+def valid_hls(url: str) -> bool:
+    """Verify master, media playlist and a non-empty segment, not just #EXTM3U."""
     try:
-        with urllib.request.urlopen(request, timeout=TIMEOUT) as response:
-            if response.status < 200 or response.status >= 300:
-                return False
-            body = response.read(8192).decode("utf-8", errors="ignore")
-            return "#EXTM3U" in body[:2048]
+        current = url
+        for _ in range(3):
+            resolved, body = read_url(current)
+            manifest = body.decode("utf-8-sig", errors="replace")
+            if not manifest.lstrip().startswith("#EXTM3U"):
+                raise ValueError("Not an HLS manifest")
+            lines = [line.strip() for line in manifest.splitlines() if line.strip()]
+            if any(line.startswith("#EXT-X-STREAM-INF:") for line in lines):
+                index = next(i for i, line in enumerate(lines) if line.startswith("#EXT-X-STREAM-INF:"))
+                if index + 1 >= len(lines) or lines[index + 1].startswith("#"):
+                    raise ValueError("Master has no variant URI")
+                current = urllib.parse.urljoin(resolved, lines[index + 1])
+                continue
+            if not any(line.startswith("#EXTINF:") for line in lines):
+                raise ValueError("Media playlist has no segments")
+            segments = [line for line in lines if not line.startswith("#")]
+            if not segments:
+                raise ValueError("No media segment URL")
+            segment_url = urllib.parse.urljoin(resolved, segments[0])
+            # A bounded sample checks availability, not playback compatibility.
+            _, sample = read_url(segment_url, max_bytes=8192)
+            if not sample:
+                raise ValueError("Empty media segment")
+            return True
+        raise ValueError("Too many nested HLS master playlists")
     except Exception as exc:
-        print(f"203 candidate failed: {url} ({exc})")
+        print(f"203 candidate failed: {type(exc).__name__}: {exc}")
         return False
 
 def main():
