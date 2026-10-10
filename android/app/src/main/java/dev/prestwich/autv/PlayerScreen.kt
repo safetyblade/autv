@@ -372,7 +372,10 @@ private fun ChannelRow(channel: Channel, selected: Boolean, failed: String?, sch
             focused = it.isFocused
             if (it.isFocused) onFocused(channel)
         }
-        .semantics { this.selected = selected }
+        .semantics {
+            this.selected = selected
+            contentDescription = "${channel.number} ${channel.name}${if (selected) ", playing" else ""}${schedule.now?.title?.let { " · $it" } ?: ""}"
+        }
         .background(if (focused && tv) Silver.copy(alpha = 0.22f) else if (selected || focused) Color.White.copy(alpha = 0.075f) else Color.Black.copy(alpha = 0.18f), RoundedCornerShape(12.dp))
         .border(if (focused && tv) 3.dp else if (focused) 2.dp else 1.dp, if (focused) WarmWhite else if (selected) Silver.copy(alpha = 0.55f) else Color.White.copy(alpha = 0.06f), RoundedCornerShape(12.dp))
         .clickable(enabled = known) { onSelect(channel) }.padding(if (compact) 6.dp else 10.dp).testTag("channel-${channel.number}"), verticalAlignment = Alignment.Top) {
