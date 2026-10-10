@@ -159,7 +159,7 @@ internal fun AuTvScreen(
         if (guideOpen) { wake(); onCloseGuide() } else chrome = false
     }
     LaunchedEffect(guideOpen, guide != null, pictureInPicture) {
-        if (pictureInPicture) return@LaunchedEffect
+        if (pictureInPicture || isTv) return@LaunchedEffect
         wake()
         if (guideOpen) {
             if (isTv) inputMode.requestInputMode(InputMode.Keyboard)
@@ -208,36 +208,14 @@ internal fun AuTvScreen(
                                 digits.toIntOrNull()?.let(onTuneNumber); digits = ""; wakeKey = event.nativeKeyEvent.keyCode; true
                             }
                             else -> when (event.nativeKeyEvent.keyCode) {
-                            KeyEvent.KEYCODE_DPAD_UP -> {
-                                if (guideOpen && isTv && focusedGuideNumber != null) {
-                                    searchFocus.requestFocus()
-                                    true
-                                } else false
-                            }
-                            KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                                val focusedIndex = focusedGuideNumber?.let { number -> filtered.indexOfFirst { it.number == number } } ?: -1
-                                if (guideOpen && isTv && focusedIndex >= 0) {
-                                    val delta = if (event.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) 10 else -10
-                                    val targetIndex = (focusedIndex + delta).coerceIn(0, filtered.lastIndex)
-                                    val target = filtered.getOrNull(targetIndex)
-                                    if (target != null) {
-                                        scope.launch {
-                                            listState.scrollToItem(targetIndex, 0)
-                                            withFrameNanos { }
-                                            guideRowFocus[target.number]?.requestFocus()
-                                        }
-                                    }
-                                    true
-                                } else false
-                            }
                             KeyEvent.KEYCODE_CHANNEL_UP -> { onNext(); true }
                             KeyEvent.KEYCODE_CHANNEL_DOWN -> { onPrevious(); true }
-                            KeyEvent.KEYCODE_GUIDE, KeyEvent.KEYCODE_MENU -> { if (guideOpen) onCloseGuide() else onOpenGuide(); true }
+                            KeyEvent.KEYCODE_GUIDE, KeyEvent.KEYCODE_MENU -> { if (guideOpen && isTv) return@onPreviewKeyEvent false; if (guideOpen) onCloseGuide() else onOpenGuide(); true }
                             KeyEvent.KEYCODE_PAGE_UP, KeyEvent.KEYCODE_BUTTON_L1 -> {
-                                if (guideOpen) { chooseCategory(GuideBrowse.categories[(GuideBrowse.categories.indexOf(category) - 1 + GuideBrowse.categories.size) % GuideBrowse.categories.size]); true } else false
+                                if (guideOpen && !isTv) { chooseCategory(GuideBrowse.categories[(GuideBrowse.categories.indexOf(category) - 1 + GuideBrowse.categories.size) % GuideBrowse.categories.size]); true } else false
                             }
                             KeyEvent.KEYCODE_PAGE_DOWN, KeyEvent.KEYCODE_BUTTON_R1 -> {
-                                if (guideOpen) { chooseCategory(GuideBrowse.categories[(GuideBrowse.categories.indexOf(category) + 1) % GuideBrowse.categories.size]); true } else false
+                                if (guideOpen && !isTv) { chooseCategory(GuideBrowse.categories[(GuideBrowse.categories.indexOf(category) + 1) % GuideBrowse.categories.size]); true } else false
                             }
                             else -> if (!guideOpen && wasHidden && event.nativeKeyEvent.keyCode in listOf(KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_DPAD_UP, KeyEvent.KEYCODE_DPAD_DOWN, KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT)) {
                                 wakeKey = event.nativeKeyEvent.keyCode; true
@@ -294,7 +272,7 @@ internal fun AuTvScreen(
                                     castPlayback.error?.let { Text(it, color = Color(0xFFD8B3AD), style = MaterialTheme.typography.bodySmall, modifier = Modifier.testTag("cast-error")) }
                                     failed[selected?.number]?.let { Text("Could not play this channel. Select it in the guide to retry.", color = Color(0xFFD8B3AD), style = MaterialTheme.typography.bodySmall) }
                                 }
-                                if (guideOpen) {
+                                if (guideOpen && !isTv) {
                                     if (!isTv) Box(Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.35f)).clickable { wake(); onCloseGuide() }.testTag("guide-scrim"))
                                     val compact = landscape && !isTv
                                     val panelWidth = if (isTv) maxWidth * 0.88f else if (compact) maxWidth * 0.54f else (maxWidth * 0.92f).coerceAtMost(680.dp)
@@ -377,6 +355,8 @@ internal fun AuTvScreen(
                         }
                     }
                 }
+                if (isTv && !pictureInPicture) TvDualGuide(guideOpen, guide, selected, epg, now, failed,
+                    onTune = { wake(); onSelect(it) }, onClose = { wake(); onCloseGuide() }, onRetry = onRetry, loadError = loadError)
             }
         }
     }
