@@ -344,7 +344,7 @@
       "description": "Second TNA FAST feed. The six-hour refresh health-checks multiple providers and publishes the first valid generic HLS source.",
       "epg": "Channel only",
       "available": true,
-      "streamUrl": "https://amg00966-amg00966c1-distrotv-us-7706.playouts.now.amagi.tv/playlist/amg00966-anthem-tnawrestling-distrotvus/playlist.m3u8",
+      "streamUrl": "https://dpltey7dr5q2g.cloudfront.net/TNA_Wrestling.m3u8",
       "tvgId": "tna-wrestling-channel",
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/5d4f68c3-82af-45e7-b2c4-39aff69f3ce0/TNAWrestling_Plex_LogoforDarkBG_1500x1000_-_Alex_TushinghamRDX.png"
     },
