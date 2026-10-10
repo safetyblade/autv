@@ -92,14 +92,14 @@ def normalise(name: str, extinf: str, url: str):
     xml = {"id": tvg_id, "name": tvg_name, "logo": tvg_logo}
     return m3u, xml
 
-def add_selected(source_name: str, entries, selected_file: Path, extras, xml_channels):
+def add_selected(source_name: str, entries, selected_file: Path, extras, xml_channels, direct_pluto=None):
     missing = []
     for name in wanted(selected_file):
         exact = next((e for e in entries if e[0].casefold() == name.casefold()), None)
         match = exact or next((e for e in entries if name.casefold() in e[0].casefold()), None)
 
         if match:
-            m3u, xml = normalise(match[0], match[1], match[2])
+            m3u, xml = normalise(match[0], match[1], replace_pluto_redirect(match[1], match[2], direct_pluto or {}))
             extras.append(m3u)
             xml_channels.append(xml)
             print(f"ADDED {source_name}: {match[0]}")
@@ -107,6 +107,34 @@ def add_selected(source_name: str, entries, selected_file: Path, extras, xml_cha
             missing.append(name)
             print(f"NOT FOUND {source_name}: {name}")
     return missing
+
+
+def replace_pluto_redirect(extinf: str, url: str, direct_by_id: dict) -> str:
+    """Prefer freshly acquired authenticated Pluto HLS over old jmp2 Pluto redirects."""
+    match = re.fullmatch(r"https?://jmp2[.]uk/plu-([a-zA-Z0-9]+)[.]m3u8(?:[?].*)?", url)
+    if not match:
+        return url
+    channel_id = attr(extinf, "tvg-id") or match.group(1)
+    replacement = direct_by_id.get(channel_id)
+    if replacement:
+        print(f"REPLACED legacy Pluto redirect for {channel_id} with refreshed provider URL")
+        return replacement
+    print(f"NO DIRECT PLUTO SOURCE for {channel_id}; retained redirect for manual repair")
+    return url
+
+
+def fresh_pluto_by_id(entries):
+    """Use only source-provided authenticated HLS; never forge a token or source."""
+    found = {}
+    for _, extinf, url in entries:
+        channel_id = attr(extinf, "tvg-id")
+        if (channel_id and
+            "service-channel-stitcher" in url and
+            ".pluto.tv/" in url and
+            "/v2/stitch/hls/channel/" in url and
+            "jwt=" in url):
+            found.setdefault(channel_id, url)
+    return found
 
 def main():
     plex_text = read(BASE)
@@ -121,6 +149,7 @@ def main():
         + parse_entries(read(PLUTO_CA))
         + parse_entries(read(PLUTO_GB))
     )
+    direct_pluto = fresh_pluto_by_id(pluto_entries)
     roku_entries = parse_entries(read(ROKU))
     xumo_entries = parse_entries(read(XUMO))
     tubi_entries = parse_entries(read(TUBI))
@@ -132,20 +161,20 @@ def main():
     # Add them first so their exact guide names win if another provider also
     # exposes the same logical channel.
     for name, extinf, url in parse_entries(read(DYNAMIC)):
-        m3u, xml = normalise(name, extinf, url)
+        m3u, xml = normalise(name, extinf, replace_pluto_redirect(extinf, url, direct_pluto))
         extras.append(m3u)
         xml_channels.append(xml)
         print(f"ADDED DYNAMIC: {name}")
 
     # Custom entries are authoritative overrides. apply_guide.py keeps the first
     # matching logical channel name, so add custom before provider selections.
-    missing_plex = add_selected("PLEX", plex_entries, SELECTED_PLEX, extras, xml_channels)
-    missing_samsung = add_selected("SAMSUNG", samsung_entries, SELECTED_SAMSUNG, extras, xml_channels)
-    missing_lg = add_selected("LG", lg_entries, SELECTED_LG, extras, xml_channels)
-    missing_pluto = add_selected("PLUTO", pluto_entries, SELECTED_PLUTO, extras, xml_channels)
-    missing_roku = add_selected("ROKU", roku_entries, SELECTED_ROKU, extras, xml_channels)
-    missing_xumo = add_selected("XUMO", xumo_entries, SELECTED_XUMO, extras, xml_channels)
-    missing_tubi = add_selected("TUBI", tubi_entries, SELECTED_TUBI, extras, xml_channels)
+    missing_plex = add_selected("PLEX", plex_entries, SELECTED_PLEX, extras, xml_channels, direct_pluto)
+    missing_samsung = add_selected("SAMSUNG", samsung_entries, SELECTED_SAMSUNG, extras, xml_channels, direct_pluto)
+    missing_lg = add_selected("LG", lg_entries, SELECTED_LG, extras, xml_channels, direct_pluto)
+    missing_pluto = add_selected("PLUTO", pluto_entries, SELECTED_PLUTO, extras, xml_channels, direct_pluto)
+    missing_roku = add_selected("ROKU", roku_entries, SELECTED_ROKU, extras, xml_channels, direct_pluto)
+    missing_xumo = add_selected("XUMO", xumo_entries, SELECTED_XUMO, extras, xml_channels, direct_pluto)
+    missing_tubi = add_selected("TUBI", tubi_entries, SELECTED_TUBI, extras, xml_channels, direct_pluto)
 
     for name, extinf, url in parse_entries(read(CUSTOM)):
         m3u, xml = normalise(name, extinf, url)
