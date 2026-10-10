@@ -169,12 +169,12 @@ def main():
     # Custom entries are authoritative overrides. apply_guide.py keeps the first
     # matching logical channel name, so add custom before provider selections.
     missing_plex = add_selected("PLEX", plex_entries, SELECTED_PLEX, extras, xml_channels, direct_pluto)
-    missing_samsung = add_selected("SAMSUNG", samsung_entries, SELECTED_SAMSUNG, extras, xml_channels)
-    missing_lg = add_selected("LG", lg_entries, SELECTED_LG, extras, xml_channels)
-    missing_pluto = add_selected("PLUTO", pluto_entries, SELECTED_PLUTO, extras, xml_channels)
-    missing_roku = add_selected("ROKU", roku_entries, SELECTED_ROKU, extras, xml_channels)
-    missing_xumo = add_selected("XUMO", xumo_entries, SELECTED_XUMO, extras, xml_channels)
-    missing_tubi = add_selected("TUBI", tubi_entries, SELECTED_TUBI, extras, xml_channels)
+    missing_samsung = add_selected("SAMSUNG", samsung_entries, SELECTED_SAMSUNG, extras, xml_channels, direct_pluto)
+    missing_lg = add_selected("LG", lg_entries, SELECTED_LG, extras, xml_channels, direct_pluto)
+    missing_pluto = add_selected("PLUTO", pluto_entries, SELECTED_PLUTO, extras, xml_channels, direct_pluto)
+    missing_roku = add_selected("ROKU", roku_entries, SELECTED_ROKU, extras, xml_channels, direct_pluto)
+    missing_xumo = add_selected("XUMO", xumo_entries, SELECTED_XUMO, extras, xml_channels, direct_pluto)
+    missing_tubi = add_selected("TUBI", tubi_entries, SELECTED_TUBI, extras, xml_channels, direct_pluto)
 
     for name, extinf, url in parse_entries(read(CUSTOM)):
         m3u, xml = normalise(name, extinf, url)
