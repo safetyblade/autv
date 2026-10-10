@@ -1,7 +1,11 @@
 import unittest
-from scripts.apply_guide import set_attr, set_name
+from scripts.apply_guide import canonical, set_attr, set_name
 
 class TestApplyGuideSecurity(unittest.TestCase):
+    def test_canonical_strips_leading_numbers_and_regional_tags(self):
+        self.assertEqual(canonical("101 Sky News (Australia)"), "sky news")
+        self.assertEqual(canonical("02 Channel Name (AU) Geo"), "channel name")
+
     def test_set_attr_backreference_safety(self):
         extinf = '#EXTINF:-1 tvg-name="Old Name", Old Name'
         result = set_attr(extinf, "tvg-name", r"Channel \1 & \2")

@@ -80,15 +80,22 @@ def normalise(name: str, extinf: str, url: str):
     group = attr(extinf, "group-title") or "Australia"
     tvg_id = attr(extinf, "tvg-id") or f"autv.{slug(name)}"
 
-    fields = [
-        f'tvg-id="{tvg_id}"',
-        f'tvg-name="{tvg_name}"',
-    ]
-    if tvg_logo:
-        fields.append(f'tvg-logo="{tvg_logo}"')
-    fields.append(f'group-title="{group}"')
+    # Sanitize metadata fields to prevent M3U header breakout and line injection
+    safe_tvg_id = str(tvg_id).replace("\r", " ").replace("\n", " ").replace('"', "'")
+    safe_tvg_name = str(tvg_name).replace("\r", " ").replace("\n", " ").replace('"', "'")
+    safe_tvg_logo = str(tvg_logo).replace("\r", " ").replace("\n", " ").replace('"', "'") if tvg_logo else ""
+    safe_group = str(group).replace("\r", " ").replace("\n", " ").replace('"', "'")
+    safe_name = str(name).replace("\r", " ").replace("\n", " ")
 
-    m3u = f'#EXTINF:-1 {" ".join(fields)},{name}\n{url}'
+    fields = [
+        f'tvg-id="{safe_tvg_id}"',
+        f'tvg-name="{safe_tvg_name}"',
+    ]
+    if safe_tvg_logo:
+        fields.append(f'tvg-logo="{safe_tvg_logo}"')
+    fields.append(f'group-title="{safe_group}"')
+
+    m3u = f'#EXTINF:-1 {" ".join(fields)},{safe_name}\n{url}'
     xml = {"id": tvg_id, "name": tvg_name, "logo": tvg_logo}
     return m3u, xml
 
