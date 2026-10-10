@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import dev.prestwich.autv.data.*
 import dev.prestwich.autv.guide.GuideBrowse
+import dev.prestwich.autv.guide.GuideViewport
+import dev.prestwich.autv.guide.GuideRowBounds
 import dev.prestwich.autv.guide.ProgrammeNavigation as Timeline
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -38,8 +40,9 @@ private enum class GuideZone { CHANNELS, CATEGORIES, ACTIONS }
 internal fun TvDualGuide(
     open: Boolean, guide: Guide?, playing: Channel?, epg: Epg, now: Long,
     failed: Map<Int, String>, onTune: (Channel) -> Unit, onClose: () -> Unit,
-    onRetry: () -> Unit, loadError: Boolean,
+    onRetry: () -> Unit, loadError: Boolean, onFullTune: (Channel) -> Unit = onTune,
 ) {
+    var channelCell by remember { mutableStateOf(false) }
     var full by rememberSaveable { mutableStateOf(false) }
     var quickCategory by rememberSaveable { mutableStateOf("All") }
     var fullCategory by rememberSaveable { mutableStateOf("All") }
@@ -69,12 +72,20 @@ internal fun TvDualGuide(
     val number = if (full) fullNumber else quickNumber
     val selected = channels.firstOrNull { it.number == number } ?: channels.firstOrNull()
     val schedule = remember(epg, selected?.number) { epg.schedule(selected) }
-    val programme = remember(schedule, cursor) { Timeline.at(schedule, cursor) }
+    val programme = remember(schedule, cursor, window) { Timeline.at(schedule, cursor)?.takeIf { Timeline.block(it, window) != null } }
     val list = if (full) fullList else quickList
     val selectedIndex = channels.indexOfFirst { it.number == selected?.number }.coerceAtLeast(0)
+    fun revealRow(index: Int) {
+        val layout = list.layoutInfo
+        GuideViewport.reveal(index, layout.viewportStartOffset, layout.viewportEndOffset,
+            layout.visibleItemsInfo.map { GuideRowBounds(it.index, it.offset, it.size) }).let {
+            list.requestScrollToItem(it.index, it.offset)
+        }
+    }
     fun selectNumber(value: Int?) { if (full) fullNumber = value else quickNumber = value }
     fun switchMode() {
         details = null
+        channelCell = false
         zone = GuideZone.CHANNELS
         if (!full) { fullCategory = quickCategory; fullQuery = quickQuery; fullNumber = quickNumber; cursor = now; window = Timeline.windowStart(now) }
         full = !full
@@ -89,9 +100,12 @@ internal fun TvDualGuide(
         selectNumber(first?.number)
         scope.launch { list.scrollToItem(0) }
     }
+    fun focusedChannel(): Channel? = channels.firstOrNull {
+        it.number == if (full) fullNumber else quickNumber
+    } ?: channels.firstOrNull()
     fun tune() {
         // Key repeats are consumed below. Only an explicit initial OK invokes this callback.
-        selected?.takeIf { !it.streamUrl.isNullOrBlank() }?.let(onTune)
+        focusedChannel()?.let { tuneChannel(it, if (full) onFullTune else onTune) }
     }
     LaunchedEffect(open, guide != null) {
         if (open) {
@@ -108,15 +122,16 @@ internal fun TvDualGuide(
         if (open && channels.isNotEmpty()) {
             if (number != selected?.number) selectNumber(selected?.number)
             val visible = list.layoutInfo.visibleItemsInfo
-            if (visible.none { it.index == selectedIndex }) list.scrollToItem(selectedIndex)
+            if (full) revealRow(selectedIndex)
+            else if (visible.none { it.index == selectedIndex }) list.scrollToItem(selectedIndex)
         }
     }
     LaunchedEffect(open, category) {
         if (open) categoryList.scrollToItem(GuideBrowse.categories.indexOf(category).coerceAtLeast(0))
     }
-    LaunchedEffect(full, programme?.start, programme?.stop) {
-        if (full && programme != null && (programme.start < window || programme.start >= window + Timeline.WINDOW))
-            window = Timeline.windowStart(programme.start)
+    LaunchedEffect(full, cursor) {
+        if (full && (cursor < window || cursor >= window + Timeline.WINDOW))
+            window = Timeline.windowStart(cursor)
     }
     // A refreshed schedule retains the selected time; programme lookup resolves against the new snapshot.
     if (!open) return
@@ -139,10 +154,11 @@ internal fun TvDualGuide(
                             KeyEvent.KEYCODE_PAGE_UP, KeyEvent.KEYCODE_BUTTON_L1 -> chooseCategory(GuideBrowse.categories[(GuideBrowse.categories.indexOf(category) + GuideBrowse.categories.size - 1) % GuideBrowse.categories.size])
                             KeyEvent.KEYCODE_PAGE_DOWN, KeyEvent.KEYCODE_BUTTON_R1 -> chooseCategory(GuideBrowse.categories[(GuideBrowse.categories.indexOf(category) + 1) % GuideBrowse.categories.size])
                             KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER -> if (key.repeatCount == 0) {
+                                val focusedProgramme = Timeline.at(epg.schedule(focusedChannel()), cursor)?.takeIf { Timeline.block(it, window) != null }
                                 when { details != null -> { if (Timeline.airing(details!!, now)) tune() else details = null }
                                     zone == GuideZone.ACTIONS -> when (action) { 0 -> switchMode(); 1 -> search = true; else -> onClose() }
                                     zone == GuideZone.CATEGORIES -> zone = GuideZone.CHANNELS
-                                    full && programme != null -> details = programme
+                                    full && !channelCell && focusedProgramme != null && !Timeline.airing(focusedProgramme, now) -> details = focusedProgramme
                                     else -> tune() }
                             }
                             KeyEvent.KEYCODE_DPAD_UP, KeyEvent.KEYCODE_DPAD_DOWN -> if (details == null) {
@@ -150,8 +166,16 @@ internal fun TvDualGuide(
                                 when (zone) {
                                     GuideZone.ACTIONS -> if (delta > 0) zone = GuideZone.CATEGORIES
                                     GuideZone.CATEGORIES -> zone = if (delta > 0) GuideZone.CHANNELS else GuideZone.ACTIONS
-                                    GuideZone.CHANNELS -> if (selectedIndex == 0 && delta < 0) zone = GuideZone.CATEGORIES
-                                        else channels.getOrNull((selectedIndex + delta).coerceIn(0, channels.lastIndex.coerceAtLeast(0)))?.let { selectNumber(it.number) }
+                                    GuideZone.CHANNELS -> if (channels.indexOfFirst { it.number == if (full) fullNumber else quickNumber } == 0 && delta < 0) zone = GuideZone.CATEGORIES
+                                        else {
+                                            // Read current mutable selection, not the last rendered index: repeats can arrive before composition.
+                                            val current = channels.indexOfFirst { it.number == if (full) fullNumber else quickNumber }.coerceAtLeast(0)
+                                            val target = (current + delta).coerceIn(0, channels.lastIndex.coerceAtLeast(0))
+                                            channels.getOrNull(target)?.let {
+                                                if (full) revealRow(target)
+                                                selectNumber(it.number)
+                                            }
+                                        }
                                 }
                             }
                             KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT -> if (details == null) {
@@ -160,8 +184,12 @@ internal fun TvDualGuide(
                                     GuideZone.ACTIONS -> action = (action + delta).coerceIn(0, 2)
                                     GuideZone.CATEGORIES -> chooseCategory(GuideBrowse.categories[(GuideBrowse.categories.indexOf(category) + delta).coerceIn(0, GuideBrowse.categories.lastIndex)])
                                     GuideZone.CHANNELS -> if (full) {
-                                        if (schedule.isEmpty()) { cursor += delta * Timeline.HALF_HOUR; window = Timeline.windowStart(cursor) }
-                                        else Timeline.move(schedule, programme, delta)?.let { cursor = it.start }
+                                        val focusedSchedule = epg.schedule(focusedChannel())
+                                        val focusedProgramme = Timeline.at(focusedSchedule, cursor)
+                                        if (channelCell) { if (delta > 0) channelCell = false }
+                                        else if (delta < 0 && (focusedProgramme == null || focusedSchedule.indexOf(focusedProgramme) <= 0)) channelCell = true
+                                        else if (focusedSchedule.isEmpty()) { cursor += delta * Timeline.HALF_HOUR; window = Timeline.windowStart(cursor) }
+                                        else Timeline.move(focusedSchedule, focusedProgramme, delta)?.let { cursor = it.start }
                                     } else zone = GuideZone.CATEGORIES
                                 }
                             }
@@ -206,7 +234,9 @@ internal fun TvDualGuide(
                                 .border(if (focused) 3.dp else 1.dp, if (focused) GuideAccent else GuideAccent.copy(alpha = 0.12f), RoundedCornerShape(6.dp))
                                 .semantics { this.selected = channel.number == playing?.number; this.focused = focused; contentDescription = "${channel.number} ${channel.name}${if (channel.number == playing?.number) ", playing" else ""}" }
                                 .testTag("channel-${channel.number}"), verticalAlignment = Alignment.CenterVertically) {
-                                Row(Modifier.width(if (full) 220.dp else 260.dp).fillMaxHeight().clickable { selectNumber(channel.number); zone = GuideZone.CHANNELS; if (!full) tuneChannel(channel, onTune) }.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                                Row(Modifier.width(if (full) 220.dp else 260.dp).fillMaxHeight().then(if (full && focused && channelCell) Modifier.border(3.dp, GuideAccent) else Modifier)
+                                    .testTag("channel-cell-${channel.number}")
+                                    .clickable { selectNumber(channel.number); zone = GuideZone.CHANNELS; tuneChannel(channel, if (full) onFullTune else onTune) }.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
                                     Box(Modifier.size(36.dp), contentAlignment = Alignment.Center) {
                                         AsyncImage(channel.logoUrl, "${channel.name} logo", Modifier.fillMaxSize(), placeholder = painterResource(R.drawable.autv_logo), error = painterResource(R.drawable.autv_logo))
                                     }
@@ -216,8 +246,9 @@ internal fun TvDualGuide(
                                         if (failed[channel.number] != null) Text("Playback failed · OK to retry", style = MaterialTheme.typography.labelSmall)
                                     }
                                 }
-                                if (full) TimelineRow(epg.schedule(channel), window, now, if (focused) programme else null, Modifier.weight(1f).fillMaxHeight()) { item ->
-                                    fullNumber = channel.number; cursor = item.start; details = item; zone = GuideZone.CHANNELS
+                                if (full) TimelineRow(epg.schedule(channel), window, now, if (focused && !channelCell) programme else null, Modifier.weight(1f).fillMaxHeight().testTag("programme-row-${channel.number}")) { item ->
+                                    fullNumber = channel.number; cursor = item.start; channelCell = false; zone = GuideZone.CHANNELS
+                                    if (Timeline.airing(item, now)) tuneChannel(channel, onFullTune) else details = item
                                 } else Column(Modifier.weight(1f).padding(8.dp)) {
                                     Text(current?.title ?: "Schedule unavailable", maxLines = 1, overflow = TextOverflow.Ellipsis)
                                     if (current != null) {
@@ -231,7 +262,7 @@ internal fun TvDualGuide(
                 }
                 if (full) Column(Modifier.fillMaxWidth().height(72.dp).padding(top = 8.dp).testTag("programme-info")) {
                     Text(programme?.title ?: "Schedule unavailable", fontWeight = FontWeight.SemiBold, maxLines = 1)
-                    Text(programme?.let { "${guideClock(it.start)} – ${guideClock(it.stop)} · ${if (Timeline.airing(it, now)) "OK for details and tune" else "OK for information"}" }
+                    Text(programme?.let { "${guideClock(it.start)} – ${guideClock(it.stop)} · ${if (Timeline.airing(it, now)) "OK to watch live" else "OK for information"}" }
                         ?: "${selected?.name.orEmpty()} · OK to watch live", style = MaterialTheme.typography.bodySmall)
                     Text(programme?.description.orEmpty(), style = MaterialTheme.typography.bodySmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }

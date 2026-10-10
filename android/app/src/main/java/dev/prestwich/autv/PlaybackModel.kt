@@ -47,16 +47,18 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     private val homeMutex = Mutex()
     private var foreground = true
     private var initialSelectionPending = true
+    private val guideTuneRecovery = GuideTuneRecovery()
     private val castSender = senderFactory?.invoke(::onCastChanged) ?: CastSender(application, viewModelScope, { selected },
         { epg.at(it, System.currentTimeMillis()).now }, ::onCastChanged)
     private val listener = object : Player.Listener {
         override fun onPlayerError(error: PlaybackException) {
             player.currentMediaItem?.mediaId?.toIntOrNull()?.let { failed[it] = "Playback failed" }
             buffering = false
+            restoreGuideTune(player.currentMediaItem?.mediaId?.toIntOrNull())
         }
         override fun onPlaybackStateChanged(state: Int) {
             buffering = state == Player.STATE_BUFFERING
-            if (state == Player.STATE_READY) player.currentMediaItem?.mediaId?.toIntOrNull()?.let { failed.remove(it) }
+            if (state == Player.STATE_READY) player.currentMediaItem?.mediaId?.toIntOrNull()?.let { failed.remove(it); guideTuneRecovery.ready(it) }
         }
         override fun onIsPlayingChanged(isPlaying: Boolean) { playing = isPlaying }
     }
@@ -120,14 +122,28 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         }
         publishHome()
     }
-    fun request(target: TuneTarget?) {
+    fun request(target: TuneTarget?, restoreOnFailure: Boolean = false) {
         if (guide == null) { pending = target; hasPending = true; guideOpen = true }
-        else applyRequest(target)
+        else applyRequest(target, restoreOnFailure)
     }
-    private fun applyRequest(target: TuneTarget?) {
+    private fun applyRequest(target: TuneTarget?, restoreOnFailure: Boolean = false) {
         val channel = target?.let { ChannelTuning.resolve(guide?.channels.orEmpty(), it) }
         if (channel == null) { guideOpen = true; notice = "That channel is not currently available. Choose another channel."; return }
-        tune(channel); guideOpen = false; notice = null; publishHome()
+        if (restoreOnFailure) guideTuneRecovery.begin(selected, channel) else guideTuneRecovery.clear()
+        try {
+            tune(channel); guideOpen = false; notice = null; publishHome()
+        } catch (error: Exception) {
+            if (error is CancellationException) throw error
+            failed[channel.number] = "Playback failed"
+            if (!restoreGuideTune(channel.number)) throw error
+        }
+    }
+    private fun restoreGuideTune(number: Int?): Boolean {
+        val previous = guideTuneRecovery.failed(number) ?: return false
+        // Use the same request/tune path as Quick Guide; never resolve or play a stream in the UI.
+        applyRequest(TuneTarget.Number(previous.number))
+        notice = "Could not play that channel. Returned to ${previous.name}."
+        return true
     }
     private fun tune(channel: Channel) {
         initialSelectionPending = false
@@ -169,6 +185,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
                         failed[297] = "Playback failed"
                         buffering = false
                         notice = "Wrestling Central Roku test failed to resolve. Other channels are unaffected."
+                        restoreGuideTune(297)
                     }
                 }
             }
@@ -193,8 +210,11 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         val wasRemote = castPlayback.ownsPlayback
         castPlayback = state
         if (state.ownsPlayback) {
+            guideTuneRecovery.ready(selected?.number)
             player.stop() // Release local decoding/buffering only after receiver status confirms ownership.
             buffering = false
+        } else if (state.phase == CastPhase.FAILED && restoreGuideTune(selected?.number)) {
+            return
         } else if (state.phase == CastPhase.FAILED || (state.phase == CastPhase.DISCONNECTED && wasRemote)) {
             selected?.let { playLocal(it, retry = true) }
         }
