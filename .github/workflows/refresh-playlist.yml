@@ -44,6 +44,9 @@ jobs:
           curl --fail --silent --show-error --location "https://raw.githubusercontent.com/BuddyChewChew/tubi-scraper/main/tubi_epg.xml" --output epg_tubi.xml
           curl --fail --silent --show-error --location "https://i.mjh.nz/SamsungTVPlus/all.xml.gz" --output epg_samsung_all.xml.gz
 
+      - name: Resolve rotating FAST sources
+        run: python3 scripts/build_dynamic_sources.py
+
       - name: Build playlist
         run: python3 scripts/merge.py
 
@@ -63,7 +66,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -f base_upstream.m3u secondary_upstream.m3u lg_upstream.m3u pluto_us_upstream.m3u pluto_ca_upstream.m3u pluto_gb_upstream.m3u roku_upstream.m3u epg_plex_*.xml.gz epg_pluto_*.xml.gz epg_roku_*.xml.gz xumo_upstream.m3u epg_xumo.xml.gz tubi_upstream.m3u epg_tubi.xml epg_samsung_all.xml.gz
+          rm -f base_upstream.m3u secondary_upstream.m3u lg_upstream.m3u pluto_us_upstream.m3u pluto_ca_upstream.m3u pluto_gb_upstream.m3u roku_upstream.m3u epg_plex_*.xml.gz epg_pluto_*.xml.gz epg_roku_*.xml.gz xumo_upstream.m3u epg_xumo.xml.gz tubi_upstream.m3u epg_tubi.xml epg_samsung_all.xml.gz dynamic_sources.m3u
 
           if git diff --quiet -- playlist.m3u curated.xml epg.xml.gz guide.json; then
             echo "No generated file changes."
