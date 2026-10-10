@@ -56,6 +56,9 @@ jobs:
       - name: Validate Pluto JWT freshness before publishing
         run: python3 scripts/check_pluto_freshness.py playlist.m3u
 
+      - name: Audit legacy and Pluto stream reachability (advisory)
+        run: python3 scripts/audit_legacy_streams.py
+
       - name: Build combined EPG
         run: python3 scripts/build_epg.py
 
