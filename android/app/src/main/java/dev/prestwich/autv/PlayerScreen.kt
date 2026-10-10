@@ -310,7 +310,7 @@ internal fun AuTvScreen(
                                             if (!compact) Row(verticalAlignment = Alignment.CenterVertically) {
                                                 Text("Channel guide", Modifier.weight(1f), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
                                                 FocusButton("Close", { wake(); onCloseGuide() }, Modifier.focusRequester(closeFocus)
-                                                    .focusProperties { down = rowTarget; left = searchFocus }.testTag("close-guide"))
+                                                    .focusProperties { down = rowTarget; left = searchFocus }.semantics { contentDescription = "Close channel guide" }.testTag("close-guide"))
                                             }
                                             notice?.let { Text(it, color = Muted, style = MaterialTheme.typography.bodySmall) }
                                             castPlayback.error?.let { Text(it, color = Color(0xFFD8B3AD), style = MaterialTheme.typography.bodySmall) }
@@ -318,18 +318,18 @@ internal fun AuTvScreen(
                                                 BasicTextField(value = query, onValueChange = { query = it; wake() },
                                                     singleLine = true, textStyle = MaterialTheme.typography.bodyMedium.copy(color = WarmWhite), cursorBrush = androidx.compose.ui.graphics.SolidColor(Silver),
                                                     modifier = Modifier.weight(1f).height(40.dp).background(Ink.copy(alpha = 0.4f), RoundedCornerShape(8.dp))
-                                                        .border(1.dp, Muted.copy(alpha = 0.4f), RoundedCornerShape(8.dp)).focusRequester(searchFocus).testTag("guide-search"),
+                                                        .border(1.dp, Muted.copy(alpha = 0.4f), RoundedCornerShape(8.dp)).focusRequester(searchFocus).semantics { contentDescription = "Search channels or programmes" }.testTag("guide-search"),
                                                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), keyboardActions = KeyboardActions(onSearch = { keyboard?.hide() }),
                                                     decorationBox = { field -> Box(Modifier.fillMaxSize().padding(horizontal = 8.dp), contentAlignment = Alignment.CenterStart) {
                                                         if (query.isEmpty()) Text("Search channels", color = Muted, style = MaterialTheme.typography.bodySmall)
                                                         field()
                                                     } })
-                                                TextButton(onClick = { keyboard?.hide(); wake(); onCloseGuide() }, modifier = Modifier.focusRequester(closeFocus).testTag("close-guide"),
+                                                TextButton(onClick = { keyboard?.hide(); wake(); onCloseGuide() }, modifier = Modifier.focusRequester(closeFocus).semantics { contentDescription = "Close channel guide" }.testTag("close-guide"),
                                                     contentPadding = PaddingValues(horizontal = 8.dp)) { Text("Close") }
                                             } else OutlinedTextField(value = query, onValueChange = { query = it; wake() },
                                                 placeholder = { Text("Search channels or programmes", style = MaterialTheme.typography.bodySmall) }, singleLine = true,
                                                 modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).focusRequester(searchFocus)
-                                                    .focusProperties { down = categoryFocus; right = closeFocus }.testTag("guide-search"),
+                                                    .focusProperties { down = categoryFocus; right = closeFocus }.semantics { contentDescription = "Search channels or programmes" }.testTag("guide-search"),
                                                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), keyboardActions = KeyboardActions(onSearch = { keyboard?.hide() }),
                                                 trailingIcon = { if (query.isNotEmpty()) TextButton(onClick = { query = ""; committedQuery = ""; wake() }, modifier = Modifier.semantics { contentDescription = "Clear search query" }) { Text("Clear") } }, shape = RoundedCornerShape(12.dp))
                                             LazyRow(state = categoryState, horizontalArrangement = Arrangement.spacedBy(6.dp), contentPadding = PaddingValues(end = 24.dp),
@@ -363,7 +363,7 @@ internal fun AuTvScreen(
                                                             onFocused = { focusedGuideNumber = it.number }) { wake(); onSelect(it) }
                                                     }
                                                 }
-                                            } else if (loadError) { Text("The guide could not be loaded."); Button(onClick = onRetry) { Text("Retry") } }
+                                            } else if (loadError) { Text("The guide could not be loaded."); Button(onClick = onRetry, modifier = Modifier.semantics { contentDescription = "Retry loading channel guide" }) { Text("Retry") } }
                                             else { CircularProgressIndicator(Modifier.size(28.dp)); Text("Loading your channels…", color = Muted) }
                                         }
                                     }
