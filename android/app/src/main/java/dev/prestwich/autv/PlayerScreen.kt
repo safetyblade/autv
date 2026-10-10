@@ -68,6 +68,7 @@ internal fun AuTvScreen(
     onSelect: (Channel) -> Unit, onCloseGuide: () -> Unit, onOpenGuide: () -> Unit,
     onRetry: () -> Unit, onNext: () -> Unit, onPrevious: () -> Unit,
     onChromeVisibilityChanged: (Boolean) -> Unit = {},
+    onFullSelect: (Channel) -> Unit = onSelect,
     pictureInPicture: Boolean = false, notice: String? = null, onTuneNumber: (Int) -> Unit = {},
     castPlayback: dev.prestwich.autv.guide.CastPlayback = dev.prestwich.autv.guide.CastPlayback(),
 ) {
@@ -356,7 +357,7 @@ internal fun AuTvScreen(
                     }
                 }
                 if (isTv && !pictureInPicture) TvDualGuide(guideOpen, guide, selected, epg, now, failed,
-                    onTune = { wake(); onSelect(it) }, onClose = { wake(); onCloseGuide() }, onRetry = onRetry, loadError = loadError)
+                    onTune = { wake(); onSelect(it) }, onFullTune = { wake(); onFullSelect(it) }, onClose = { wake(); onCloseGuide() }, onRetry = onRetry, loadError = loadError)
             }
         }
     }

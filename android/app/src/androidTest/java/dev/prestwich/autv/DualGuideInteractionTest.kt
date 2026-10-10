@@ -87,8 +87,7 @@ class DualGuideInteractionTest {
         launch(); key(KeyEvent.KEYCODE_MENU)
         assertTrue(tuned.isEmpty())
         key(KeyEvent.KEYCODE_DPAD_CENTER)
-        compose.onNodeWithText("Watch live").assertExists()
-        compose.onNodeWithTag("programme-confirm").performClick()
+        compose.onNodeWithTag("full-epg").assertDoesNotExist()
         assertEquals(listOf(202), tuned)
     }
     @Test fun categoriesAndRapidNavigationRemainVirtualizedAndRefreshKeepsFocus() {
@@ -111,7 +110,7 @@ class DualGuideInteractionTest {
         assertTrue(tuned.isEmpty())
     }
     @Test fun backClosesDetailBeforeFullGuideAndQuickGuide() {
-        launch(); key(KeyEvent.KEYCODE_GUIDE); key(KeyEvent.KEYCODE_DPAD_CENTER)
+        launch(); key(KeyEvent.KEYCODE_GUIDE); key(KeyEvent.KEYCODE_DPAD_RIGHT); key(KeyEvent.KEYCODE_DPAD_CENTER)
         key(KeyEvent.KEYCODE_BACK)
         compose.onNodeWithTag("full-epg").assertExists()
         key(KeyEvent.KEYCODE_BACK)

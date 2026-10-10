@@ -7,9 +7,10 @@ The handset guide is unchanged.
 - **Up/Down:** move between channels. Up from the first channel enters categories;
   Up again enters the Full EPG, Search and Close controls.
 - **Left/Right:** browse categories/controls, or programmes in Full EPG.
-- **OK:** tune the focused Quick Guide channel. Full EPG opens programme details;
-  an airing programme offers **Watch live**. Future/past programmes offer information
-  only. Rows with no schedule can still tune their known live stream.
+- **OK:** tune the focused Quick Guide channel. In Full EPG, OK tunes an airing
+  programme directly. Left from the first programme selects the channel cell;
+  OK there tunes the channel. Future/past programmes open information only.
+  Rows with no schedule still tune their known live stream.
 - **Back:** close details, return from Full EPG to Quick Guide, then dismiss Quick Guide.
 - **Page Up/Down or L1/R1:** change category without tuning.
 - **Digits:** use the existing channel-number entry; OK commits immediately or the
@@ -62,3 +63,20 @@ fixed or validated by these guide tests.
 Physical Android TV/Google TV focus, remote models, 600+ channel scrolling,
 300 ms open / 100 ms focus / 60 fps targets and real-stream playback continuity
 remain unverified until device testing. No device testing is claimed.
+
+## Full EPG navigation/tuning regression checks
+
+Full EPG reveals entire rows, including clipped boundary rows, using a scroll
+request in the key handler. Rapid repeats read the current selected number.
+Channel labels and programme cells remain in the same lazy row; vertical movement
+retains the timeline cursor and clamps at the catalogue ends. Full EPG tune actions
+call the same model request as Quick Guide, with one-shot previous-channel recovery
+on failure. Recovery resumes the old channel through that request; a single-player
+engine can briefly interrupt playback during a failed attempt.
+
+`GuideViewportTest` and `GuideTuneRecoveryTest` cover boundary geometry and rollback
+identity. `FullEpgRegressionTest` covers first-press boundaries, 651-row rapid traversal,
+genre boundaries, row alignment, current/channel/missing/future selection and Back.
+`FullEpgPlaybackRecoveryTest` exercises a retained Media3 player with a valid local
+asset and a missing asset. These are instrumentation tests requiring an Android
+runtime; compilation alone does not establish that they pass on a device.

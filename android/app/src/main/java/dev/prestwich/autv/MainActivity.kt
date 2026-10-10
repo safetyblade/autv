@@ -41,6 +41,7 @@ open class MainActivity : AppCompatActivity() {
             AuTvScreen(playback.guide, playback.selected, playback.guideOpen, playback.loadError,
                 playback.failed.toMap(), playback.buffering, playback.epg, playback.player,
                 onSelect = { playback.request(TuneTarget.Number(it.number)) },
+                onFullSelect = { playback.request(TuneTarget.Number(it.number), restoreOnFailure = true) },
                 onCloseGuide = { playback.guideOpen = false }, onOpenGuide = { playback.guideOpen = true },
                 onChromeVisibilityChanged = { visible -> setPlayerSystemBars(window, visible) },
                 onRetry = playback::reload, onNext = playback::next, onPrevious = playback::previous,
