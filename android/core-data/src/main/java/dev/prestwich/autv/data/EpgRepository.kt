@@ -2,6 +2,8 @@ package dev.prestwich.autv.data
 
 import java.net.HttpURLConnection
 import java.net.URL
+import java.io.File
+import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.io.StringReader
 import java.text.SimpleDateFormat
@@ -13,7 +15,7 @@ import org.xml.sax.Attributes
 import org.xml.sax.InputSource
 import org.xml.sax.helpers.DefaultHandler
 
-data class Programme(val title: String, val start: Long, val stop: Long)
+data class Programme(val title: String, val start: Long, val stop: Long, val description: String = "")
 data class NowNext(val now: Programme?, val next: Programme?)
 
 class Epg(val programmes: Map<String, List<Programme>>, val channelNames: Map<String, Set<String>> = emptyMap()) {
@@ -25,11 +27,13 @@ class Epg(val programmes: Map<String, List<Programme>>, val channelNames: Map<St
         }
         candidates.forEach { (name, ids) -> if (ids.size == 1) put(name, ids.first()) }
     }
-    fun at(channel: Channel?, time: Long): NowNext {
-        if (channel == null) return NowNext(null, null)
-        if (channel.tvgId != null && programmes.containsKey(channel.tvgId)) return at(channel.tvgId, time)
-        return at(idsByNormalizedName[identity(channel.name)], time)
+    private fun idFor(channel: Channel?): String? {
+        if (channel == null) return null
+        if (channel.tvgId != null && programmes.containsKey(channel.tvgId)) return channel.tvgId
+        return idsByNormalizedName[identity(channel.name)]
     }
+    fun schedule(channel: Channel?): List<Programme> = programmes[idFor(channel)].orEmpty()
+    fun at(channel: Channel?, time: Long): NowNext = at(idFor(channel), time)
     fun at(id: String?, time: Long): NowNext {
         val schedule = programmes[id].orEmpty()
         if (schedule.isEmpty()) return NowNext(null, null)
@@ -50,13 +54,36 @@ class Epg(val programmes: Map<String, List<Programme>>, val channelNames: Map<St
     }
 }
 
-class EpgRepository {
+class EpgRepository(private val cache: File? = null, private val download: () -> ByteArray = ::downloadXmltv) {
+    fun cached(): Epg? = runCatching {
+        cache?.takeIf { it.isFile }?.inputStream()?.use { GZIPInputStream(it).use { input -> parse(input) } }
+    }.getOrNull()
+
     fun load(): Epg {
-        val connection = URL("https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz").openConnection() as HttpURLConnection
-        connection.connectTimeout = 10_000
-        connection.readTimeout = 20_000
-        return try { GZIPInputStream(connection.inputStream).use { parse(it) } }
-        finally { connection.disconnect() }
+        try {
+            val bytes = download()
+            val epg = GZIPInputStream(ByteArrayInputStream(bytes)).use { parse(it) }
+            require(epg.programmes.isNotEmpty()) { "Empty EPG; retain last valid schedule" }
+            cache?.let { target ->
+                runCatching {
+                    target.parentFile?.mkdirs()
+                    val temporary = File(target.path + ".tmp")
+                    temporary.outputStream().use { it.write(bytes) }
+                    check(temporary.renameTo(target)) { "Could not publish EPG cache" }
+                }
+            }
+            return epg
+        } catch (error: Exception) { return cached() ?: throw error }
+    }
+
+    companion object {
+        private fun downloadXmltv(): ByteArray {
+            val connection = URL("https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz").openConnection() as HttpURLConnection
+            connection.connectTimeout = 10_000
+            connection.readTimeout = 20_000
+            return try { connection.inputStream.use { it.readBytes() } }
+            finally { connection.disconnect() }
+        }
     }
 
     internal fun parse(input: InputStream): Epg {
@@ -97,7 +124,7 @@ class EpgRepository {
                 if (qName == "programme") {
                     val from = start; val until = stop; val channel = id
                     if (channel != null && from != null && until != null && until > from && title.isNotBlank() && description != "Live channel") {
-                        result.getOrPut(channel) { mutableListOf() }.add(Programme(title, from, until))
+                        result.getOrPut(channel) { mutableListOf() }.add(Programme(title, from, until, description))
                     }
                     id = null
                 }

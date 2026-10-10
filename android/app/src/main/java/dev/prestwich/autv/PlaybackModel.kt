@@ -18,10 +18,11 @@ import kotlinx.coroutines.sync.withLock
 /** Activity-retained state: UI transitions and PiP never create another playback engine. */
 class PlaybackModel(application: Application, private val guideLoader: () -> Guide, private val epgLoader: () -> Epg,
     senderFactory: (((CastPlayback) -> Unit) -> CastConnection)? = null,
-    guideCache: GuideCache? = null, playlistLoader: ((Guide) -> Guide)? = null) : AndroidViewModel(application) {
-    constructor(application: Application) : this(application, { GuideRepository().load() }, { EpgRepository().load() },
+    guideCache: GuideCache? = null, playlistLoader: ((Guide) -> Guide)? = null, epgCacheLoader: (() -> Epg?)? = null) : AndroidViewModel(application) {
+    constructor(application: Application) : this(application, { GuideRepository().load() }, { EpgRepository(java.io.File(application.filesDir, "programme-guide-v1.xml.gz")).load() },
         guideCache = FileGuideCache(java.io.File(application.filesDir, "channel-guide-v1.json")),
-        playlistLoader = { GuideRepository().reconcile(it) })
+        playlistLoader = { GuideRepository().reconcile(it) },
+        epgCacheLoader = { EpgRepository(java.io.File(application.filesDir, "programme-guide-v1.xml.gz")).cached() })
     private val startup = GuideStartup(guideCache, guideLoader, playlistLoader)
     private val rokuResolver = RokuChannelResolver()
     var startupState by mutableStateOf(GuideStartupState.LOADING); private set
@@ -63,8 +64,14 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         player.addListener(listener)
         reload()
         viewModelScope.launch {
-            try { epg = withContext(Dispatchers.IO) { epgLoader() } }
-            catch (error: Exception) { if (error is CancellationException) throw error }
+            epgCacheLoader?.let { loader ->
+                withContext(Dispatchers.IO) { runCatching { loader() }.getOrNull() }?.let { epg = it }
+            }
+            while (isActive) {
+                try { epg = withContext(Dispatchers.IO) { epgLoader() } }
+                catch (error: Exception) { if (error is CancellationException) throw error }
+                delay(30 * 60_000L)
+            }
         }
         castSender.start()
     }
