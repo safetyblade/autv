@@ -2027,6 +2027,10 @@
     <display-name>Shades of Black</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/34e2d8f442ab5fa3aed29436c2f8ed63/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1665448180798_ShadesOfBlack_Logo_Roku_EFEF_260x147_%25281%2529.png" />
   </channel>
+  <channel id="223627443ebe5007b1b9461cc1ea297e">
+    <display-name>Life with Derek</display-name>
+    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/223627443ebe5007b1b9461cc1ea297e/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1788370831477_US_ROKU_LIFEWITHDEREK_INFOHUD_260x147.png" />
+  </channel>
   <channel id="e9d183acab06314b2bcddbb7ed391e70">
     <display-name>Candyjar</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/e9d183acab06314b2bcddbb7ed391e70/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1787161677058_candyjar_logo_hud.png" />
@@ -2262,6 +2266,10 @@
   <channel id="400000008">
     <display-name>NHL</display-name>
     <icon src="https://canvas-lb.tubitv.com/opts/8h7HYVpDz2amhw==/085bca04-c806-4a7f-bb0c-d38fe352f3e3/CHgQeDoFMS4xLjlAAQ==" />
+  </channel>
+  <channel id="613763">
+    <display-name>Stadium</display-name>
+    <icon src="https://canvas-lb.tubitv.com/opts/-NtXXHY5Foetwg==/ffec7159-bf94-4c51-9544-5162e5a57b2f/CHgQeDoFMS4xLjlAAQ==" />
   </channel>
   <channel id="400000304">
     <display-name>UEFA.tv</display-name>
@@ -2568,6 +2576,7 @@
   </channel>
   <channel id="tna-wrestling-channel">
     <display-name>TNA Wrestling DistroTV</display-name>
+    <icon src="https://provider-static.plex.tv/epg/cms/production/5d4f68c3-82af-45e7-b2c4-39aff69f3ce0/TNAWrestling_Plex_LogoforDarkBG_1500x1000_-_Alex_TushinghamRDX.png" />
   </channel>
   <channel id="WomensSportsNetwork.us@SD">
     <display-name>Women&apos;s Sports Network</display-name>
