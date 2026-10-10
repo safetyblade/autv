@@ -341,7 +341,7 @@
       "name": "TNA Wrestling DistroTV",
       "genre": "Sport",
       "subgenre": "Wrestling & Combat",
-      "description": "Second independent TNA FAST feed using direct Amagi/DistroTV HLS; portable static source.",
+      "description": "Second TNA FAST feed. The six-hour refresh health-checks multiple providers and publishes the first valid generic HLS source.",
       "epg": "Channel only",
       "available": true,
       "streamUrl": "https://amg00966-amg00966c1-distrotv-us-7706.playouts.now.amagi.tv/playlist/amg00966-anthem-tnawrestling-distrotvus/playlist.m3u8",

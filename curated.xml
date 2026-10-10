@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tv generator-info-name="autv">
+  <channel id="tna-wrestling-channel">
+    <display-name>TNA Wrestling DistroTV</display-name>
+    <icon src="https://provider-static.plex.tv/epg/cms/production/5d4f68c3-82af-45e7-b2c4-39aff69f3ce0/TNAWrestling_Plex_LogoforDarkBG_1500x1000_-_Alex_TushinghamRDX.png" />
+  </channel>
   <channel id="697140a85d851f5e69414688-63eecb32ac23d1ee072087cb">
     <display-name>123GO!</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/59623ed1-b641-4001-b634-b25e307c3c49/123GO_-_Jonathan_Shrank1500x1000.png" />
@@ -2573,10 +2577,6 @@
   <channel id="6d8659091f745b8b864f438f06c56fae">
     <display-name>TNA Wrestling Roku</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/6d8659091f745b8b864f438f06c56fae/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1709314978559_TNAWrestling_Roku_WhiteLogo_CenterAligned_260x147.png" />
-  </channel>
-  <channel id="tna-wrestling-channel">
-    <display-name>TNA Wrestling DistroTV</display-name>
-    <icon src="https://provider-static.plex.tv/epg/cms/production/5d4f68c3-82af-45e7-b2c4-39aff69f3ce0/TNAWrestling_Plex_LogoforDarkBG_1500x1000_-_Alex_TushinghamRDX.png" />
   </channel>
   <channel id="WomensSportsNetwork.us@SD">
     <display-name>Women&apos;s Sports Network</display-name>
