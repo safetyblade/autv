@@ -26,7 +26,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 200,Watch AEW,Sport,Wrestling & Combat,Channel only,Tubi,Roku,Active,24/7 AEW FAST channel. Tubi remains primary; Roku carries the same feed as a tested fallback.
 201,CW Presents WWE NXT,Sport,Wrestling & Combat,Full,Curated,Roku,Active,WWE NXT FAST channel carrying current-era NXT archive programming.
 202,TNA Wrestling Channel,Sport,Wrestling & Combat,Channel only,Roku,Pluto US,Active,"TNA Wrestling FAST channel using Roku as primary test source; Pluto US retained as alternate."
-203,TNA Wrestling DistroTV,Sport,Wrestling & Combat,Channel only,DistroTV / Amagi,Samsung Direct,Active,"Second independent TNA FAST feed using direct Amagi/DistroTV HLS; portable static source."
+203,TNA Wrestling DistroTV,Sport,Wrestling & Combat,Channel only,Scheduled health-check,Samsung / Rakuten / Pluto / Roku,Active,"Second TNA FAST feed. The six-hour refresh health-checks multiple providers and publishes the first valid generic HLS source."
 204,UFC,Sport,Wrestling & Combat,Full,Plex AU,,Active,Combat-sports channel featuring UFC programming and fight content.
 205,PFL MMA,Sport,Wrestling & Combat,Full,Plex AU,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
 206,ONE Championship,Sport,Wrestling & Combat,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
