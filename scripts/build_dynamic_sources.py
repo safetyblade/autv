@@ -13,8 +13,8 @@ OUTPUT = Path("dynamic_sources.m3u")
 TIMEOUT = 12
 
 TNA_203 = [
-    ("DistroTV", "https://amg00966-amg00966c1-distrotv-us-7706.playouts.now.amagi.tv/playlist/amg00966-anthem-tnawrestling-distrotvus/playlist.m3u8"),
     ("Samsung direct", "https://dpltey7dr5q2g.cloudfront.net/TNA_Wrestling.m3u8"),
+    ("DistroTV", "https://amg00966-amg00966c1-distrotv-us-7706.playouts.now.amagi.tv/playlist/amg00966-anthem-tnawrestling-distrotvus/playlist.m3u8"),
     ("Rakuten", "https://d39g1vxj2ef6in.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod-rakuten-stitched/master.m3u8?ads.xumo_channelId=88883039"),
     ("Pluto US", "https://jmp2.uk/plu-59b722526996084038c01e1b.m3u8"),
     ("Roku", "https://jmp2.uk/rok-6d8659091f745b8b864f438f06c56fae.m3u8"),
