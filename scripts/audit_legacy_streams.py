@@ -20,7 +20,7 @@ def candidates(path):
         if line.startswith("#EXTINF:"):
             header = line
         elif header and line.startswith(("http://", "https://")):
-            match = re.search(r'tvg-chno="(\\d+)"', header)
+            match = re.search(r'tvg-chno="([0-9]+)"', header)
             if match:
                 number = int(match.group(1))
                 host = urlsplit(line).hostname or ""
