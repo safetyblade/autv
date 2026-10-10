@@ -116,6 +116,9 @@ def replace_pluto_redirect(extinf: str, url: str, direct_by_id: dict) -> str:
         return url
     channel_id = attr(extinf, "tvg-id") or match.group(1)
     replacement = direct_by_id.get(channel_id)
+    if not replacement:
+        name = attr(extinf, "tvg-name") or extinf.rsplit(",", 1)[-1].strip()
+        replacement = direct_by_id.get("name:" + slug(name))
     if replacement:
         print(f"REPLACED legacy Pluto redirect for {channel_id} with refreshed provider URL")
         return replacement
@@ -126,7 +129,8 @@ def replace_pluto_redirect(extinf: str, url: str, direct_by_id: dict) -> str:
 def fresh_pluto_by_id(entries):
     """Use only source-provided authenticated HLS; never forge a token or source."""
     found = {}
-    for _, extinf, url in entries:
+    by_name = {}
+    for name, extinf, url in entries:
         channel_id = attr(extinf, "tvg-id")
         if (channel_id and
             "service-channel-stitcher" in url and
@@ -134,6 +138,12 @@ def fresh_pluto_by_id(entries):
             "/v2/stitch/hls/channel/" in url and
             "jwt=" in url):
             found.setdefault(channel_id, url)
+            key = "name:" + slug(attr(extinf, "tvg-name") or name)
+            by_name.setdefault(key, set()).add(url)
+    # Exact title fallback only where exactly one unique provider URL exists.
+    for key, urls in by_name.items():
+        if len(urls) == 1:
+            found[key] = next(iter(urls))
     return found
 
 def main():
