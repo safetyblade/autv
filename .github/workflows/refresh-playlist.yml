@@ -2,6 +2,9 @@ name: Refresh playlist
 
 on:
   workflow_dispatch:
+  schedule:
+    # Pluto v2 sessions can expire in 24h; refresh before expiry.
+    - cron: '17 */6 * * *'
 
 permissions:
   contents: write
@@ -46,6 +49,9 @@ jobs:
 
       - name: Apply channel guide
         run: python3 scripts/apply_guide.py
+
+      - name: Validate Pluto JWT freshness before publishing
+        run: python3 scripts/check_pluto_freshness.py playlist.m3u
 
       - name: Build combined EPG
         run: python3 scripts/build_epg.py
