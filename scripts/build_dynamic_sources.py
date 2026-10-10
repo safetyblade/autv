@@ -20,7 +20,7 @@ TNA_203 = [
     ("Roku", "https://jmp2.uk/rok-6d8659091f745b8b864f438f06c56fae.m3u8"),
 ]
 
-def read_url(url: str, max_bytes: int = 65536) -> tuple[str, bytes]:
+def read_url(url: str, max_bytes: int = 65536, allow_partial: bool = False) -> tuple[str, bytes]:
     """Fetch bounded data; return final URL so relative HLS references resolve."""
     request = urllib.request.Request(
         url,
@@ -32,8 +32,8 @@ def read_url(url: str, max_bytes: int = 65536) -> tuple[str, bytes]:
     with urllib.request.urlopen(request, timeout=TIMEOUT) as response:
         if not 200 <= response.status < 300:
             raise ValueError(f"HTTP {response.status}")
-        data = response.read(max_bytes + 1)
-        if len(data) > max_bytes:
+        data = response.read(max_bytes if allow_partial else max_bytes + 1)
+        if not allow_partial and len(data) > max_bytes:
             raise ValueError("Response exceeds inspection limit")
         return response.url, data
 
@@ -61,7 +61,7 @@ def valid_hls(url: str) -> bool:
                 raise ValueError("No media segment URL")
             segment_url = urllib.parse.urljoin(resolved, segments[0])
             # A bounded sample checks availability, not playback compatibility.
-            _, sample = read_url(segment_url, max_bytes=8192)
+            _, sample = read_url(segment_url, max_bytes=8192, allow_partial=True)
             if not sample:
                 raise ValueError("Empty media segment")
             return True
