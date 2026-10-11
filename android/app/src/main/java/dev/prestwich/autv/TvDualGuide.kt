@@ -232,7 +232,7 @@ internal fun TvDualGuide(
                             Row(Modifier.fillMaxWidth().height(rowHeight).padding(vertical = 2.dp)
                                 .background(if (focused) GuideAccent.copy(alpha = 0.16f) else androidx.compose.ui.graphics.Color.Transparent, RoundedCornerShape(6.dp))
                                 .border(if (focused) 3.dp else 1.dp, if (focused) GuideAccent else GuideAccent.copy(alpha = 0.12f), RoundedCornerShape(6.dp))
-                                .semantics { this.selected = channel.number == playing?.number; this.focused = focused; contentDescription = "${channel.number} ${channel.name}${if (channel.number == playing?.number) ", playing" else ""}" }
+                                .semantics { this.selected = channel.number == playing?.number; this.focused = focused; contentDescription = "${channel.number} ${channel.name}${if (channel.number == playing?.number) ", playing" else ""}${current?.title?.let { " · $it" } ?: ""}" }
                                 .testTag("channel-${channel.number}"), verticalAlignment = Alignment.CenterVertically) {
                                 Row(Modifier.width(if (full) 220.dp else 260.dp).fillMaxHeight().then(if (full && focused && channelCell) Modifier.border(3.dp, GuideAccent) else Modifier)
                                     .testTag("channel-cell-${channel.number}")
@@ -253,7 +253,8 @@ internal fun TvDualGuide(
                                     Text(current?.title ?: "Schedule unavailable", maxLines = 1, overflow = TextOverflow.Ellipsis)
                                     if (current != null) {
                                         Text("${guideClock(current.start)} – ${guideClock(current.stop)}", style = MaterialTheme.typography.labelSmall)
-                                        LinearProgressIndicator(progress = { Timeline.fraction(now, current.start, current.stop - current.start) }, modifier = Modifier.fillMaxWidth().height(3.dp).testTag("programme-progress"))
+                                        val pct = (Timeline.fraction(now, current.start, current.stop - current.start) * 100).toInt()
+                                        LinearProgressIndicator(progress = { Timeline.fraction(now, current.start, current.stop - current.start) }, modifier = Modifier.fillMaxWidth().height(3.dp).semantics { contentDescription = "Programme progress, $pct% complete" }.testTag("programme-progress"))
                                     }
                                 }
                             }
