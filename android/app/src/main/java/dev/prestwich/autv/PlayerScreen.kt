@@ -47,6 +47,7 @@ import coil.compose.AsyncImage
 import com.google.android.gms.cast.framework.CastButtonFactory
 import com.google.android.gms.cast.framework.CastContext
 import dev.prestwich.autv.data.*
+import dev.prestwich.autv.guide.FavouriteIdentity
 import dev.prestwich.autv.guide.GuideBrowse
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -71,7 +72,9 @@ internal fun AuTvScreen(
     onFullSelect: (Channel) -> Unit = onSelect,
     pictureInPicture: Boolean = false, notice: String? = null, onTuneNumber: (Int) -> Unit = {},
     castPlayback: dev.prestwich.autv.guide.CastPlayback = dev.prestwich.autv.guide.CastPlayback(),
+    favourites: Set<String> = emptySet(), onFavourite: (Channel) -> Unit = {},
 ) {
+    val categories = remember { listOf("All", "Favourites") + GuideBrowse.categories.drop(1) }
     val isTv = LocalConfiguration.current.uiMode and Configuration.UI_MODE_TYPE_MASK == Configuration.UI_MODE_TYPE_TELEVISION
     val landscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
     val keyboardOpen = guideOpen && !isTv && WindowInsets.isImeVisible
@@ -99,6 +102,9 @@ internal fun AuTvScreen(
     var chrome by remember { mutableStateOf(true) }
     var interaction by remember { mutableIntStateOf(0) }
     var wakeKey by remember { mutableIntStateOf(-1) }
+    var playbackControl by remember { mutableIntStateOf(0) }
+    var pressedControl by remember { mutableIntStateOf(0) }
+    var okWakesOnly by remember { mutableStateOf(false) }
     var digits by remember { mutableStateOf("") }
     LaunchedEffect(digits) {
         if (digits.isNotEmpty()) { delay(1_500); digits.toIntOrNull()?.let(onTuneNumber); digits = "" }
@@ -111,17 +117,17 @@ internal fun AuTvScreen(
         scope.launch {
             listState.scrollToItem(0)
             if (isTv) {
-                categoryState.scrollToItem(GuideBrowse.categories.indexOf(value).coerceAtLeast(0))
+                categoryState.scrollToItem(categories.indexOf(value).coerceAtLeast(0))
                 categoryFocus.requestFocus()
             }
         }
         wake()
     }
-    val channelsByCategory = remember(guide) {
+    val channelsByCategory = remember(guide, favourites) {
         val channels = guide?.channels.orEmpty()
         buildMap<String, List<Channel>> {
             put("All", channels)
-            GuideBrowse.categories.drop(1).forEach { genre -> put(genre, channels.filter { it.genre == genre }) }
+            categories.drop(1).forEach { genre -> put(genre, channels.filter { if (genre == "Favourites") FavouriteIdentity.contains(it, favourites) else it.genre == genre }) }
         }
     }
     val categoryChannels = channelsByCategory[category].orEmpty()
@@ -166,10 +172,10 @@ internal fun AuTvScreen(
             if (isTv) inputMode.requestInputMode(InputMode.Keyboard)
             query = ""
             committedQuery = ""
-            category = if (isTv) selected?.genre?.takeIf { it in GuideBrowse.categories } ?: "All"
+            category = if (isTv) selected?.genre?.takeIf { it in categories } ?: "All"
                 else GuideBrowse.categoryForPlaying(category, selected)
             withFrameNanos { }
-            categoryState.scrollToItem(GuideBrowse.categories.indexOf(category).coerceAtLeast(0))
+            categoryState.scrollToItem(categories.indexOf(category).coerceAtLeast(0))
             val rows = GuideBrowse.filter(guide?.channels.orEmpty(), category, "", epg, now)
             val index = rows.indexOfFirst { it.number == selected?.number }
             if (index >= 0) {
@@ -186,6 +192,14 @@ internal fun AuTvScreen(
         } else { withFrameNanos { }; if (isTv) guideControlFocus.requestFocus() else rootFocus.requestFocus() }
     }
     val playable = guide?.channels?.any { !it.streamUrl.isNullOrBlank() } == true
+    val playbackOkActive = isTv && !guideOpen && digits.isEmpty() && !pictureInPicture && windowFocused
+    val playbackOk = rememberRemoteOk(onShort = {
+        if (!okWakesOnly) when (pressedControl) {
+            1 -> if (playable) onPrevious()
+            2 -> onOpenGuide()
+            3 -> if (playable) onNext()
+        }
+    }, onLong = { selected?.let(onFavourite) }, active = playbackOkActive)
     MaterialTheme(colorScheme = darkColorScheme(primary = Silver, onPrimary = Ink, background = Ink, surface = Glass,
         onSurface = WarmWhite, onSurfaceVariant = Muted, outline = Color(0xFF595B62),
         primaryContainer = Color(0xFF34343B), onPrimaryContainer = WarmWhite,
@@ -195,7 +209,18 @@ internal fun AuTvScreen(
             Box(Modifier.fillMaxSize().background(Color.Black).semantics { testTagsAsResourceId = true }
                 .then(if (isTv) Modifier else Modifier.pointerInput(Unit) { awaitEachGesture { awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial); wake() } })
                 .onPreviewKeyEvent { event ->
-                    if (event.nativeKeyEvent.action == KeyEvent.ACTION_UP && event.nativeKeyEvent.keyCode == wakeKey) {
+                    val key = event.nativeKeyEvent
+                    if (playbackOkActive && key.action == KeyEvent.ACTION_DOWN && key.repeatCount == 0 &&
+                        key.keyCode in listOf(KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER)) {
+                        okWakesOnly = !chrome
+                        pressedControl = playbackControl
+                        wake()
+                    }
+                    if (playbackOk(key)) {
+                        if (event.nativeKeyEvent.action == KeyEvent.ACTION_UP) wakeKey = -1
+                        true
+                    }
+                    else if (event.nativeKeyEvent.action == KeyEvent.ACTION_UP && event.nativeKeyEvent.keyCode == wakeKey) {
                         wakeKey = -1; true
                     } else if (event.nativeKeyEvent.action != KeyEvent.ACTION_DOWN || event.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_BACK) false else {
                         val wasHidden = !chrome
@@ -213,10 +238,10 @@ internal fun AuTvScreen(
                             KeyEvent.KEYCODE_CHANNEL_DOWN -> { onPrevious(); true }
                             KeyEvent.KEYCODE_GUIDE, KeyEvent.KEYCODE_MENU -> { if (guideOpen && isTv) return@onPreviewKeyEvent false; if (guideOpen) onCloseGuide() else onOpenGuide(); true }
                             KeyEvent.KEYCODE_PAGE_UP, KeyEvent.KEYCODE_BUTTON_L1 -> {
-                                if (guideOpen && !isTv) { chooseCategory(GuideBrowse.categories[(GuideBrowse.categories.indexOf(category) - 1 + GuideBrowse.categories.size) % GuideBrowse.categories.size]); true } else false
+                                if (guideOpen && !isTv) { chooseCategory(categories[(categories.indexOf(category) - 1 + categories.size) % categories.size]); true } else false
                             }
                             KeyEvent.KEYCODE_PAGE_DOWN, KeyEvent.KEYCODE_BUTTON_R1 -> {
-                                if (guideOpen && !isTv) { chooseCategory(GuideBrowse.categories[(GuideBrowse.categories.indexOf(category) + 1) % GuideBrowse.categories.size]); true } else false
+                                if (guideOpen && !isTv) { chooseCategory(categories[(categories.indexOf(category) + 1) % categories.size]); true } else false
                             }
                             else -> if (!guideOpen && wasHidden && event.nativeKeyEvent.keyCode in listOf(KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_DPAD_UP, KeyEvent.KEYCODE_DPAD_DOWN, KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT)) {
                                 wakeKey = event.nativeKeyEvent.keyCode; true
@@ -252,15 +277,15 @@ internal fun AuTvScreen(
                                 if (digits.isNotEmpty()) Text("Tune $digits", color = Silver, modifier = Modifier.padding(end = 12.dp))
                                 if (!isTv) CastControl(false, onInteraction = { wake() }, compact = landscape)
                                 else if (!guideOpen) {
-                                    FocusButton("CH −", { wake(); onPrevious() }, Modifier.focusRequester(previousFocus).focusProperties { right = guideControlFocus }.semantics { contentDescription = "Previous channel" }.testTag("ch-minus"), playable)
-                                    FocusButton("Guide", { wake(); onOpenGuide() }, Modifier.padding(horizontal = 8.dp).focusRequester(guideControlFocus)
+                                    FocusButton("CH −", { wake(); onPrevious() }, Modifier.onFocusChanged { if (it.isFocused) playbackControl = 1 else if (playbackControl == 1) playbackControl = 0 }.focusRequester(previousFocus).focusProperties { right = guideControlFocus }.semantics { contentDescription = "Previous channel" }.testTag("ch-minus"), playable)
+                                    FocusButton("Guide", { wake(); onOpenGuide() }, Modifier.padding(horizontal = 8.dp).onFocusChanged { if (it.isFocused) playbackControl = 2 else if (playbackControl == 2) playbackControl = 0 }.focusRequester(guideControlFocus)
                                         .focusProperties { left = previousFocus; right = nextFocus }.semantics { contentDescription = "Open channel guide" }.testTag("guide-toggle"))
-                                    FocusButton("CH +", { wake(); onNext() }, Modifier.focusRequester(nextFocus).focusProperties { left = guideControlFocus }.semantics { contentDescription = "Next channel" }.testTag("ch-plus"), playable)
+                                    FocusButton("CH +", { wake(); onNext() }, Modifier.onFocusChanged { if (it.isFocused) playbackControl = 3 else if (playbackControl == 3) playbackControl = 0 }.focusRequester(nextFocus).focusProperties { left = guideControlFocus }.semantics { contentDescription = "Next channel" }.testTag("ch-plus"), playable)
                                 }
                             }
                             BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
                                 if (!guideOpen) Column(Modifier.align(Alignment.BottomStart).padding(bottom = 12.dp).widthIn(max = 640.dp)) {
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Row(Modifier.testTag("playing-channel").then(if (!isTv) Modifier.pointerInput(selected, onFavourite) { detectTapGestures(onLongPress = { selected?.let(onFavourite) }) } else Modifier), verticalAlignment = Alignment.CenterVertically) {
                                         ChannelLogo(selected, Modifier.size(52.dp))
                                         Column(Modifier.padding(start = 12.dp)) {
                                             Text(selected?.let { "${it.number}  ${it.name}" } ?: "Welcome to AUTV", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold)
@@ -313,7 +338,7 @@ internal fun AuTvScreen(
                                                 trailingIcon = { if (query.isNotEmpty()) TextButton(onClick = { query = ""; committedQuery = ""; wake() }, modifier = Modifier.semantics { contentDescription = "Clear search query" }) { Text("Clear") } }, shape = RoundedCornerShape(12.dp))
                                             LazyRow(state = categoryState, horizontalArrangement = Arrangement.spacedBy(6.dp), contentPadding = PaddingValues(end = 24.dp),
                                                 modifier = Modifier.padding(vertical = if (compact) 0.dp else 4.dp).testTag("guide-categories")) {
-                                                items(GuideBrowse.categories) { genre ->
+                                                items(categories) { genre ->
                                                     var focused by remember { mutableStateOf(false) }
                                                     FilterChip(selected = category == genre, onClick = { chooseCategory(genre) }, label = { Text(genre, style = MaterialTheme.typography.labelMedium) },
                                                         modifier = Modifier.then(if (category == genre) Modifier.focusRequester(categoryFocus) else Modifier)
@@ -339,7 +364,7 @@ internal fun AuTvScreen(
                                                                         up = searchFocus
                                                                     }
                                                                 }, compact = compact, tv = isTv,
-                                                            onFocused = { focusedGuideNumber = it.number }) { wake(); onSelect(it) }
+                                                            onFocused = { focusedGuideNumber = it.number }, onFavourite = onFavourite) { wake(); onSelect(it) }
                                                     }
                                                 }
                                             } else if (loadError) { Text("The guide could not be loaded."); Button(onClick = onRetry, modifier = Modifier.semantics { contentDescription = "Retry loading channel guide" }) { Text("Retry") } }
@@ -357,7 +382,7 @@ internal fun AuTvScreen(
                     }
                 }
                 if (isTv && !pictureInPicture) TvDualGuide(guideOpen, guide, selected, epg, now, failed,
-                    onTune = { wake(); onSelect(it) }, onFullTune = { wake(); onFullSelect(it) }, onClose = { wake(); onCloseGuide() }, onRetry = onRetry, loadError = loadError)
+                    onTune = { wake(); onSelect(it) }, onFullTune = { wake(); onFullSelect(it) }, onClose = { wake(); onCloseGuide() }, onRetry = onRetry, loadError = loadError, favourites = favourites, onFavourite = onFavourite)
             }
         }
     }
@@ -365,10 +390,10 @@ internal fun AuTvScreen(
 
 @Composable
 private fun ChannelRow(channel: Channel, selected: Boolean, failed: String?, schedule: NowNext, now: Long, modifier: Modifier,
-    compact: Boolean = false, tv: Boolean = false, onFocused: (Channel) -> Unit = {}, onSelect: (Channel) -> Unit) {
+    compact: Boolean = false, tv: Boolean = false, onFocused: (Channel) -> Unit = {}, onFavourite: (Channel) -> Unit = {}, onSelect: (Channel) -> Unit) {
     var focused by remember { mutableStateOf(false) }
     val known = !channel.streamUrl.isNullOrBlank()
-    Row(modifier.fillMaxWidth().focusProperties { canFocus = known }.onFocusChanged {
+    Row(modifier.fillMaxWidth().focusProperties { canFocus = true }.onFocusChanged {
             focused = it.isFocused
             if (it.isFocused) onFocused(channel)
         }
@@ -378,7 +403,7 @@ private fun ChannelRow(channel: Channel, selected: Boolean, failed: String?, sch
         }
         .background(if (focused && tv) Silver.copy(alpha = 0.22f) else if (selected || focused) Color.White.copy(alpha = 0.075f) else Color.Black.copy(alpha = 0.18f), RoundedCornerShape(12.dp))
         .border(if (focused && tv) 3.dp else if (focused) 2.dp else 1.dp, if (focused) WarmWhite else if (selected) Silver.copy(alpha = 0.55f) else Color.White.copy(alpha = 0.06f), RoundedCornerShape(12.dp))
-        .clickable(enabled = known) { onSelect(channel) }.padding(if (compact) 6.dp else 10.dp).testTag("channel-${channel.number}"), verticalAlignment = Alignment.Top) {
+        .combinedClickable(onLongClick = { onFavourite(channel) }, onClick = { if (known) onSelect(channel) }).padding(if (compact) 6.dp else 10.dp).testTag("channel-${channel.number}"), verticalAlignment = Alignment.Top) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             ChannelLogo(channel, Modifier.size(if (compact) 32.dp else if (tv) 48.dp else 44.dp))
             Text(channel.number.toString(), color = Silver, style = MaterialTheme.typography.labelMedium, modifier = Modifier.padding(top = 4.dp))

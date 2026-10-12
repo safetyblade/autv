@@ -48,8 +48,9 @@ class DualGuideInteractionTest {
     }
     private fun key(code: Int, repeat: Int = 0) {
         compose.runOnUiThread {
-            compose.activity.dispatchKeyEvent(KeyEvent(0, 0, KeyEvent.ACTION_DOWN, code, repeat))
-            compose.activity.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, code))
+            val time = android.os.SystemClock.uptimeMillis()
+            compose.activity.dispatchKeyEvent(KeyEvent(time, time, KeyEvent.ACTION_DOWN, code, repeat))
+            compose.activity.dispatchKeyEvent(KeyEvent(time, time + 1, KeyEvent.ACTION_UP, code, 0))
         }
         compose.waitForIdle()
     }

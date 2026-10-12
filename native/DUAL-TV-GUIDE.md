@@ -1,7 +1,7 @@
 # Android TV dual guide
 
 The TV player retains its existing Media3 instance while either guide is open.
-The handset guide is unchanged.
+The handset guide retains its existing layout and supports local Favourites.
 
 - **Guide/Menu:** open Quick Guide, then switch Quick Guide ↔ Full EPG.
 - **Up/Down:** move between channels. Up from the first channel enters categories;
@@ -80,3 +80,33 @@ genre boundaries, row alignment, current/channel/missing/future selection and Ba
 `FullEpgPlaybackRecoveryTest` exercises a retained Media3 player with a valid local
 asset and a missing asset. These are instrumentation tests requiring an Android
 runtime; compilation alone does not establish that they pass on a device.
+
+## Device-local Favourites
+
+- **Hold OK / Enter** on playback to toggle the playing channel. In either TV
+  guide, hold OK on a channel/programme row to toggle that row's channel.
+- A short OK executes on release and retains tune/select behaviour. A consumed
+  long press cannot also tune or open a guide on release. Remotes with repeated
+  downs, a long-press flag, or no repeats use the Android long-press timeout.
+  Other directional/shortcut input and window loss cancel a pending hold.
+- Confirmation is a brief Android toast: **Added to Favourites** or
+  **Removed from Favourites**. No permanent player controls or row stars are added.
+- Open a guide and select **Favourites**, immediately after **All**, using the
+  existing category controls (Up from the first row, then Left/Right; OK returns
+  to channels). Existing Page/L1/R1 category shortcuts include this category.
+  Guide/Menu, CH keys and number keys keep their mappings; no button is reassigned.
+- On phone/tablet, long-press a guide channel row or the playing-channel heading.
+  Unavailable rows can be saved and removed too; a short tap requires a known stream.
+
+Membership alone is saved in device SharedPreferences `favourites-v1`. No account,
+server, sync, database dependency or second channel catalogue is introduced.
+Provider `tvgId` is canonical; repeated rows with the same ID deliberately share
+membership. Display names, descriptions, categories, channel numbers and stream
+credentials do not affect this identity. Without an ID, a SHA-256 key of the URL
+retains routing parameters and omits known rotating credentials. If that fallback
+URL changes, identity cannot be guaranteed. With neither ID nor URL the app reports
+that a stable identity is not available, rather than guessing from a title/number.
+Saved keys remain when a channel disappears or becomes unavailable and match again
+when its canonical identity returns. Favourites filters the existing catalogue in
+its original order, with unchanged EPG lookup and playback callbacks. Broken streams
+are not fixed or silently removed by this feature.

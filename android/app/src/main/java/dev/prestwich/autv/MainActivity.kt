@@ -37,6 +37,7 @@ open class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null && ChannelIntents.isTuneRequest(intent)) playback.request(ChannelIntents.target(intent))
         pipUi = Build.VERSION.SDK_INT >= 26 && isInPictureInPictureMode
         setContent {
+            val favourites = remember { Favourites(applicationContext) }
             LaunchedEffect(playback.castPlayback) { updatePipParams() }
             AuTvScreen(playback.guide, playback.selected, playback.guideOpen, playback.loadError,
                 playback.failed.toMap(), playback.buffering, playback.epg, playback.player,
@@ -46,7 +47,8 @@ open class MainActivity : AppCompatActivity() {
                 onChromeVisibilityChanged = { visible -> setPlayerSystemBars(window, visible) },
                 onRetry = playback::reload, onNext = playback::next, onPrevious = playback::previous,
                 onTuneNumber = { playback.request(TuneTarget.Number(it)) }, pictureInPicture = pipUi, notice = playback.notice,
-                castPlayback = playback.castPlayback)
+                castPlayback = playback.castPlayback, favourites = favourites.keys,
+                onFavourite = { favouriteConfirmation(applicationContext, favourites.toggle(it)) })
         }
         updatePipParams()
     }
