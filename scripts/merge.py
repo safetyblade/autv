@@ -82,10 +82,16 @@ def xml_escape(value: str) -> str:
     return escape(value or "", entities={'"': '&quot;', "'": '&apos;'})
 
 def normalise(name: str, extinf: str, url: str):
-    tvg_name = attr(extinf, "tvg-name") or name
-    tvg_logo = attr(extinf, "tvg-logo")
-    group = attr(extinf, "group-title") or "Australia"
-    tvg_id = attr(extinf, "tvg-id") or f"autv.{slug(name)}"
+    # Sanitize inputs to prevent M3U attribute breakout and line injection vulnerabilities
+    clean_line = lambda s: str(s or "").replace("\r", " ").replace("\n", " ")
+    clean_attr = lambda s: clean_line(s).replace('"', "'")
+
+    tvg_name = clean_attr(attr(extinf, "tvg-name") or name)
+    tvg_logo = clean_attr(attr(extinf, "tvg-logo"))
+    group = clean_attr(attr(extinf, "group-title") or "Australia")
+    tvg_id = clean_attr(attr(extinf, "tvg-id") or f"autv.{slug(name)}")
+    safe_name = clean_line(name)
+    safe_url = clean_line(url)
 
     fields = [
         f'tvg-id="{tvg_id}"',
@@ -95,7 +101,7 @@ def normalise(name: str, extinf: str, url: str):
         fields.append(f'tvg-logo="{tvg_logo}"')
     fields.append(f'group-title="{group}"')
 
-    m3u = f'#EXTINF:-1 {" ".join(fields)},{name}\n{url}'
+    m3u = f'#EXTINF:-1 {" ".join(fields)},{safe_name}\n{safe_url}'
     xml = {"id": tvg_id, "name": tvg_name, "logo": tvg_logo}
     return m3u, xml
 
