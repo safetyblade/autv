@@ -25,5 +25,10 @@ class TestApplyGuideSecurity(unittest.TestCase):
         result = set_attr(extinf, "group-title", "News")
         self.assertIn('group-title="News"', result)
 
+    def test_canonical_normalization(self):
+        from scripts.apply_guide import canonical
+        self.assertEqual(canonical("101  SpongeBob (AU) geo "), "spongebob")
+        self.assertEqual(canonical("Rock & Roll"), "rock and roll")
+
 if __name__ == "__main__":
     unittest.main()
