@@ -21,10 +21,7 @@ class TestPlutoReplacement(unittest.TestCase):
         self.assertEqual(replace_pluto_redirect(EXT, roku, {ID: DIRECT}), roku)
 
     def test_direct_source_lookup_requires_authenticated_v2(self):
-        self.assertEqual(
-            fresh_pluto_by_id([("SpongeBob", EXT, DIRECT)]),
-            {ID: DIRECT, "name:spongebob-squarepants": DIRECT},
-        )
+        self.assertEqual(fresh_pluto_by_id([("SpongeBob", EXT, DIRECT)]), {ID: DIRECT, "name:spongebob-squarepants": DIRECT})
         self.assertEqual(fresh_pluto_by_id([("SpongeBob", EXT, REDIRECT)]), {})
 
 if __name__ == "__main__":
