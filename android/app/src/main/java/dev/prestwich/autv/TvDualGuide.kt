@@ -307,6 +307,10 @@ private fun TimelineRow(schedule: List<Programme>, window: Long, now: Long, sele
             Box(Modifier.offset(x = width * block.first).width(width * block.second).fillMaxHeight().padding(2.dp)
                 .background(GuideAccent.copy(alpha = if (focused) 0.2f else 0.06f), RoundedCornerShape(4.dp))
                 .border(if (focused) 3.dp else 1.dp, if (focused) GuideAccent else GuideAccent.copy(alpha = 0.2f), RoundedCornerShape(4.dp))
+                .semantics {
+                    this.selected = focused
+                    contentDescription = "${item.title}, ${guideClock(item.start)} to ${guideClock(item.stop)}${if (Timeline.airing(item, now)) ", live" else ""}"
+                }
                 .clickable { select(item) }.testTag("programme-${item.start}"), contentAlignment = Alignment.CenterStart) {
                 Text(item.title, Modifier.padding(6.dp), maxLines = 2, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.bodySmall)
             }

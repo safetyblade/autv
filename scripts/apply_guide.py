@@ -45,14 +45,15 @@ def set_name(extinf, name):
     return re.sub(r",(.*)$", lambda _: f",{safe_name}", extinf)
 
 def canonical(value):
+    # Normalize string to canonical representation to ensure secure matching and prevent validation bypass
     value = unicodedata.normalize("NFKD", value or "").encode("ascii", "ignore").decode()
     value = value.casefold().strip()
-    value = re.sub(r"^\\d+\\s+", "", value)
-    value = re.sub(r"\\s*\\((?:australia|au)\\)\\s*", " ", value)
-    value = re.sub(r"\\s+geo\\b", " ", value)
+    value = re.sub(r"^\d+\s+", "", value)
+    value = re.sub(r"\s*\((?:australia|au)\)\s*", " ", value)
+    value = re.sub(r"\s+geo\b", " ", value)
     value = value.replace("&", " and ")
     value = re.sub(r"[^a-z0-9]+", " ", value)
-    return re.sub(r"\\s+", " ", value).strip()
+    return re.sub(r"\s+", " ", value).strip()
 
 with GUIDE.open(newline="", encoding="utf-8-sig") as handle:
     rows = list(csv.DictReader(handle))
