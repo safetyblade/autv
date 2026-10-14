@@ -6,6 +6,15 @@ import unicodedata
 PLAYLIST = Path("playlist.m3u")
 GUIDE = Path("channel_guide.csv")
 
+# Compiled regexes for canonical string normalization and attribute parsing performance
+RE_LEADING_DIGITS = re.compile(r"^\d+\s+")
+RE_AU_SUFFIX = re.compile(r"\s*\((?:australia|au)\)\s*")
+RE_GEO = re.compile(r"\s+geo\b")
+RE_NON_ALPHANUM = re.compile(r"[^a-z0-9]+")
+RE_SPACES = re.compile(r"\s+")
+RE_NAME = re.compile(r",(.*)$")
+_ATTR_REGEX_CACHE = {}
+
 def parse_entries(text):
     lines = text.splitlines()
     header = next((line for line in lines if line.startswith("#EXTM3U")), "#EXTM3U")
@@ -22,8 +31,9 @@ def parse_entries(text):
                     url = candidate
                     break
                 j += 1
-            name_match = re.search(r",(.*)$", line)
-            name = name_match.group(1).strip() if name_match else ""
+            # Performance optimization: str.find is faster than regex search
+            idx = line.find(",")
+            name = line[idx + 1:].strip() if idx != -1 else ""
             entries.append((name, line, url))
             i = j + 1
         else:
@@ -33,27 +43,29 @@ def parse_entries(text):
 def set_attr(extinf, key, value):
     # Sanitize value to prevent attribute breakout and line injection
     safe_value = str(value).replace("\r", " ").replace("\n", " ").replace('"', "'")
-    pattern = rf'{re.escape(key)}="[^"]*"'
-    if re.search(pattern, extinf):
-        # Use callable replacement to prevent regex backreference injection (e.g. \1)
-        return re.sub(pattern, lambda _: f'{key}="{safe_value}"', extinf)
+    if key not in _ATTR_REGEX_CACHE:
+        _ATTR_REGEX_CACHE[key] = re.compile(rf'{re.escape(key)}="[^"]*"')
+    # Performance optimization: subn performs single-pass search and sub, eliminating re.search overhead
+    new_extinf, count = _ATTR_REGEX_CACHE[key].subn(lambda _: f'{key}="{safe_value}"', extinf)
+    if count > 0:
+        return new_extinf
     return extinf.replace("#EXTINF:-1", f'#EXTINF:-1 {key}="{safe_value}"', 1)
 
 def set_name(extinf, name):
     # Sanitize name to prevent line injection and use callable replacement for backreference safety
     safe_name = str(name).replace("\r", " ").replace("\n", " ")
-    return re.sub(r",(.*)$", lambda _: f",{safe_name}", extinf)
+    return RE_NAME.sub(lambda _: f",{safe_name}", extinf)
 
 def canonical(value):
     # Normalize string to canonical representation to ensure secure matching and prevent validation bypass
     value = unicodedata.normalize("NFKD", value or "").encode("ascii", "ignore").decode()
     value = value.casefold().strip()
-    value = re.sub(r"^\d+\s+", "", value)
-    value = re.sub(r"\s*\((?:australia|au)\)\s*", " ", value)
-    value = re.sub(r"\s+geo\b", " ", value)
+    value = RE_LEADING_DIGITS.sub("", value)
+    value = RE_AU_SUFFIX.sub(" ", value)
+    value = RE_GEO.sub(" ", value)
     value = value.replace("&", " and ")
-    value = re.sub(r"[^a-z0-9]+", " ", value)
-    return re.sub(r"\s+", " ", value).strip()
+    value = RE_NON_ALPHANUM.sub(" ", value)
+    return RE_SPACES.sub(" ", value).strip()
 
 with GUIDE.open(newline="", encoding="utf-8-sig") as handle:
     rows = list(csv.DictReader(handle))
