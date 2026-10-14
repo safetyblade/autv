@@ -1,4 +1,5 @@
 import copy
+import functools
 from pathlib import Path
 import csv
 import gzip
@@ -38,15 +39,23 @@ ANDROID_GENRE = {
     "Music": "Music",
 }
 
+# Compiled regexes and LRU caching for canonical string normalization performance
+RE_LEADING_DIGITS = re.compile(r"^\d+\s+")
+RE_AU_SUFFIX = re.compile(r"\s*\((?:australia|au)\)\s*")
+RE_GEO = re.compile(r"\s+geo\b")
+RE_NON_ALPHANUM = re.compile(r"[^a-z0-9]+")
+RE_SPACES = re.compile(r"\s+")
+
+@functools.lru_cache(maxsize=1024)
 def canonical(value: str) -> str:
     value = unicodedata.normalize("NFKD", value or "").encode("ascii", "ignore").decode()
     value = value.casefold().strip()
-    value = re.sub(r"^\d+\s+", "", value)
-    value = re.sub(r"\s*\((?:australia|au)\)\s*", " ", value)
-    value = re.sub(r"\s+geo\b", " ", value)
+    value = RE_LEADING_DIGITS.sub("", value)
+    value = RE_AU_SUFFIX.sub(" ", value)
+    value = RE_GEO.sub(" ", value)
     value = value.replace("&", " and ")
-    value = re.sub(r"[^a-z0-9]+", " ", value)
-    return re.sub(r"\s+", " ", value).strip()
+    value = RE_NON_ALPHANUM.sub(" ", value)
+    return RE_SPACES.sub(" ", value).strip()
 
 def attr(line: str, key: str) -> str:
     marker = f'{key}="'
@@ -136,14 +145,15 @@ fallback_matches = {}
 missing = []
 
 for target_id, target_name in playlist:
-    guide_genre = guide_genre_by_name.get(canonical(target_name), "")
+    target_canonical = canonical(target_name)
+    guide_genre = guide_genre_by_name.get(target_canonical, "")
     android_category = ANDROID_GENRE.get(guide_genre, "Entertainment")
 
     source_id = target_id if target_id in source_channels else None
 
     if source_id is None:
         candidates = [
-            cid for cid in source_names.get(canonical(target_name), set())
+            cid for cid in source_names.get(target_canonical, set())
             if programmes_by_id.get(cid)
         ]
         if len(candidates) == 1:

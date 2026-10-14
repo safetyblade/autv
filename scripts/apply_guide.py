@@ -1,3 +1,4 @@
+import functools
 from pathlib import Path
 import csv
 import re
@@ -56,8 +57,9 @@ def set_name(extinf, name):
     safe_name = str(name).replace("\r", " ").replace("\n", " ")
     return RE_NAME.sub(lambda _: f",{safe_name}", extinf)
 
+@functools.lru_cache(maxsize=1024)
 def canonical(value):
-    # Normalize string to canonical representation to ensure secure matching and prevent validation bypass
+    # Performance optimization: @lru_cache avoids redundant string normalization during guide matching
     value = unicodedata.normalize("NFKD", value or "").encode("ascii", "ignore").decode()
     value = value.casefold().strip()
     value = RE_LEADING_DIGITS.sub("", value)

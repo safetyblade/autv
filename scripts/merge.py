@@ -1,3 +1,4 @@
+import functools
 from pathlib import Path
 import re
 import unicodedata
@@ -62,6 +63,10 @@ def parse_entries(text: str):
             i += 1
     return entries
 
+# Compiled regexes for slug formatting and Pluto redirect replacement performance
+RE_SLUG = re.compile(r"[^a-zA-Z0-9]+")
+RE_PLUTO_REDIRECT = re.compile(r"https?://jmp2[.]uk/plu-([a-zA-Z0-9]+)[.]m3u8(?:[?].*)?")
+
 def attr(extinf: str, key: str) -> str:
     # Fast string search for key="value" pattern in M3U lines, avoiding ~5.5x regex overhead
     marker = f'{key}="'
@@ -72,9 +77,10 @@ def attr(extinf: str, key: str) -> str:
     end = extinf.find('"', start)
     return extinf[start:end] if end != -1 else ""
 
+@functools.lru_cache(maxsize=1024)
 def slug(value: str) -> str:
     value = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode()
-    value = re.sub(r"[^a-zA-Z0-9]+", "-", value).strip("-").lower()
+    value = RE_SLUG.sub("-", value).strip("-").lower()
     return value or "channel"
 
 def xml_escape(value: str) -> str:
@@ -118,7 +124,7 @@ def add_selected(source_name: str, entries, selected_file: Path, extras, xml_cha
 
 def replace_pluto_redirect(extinf: str, url: str, direct_by_id: dict) -> str:
     """Prefer freshly acquired authenticated Pluto HLS over old jmp2 Pluto redirects."""
-    match = re.fullmatch(r"https?://jmp2[.]uk/plu-([a-zA-Z0-9]+)[.]m3u8(?:[?].*)?", url)
+    match = RE_PLUTO_REDIRECT.fullmatch(url)
     if not match:
         return url
     channel_id = attr(extinf, "tvg-id") or match.group(1)
