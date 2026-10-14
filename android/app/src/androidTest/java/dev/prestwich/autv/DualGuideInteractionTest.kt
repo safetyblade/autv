@@ -119,4 +119,10 @@ class DualGuideInteractionTest {
         key(KeyEvent.KEYCODE_BACK)
         compose.onNodeWithTag("guide-panel").assertDoesNotExist()
     }
+    @Test fun searchDialogHasAccessibleContentDescriptionAndPlaceholder() {
+        launch()
+        compose.onNodeWithTag("guide-action-1").performClick()
+        compose.onNodeWithTag("guide-search")
+            .assertContentDescriptionEquals("Search channels or programmes")
+    }
 }
