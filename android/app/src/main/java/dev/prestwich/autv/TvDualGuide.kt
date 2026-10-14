@@ -236,10 +236,11 @@ internal fun TvDualGuide(
                         items(channels, key = { it.number }) { channel ->
                             val focused = zone == GuideZone.CHANNELS && channel.number == selected?.number
                             val current = epg.at(channel, now).now
+                            val isFav = FavouriteIdentity.contains(channel, favourites)
                             Row(Modifier.fillMaxWidth().height(rowHeight).padding(vertical = 2.dp)
                                 .background(if (focused) GuideAccent.copy(alpha = 0.16f) else androidx.compose.ui.graphics.Color.Transparent, RoundedCornerShape(6.dp))
                                 .border(if (focused) 3.dp else 1.dp, if (focused) GuideAccent else GuideAccent.copy(alpha = 0.12f), RoundedCornerShape(6.dp))
-                                .semantics { this.selected = channel.number == playing?.number; this.focused = focused; contentDescription = "${channel.number} ${channel.name}${if (channel.number == playing?.number) ", playing" else ""}${current?.title?.let { " · $it" } ?: ""}" }
+                                .semantics { this.selected = channel.number == playing?.number; this.focused = focused; contentDescription = "${channel.number} ${channel.name}${if (channel.number == playing?.number) ", playing" else ""}${if (isFav) ", favourite" else ""}${current?.title?.let { " · $it" } ?: ""}" }
                                 .testTag("channel-${channel.number}"), verticalAlignment = Alignment.CenterVertically) {
                                 Row(Modifier.width(if (full) 220.dp else 260.dp).fillMaxHeight().then(if (full && focused && channelCell) Modifier.border(3.dp, GuideAccent) else Modifier)
                                     .testTag("channel-cell-${channel.number}")
@@ -248,7 +249,10 @@ internal fun TvDualGuide(
                                         AsyncImage(channel.logoUrl, "${channel.name} logo", Modifier.fillMaxSize(), placeholder = painterResource(R.drawable.autv_logo), error = painterResource(R.drawable.autv_logo))
                                     }
                                     Column(Modifier.padding(start = 8.dp)) {
-                                        Text("${channel.number}  ${channel.name}", fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Text("${channel.number}  ${channel.name}", fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false))
+                                            if (isFav) Text(" ★", color = androidx.compose.ui.graphics.Color(0xFFFFD700), style = MaterialTheme.typography.labelSmall)
+                                        }
                                         if (channel.number == playing?.number) Text("PLAYING", style = MaterialTheme.typography.labelSmall)
                                         if (channel.streamUrl.isNullOrBlank()) Text("Unavailable", style = MaterialTheme.typography.labelSmall)
                                         if (failed[channel.number] != null) Text("Playback failed · OK to retry", style = MaterialTheme.typography.labelSmall)

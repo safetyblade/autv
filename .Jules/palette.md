@@ -5,3 +5,7 @@
 ## 2025-05-19 - Content Description in Composite List Items
 **Learning:** When custom Compose list rows contain nested metadata (like channel number, name, and current show title), setting `contentDescription` on the parent row must combine the channel details with the current programme title (`schedule.now?.title`) so TalkBack announces full context in a single utterance rather than skipping nested show info.
 **Action:** Always include live programme titles alongside channel metadata in row-level `contentDescription` semantics for EPG channel list items.
+
+## 2025-05-20 - Favourite State Indicators in List Items
+**Learning:** When item states (like favourite status) can be toggled in lists, pairing a visual badge (e.g. `★`) with explicit `, favourite` phrasing in the row's `contentDescription` semantics ensures TalkBack users receive immediate state feedback alongside visual users when navigating channels.
+**Action:** Always append state descriptions (like `, favourite`) to composite item `contentDescription` semantics when state indicators are added visually to row components.
