@@ -101,9 +101,18 @@ def normalise(name: str, extinf: str, url: str):
 
 def add_selected(source_name: str, entries, selected_file: Path, extras, xml_channels, direct_pluto=None):
     missing = []
+    # Performance optimization: pre-casefold entry names once to avoid repeated O(N) casefold scans.
+    # exact_map with setdefault provides O(1) exact match lookup while preserving first-match semantics.
+    cf_entries = [(e[0].casefold(), e) for e in entries]
+    exact_map = {}
+    for cf_name, e in cf_entries:
+        exact_map.setdefault(cf_name, e)
+
     for name in wanted(selected_file):
-        exact = next((e for e in entries if e[0].casefold() == name.casefold()), None)
-        match = exact or next((e for e in entries if name.casefold() in e[0].casefold()), None)
+        name_cf = name.casefold()
+        match = exact_map.get(name_cf)
+        if not match:
+            match = next((e for cf_name, e in cf_entries if name_cf in cf_name), None)
 
         if match:
             m3u, xml = normalise(match[0], match[1], replace_pluto_redirect(match[1], match[2], direct_pluto or {}))
