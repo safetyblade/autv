@@ -9,8 +9,8 @@
     "epg": "https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz",
     "guide": "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
   },
-  "activeCount": 642,
-  "availableCount": 609,
+  "activeCount": 644,
+  "availableCount": 611,
   "channels": [
     {
       "number": 100,
@@ -1462,6 +1462,18 @@
       "available": true,
       "streamUrl": "https://therokuchannel.roku.com/watch/439096119777e0f33894343b551bece4",
       "tvgId": "439096119777e0f33894343b551bece4",
+      "logoUrl": null
+    },
+    {
+      "number": 298,
+      "name": "ESTV",
+      "genre": "Sport",
+      "subgenre": "Gaming & Esports",
+      "description": "Esports TV 24/7 FAST candidate; Australian playback not yet verified.",
+      "epg": "Channel only",
+      "available": true,
+      "streamUrl": "https://estv-rakuten-samsung.amagi.tv/playlist.m3u8",
+      "tvgId": "ESTV.us",
       "logoUrl": null
     },
     {
@@ -5003,6 +5015,18 @@
       "streamUrl": "https://jmp2.uk/plu-636adc255bcf470007d6e0e2.m3u8",
       "tvgId": "636adc255bcf470007d6e0e2",
       "logoUrl": "https://images.pluto.tv/channels/638e10220aa6a6000726979f/colorLogoPNG.png"
+    },
+    {
+      "number": 847,
+      "name": "Shout! TV",
+      "genre": "Entertainment",
+      "subgenre": "Broad Entertainment Networks",
+      "description": "Shout! TV movies and classic/cult television FAST candidate; Australian playback not yet verified.",
+      "epg": "Channel only",
+      "available": true,
+      "streamUrl": "https://shoutfactory-xumo.amagi.tv/playlist.m3u8",
+      "tvgId": "ShoutFactoryTV.us",
+      "logoUrl": null
     },
     {
       "number": 1000,

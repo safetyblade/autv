@@ -2596,4 +2596,10 @@
   <channel id="CombaTV">
     <display-name>CombaTV</display-name>
   </channel>
+  <channel id="ESTV.us">
+    <display-name>ESTV</display-name>
+  </channel>
+  <channel id="ShoutFactoryTV.us">
+    <display-name>Shout! TV</display-name>
+  </channel>
 </tv>
