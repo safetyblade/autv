@@ -29,9 +29,35 @@ jobs:
           curl --fail --silent --show-error --location "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plex_au.m3u" --output base_upstream.m3u
           curl --fail --silent --show-error --location "https://www.apsattv.com/ssungaus.m3u" --output secondary_upstream.m3u
           curl --fail --silent --show-error --location "https://www.apsattv.com/aulg.m3u" --output lg_upstream.m3u
-          curl --fail --silent --show-error --location "https://raw.githubusercontent.com/blodt/pluto-tv-playlists-2026/main/output/plutotv_us.m3u8" --output pluto_us_upstream.m3u
-          curl --fail --silent --show-error --location "https://raw.githubusercontent.com/blodt/pluto-tv-playlists-2026/main/output/plutotv_ca.m3u8" --output pluto_ca_upstream.m3u
-          curl --fail --silent --show-error --location "https://raw.githubusercontent.com/blodt/pluto-tv-playlists-2026/main/output/plutotv_uk.m3u8" --output pluto_gb_upstream.m3u
+          # Never merge an upstream Pluto catalogue solely because curl returned 200:
+          # its JWTs may already be expired. Try maintained alternative catalogues,
+          # validating each regional file before accepting it.
+          for region in us ca uk; do
+            case "$region" in
+              uk) dest=pluto_gb_upstream.m3u ;;
+              *) dest="pluto_${region}_upstream.m3u" ;;
+            esac
+            valid=0
+            for owner in blodt jns630 LISTAMU; do
+              case "$owner" in
+                blodt) repository=blodt/pluto-tv-playlists-2026 ;;
+                jns630) repository=jns630/Pluto-TV-Playlists-2026 ;;
+                LISTAMU) repository=LISTAMU/Pluto-TV-Playlists-2026 ;;
+              esac
+              url="https://raw.githubusercontent.com/${repository}/main/output/plutotv_${region}.m3u8"
+              if curl --fail --silent --show-error --location "$url" --output "$dest" &&
+                 python3 scripts/check_pluto_freshness.py "$dest"; then
+                echo "Selected fresh Pluto ${region} catalogue from ${repository}"
+                valid=1
+                break
+              fi
+              echo "Pluto ${region} source ${repository} is unavailable or stale"
+            done
+            if [ "$valid" -ne 1 ]; then
+              echo "::error::No current Pluto ${region} catalogue passed JWT freshness; preserving last published playlist"
+              exit 1
+            fi
+          done
           curl --fail --silent --show-error --location "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/roku_all.m3u" --output roku_upstream.m3u
           curl --fail --silent --show-error --location "https://raw.githubusercontent.com/BuddyChewChew/xumo-playlist-generator/main/playlists/xumo_playlist.m3u" --output xumo_upstream.m3u
           curl --fail --silent --show-error --location "https://raw.githubusercontent.com/BuddyChewChew/tubi-scraper/main/tubi_playlist.m3u" --output tubi_upstream.m3u
