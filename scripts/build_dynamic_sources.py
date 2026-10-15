@@ -22,6 +22,10 @@ TNA_203 = [
 
 def read_url(url: str, max_bytes: int = 65536, allow_partial: bool = False) -> tuple[str, bytes]:
     """Fetch bounded data; return final URL so relative HLS references resolve."""
+    # Ensure URL uses HTTP/HTTPS scheme to prevent SSRF and local file access (e.g., file://)
+    parsed = urllib.parse.urlparse(url)
+    if parsed.scheme not in ("http", "https"):
+        raise ValueError(f"Unsupported URL scheme: {parsed.scheme}")
     request = urllib.request.Request(
         url,
         headers={
