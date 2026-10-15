@@ -227,10 +227,3 @@ https://wurltripleb.global.transmit.live/hls/6aa9c16ffbc6fbb2f59d5455/v1/eleven_
 # ---- CombaTV portable direct feed ----
 #EXTINF:-1 tvg-id="CombaTV" tvg-name="CombaTV" group-title="Sport",CombaTV
 https://stream.ads.ottera.tv/playlist.m3u8?network_id=1153
-
-# ---- New gaming & cult entertainment FAST source candidates (device validation required) ----
-#EXTINF:-1 tvg-id="ESTV.us" tvg-name="ESTV" group-title="Sport",ESTV
-https://estv-rakuten-samsung.amagi.tv/playlist.m3u8
-
-#EXTINF:-1 tvg-id="ShoutFactoryTV.us" tvg-name="Shout! TV" group-title="Entertainment",Shout! TV
-https://shoutfactory-xumo.amagi.tv/playlist.m3u8
