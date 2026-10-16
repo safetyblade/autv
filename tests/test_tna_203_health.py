@@ -32,6 +32,11 @@ class TestTna203Health(unittest.TestCase):
         with patch.object(mod, "read_url", side_effect=fake_read):
             self.assertFalse(mod.valid_hls("https://example.org/a.m3u8"))
 
+    def test_disallowed_scheme_raises(self):
+        with self.assertRaises(ValueError) as ctx:
+            mod.read_url("file:///etc/passwd")
+        self.assertIn("Unsupported URL scheme: file", str(ctx.exception))
+
 
 if __name__ == "__main__":
     unittest.main()
