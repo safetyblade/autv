@@ -399,7 +399,7 @@ private fun ChannelRow(channel: Channel, selected: Boolean, failed: String?, sch
         }
         .semantics {
             this.selected = selected
-            contentDescription = "${channel.number} ${channel.name}${if (selected) ", playing" else ""}${schedule.now?.title?.let { " · $it" } ?: ""}"
+            contentDescription = "${channel.number} ${channel.name}${if (selected) ", playing" else ""}${if (isFavourite) ", favourite" else ""}${schedule.now?.title?.let { " · $it" } ?: ""}"
         }
         .background(if (focused && tv) Silver.copy(alpha = 0.22f) else if (selected || focused) Color.White.copy(alpha = 0.075f) else Color.Black.copy(alpha = 0.18f), RoundedCornerShape(12.dp))
         .border(if (focused && tv) 3.dp else if (focused) 2.dp else 1.dp, if (focused) WarmWhite else if (selected) Silver.copy(alpha = 0.55f) else Color.White.copy(alpha = 0.06f), RoundedCornerShape(12.dp))
@@ -409,7 +409,7 @@ private fun ChannelRow(channel: Channel, selected: Boolean, failed: String?, sch
             Text(channel.number.toString(), color = Silver, style = MaterialTheme.typography.labelMedium, modifier = Modifier.padding(top = 4.dp))
         }
         Column(Modifier.padding(start = if (compact) 8.dp else 12.dp).weight(1f)) {
-            Text(channel.name, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Row(verticalAlignment = Alignment.CenterVertically) { Text(channel.name, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false)); if (isFavourite) Text(" ★", color = Color(0xFFFFD700), style = MaterialTheme.typography.titleSmall) }
             ProgrammeInfo(schedule, now, channel.genre, compact)
             if (!known) Text("No live stream", color = Muted, style = MaterialTheme.typography.labelSmall)
             if (failed != null) Text("Could not play · Select to retry", color = Color(0xFFD8B3AD), style = MaterialTheme.typography.labelSmall)
