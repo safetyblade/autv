@@ -1,3 +1,4 @@
+from functools import cache
 from pathlib import Path
 import csv
 import re
@@ -56,6 +57,8 @@ def set_name(extinf, name):
     safe_name = str(name).replace("\r", " ").replace("\n", " ")
     return RE_NAME.sub(lambda _: f",{safe_name}", extinf)
 
+# Performance optimization: @cache memoizes expensive NFKD normalization and regex replacements
+@cache
 def canonical(value):
     # Normalize string to canonical representation to ensure secure matching and prevent validation bypass
     value = unicodedata.normalize("NFKD", value or "").encode("ascii", "ignore").decode()
