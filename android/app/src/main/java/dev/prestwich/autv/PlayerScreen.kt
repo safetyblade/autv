@@ -363,7 +363,7 @@ internal fun AuTvScreen(
                                                                         right = FocusRequester.Cancel
                                                                         up = searchFocus
                                                                     }
-                                                                }, compact = compact, tv = isTv,
+                                                                }, compact = compact, tv = isTv, isFavourite = FavouriteIdentity.contains(channel, favourites),
                                                             onFocused = { focusedGuideNumber = it.number }, onFavourite = onFavourite) { wake(); onSelect(it) }
                                                     }
                                                 }
@@ -390,7 +390,7 @@ internal fun AuTvScreen(
 
 @Composable
 private fun ChannelRow(channel: Channel, selected: Boolean, failed: String?, schedule: NowNext, now: Long, modifier: Modifier,
-    compact: Boolean = false, tv: Boolean = false, onFocused: (Channel) -> Unit = {}, onFavourite: (Channel) -> Unit = {}, onSelect: (Channel) -> Unit) {
+    compact: Boolean = false, tv: Boolean = false, isFavourite: Boolean = false, onFocused: (Channel) -> Unit = {}, onFavourite: (Channel) -> Unit = {}, onSelect: (Channel) -> Unit) {
     var focused by remember { mutableStateOf(false) }
     val known = !channel.streamUrl.isNullOrBlank()
     Row(modifier.fillMaxWidth().focusProperties { canFocus = true }.onFocusChanged {
@@ -454,7 +454,7 @@ private fun CastControl(isTv: Boolean, onInteraction: () -> Unit, compact: Boole
             it.setAlwaysVisible(true); it.contentDescription = "Cast to a screen"
             CastButtonFactory.setUpMediaRouteButton(ctx, it)
         } }, modifier = Modifier.size(48.dp))
-        else TextButton(onClick = { onInteraction(); explanation = true }, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(0.dp)) {
+        else TextButton(onClick = { onInteraction(); explanation = true }, modifier = Modifier.fillMaxSize().semantics { contentDescription = "Cast options and status" }, contentPadding = PaddingValues(0.dp)) {
             Text("Cast", color = Silver, maxLines = 1)
         }
     }
