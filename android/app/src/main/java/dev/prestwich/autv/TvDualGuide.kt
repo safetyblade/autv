@@ -236,6 +236,7 @@ internal fun TvDualGuide(
                         items(channels, key = { it.number }) { channel ->
                             val focused = zone == GuideZone.CHANNELS && channel.number == selected?.number
                             val current = epg.at(channel, now).now
+                            val isFav = FavouriteIdentity.contains(channel, favourites)
                             Row(Modifier.fillMaxWidth().height(rowHeight).padding(vertical = 2.dp)
                                 .background(if (focused) GuideAccent.copy(alpha = 0.16f) else androidx.compose.ui.graphics.Color.Transparent, RoundedCornerShape(6.dp))
                                 .border(if (focused) 3.dp else 1.dp, if (focused) GuideAccent else GuideAccent.copy(alpha = 0.12f), RoundedCornerShape(6.dp))
