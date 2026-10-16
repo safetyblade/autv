@@ -1,7 +1,7 @@
 from pathlib import Path
 import tempfile
 import unittest
-from scripts.merge import sanitize_attr, sanitize_line, xml_escape, add_selected
+from scripts.merge import normalise, sanitize_attr, sanitize_line, xml_escape, add_selected
 
 class TestMergeNormalizationSecurity(unittest.TestCase):
     def test_normalise_attribute_breakout_and_line_injection_sanitization(self):
