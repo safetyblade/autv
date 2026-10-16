@@ -81,11 +81,21 @@ def xml_escape(value: str) -> str:
     """Safely escape special XML characters including quotes for attribute values."""
     return escape(value or "", entities={'"': '&quot;', "'": '&apos;'})
 
+def sanitize_attr(value: str) -> str:
+    """Sanitize attribute values to prevent attribute breakout and M3U line injection."""
+    return str(value or "").replace("\r", " ").replace("\n", " ").replace('"', "'")
+
+def sanitize_line(value: str) -> str:
+    """Sanitize strings used in single-line text to prevent M3U line injection."""
+    return str(value or "").replace("\r", " ").replace("\n", " ")
+
 def normalise(name: str, extinf: str, url: str):
-    tvg_name = attr(extinf, "tvg-name") or name
-    tvg_logo = attr(extinf, "tvg-logo")
-    group = attr(extinf, "group-title") or "Australia"
-    tvg_id = attr(extinf, "tvg-id") or f"autv.{slug(name)}"
+    tvg_name = sanitize_attr(attr(extinf, "tvg-name") or name)
+    tvg_logo = sanitize_attr(attr(extinf, "tvg-logo"))
+    group = sanitize_attr(attr(extinf, "group-title") or "Australia")
+    tvg_id = sanitize_attr(attr(extinf, "tvg-id") or f"autv.{slug(name)}")
+    clean_name = sanitize_line(name)
+    clean_url = sanitize_line(url)
 
     fields = [
         f'tvg-id="{tvg_id}"',
@@ -95,7 +105,7 @@ def normalise(name: str, extinf: str, url: str):
         fields.append(f'tvg-logo="{tvg_logo}"')
     fields.append(f'group-title="{group}"')
 
-    m3u = f'#EXTINF:-1 {" ".join(fields)},{name}\n{url}'
+    m3u = f'#EXTINF:-1 {" ".join(fields)},{clean_name}\n{clean_url}'
     xml = {"id": tvg_id, "name": tvg_name, "logo": tvg_logo}
     return m3u, xml
 
