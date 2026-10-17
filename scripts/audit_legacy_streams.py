@@ -30,6 +30,9 @@ def candidates(path):
     return sorted(entries, key=lambda entry: (entry[0] not in PRIORITY, entry[0]))
 
 def fetch(url, cap=32768):
+    scheme = urlsplit(url).scheme
+    if scheme not in ("http", "https"):
+        raise ValueError(f"Unsupported URL scheme: {scheme}")
     req = Request(url, headers={"User-Agent": "Mozilla/5.0 (Android TV; AUTV check)", "Accept": "application/vnd.apple.mpegurl, application/x-mpegURL, */*"})
     with urlopen(req, timeout=TIMEOUT) as resp:
         if resp.status != 200:
