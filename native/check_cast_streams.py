@@ -24,6 +24,9 @@ def normalise(url):
 
 
 def fetch(url, segment=False):
+    parsed = urllib.parse.urlsplit(url)
+    if parsed.scheme not in ("http", "https"):
+        raise ValueError(f"Unsupported URL scheme: {parsed.scheme}")
     headers = {"Origin": ORIGIN, "User-Agent": "Mozilla/5.0 CrKey/1.56.500000"}
     if segment:
         headers["Range"] = "bytes=0-1048575"
