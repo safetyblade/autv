@@ -348,7 +348,11 @@ internal fun AuTvScreen(
                                                 }
                                             }
                                             if (guide != null) {
-                                                if (filtered.isEmpty()) Text("No channels match your search.", color = Muted, modifier = Modifier.padding(12.dp))
+                                                if (filtered.isEmpty()) Text(
+                                                    if (category == "Favourites") "No favourites yet. Long-press a channel to add it to favourites." else "No channels match your search.",
+                                                    color = Muted,
+                                                    modifier = Modifier.padding(12.dp)
+                                                )
                                                 LazyColumn(state = listState, verticalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.weight(1f).testTag("guide-list")) {
                                                     items(filtered, key = { it.number }) { channel ->
                                                         val rowFocus = remember(channel.number) { FocusRequester() }
