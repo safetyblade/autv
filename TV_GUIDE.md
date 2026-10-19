@@ -43,9 +43,7 @@ Channel numbers are grouped by genre rather than assigned alphabetically. Inside
 
 - **201 — CW Presents WWE NXT** added to the permanent Sport / Wrestling & Combat lineup after successful device QA.
 - **202 — TNA Wrestling Channel** remains the original TNA service.
-- **203 — TNA Wrestling Xumo** is retained as a separate channel because device QA confirmed a materially different/newer programme rotation.
 - **200 — Watch AEW** remains the lead wrestling channel; the duplicate comparison feed was removed rather than creating a second logical AEW channel.
-- Full guide count is now **643 channels**; Sport is now **98 channels**.
 
 ## Channel guide
 
@@ -229,17 +227,10 @@ Original 24/7 TNA wrestling feed retained from Plex AU, with Roku as fallback.
 
 **Guide:** Full  
 
-### 203 — TNA Wrestling Xumo
 
 Second TNA wrestling feed retained after device QA showed different/newer programme rotation from the original TNA channel.
 
 **Guide:** Full  
-
-### 297 — Wrestling Central
-
-24/7 wrestling FAST channel carrying WOW and NWA programming.
-
-**Guide:** Channel only  
 
 ### 204 — UFC
 
@@ -3716,12 +3707,6 @@ Kids animation channel featuring Sonic the Hedgehog programming.
 ### 1221 — Sonic TV
 
 Kids animation channel featuring Sonic-branded animated programming.
-
-**Guide:** Full  
-
-### 1222 — Beyblade
-
-Kids, family and animation programming.
 
 **Guide:** Full  
 
