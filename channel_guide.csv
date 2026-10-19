@@ -26,7 +26,6 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 200,Watch AEW,Sport,Wrestling & Combat,Channel only,Tubi,Roku,Active,24/7 AEW FAST channel. Tubi remains primary; Roku carries the same feed as a tested fallback.
 201,CW Presents WWE NXT,Sport,Wrestling & Combat,Full,Curated,Roku,Active,WWE NXT FAST channel carrying current-era NXT archive programming.
 202,TNA Wrestling Channel,Sport,Wrestling & Combat,Channel only,Roku,Pluto US,Active,"TNA Wrestling FAST channel using Roku as primary test source; Pluto US retained as alternate."
-203,TNA Wrestling DistroTV,Sport,Wrestling & Combat,Channel only,Scheduled health-check,Samsung / Rakuten / Pluto / Roku,Active,"Second TNA FAST feed. The six-hour refresh health-checks multiple providers and publishes the first valid generic HLS source."
 204,UFC,Sport,Wrestling & Combat,Full,Plex AU,,Active,Combat-sports channel featuring UFC programming and fight content.
 205,PFL MMA,Sport,Wrestling & Combat,Full,Plex AU,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
 206,ONE Championship,Sport,Wrestling & Combat,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
@@ -582,7 +581,6 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1219,Smurf TV,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,Kids animation channel featuring Smurfs-related programming.
 1220,Sonic The Hedgehog,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,Kids animation channel featuring Sonic the Hedgehog programming.
 1221,Sonic TV,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,Kids animation channel featuring Sonic-branded animated programming.
-1222,Beyblade,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,"Kids, family and animation programming."
 1223,He-Man & Masters Of The Universe,Kids & Animation,Kids / Family Animation,Full,Curated,,Active,"Kids, family and animation programming."
 1224,Winx Club TV,Kids & Animation,Kids / Family Animation,Full,Curated,,Active,"Kids, family and animation programming."
 1225,Super Mario Brothers,Kids & Animation,Kids / Family Animation,Full,Roku,,Active,"Kids, family and animation programming."
@@ -640,4 +638,6 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1326,Stingray Naturescape,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
 1327,Stingray Holidayscapes,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
 1328,ZenLIFE by Stingray,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-297,Wrestling Central,Sport,Wrestling & Combat,Full,Roku,,App Test,"Native-app-only Roku resolver test. Excluded from generic M3U; resolver is isolated to channel 297."
+
+1240,Big A Anime,Kids & Animation,Anime,Channel only,Pluto US,,Pending Test,"Discovery candidate only; US Pluto channel. Australian access, DRM, authentication and playable HLS segments unverified. Do not publish until tested."
+1241,FilmRise Anime,Kids & Animation,Anime,Channel only,Plex,,Pending Test,"Discovery candidate only; Plex listing includes Beyblade programming. Australian availability and portable HLS unverified. Do not publish until tested."
