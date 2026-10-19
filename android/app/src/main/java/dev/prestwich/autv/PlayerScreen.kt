@@ -334,9 +334,14 @@ internal fun AuTvScreen(
                                                     modifier = Modifier.weight(1f).height(40.dp).background(Ink.copy(alpha = 0.4f), RoundedCornerShape(8.dp))
                                                         .border(1.dp, Muted.copy(alpha = 0.4f), RoundedCornerShape(8.dp)).focusRequester(searchFocus).semantics { contentDescription = "Search channels or programmes" }.testTag("guide-search"),
                                                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), keyboardActions = KeyboardActions(onSearch = { keyboard?.hide() }),
-                                                    decorationBox = { field -> Box(Modifier.fillMaxSize().padding(horizontal = 8.dp), contentAlignment = Alignment.CenterStart) {
-                                                        if (query.isEmpty()) Text("Search channels", color = Muted, style = MaterialTheme.typography.bodySmall)
-                                                        field()
+                                                    decorationBox = { field -> Row(Modifier.fillMaxSize().padding(horizontal = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                                                        Box(Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
+                                                            if (query.isEmpty()) Text("Search channels", color = Muted, style = MaterialTheme.typography.bodySmall)
+                                                            field()
+                                                        }
+                                                        if (query.isNotEmpty()) TextButton(onClick = { query = ""; committedQuery = ""; wake() }, modifier = Modifier.semantics { contentDescription = "Clear search query" }, contentPadding = PaddingValues(horizontal = 4.dp)) {
+                                                            Text("Clear", style = MaterialTheme.typography.labelSmall)
+                                                        }
                                                     } })
                                                 TextButton(onClick = { keyboard?.hide(); wake(); onCloseGuide() }, modifier = Modifier.focusRequester(closeFocus).semantics { contentDescription = "Close channel guide" }.testTag("close-guide"),
                                                     contentPadding = PaddingValues(horizontal = 8.dp)) { Text("Close") }
