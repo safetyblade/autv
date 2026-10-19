@@ -1,4 +1,5 @@
 import copy
+from functools import cache
 from pathlib import Path
 import csv
 import gzip
@@ -21,6 +22,13 @@ EPG_SOURCES = [
     Path("epg_samsung_all.xml.gz"),
 ]
 
+# Compiled regexes for canonical string normalization performance
+RE_LEADING_DIGITS = re.compile(r"^\d+\s+")
+RE_AU_SUFFIX = re.compile(r"\s*\((?:australia|au)\)\s*")
+RE_GEO = re.compile(r"\s+geo\b")
+RE_NON_ALPHANUM = re.compile(r"[^a-z0-9]+")
+RE_SPACES = re.compile(r"\s+")
+
 # Android / Live Channels understands a smaller canonical genre set than AU TV.
 # This affects only generated EPG programme metadata; channel numbers, ordering,
 # guide genres and M3U group-title values remain controlled by channel_guide.csv.
@@ -38,15 +46,17 @@ ANDROID_GENRE = {
     "Music": "Music",
 }
 
+# Performance optimization: @cache memoizes expensive NFKD normalization and regex replacements
+@cache
 def canonical(value: str) -> str:
     value = unicodedata.normalize("NFKD", value or "").encode("ascii", "ignore").decode()
     value = value.casefold().strip()
-    value = re.sub(r"^\d+\s+", "", value)
-    value = re.sub(r"\s*\((?:australia|au)\)\s*", " ", value)
-    value = re.sub(r"\s+geo\b", " ", value)
+    value = RE_LEADING_DIGITS.sub("", value)
+    value = RE_AU_SUFFIX.sub(" ", value)
+    value = RE_GEO.sub(" ", value)
     value = value.replace("&", " and ")
-    value = re.sub(r"[^a-z0-9]+", " ", value)
-    return re.sub(r"\s+", " ", value).strip()
+    value = RE_NON_ALPHANUM.sub(" ", value)
+    return RE_SPACES.sub(" ", value).strip()
 
 def attr(line: str, key: str) -> str:
     marker = f'{key}="'

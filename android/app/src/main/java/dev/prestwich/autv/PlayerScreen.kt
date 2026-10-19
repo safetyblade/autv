@@ -285,10 +285,20 @@ internal fun AuTvScreen(
                             }
                             BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
                                 if (!guideOpen) Column(Modifier.align(Alignment.BottomStart).padding(bottom = 12.dp).widthIn(max = 640.dp)) {
-                                    Row(Modifier.testTag("playing-channel").then(if (!isTv) Modifier.pointerInput(selected, onFavourite) { detectTapGestures(onLongPress = { selected?.let(onFavourite) }) } else Modifier), verticalAlignment = Alignment.CenterVertically) {
+                                    val isPlayingFav = selected != null && FavouriteIdentity.contains(selected, favourites)
+                                    Row(Modifier.testTag("playing-channel")
+                                        .semantics(mergeDescendants = true) {
+                                            if (selected != null) {
+                                                contentDescription = "${selected.number} ${selected.name}${if (isPlayingFav) ", favourite" else ""} · ${selected.genre}"
+                                            }
+                                        }
+                                        .then(if (!isTv) Modifier.pointerInput(selected, onFavourite) { detectTapGestures(onLongPress = { selected?.let(onFavourite) }) } else Modifier), verticalAlignment = Alignment.CenterVertically) {
                                         ChannelLogo(selected, Modifier.size(52.dp))
                                         Column(Modifier.padding(start = 12.dp)) {
-                                            Text(selected?.let { "${it.number}  ${it.name}" } ?: "Welcome to AUTV", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold)
+                                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                                Text(selected?.let { "${it.number}  ${it.name}" } ?: "Welcome to AUTV", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false))
+                                                if (isPlayingFav) Text(" ★", color = Color(0xFFFFD700), style = MaterialTheme.typography.headlineSmall)
+                                            }
                                             Text(selected?.genre ?: "Find your channel in the guide", color = Muted, style = MaterialTheme.typography.bodySmall)
                                         }
                                     }
@@ -348,7 +358,7 @@ internal fun AuTvScreen(
                                                 }
                                             }
                                             if (guide != null) {
-                                                if (filtered.isEmpty()) Text("No channels match your search.", color = Muted, modifier = Modifier.padding(12.dp))
+                                                if (filtered.isEmpty()) Text(if (category == "Favourites") "No favourites yet. Long-press a channel to add it to favourites." else "No channels match your search.", color = Muted, modifier = Modifier.padding(12.dp))
                                                 LazyColumn(state = listState, verticalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.weight(1f).testTag("guide-list")) {
                                                     items(filtered, key = { it.number }) { channel ->
                                                         val rowFocus = remember(channel.number) { FocusRequester() }
@@ -439,8 +449,8 @@ private fun ProgrammeInfo(schedule: NowNext, now: Long, fallback: String = "Live
 @Composable
 private fun ChannelLogo(channel: Channel?, modifier: Modifier) {
     Box(modifier.background(Color.White.copy(alpha = 0.04f), RoundedCornerShape(8.dp)).padding(4.dp), contentAlignment = Alignment.Center) {
-        if (channel?.logoUrl != null) AsyncImage(model = channel.logoUrl, contentDescription = "${channel.name} logo", modifier = Modifier.fillMaxSize(), error = painterResource(R.drawable.autv_logo))
-        else Image(painterResource(R.drawable.autv_logo), channel?.let { "${it.name} logo" } ?: "Channel logo", Modifier.fillMaxSize())
+        if (channel?.logoUrl != null) AsyncImage(model = channel.logoUrl, contentDescription = null, modifier = Modifier.fillMaxSize(), error = painterResource(R.drawable.autv_logo))
+        else Image(painterResource(R.drawable.autv_logo), null, Modifier.fillMaxSize())
     }
 }
 
