@@ -31,6 +31,9 @@ def fetch(url, segment=False):
     if segment:
         headers["Range"] = "bytes=0-1048575"
     with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=15) as response:
+        final_scheme = urllib.parse.urlsplit(response.url).scheme
+        if final_scheme not in ("http", "https"):
+            raise ValueError(f"Unsupported URL scheme: {final_scheme}")
         body = response.read(1048576)
         info = {"status": response.status, "host": urllib.parse.urlsplit(response.url).hostname,
                 "cors": response.headers.get("Access-Control-Allow-Origin"),

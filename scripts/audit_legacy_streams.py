@@ -37,6 +37,9 @@ def fetch(url, cap=32768):
     with urlopen(req, timeout=TIMEOUT) as resp:
         if resp.status != 200:
             raise ValueError(f"HTTP {resp.status}")
+        final_scheme = urlsplit(resp.geturl()).scheme
+        if final_scheme not in ("http", "https"):
+            raise ValueError(f"Unsupported URL scheme: {final_scheme}")
         return resp.geturl(), resp.read(cap)
 
 def probe(entry):
