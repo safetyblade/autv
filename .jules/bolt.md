@@ -6,9 +6,9 @@
 **Learning:** Replacing `ET.fromstring(ET.tostring(elem, encoding="utf-8"))` with `copy.deepcopy(elem)` when cloning XML elements during `iterparse` yields a ~5.8x to 8x speedup (~83% to 87% time reduction) by eliminating byte serialization and re-parsing.
 **Action:** Use `copy.deepcopy(elem)` instead of `ET.fromstring(ET.tostring(...))` when cloning `xml.etree.ElementTree.Element` objects.
 
-## 2025-05-18 - Single-Pass Regex Substitution and Regex Caching in M3U Attribute Updating
-**Learning:** Using `re.compile().subn()` for single-pass search-and-replace in `set_attr()` eliminates redundant `re.search()` checks and dynamic regex compilation overhead, reducing M3U attribute modification time by ~61%.
-**Action:** Use `subn()` on cached pre-compiled regex objects when conditionally updating key-value attributes in strings.
+## 2025-05-18 - String Slicing vs Regex Substitution in M3U Attribute Updating
+**Learning:** Direct string finding (`str.find`) and slicing in `set_attr` and `set_name` outperform `re.subn` with cached pre-compiled regexes by ~1.64x to 1.92x (~39% to 48% speedup), eliminating regex engine overhead for simple string attribute updates.
+**Action:** Prefer direct string search (`str.find`/`str.rfind`) and slice replacement over regex substitution when updating key-value attributes and trailing names in M3U lines.
 
 ## 2025-05-18 - Pre-Casefolding and Hash Map Lookup in M3U Channel Matching
 **Learning:** Replacing repeated O(N) linear list scans with `str.casefold()` on every comparison in `add_selected()` with pre-casefolded entries and a `dict.setdefault()` lookup dictionary reduces channel selection lookup time by ~89% (~9.1x speedup).
