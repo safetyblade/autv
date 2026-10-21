@@ -60,9 +60,16 @@ def canonical(value: str) -> str:
 
 def attr(line: str, key: str) -> str:
     marker = f'{key}="'
-    if marker not in line:
-        return ""
-    return line.split(marker, 1)[1].split('"', 1)[0].strip()
+    pos = 0
+    while True:
+        idx = line.find(marker, pos)
+        if idx == -1:
+            return ""
+        if idx == 0 or line[idx - 1] in " \t\n\r":
+            start = idx + len(marker)
+            end = line.find('"', start)
+            return line[start:end].strip() if end != -1 else ""
+        pos = idx + 1
 
 def playlist_channels():
     channels = []

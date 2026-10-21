@@ -13,14 +13,18 @@ REQUIRED = [field for field in HEADERS if field != "Alternate source"]
 
 
 def attr(line: str, key: str) -> str:
-    # Fast string search for key="value" pattern in M3U header lines, avoiding regex overhead
+    # Fast string search for key="value" pattern in M3U header lines with attribute boundary check
     marker = f'{key}="'
-    idx = line.find(marker)
-    if idx == -1:
-        return ""
-    start = idx + len(marker)
-    end = line.find('"', start)
-    return line[start:end] if end != -1 else ""
+    pos = 0
+    while True:
+        idx = line.find(marker, pos)
+        if idx == -1:
+            return ""
+        if idx == 0 or line[idx - 1] in " \t\n\r":
+            start = idx + len(marker)
+            end = line.find('"', start)
+            return line[start:end] if end != -1 else ""
+        pos = idx + 1
 
 
 def playlist_by_channel(path=PLAYLIST):

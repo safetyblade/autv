@@ -63,14 +63,18 @@ def parse_entries(text: str):
     return entries
 
 def attr(extinf: str, key: str) -> str:
-    # Fast string search for key="value" pattern in M3U lines, avoiding ~5.5x regex overhead
+    # Fast string search for key="value" pattern in M3U lines with attribute boundary check
     marker = f'{key}="'
-    idx = extinf.find(marker)
-    if idx == -1:
-        return ""
-    start = idx + len(marker)
-    end = extinf.find('"', start)
-    return extinf[start:end] if end != -1 else ""
+    pos = 0
+    while True:
+        idx = extinf.find(marker, pos)
+        if idx == -1:
+            return ""
+        if idx == 0 or extinf[idx - 1] in " \t\n\r":
+            start = idx + len(marker)
+            end = extinf.find('"', start)
+            return extinf[start:end] if end != -1 else ""
+        pos = idx + 1
 
 def slug(value: str) -> str:
     value = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode()
