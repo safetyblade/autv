@@ -301,7 +301,7 @@ private fun guideClock(time: Long) = SimpleDateFormat("HH:mm", Locale.getDefault
 private fun GuideAction(label: String, focus: Boolean, tag: String, selected: Boolean = false, click: () -> Unit) {
     Text(label, Modifier.border(if (focus) 3.dp else 1.dp, if (focus) GuideAccent else GuideAccent.copy(alpha = 0.25f), RoundedCornerShape(6.dp))
         .background(if (selected || focus) GuideAccent.copy(alpha = 0.14f) else androidx.compose.ui.graphics.Color.Transparent)
-        .semantics { this.selected = selected; this.focused = focus; contentDescription = if (tag == "close-guide") "Close channel guide" else label }
+        .semantics { this.selected = selected; this.focused = focus; role = Role.Button; contentDescription = if (tag == "close-guide") "Close channel guide" else label }
         .clickable(onClick = click).padding(horizontal = 10.dp, vertical = 8.dp).testTag(tag), style = MaterialTheme.typography.labelLarge)
 }
 
