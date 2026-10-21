@@ -286,10 +286,11 @@ internal fun AuTvScreen(
                             BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
                                 if (!guideOpen) Column(Modifier.align(Alignment.BottomStart).padding(bottom = 12.dp).widthIn(max = 640.dp)) {
                                     val isPlayingFav = selected != null && FavouriteIdentity.contains(selected, favourites)
+                                    val nowSchedule = epg.at(selected, now)
                                     Row(Modifier.testTag("playing-channel")
                                         .semantics(mergeDescendants = true) {
                                             if (selected != null) {
-                                                contentDescription = "${selected.number} ${selected.name}${if (isPlayingFav) ", favourite" else ""} · ${selected.genre}"
+                                                contentDescription = "${selected.number} ${selected.name}${if (isPlayingFav) ", favourite" else ""} · ${selected.genre}${nowSchedule.now?.title?.let { " · $it" } ?: ""}"
                                             }
                                         }
                                         .then(if (!isTv) Modifier.pointerInput(selected, onFavourite) { detectTapGestures(onLongPress = { selected?.let(onFavourite) }) } else Modifier), verticalAlignment = Alignment.CenterVertically) {
