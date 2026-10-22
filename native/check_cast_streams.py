@@ -46,6 +46,10 @@ def probe(item):
     result = {"provider": provider, "channel": name, "macro_normalised": normalise(original) != original, "requests": []}
     try:
         url = normalise(original)
+        parsed_scheme = urllib.parse.urlsplit(url).scheme
+        if parsed_scheme not in ("http", "https"):
+            result["result"] = f"Unsupported URL scheme: {parsed_scheme}"
+            return result
         attempted = url
         for _ in range(5):
             attempted = url
