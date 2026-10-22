@@ -105,9 +105,15 @@ playlist = playlist_channels()
 playlist_names = {cid: name for cid, name in playlist}
 guide_genre_by_name = guide_genres()
 
+# Performance optimization: pre-compute playlist IDs and canonical channel names
+# to filter out programmes for non-playlist channels during iterparse.
+playlist_cids = {cid for cid, _ in playlist}
+playlist_canonical_names = {canonical(name) for _, name in playlist if canonical(name)}
+
 source_channels = {}
 source_names = {}
 programmes_by_id = {}
+relevant_cids = set(playlist_cids)
 
 for source in EPG_SOURCES:
     if not source.exists():
@@ -126,15 +132,21 @@ for source in EPG_SOURCES:
                         for node in cloned.findall("display-name")
                         if (node.text or "").strip()
                     ]
+                    is_relevant = cid in playlist_cids
                     for name in names:
                         key = canonical(name)
                         if key:
                             source_names.setdefault(key, set()).add(cid)
+                            if key in playlist_canonical_names:
+                                is_relevant = True
+                    if is_relevant:
+                        relevant_cids.add(cid)
                 elem.clear()
             elif elem.tag == "programme":
                 cid = elem.attrib.get("channel", "")
-                if cid:
-                    # Performance optimization: copy.deepcopy avoids expensive byte serialization/deserialization
+                # Performance optimization: only store programmes for channels matching playlist IDs/names,
+                # bypassing copy.deepcopy overhead for hundreds of unneeded non-playlist channels.
+                if cid in relevant_cids:
                     programmes_by_id.setdefault(cid, []).append(
                         copy.deepcopy(elem)
                     )
