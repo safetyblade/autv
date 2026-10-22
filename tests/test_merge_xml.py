@@ -1,7 +1,7 @@
 from pathlib import Path
 import tempfile
 import unittest
-from scripts.merge import normalise, sanitize_attr, sanitize_line, xml_escape, add_selected
+from scripts.merge import attr, normalise, sanitize_attr, sanitize_line, xml_escape, add_selected
 
 class TestMergeNormalizationSecurity(unittest.TestCase):
     def test_normalise_attribute_breakout_and_line_injection_sanitization(self):
@@ -21,6 +21,11 @@ class TestMergeNormalizationSecurity(unittest.TestCase):
     def test_sanitize_attr_and_line(self):
         self.assertEqual(sanitize_attr('Test "Quotes"\r\nNewline'), "Test 'Quotes'  Newline")
         self.assertEqual(sanitize_line('Test "Quotes"\r\nNewline'), 'Test "Quotes"  Newline')
+
+    def test_attr_prefixed_key_boundary_safety(self):
+        extinf = '#EXTINF:-1 alt-tvg-id="fake_id" tvg-id="real_id" custom-tvg-name="fake_name" tvg-name="real_name", Real Name'
+        self.assertEqual(attr(extinf, "tvg-id"), "real_id")
+        self.assertEqual(attr(extinf, "tvg-name"), "real_name")
 
 
 class TestXmlEscape(unittest.TestCase):

@@ -25,6 +25,12 @@ class TestApplyGuideSecurity(unittest.TestCase):
         result = set_attr(extinf, "group-title", "News")
         self.assertIn('group-title="News"', result)
 
+    def test_set_attr_prefixed_key_boundary_safety(self):
+        extinf = '#EXTINF:-1 custom-tvg-name="fake_name" tvg-name="old_name", Channel'
+        result = set_attr(extinf, "tvg-name", "new_name")
+        self.assertIn('custom-tvg-name="fake_name"', result)
+        self.assertIn('tvg-name="new_name"', result)
+
     def test_canonical_normalization(self):
         from scripts.apply_guide import canonical
         self.assertEqual(canonical("101  SpongeBob (AU) geo "), "spongebob")
