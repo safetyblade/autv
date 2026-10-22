@@ -281,7 +281,9 @@ internal fun TvDualGuide(
         }
     }
     if (search) AlertDialog(onDismissRequest = { search = false; scope.launch { remoteFocus.requestFocus() } }, title = { Text("Search channels") },
-        text = { OutlinedTextField(query, { if (full) fullQuery = it else quickQuery = it }, placeholder = { Text("Search channels or programmes") }, singleLine = true, modifier = Modifier.semantics { contentDescription = "Search channels or programmes" }.testTag("guide-search")) },
+        text = { OutlinedTextField(query, { if (full) fullQuery = it else quickQuery = it }, placeholder = { Text("Search channels or programmes") }, singleLine = true,
+            trailingIcon = { if (query.isNotEmpty()) TextButton(onClick = { if (full) fullQuery = "" else quickQuery = "" }, modifier = Modifier.semantics { contentDescription = "Clear search query" }) { Text("Clear") } },
+            modifier = Modifier.semantics { contentDescription = "Search channels or programmes" }.testTag("guide-search")) },
         confirmButton = { TextButton(onClick = { search = false; zone = GuideZone.CHANNELS; scope.launch { withFrameNanos { }; remoteFocus.requestFocus() } }) { Text("Done") } })
     details?.let { item ->
         AlertDialog(onDismissRequest = { details = null }, title = { Text(item.title) },
