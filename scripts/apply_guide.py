@@ -41,14 +41,19 @@ def parse_entries(text):
 def set_attr(extinf, key, value):
     # Sanitize value to prevent attribute breakout and line injection
     safe_value = str(value).replace("\r", " ").replace("\n", " ").replace('"', "'")
-    # Performance optimization: direct string finding and slicing is ~1.64x faster than regex substitution
     marker = f'{key}="'
-    idx = extinf.find(marker)
-    if idx != -1:
-        start = idx + len(marker)
-        end = extinf.find('"', start)
-        if end != -1:
-            return f'{extinf[:start]}{safe_value}{extinf[end:]}'
+    pos = 0
+    while True:
+        idx = extinf.find(marker, pos)
+        if idx == -1:
+            break
+        if idx == 0 or extinf[idx - 1] in " \t\n\r":
+            start = idx + len(marker)
+            end = extinf.find('"', start)
+            if end != -1:
+                return f'{extinf[:start]}{safe_value}{extinf[end:]}'
+            break
+        pos = idx + 1
     return extinf.replace("#EXTINF:-1", f'#EXTINF:-1 {key}="{safe_value}"', 1)
 
 def set_name(extinf, name):
