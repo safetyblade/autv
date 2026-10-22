@@ -32,6 +32,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.focused
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
@@ -274,7 +275,7 @@ internal fun AuTvScreen(
                                         }, color = Silver, style = MaterialTheme.typography.labelSmall, maxLines = 1,
                                         overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis, modifier = Modifier.testTag("cast-status"))
                                 }
-                                if (digits.isNotEmpty()) Text("Tune $digits", color = Silver, modifier = Modifier.padding(end = 12.dp))
+                                if (digits.isNotEmpty()) Text("Tune $digits", color = Silver, modifier = Modifier.padding(end = 12.dp).semantics { contentDescription = "Tuning channel $digits" })
                                 if (!isTv) CastControl(false, onInteraction = { wake() }, compact = landscape)
                                 else if (!guideOpen) {
                                     FocusButton("CH −", { wake(); onPrevious() }, Modifier.onFocusChanged { if (it.isFocused) playbackControl = 1 else if (playbackControl == 1) playbackControl = 0 }.focusRequester(previousFocus).focusProperties { right = guideControlFocus }.semantics { contentDescription = "Previous channel" }.testTag("ch-minus"), playable)
@@ -415,6 +416,7 @@ private fun ChannelRow(channel: Channel, selected: Boolean, failed: String?, sch
         }
         .semantics {
             this.selected = selected
+            this.focused = focused
             contentDescription = "${channel.number} ${channel.name}${if (selected) ", playing" else ""}${if (isFavourite) ", favourite" else ""}${schedule.now?.title?.let { " · $it" } ?: ""}"
         }
         .background(if (focused && tv) Silver.copy(alpha = 0.22f) else if (selected || focused) Color.White.copy(alpha = 0.075f) else Color.Black.copy(alpha = 0.18f), RoundedCornerShape(12.dp))
