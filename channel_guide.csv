@@ -638,6 +638,3 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1326,Stingray Naturescape,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
 1327,Stingray Holidayscapes,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
 1328,ZenLIFE by Stingray,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-
-1240,Big A Anime,Kids & Animation,Anime,Channel only,Pluto US,,Pending Test,"Discovery candidate only; US Pluto channel. Australian access, DRM, authentication and playable HLS segments unverified. Do not publish until tested."
-1241,FilmRise Anime,Kids & Animation,Anime,Channel only,Plex,,Pending Test,"Discovery candidate only; Plex listing includes Beyblade programming. Australian availability and portable HLS unverified. Do not publish until tested."
