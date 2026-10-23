@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Fixture credentials only. The emulator already has app + instrumentation APKs installed.
+# Fixture credentials only. Gradle connected tests may uninstall both APKs during cleanup.
 set -euo pipefail
 run_fixture() {
   local method="$1"
@@ -10,6 +10,8 @@ run_fixture() {
   # adb instrumentation does not reliably propagate JUnit failure as its exit status.
   [[ "$output" == *'OK (1 test)'* && "$output" != *'FAILURES'* ]]
 }
+adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+adb install -r android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 run_fixture beforeUpdate
 gradle -p android :app:assembleDebug -PautvVersionCode=2
 adb install -r android/app/build/outputs/apk/debug/app-debug.apk
