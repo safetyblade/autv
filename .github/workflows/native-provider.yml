@@ -33,7 +33,7 @@ jobs:
           api-level: 29
           arch: x86_64
           disable-animations: true
-          script: gradle -p android :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.ProviderPlaybackTest
+          script: gradle -p android :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.provider.EncryptedProviderSessionStoreTest
       - uses: actions/upload-artifact@v4
         with:
           name: autv-provider-prototype-debug

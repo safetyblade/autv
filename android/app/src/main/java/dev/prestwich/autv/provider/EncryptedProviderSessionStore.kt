@@ -15,9 +15,12 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 
 /** Ciphertext lives outside Android cloud/device-transfer backup; key never leaves Keystore. */
-internal class EncryptedProviderSessionStore(context: Context) : ProviderSessionStore {
-    private val file = AtomicFile(File(context.noBackupFilesDir, "9now-session-v1"))
-    private val alias = "autv.9now.session.v1"
+internal class EncryptedProviderSessionStore(
+    context: Context,
+    private val alias: String = "autv.9now.session.v1",
+    fileName: String = "9now-session-v1",
+) : ProviderSessionStore {
+    private val file = AtomicFile(File(context.noBackupFilesDir, fileName))
     private fun key(): SecretKey {
         val keys = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
         (keys.getKey(alias, null) as? SecretKey)?.let { return it }
