@@ -32,12 +32,16 @@ jobs:
           # Never merge an upstream Pluto catalogue solely because curl returned 200:
           # its JWTs may already be expired. Try maintained alternative catalogues,
           # re-authenticating and validating each regional file before accepting it.
+          # Reject a broken boot request once, rather than trying all mirrors nine times.
+          pluto_boot_ok=1
+          python3 scripts/probe_pluto_boot.py || pluto_boot_ok=0
           for region in us ca uk; do
             case "$region" in
               uk) dest=pluto_gb_upstream.m3u ;;
               *) dest="pluto_${region}_upstream.m3u" ;;
             esac
             valid=0
+            if [ "$pluto_boot_ok" -eq 1 ]; then
             for owner in blodt jns630 LISTAMU; do
               case "$owner" in
                 blodt) repository=blodt/pluto-tv-playlists-2026 ;;
@@ -54,6 +58,7 @@ jobs:
               fi
               echo "Pluto ${region} source ${repository} is unavailable or stale"
             done
+            fi
             if [ "$valid" -ne 1 ]; then
               echo "::warning::No fresh Pluto ${region} catalogue; excluding this region from this refresh"
               printf "#EXTM3U\n" > "$dest"
