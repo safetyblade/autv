@@ -9,6 +9,39 @@ import java.io.File
 import java.security.KeyStore
 
 class EncryptedProviderSessionStoreTest {
+    @Test fun sevenChallengeAndSessionSurviveRecreationAndLogoutKeepsOtherStores() {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val seven = EncryptedProviderSessionStore(context, "autv.fixture.seven.persistence", "seven-persistence-fixture")
+        val nine = EncryptedProviderSessionStore(context, "autv.fixture.nine.seven", "nine-seven-fixture")
+        val sbs = EncryptedProviderSessionStore(context, "autv.fixture.sbs.seven", "sbs-seven-fixture")
+        try {
+            seven.clear()
+            nine.write(ProviderSession("nine-access", "nine-refresh", 999999))
+            sbs.write(ProviderSession("sbs-access", "sbs-refresh", 999999))
+            var requests = 0
+            val transport = dev.prestwich.autv.data.provider.SevenPlusTransport { _, url, _ ->
+                requests++
+                if (url.endsWith("/authorize")) org.json.JSONObject("""{"user_code":"ABCD","device_code":"private-seven","verification_uri":"https://7plus.com.au/connect","expires_in":300,"interval":5}""")
+                else org.json.JSONObject("""{"access_token":"seven-access","refresh_token":"seven-refresh","expires_in":3600}""")
+            }
+            val first = dev.prestwich.autv.data.provider.SevenPlusAdapter(transport, seven, seven, "id")
+            val challenge = first.beginSignIn()
+            val restored = EncryptedProviderSessionStore(context, "autv.fixture.seven.persistence", "seven-persistence-fixture")
+            val adapter = dev.prestwich.autv.data.provider.SevenPlusAdapter(transport, restored, restored, "id")
+            assertEquals(challenge.deviceCode, adapter.beginSignIn().deviceCode)
+            assertEquals(1, requests)
+            assertTrue(adapter.pollSignIn(adapter.pendingActivation!!))
+            assertEquals("seven-refresh", seven.read()!!.refreshToken)
+            assertNull(seven.readActivation())
+            val reopened = dev.prestwich.autv.data.provider.SevenPlusAdapter(transport, seven, seven, "id")
+            assertEquals(dev.prestwich.autv.data.provider.ProviderConnection.CONNECTED, reopened.connection)
+            reopened.signOut()
+            assertNull(seven.read())
+            assertEquals("nine-refresh", nine.read()!!.refreshToken)
+            assertEquals("sbs-refresh", sbs.read()!!.refreshToken)
+        } finally { seven.clear(); nine.clear(); sbs.clear() }
+    }
+
     @Test fun sbsSignOutDeletesOnlyItsOwnEncryptedIdentity() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val nine = EncryptedProviderSessionStore(context, "autv.fixture.nine.isolation", "nine-isolation-fixture")

@@ -11,6 +11,7 @@ import dev.prestwich.autv.data.provider.DeviceActivation
 internal enum class ActivationDestination(val address: String) {
     NINE_NOW("https://www.9now.com.au/activate"),
     SBS("https://sbs.com.au/connect"),
+    SEVEN_PLUS("https://7plus.com.au/connect"),
 }
 
 /** Local encoding only. The challenge's code, device ID and session never enter the QR. */

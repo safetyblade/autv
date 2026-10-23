@@ -21,7 +21,7 @@ import kotlinx.coroutines.sync.withLock
 class PlaybackModel(application: Application, private val guideLoader: () -> Guide, private val epgLoader: () -> Epg,
     senderFactory: (((CastPlayback) -> Unit) -> CastConnection)? = null,
     guideCache: GuideCache? = null, playlistLoader: ((Guide) -> Guide)? = null, epgCacheLoader: (() -> Epg?)? = null,
-    providerAdapter: ProviderAdapter? = null, sbsAdapter: ProviderAdapter? = null) : AndroidViewModel(application) {
+    providerAdapter: ProviderAdapter? = null, sbsAdapter: ProviderAdapter? = null, sevenAdapter: ProviderAdapter? = null) : AndroidViewModel(application) {
     constructor(application: Application) : this(application, { GuideRepository().load() }, { EpgRepository(java.io.File(application.filesDir, "programme-guide-v1.xml.gz")).load() },
         guideCache = FileGuideCache(java.io.File(application.filesDir, "channel-guide-v1.json")),
         playlistLoader = { GuideRepository().reconcile(it) },
@@ -36,10 +36,20 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
             if (selected?.providerChannel?.id?.provider == "sbs") recoverProvider()
             else if (providerTuneProvider == "sbs") cancelProviderTune()
         })
+    internal val sevenAccount: ProviderAccountController = ProviderAccountController("7plus", sevenAdapter ?: createSevenProvider(application), viewModelScope,
+        onChannelsChanged = {
+            if (selected?.providerChannel?.id?.provider == "seven" && sevenAccountChannelsMissing()) recoverProvider()
+            fastGuide?.let(::applyGuide)
+        }, onDisconnect = {
+            if (selected?.providerChannel?.id?.provider == "seven") recoverProvider()
+            else if (providerTuneProvider == "seven") cancelProviderTune()
+        })
+    private fun sevenAccountChannelsMissing(): Boolean = sevenAccount.channels.none { it.id == selected?.providerChannel?.id }
     private fun sbsAccountChannelsMissing(): Boolean = sbsAccount.channels.none { it.id == selected?.providerChannel?.id }
     val pendingActivationProvider: String? get() = when {
         providerActivation != null || nineNow.pendingActivation != null -> "9now"
         sbsAccount.activation != null -> "sbs"
+        sevenAccount.activation != null -> "seven"
         else -> null
     }
     private var providerTuneProvider: String? = null
@@ -129,6 +139,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         if (providerConnection == ProviderConnection.CONNECTED) refreshProviderChannels()
         else if (nineNow.pendingActivation != null) connectNineNow()
         sbsAccount.start()
+        sevenAccount.start()
     }
     fun reload() {
         if (loading) return
@@ -151,8 +162,8 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     private fun applyGuide(fastLoaded: Guide) {
         fastGuide = fastLoaded
         // Native-only rows are added after public-cache validation, never persisted in it.
-        val local = (providerChannels + sbsAccount.channels).map { channel ->
-            Channel(providerNumber(channel), channel.name, "Australian TV", if (channel.id.provider == "sbs") "SBS On Demand" else "9Now", "", "", true, null,
+        val local = (providerChannels + sbsAccount.channels + sevenAccount.channels).map { channel ->
+            Channel(providerNumber(channel), channel.name, "Australian TV", when (channel.id.provider) { "sbs" -> "SBS On Demand"; "seven" -> "7plus"; else -> "9Now" }, "", "", true, null,
                 channel.id.favouriteKey, channel.logoUrl, channel)
         }.filter { candidate -> fastLoaded.channels.none { it.number == candidate.number } }
         val loaded = Guide(fastLoaded.activeCount + local.size, fastLoaded.availableCount + local.size,
@@ -316,7 +327,12 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         buffering = true
         providerTuneJob = viewModelScope.launch {
             try {
-                val request = if (id.provider == "sbs") sbsAccount.resolve(id) else providerCall { nineNow.resolve(id) }
+                val request = when (id.provider) {
+                    "sbs" -> sbsAccount.resolve(id)
+                    "seven" -> sevenAccount.resolve(id)
+                    "9now" -> providerCall { nineNow.resolve(id) }
+                    else -> throw ProviderException(ProviderFailure.UNAVAILABLE)
+                }
                 if (generation != providerTuneGeneration) return@launch
                 selected = channel
                 failed.remove(channel.number)
@@ -328,6 +344,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
                 buffering = false
                 failed[channel.number] = "Playback unavailable"
                 if (id.provider == "sbs") notice = sbsAccount.error
+                else if (id.provider == "seven") notice = sevenAccount.error
                 else { providerError = providerMessage(error); notice = providerError; syncProviderConnection() }
                 if (selected?.providerChannel != null) recoverProvider()
             }
