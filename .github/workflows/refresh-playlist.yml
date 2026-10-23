@@ -54,8 +54,9 @@ jobs:
               echo "Pluto ${region} source ${repository} is unavailable or stale"
             done
             if [ "$valid" -ne 1 ]; then
-              echo "::error::No current Pluto ${region} catalogue passed JWT freshness; preserving last published playlist"
-              exit 1
+              echo "::warning::No fresh Pluto ${region} catalogue; excluding this region from this refresh"
+              printf "#EXTM3U\n" > "$dest"
+              touch pluto_degraded.marker
             fi
           done
           curl --fail --silent --show-error --location "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/roku_all.m3u" --output roku_upstream.m3u
@@ -79,8 +80,17 @@ jobs:
       - name: Apply channel guide
         run: python3 scripts/apply_guide.py
 
+      - name: Quarantine expired Pluto streams
+        run: python3 scripts/quarantine_expired_pluto.py playlist.m3u
+
       - name: Validate Pluto JWT freshness before publishing
-        run: python3 scripts/check_pluto_freshness.py playlist.m3u
+        shell: bash
+        run: |
+          if [ -f pluto_degraded.marker ]; then
+            python3 scripts/check_pluto_freshness.py playlist.m3u --allow-empty
+          else
+            python3 scripts/check_pluto_freshness.py playlist.m3u
+          fi
 
       - name: Audit legacy and Pluto stream reachability (advisory)
         run: python3 scripts/audit_legacy_streams.py
@@ -95,7 +105,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -f base_upstream.m3u secondary_upstream.m3u lg_upstream.m3u pluto_us_upstream.m3u pluto_ca_upstream.m3u pluto_gb_upstream.m3u roku_upstream.m3u epg_plex_*.xml.gz epg_pluto_*.xml.gz epg_roku_*.xml.gz xumo_upstream.m3u epg_xumo.xml.gz tubi_upstream.m3u epg_tubi.xml epg_samsung_all.xml.gz dynamic_sources.m3u
+          rm -f base_upstream.m3u secondary_upstream.m3u lg_upstream.m3u pluto_us_upstream.m3u pluto_ca_upstream.m3u pluto_gb_upstream.m3u roku_upstream.m3u epg_plex_*.xml.gz epg_pluto_*.xml.gz epg_roku_*.xml.gz xumo_upstream.m3u epg_xumo.xml.gz tubi_upstream.m3u epg_tubi.xml epg_samsung_all.xml.gz dynamic_sources.m3u pluto_degraded.marker
 
           if git diff --quiet -- playlist.m3u curated.xml epg.xml.gz guide.json; then
             echo "No generated file changes."
