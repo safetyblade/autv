@@ -91,11 +91,11 @@ class SevenPlusAdapterTest {
                 assertEquals("refresh-old", form["refreshToken"])
                 if (offline) throw ProviderException(ProviderFailure.OFFLINE)
                 JSONObject(tokens)
-            } else JSONObject("""{"_id":"market"}""")
+            } else if (url == SevenPlusAdapter.MARKET) JSONObject("""{"_id":"market"}""") else JSONObject("""{"items":[]}""")
         }, store, MemoryProviderActivationStore(), "id") { 1000 }
         failure(ProviderFailure.OFFLINE) { adapter.resolve(ProviderChannelId("seven", "7")) }
         assertEquals("old", store.value!!.accessToken); offline = false
-        failure(ProviderFailure.PLAYBACK_UNSUPPORTED) { adapter.resolve(ProviderChannelId("seven", "7")) }
+        assertTrue(adapter.channels().isEmpty())
         assertEquals("refresh-fixture", store.value!!.refreshToken)
         assertEquals(ProviderConnection.CONNECTED, adapter.connection)
     }

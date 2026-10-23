@@ -4,7 +4,7 @@ import org.json.JSONObject
 import java.net.URI
 import java.net.URLEncoder
 
-/** Experimental account/catalogue integration. Protected/ad-supported playback is a separate gate. */
+/** Experimental account/catalogue and one original clear SSAI HLS proof; no DRM or CSAI bypass. */
 class SevenPlusAdapter(
     private val transport: SevenPlusTransport,
     private val store: ProviderSessionStore,
@@ -80,35 +80,93 @@ class SevenPlusAdapter(
             throw ProviderException(ProviderFailure.SESSION_EXPIRED)
         }
     }
-    override fun channels(): List<ProviderChannel> {
+    private data class Catalogue(val market: String, val rows: List<JSONObject>)
+    private fun catalogue(): Catalogue {
         requireSession()
-        // Never fall back to Sydney or a fabricated postcode when location lookup fails.
         val market = text(transport.request("GET", MARKET), "_id", 128)
             ?: throw ProviderException(ProviderFailure.REGION_DENIED)
-        val query = "platform-id=androidtv&market-id=${URLEncoder.encode(market, "UTF-8")}&platform-version=5.25.0.0&api-version=5.9.0.0"
-        val sections = transport.request("GET", "$CONTENT?$query").optJSONArray("items")
+        val sections = transport.request("GET", "$CONTENT?${contentQuery(market)}").optJSONArray("items")
             ?: throw ProviderException(ProviderFailure.UNAVAILABLE)
-        val result = linkedMapOf<String, ProviderChannel>()
+        val rows = linkedMapOf<String, JSONObject>()
         for (index in 0 until sections.length()) {
             val section = sections.optJSONObject(index) ?: continue
             if (section.optString("childType") != "channelItem") continue
-            val rows = section.optJSONArray("mediaItems") ?: continue
-            for (n in 0 until rows.length()) {
-                val row = rows.optJSONObject(n) ?: continue
+            val items = section.optJSONArray("mediaItems") ?: continue
+            for (n in 0 until items.length()) {
+                val row = items.optJSONObject(n) ?: continue
                 if (row.optString("type") != "ChannelItem") continue
                 val id = text(row, "channelId", 128) ?: continue
-                val name = text(row, "name", 256) ?: continue
-                result.putIfAbsent(id, ProviderChannel(ProviderChannelId("seven", id), id, name))
+                if (text(row, "name", 256) != null) rows.putIfAbsent(id, row)
             }
         }
-        return result.values.toList()
+        return Catalogue(market, rows.values.toList())
+    }
+    override fun channels(): List<ProviderChannel> = catalogue().rows.map { row ->
+        val id = row.optString("channelId")
+        ProviderChannel(ProviderChannelId("seven", id), id, row.getString("name"))
     }
     override fun resolve(channel: ProviderChannelId): ProviderPlaybackRequest {
         if (channel.provider != "seven") throw ProviderException(ProviderFailure.UNAVAILABLE)
-        requireSession()
-        // Do not request a protected/CSAI descriptor until licence and ad handling are implemented.
-        throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        val catalogue = catalogue()
+        val row = catalogue.rows.singleOrNull { it.optString("channelId") == channel.channel }
+            ?: throw ProviderException(ProviderFailure.UNAVAILABLE)
+        // One primary-network proof. Official IDs are never invented or replaced with IPTV slugs.
+        if (row.optString("name").trim() !in setOf("7", "Seven", "Channel 7", "7HD"))
+            throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        val link = text(row.optJSONObject("contentLink") ?: JSONObject(), "url")
+            ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        val slug = channelSlug(link)
+        val player = transport.request("GET", "$PLAYER/$slug?${contentQuery(catalogue.market)}&signedUp=True")
+            .optJSONObject("videoPlayer") ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        val video = text(player, "videoUrl") ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        val identity = playbackIdentity(video)
+        val parameters = linkedMapOf(
+            "appId" to "7plus", "deviceType" to "androidtv", "platformType" to "tv",
+            "deviceId" to deviceId, "accountId" to identity.first, "referenceId" to identity.second,
+            "marketId" to catalogue.market, "videoType" to "live",
+        )
+        // No invented postcode, tracking identity, SDK attestation or ad-delivery override.
+        val descriptor = try { transport.playback(parameters, session!!.accessToken) }
+        catch (error: ProviderException) {
+            if (error.failure == ProviderFailure.SESSION_EXPIRED) {
+                store.clear(); session = null; connection = ProviderConnection.SESSION_EXPIRED
+            }
+            throw error
+        }
+        return SevenLiveSource.select(channel, descriptor)
     }
+    private fun contentQuery(market: String) = "platform-id=androidtv&market-id=${URLEncoder.encode(market, "UTF-8")}&platform-version=5.25.0.0&api-version=5.9.0.0"
+    private fun channelSlug(link: String): String {
+        val uri = runCatching { URI(link) }.getOrNull()
+            ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        if (uri.scheme != "https" || uri.host != "7plus.com.au" || uri.port != -1 || uri.rawUserInfo != null || uri.fragment != null)
+            throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        val query = query(uri)
+        val slug = query["channel-id"] ?: uri.path.trimEnd('/').substringAfterLast('/')
+        if (!slug.matches(Regex("[A-Za-z0-9_-]{1,128}"))) throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        return slug
+    }
+    private fun playbackIdentity(address: String): Pair<String, String> {
+        val uri = runCatching { URI(address) }.getOrNull()
+            ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        if (uri.scheme != "https" || uri.host != "videoservice.swm.digital" || uri.path != "/playback" ||
+            uri.port != -1 || uri.rawUserInfo != null || uri.fragment != null)
+            throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        val query = query(uri)
+        val account = query["accountId"]?.takeIf { it.matches(Regex("[A-Za-z0-9_-]{1,128}")) }
+        val reference = query["referenceId"]?.takeIf { it.matches(Regex("[A-Za-z0-9_.:-]{1,256}")) }
+        if (account == null || reference == null) throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        return account to reference
+    }
+    private fun query(uri: URI): Map<String, String> = try {
+        val pairs = uri.rawQuery?.split('&')?.map {
+            val parts = it.split('=', limit = 2)
+            require(parts.size == 2)
+            java.net.URLDecoder.decode(parts[0], "UTF-8") to java.net.URLDecoder.decode(parts[1], "UTF-8")
+        }.orEmpty()
+        require(pairs.map { it.first }.distinct().size == pairs.size)
+        pairs.toMap()
+    } catch (_: Exception) { throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED) }
     private fun terminal(failure: ProviderFailure): Nothing {
         activationStore.clearActivation(); pendingActivation = null; connection = ProviderConnection.NOT_CONNECTED
         throw ProviderException(failure)
@@ -122,6 +180,8 @@ class SevenPlusAdapter(
         const val AUTH = "https://auth2.swm.digital"
         const val MARKET = "https://market-cdn.swm.digital/v1/market/ip/?apikey=web"
         const val CONTENT = "https://component-cdn.swm.digital/content/live-tv"
+        const val PLAYER = "https://component.swm.digital/player/live"
+        const val PLAYBACK = "https://videoservice.swm.digital/playback"
         private fun text(json: JSONObject, key: String, limit: Int = 16384) = json.optString(key).takeUnless {
             it.isBlank() || it == "null" || it.length > limit || it.any { c -> c.isISOControl() }
         }
@@ -131,5 +191,7 @@ class SevenPlusAdapter(
 /** No bearer is needed for catalogue calls; credentials remain on the account token endpoint. */
 fun interface SevenPlusTransport {
     fun request(method: String, url: String, form: Map<String, String>): JSONObject
+    fun playback(parameters: Map<String, String>, accessToken: String): JSONObject =
+        throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
 }
 private fun SevenPlusTransport.request(method: String, url: String) = request(method, url, emptyMap())
