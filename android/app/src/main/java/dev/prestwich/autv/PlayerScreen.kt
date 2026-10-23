@@ -74,8 +74,10 @@ internal fun AuTvScreen(
     pictureInPicture: Boolean = false, notice: String? = null, onTuneNumber: (Int) -> Unit = {},
     castPlayback: dev.prestwich.autv.guide.CastPlayback = dev.prestwich.autv.guide.CastPlayback(),
     favourites: Set<String> = emptySet(), onFavourite: (Channel) -> Unit = {},
+    onOpenSettings: () -> Unit = {},
 ) {
-    val categories = remember { listOf("All", "Favourites") + GuideBrowse.categories.drop(1) }
+    val categories = remember(guide) { listOf("All", "Favourites") + GuideBrowse.categories.drop(1) +
+        if (guide?.channels?.any { it.providerChannel != null } == true) listOf("Australian TV") else emptyList() }
     val isTv = LocalConfiguration.current.uiMode and Configuration.UI_MODE_TYPE_MASK == Configuration.UI_MODE_TYPE_TELEVISION
     val landscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
     val keyboardOpen = guideOpen && !isTv && WindowInsets.isImeVisible
@@ -88,6 +90,7 @@ internal fun AuTvScreen(
     val firstRowFocus = remember { FocusRequester() }
     val categoryFocus = remember { FocusRequester() }
     val guideControlFocus = remember { FocusRequester() }
+    val settingsFocus = remember { FocusRequester() }
     val previousFocus = remember { FocusRequester() }
     val nextFocus = remember { FocusRequester() }
     val closeFocus = remember { FocusRequester() }
@@ -188,17 +191,18 @@ internal fun AuTvScreen(
             }
             withFrameNanos { }
             if (isTv) {
-                if (index >= 0 && !selected?.streamUrl.isNullOrBlank()) selectedFocus.requestFocus() else closeFocus.requestFocus()
+                if (index >= 0 && (selected?.tunable == true)) selectedFocus.requestFocus() else closeFocus.requestFocus()
             }
         } else { withFrameNanos { }; if (isTv) guideControlFocus.requestFocus() else rootFocus.requestFocus() }
     }
-    val playable = guide?.channels?.any { !it.streamUrl.isNullOrBlank() } == true
+    val playable = guide?.channels?.any { it.tunable } == true
     val playbackOkActive = isTv && !guideOpen && digits.isEmpty() && !pictureInPicture && windowFocused
     val playbackOk = rememberRemoteOk(onShort = {
         if (!okWakesOnly) when (pressedControl) {
             1 -> if (playable) onPrevious()
             2 -> onOpenGuide()
             3 -> if (playable) onNext()
+            4 -> onOpenSettings()
         }
     }, onLong = { selected?.let(onFavourite) }, active = playbackOkActive)
     MaterialTheme(colorScheme = darkColorScheme(primary = Silver, onPrimary = Ink, background = Ink, surface = Glass,
@@ -275,10 +279,13 @@ internal fun AuTvScreen(
                                         }, color = Silver, style = MaterialTheme.typography.labelSmall, maxLines = 1,
                                         overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis, modifier = Modifier.testTag("cast-status"))
                                 }
+                                FocusButton("Settings", { wake(); onOpenSettings() },
+                                    Modifier.onFocusChanged { if (it.isFocused) playbackControl = 4 else if (playbackControl == 4) playbackControl = 0 }
+                                        .focusRequester(settingsFocus).focusProperties { if (isTv && !guideOpen) right = previousFocus }.testTag("settings-button"))
                                 if (digits.isNotEmpty()) Text("Tune $digits", color = Silver, modifier = Modifier.padding(end = 12.dp).semantics { contentDescription = "Tuning channel $digits" })
-                                if (!isTv) CastControl(false, onInteraction = { wake() }, compact = landscape)
+                                if (!isTv) CastControl(false, onInteraction = { wake() }, compact = landscape, providerUnavailable = selected?.providerChannel != null)
                                 else if (!guideOpen) {
-                                    FocusButton("CH −", { wake(); onPrevious() }, Modifier.onFocusChanged { if (it.isFocused) playbackControl = 1 else if (playbackControl == 1) playbackControl = 0 }.focusRequester(previousFocus).focusProperties { right = guideControlFocus }.semantics { contentDescription = "Previous channel" }.testTag("ch-minus"), playable)
+                                    FocusButton("CH −", { wake(); onPrevious() }, Modifier.onFocusChanged { if (it.isFocused) playbackControl = 1 else if (playbackControl == 1) playbackControl = 0 }.focusRequester(previousFocus).focusProperties { left = settingsFocus; right = guideControlFocus }.semantics { contentDescription = "Previous channel" }.testTag("ch-minus"), playable)
                                     FocusButton("Guide", { wake(); onOpenGuide() }, Modifier.padding(horizontal = 8.dp).onFocusChanged { if (it.isFocused) playbackControl = 2 else if (playbackControl == 2) playbackControl = 0 }.focusRequester(guideControlFocus)
                                         .focusProperties { left = previousFocus; right = nextFocus }.semantics { contentDescription = "Open channel guide" }.testTag("guide-toggle"))
                                     FocusButton("CH +", { wake(); onNext() }, Modifier.onFocusChanged { if (it.isFocused) playbackControl = 3 else if (playbackControl == 3) playbackControl = 0 }.focusRequester(nextFocus).focusProperties { left = guideControlFocus }.semantics { contentDescription = "Next channel" }.testTag("ch-plus"), playable)
@@ -291,14 +298,14 @@ internal fun AuTvScreen(
                                     Row(Modifier.testTag("playing-channel")
                                         .semantics(mergeDescendants = true) {
                                             if (selected != null) {
-                                                contentDescription = "${selected.number} ${selected.name}${if (isPlayingFav) ", favourite" else ""} · ${selected.genre}${nowSchedule.now?.title?.let { " · $it" } ?: ""}"
+                                                contentDescription = "${selected.numberLabel} ${selected.name}${if (isPlayingFav) ", favourite" else ""} · ${selected.genre}${nowSchedule.now?.title?.let { " · $it" } ?: ""}"
                                             }
                                         }
                                         .then(if (!isTv) Modifier.pointerInput(selected, onFavourite) { detectTapGestures(onLongPress = { selected?.let(onFavourite) }) } else Modifier), verticalAlignment = Alignment.CenterVertically) {
                                         ChannelLogo(selected, Modifier.size(52.dp))
                                         Column(Modifier.padding(start = 12.dp)) {
                                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                                Text(selected?.let { "${it.number}  ${it.name}" } ?: "Welcome to AUTV", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false))
+                                                Text(selected?.let { "${it.numberLabel}  ${it.name}" } ?: "Welcome to AUTV", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false))
                                                 if (isPlayingFav) Text(" ★", color = Color(0xFFFFD700), style = MaterialTheme.typography.headlineSmall)
                                             }
                                             Text(selected?.genre ?: "Find your channel in the guide", color = Muted, style = MaterialTheme.typography.bodySmall)
@@ -314,10 +321,10 @@ internal fun AuTvScreen(
                                     if (!isTv) Box(Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.35f)).clickable { wake(); onCloseGuide() }.testTag("guide-scrim"))
                                     val compact = landscape && !isTv
                                     val panelWidth = if (isTv) maxWidth * 0.88f else if (compact) maxWidth * 0.54f else (maxWidth * 0.92f).coerceAtMost(680.dp)
-                                    val firstPlayable = filtered.firstOrNull { !it.streamUrl.isNullOrBlank() }?.number
+                                    val firstPlayable = filtered.firstOrNull { it.tunable }?.number
                                     // Lazy rows outside the viewport have no attached focus target.
                                     val selectedVisible = listState.layoutInfo.visibleItemsInfo.any { it.key == selected?.number }
-                                    val rowTarget = if (selectedVisible && !selected?.streamUrl.isNullOrBlank() || firstPlayable == selected?.number && firstPlayable != null) selectedFocus
+                                    val rowTarget = if (selectedVisible && (selected?.tunable == true) || firstPlayable == selected?.number && firstPlayable != null) selectedFocus
                                         else if (firstPlayable != null) firstRowFocus else closeFocus
                                     Surface(Modifier.fillMaxHeight(if (isTv) 0.96f else 1f).width(panelWidth).align(if (isTv) Alignment.Center else Alignment.CenterEnd)
                                         .pointerInput(Unit) { detectTapGestures { } }.testTag("guide-panel"), color = Glass, contentColor = WarmWhite,
@@ -409,7 +416,7 @@ internal fun AuTvScreen(
 private fun ChannelRow(channel: Channel, selected: Boolean, failed: String?, schedule: NowNext, now: Long, modifier: Modifier,
     compact: Boolean = false, tv: Boolean = false, isFavourite: Boolean = false, onFocused: (Channel) -> Unit = {}, onFavourite: (Channel) -> Unit = {}, onSelect: (Channel) -> Unit) {
     var focused by remember { mutableStateOf(false) }
-    val known = !channel.streamUrl.isNullOrBlank()
+    val known = channel.tunable
     Row(modifier.fillMaxWidth().focusProperties { canFocus = true }.onFocusChanged {
             focused = it.isFocused
             if (it.isFocused) onFocused(channel)
@@ -417,14 +424,14 @@ private fun ChannelRow(channel: Channel, selected: Boolean, failed: String?, sch
         .semantics {
             this.selected = selected
             this.focused = focused
-            contentDescription = "${channel.number} ${channel.name}${if (selected) ", playing" else ""}${if (isFavourite) ", favourite" else ""}${schedule.now?.title?.let { " · $it" } ?: ""}"
+            contentDescription = "${channel.numberLabel} ${channel.name}${if (selected) ", playing" else ""}${if (isFavourite) ", favourite" else ""}${schedule.now?.title?.let { " · $it" } ?: ""}"
         }
         .background(if (focused && tv) Silver.copy(alpha = 0.22f) else if (selected || focused) Color.White.copy(alpha = 0.075f) else Color.Black.copy(alpha = 0.18f), RoundedCornerShape(12.dp))
         .border(if (focused && tv) 3.dp else if (focused) 2.dp else 1.dp, if (focused) WarmWhite else if (selected) Silver.copy(alpha = 0.55f) else Color.White.copy(alpha = 0.06f), RoundedCornerShape(12.dp))
         .combinedClickable(onLongClick = { onFavourite(channel) }, onClick = { if (known) onSelect(channel) }).padding(if (compact) 6.dp else 10.dp).testTag("channel-${channel.number}"), verticalAlignment = Alignment.Top) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             ChannelLogo(channel, Modifier.size(if (compact) 32.dp else if (tv) 48.dp else 44.dp))
-            Text(channel.number.toString(), color = Silver, style = MaterialTheme.typography.labelMedium, modifier = Modifier.padding(top = 4.dp))
+            Text(channel.numberLabel, color = Silver, style = MaterialTheme.typography.labelMedium, modifier = Modifier.padding(top = 4.dp))
         }
         Column(Modifier.padding(start = if (compact) 8.dp else 12.dp).weight(1f)) {
             Row(verticalAlignment = Alignment.CenterVertically) { Text(channel.name, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false)); if (isFavourite) Text(" ★", color = Color(0xFFFFD700), style = MaterialTheme.typography.titleSmall) }
@@ -463,21 +470,21 @@ private fun ChannelLogo(channel: Channel?, modifier: Modifier) {
 }
 
 @Composable
-private fun CastControl(isTv: Boolean, onInteraction: () -> Unit, compact: Boolean = false) {
+private fun CastControl(isTv: Boolean, onInteraction: () -> Unit, compact: Boolean = false, providerUnavailable: Boolean = false) {
     val context = LocalContext.current
     val supported = remember(context, isTv) { !isTv && runCatching { CastContext.getSharedInstance(context); true }.getOrDefault(false) }
     var explanation by remember { mutableStateOf(false) }
     Box(Modifier.size(if (compact) 48.dp else 52.dp).testTag("cast-control"), contentAlignment = Alignment.Center) {
-        if (supported) AndroidView(factory = { ctx -> MediaRouteButton(ctx).also {
+        if (supported && !providerUnavailable) AndroidView(factory = { ctx -> MediaRouteButton(ctx).also {
             it.setAlwaysVisible(true); it.contentDescription = "Cast to a screen"
             CastButtonFactory.setUpMediaRouteButton(ctx, it)
         } }, modifier = Modifier.size(48.dp))
-        else TextButton(onClick = { onInteraction(); explanation = true }, modifier = Modifier.fillMaxSize().semantics { contentDescription = "Cast options and status" }, contentPadding = PaddingValues(0.dp)) {
-            Text("Cast", color = Silver, maxLines = 1)
+        else TextButton(onClick = { onInteraction(); explanation = true }, modifier = Modifier.fillMaxSize().semantics { contentDescription = if (providerUnavailable) "Cast unavailable for 9Now" else "Cast options and status" }, contentPadding = PaddingValues(0.dp)) {
+            Text(if (providerUnavailable) "Cast unavailable" else "Cast", color = Silver, maxLines = 1)
         }
     }
     if (explanation) AlertDialog(onDismissRequest = { explanation = false; onInteraction() }, title = { Text("Google Cast") },
-        text = { Text(if (isTv) "Use AUTV on a phone or tablet to choose a Cast screen." else "Cast needs Google Play services and a compatible screen on the same Wi-Fi network.") },
+        text = { Text(if (providerUnavailable) "Casting 9Now is unavailable. You can still cast other channels." else if (isTv) "Use AUTV on a phone or tablet to choose a Cast screen." else "Cast needs Google Play services and a compatible screen on the same Wi-Fi network.") },
         confirmButton = { TextButton(onClick = { explanation = false; onInteraction() }) { Text("OK") } })
 }
 

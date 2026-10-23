@@ -1,0 +1,238 @@
+package dev.prestwich.autv.data.provider
+
+import org.json.JSONObject
+import java.net.URI
+import java.net.URLEncoder
+import java.util.Locale
+
+/** Consumer endpoints observed in the current provider client flow; experimental, not a public SDK.
+ * No upstream implementation is copied. URLs returned by the service are never unwrapped.
+ */
+class NineNowAdapter(
+    private val transport: NineNowTransport,
+    private val store: ProviderSessionStore,
+    private val now: () -> Long = System::currentTimeMillis,
+    private val region: String = "nsw",
+    private val activationStore: ProviderActivationStore = MemoryProviderActivationStore(),
+) : ProviderAdapter {
+    private var session = store.read()
+    override var pendingActivation = activationStore.readActivation()?.takeIf {
+        session == null && it.expiresAt > now() && it.verificationUrl == "https://www.9now.com.au/activate"
+    }
+        private set
+    init { if (pendingActivation == null) activationStore.clearActivation() }
+    override var connection = when {
+        session != null -> ProviderConnection.CONNECTED
+        pendingActivation != null -> ProviderConnection.CONNECTING
+        else -> ProviderConnection.NOT_CONNECTED
+    }
+        private set
+
+    override fun beginSignIn(): DeviceActivation {
+        pendingActivation?.takeIf { it.expiresAt > now() }?.let { return it }
+        connection = ProviderConnection.CONNECTING
+        val json = transport.request("POST", "$AUTH/code?client_id=9nowdevice")
+        val expires = json.optLong("expires_in", 0).coerceIn(0, 1800)
+        val code = json.optString("auth_code")
+        val device = json.optString("device_code")
+        if (code.isBlank() || device.isBlank() || expires == 0L) {
+            connection = ProviderConnection.UNSUPPORTED
+            throw ProviderException(ProviderFailure.UNSUPPORTED)
+        }
+        val activation = DeviceActivation(code, device, "https://www.9now.com.au/activate",
+            now() + expires * 1000, json.optLong("interval", 5).coerceIn(1, 60) * 1000)
+        activationStore.writeActivation(activation)
+        pendingActivation = activation
+        return activation
+    }
+
+    override fun pollSignIn(activation: DeviceActivation): Boolean {
+        if (now() >= activation.expiresAt) {
+            clearActivation()
+            connection = ProviderConnection.NOT_CONNECTED
+            throw ProviderException(ProviderFailure.ACTIVATION_EXPIRED)
+        }
+        val json = transport.request("GET", "$AUTH/token?client_id=9nowdevice&response_types=id_token" +
+            "&auth_code=" + encode(activation.userCode) + "&device_code=" + encode(activation.deviceCode))
+        val access = json.optString("accessToken").takeUnless { it.isBlank() || it == "null" }
+        if (access == null) {
+            val error = when (val raw = json.opt("error")) {
+                is String -> raw
+                is JSONObject -> raw.optString("code").ifBlank { raw.optString("error") }
+                else -> ""
+            }.lowercase(Locale.ROOT)
+            when (error) {
+                "", "authorization_pending", "pending" -> return false
+                "slow_down", "temporarily_unavailable" -> throw ProviderException(ProviderFailure.RETRY_LATER)
+                "expired_token", "expired_code" -> {
+                    clearActivation()
+                    connection = ProviderConnection.NOT_CONNECTED
+                    throw ProviderException(ProviderFailure.ACTIVATION_EXPIRED)
+                }
+                "access_denied", "authorization_declined", "invalid_grant", "invalid_code" -> {
+                    clearActivation()
+                    connection = ProviderConnection.NOT_CONNECTED
+                    throw ProviderException(ProviderFailure.ACTIVATION_DENIED, transport.lastHttpStatus)
+                }
+                else -> throw ProviderException(ProviderFailure.AUTH_RESPONSE_UNSUPPORTED, transport.lastHttpStatus)
+            }
+        }
+        save(json)
+        return true
+    }
+
+    private fun save(json: JSONObject) {
+        val access = json.optString("accessToken")
+        val refresh = json.optString("refresh_token").ifBlank { session?.refreshToken.orEmpty() }
+        val lifetime = json.optLong("expiresIn", 0)
+        if (access.isBlank() || refresh.isBlank() || lifetime <= 0) throw ProviderException(ProviderFailure.AUTH_REQUIRED)
+        val updated = ProviderSession(access, refresh, now() + lifetime.coerceAtMost(86400 * 30) * 1000 - 30_000)
+        store.write(updated)
+        session = updated
+        connection = ProviderConnection.CONNECTED
+        clearActivation()
+    }
+
+    private fun accessToken(): String {
+        val current = session ?: throw ProviderException(ProviderFailure.AUTH_REQUIRED)
+        if (current.expiresAt > now()) return current.accessToken
+        try {
+            save(transport.request("POST", "$AUTH/refresh-token?client_id=9nowdevice&response_types=id_token&refresh_token=" +
+                encode(current.refreshToken)))
+        } catch (error: ProviderException) {
+            if (error.failure in setOf(ProviderFailure.OFFLINE, ProviderFailure.RETRY_LATER)) throw error
+            expire()
+            throw ProviderException(ProviderFailure.SESSION_EXPIRED)
+        }
+        return session!!.accessToken
+    }
+
+    private fun catalogue(): JSONObject {
+        val token = accessToken()
+        return try {
+            val json = transport.request("GET", "$LIVE?device=web&streamParams=web%2Cchrome%2Cwindows&offset=0&region=" +
+                encode(region), token)
+            if (json.has("errors")) throw ProviderException(ProviderFailure.UNAVAILABLE)
+            json.getJSONObject("data").getJSONObject("getLivestream")
+        } catch (error: ProviderException) {
+            if (error.failure == ProviderFailure.SESSION_EXPIRED) expire()
+            throw error
+        } catch (_: Exception) { throw ProviderException(ProviderFailure.UNAVAILABLE) }
+    }
+
+    override var discovery: ProviderDiscovery? = null
+        private set
+    override fun channels(): List<ProviderChannel> {
+        val data = catalogue()
+        discovery = ProviderDiscovery(data.optJSONArray("channels")?.length() ?: 0,
+            data.optJSONArray("events")?.length() ?: 0, seinfeldRows(data).size)
+        return parseChannels(data)
+    }
+
+    override fun resolve(channel: ProviderChannelId): ProviderPlaybackRequest {
+        if (channel != SEINFELD) throw ProviderException(ProviderFailure.UNAVAILABLE)
+        val data = catalogue()
+        val row = seinfeldRows(data).singleOrNull()
+            ?: throw ProviderException(ProviderFailure.UNAVAILABLE)
+        val stream = row.optJSONObject("stream")
+            ?: if (row.optString("type") == "live-event") return resolveLiveEvent(row)
+            else throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        // Do not infer or bypass protection. This proof only supports provider-returned HLS.
+        if (stream.optBoolean("drm", false) || stream.has("key_systems"))
+            throw ProviderException(ProviderFailure.DRM_UNSUPPORTED)
+        val uri = stream.optString("url")
+        if (!isHttps(uri)) throw ProviderException(ProviderFailure.UNAVAILABLE)
+        return ProviderPlaybackRequest(channel, uri, "application/x-mpegURL")
+    }
+
+    private fun resolveLiveEvent(row: JSONObject): ProviderPlaybackRequest {
+        // Use only the identity returned by Nine, never a guessed video ID.
+        val reference = row.optString("brightcoveId").takeUnless { it.isBlank() || it == "null" }
+            ?: row.optString("referenceId")
+        if (reference.isBlank()) throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        val video = if (reference.all { it in '0'..'9' }) reference else "ref:$reference"
+        val descriptor = transport.request("GET", "$BRIGHTCOVE${encode(video)}")
+        val sources = descriptor.optJSONArray("sources") ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        var protectedSource = false
+        for (index in 0 until sources.length()) {
+            val source = sources.optJSONObject(index) ?: continue
+            if (source.has("key_systems") || source.optBoolean("drm", false)) {
+                protectedSource = true
+                continue
+            }
+            if (source.optString("type").lowercase(Locale.ROOT) !in
+                setOf("application/x-mpegurl", "application/vnd.apple.mpegurl")) continue
+            val url = source.optString("src")
+            if (!isHttps(url)) continue
+            // Preserve the provider URL, including its ad/session query, unchanged.
+            return ProviderPlaybackRequest(SEINFELD, url, "application/x-mpegURL")
+        }
+        throw ProviderException(if (protectedSource) ProviderFailure.DRM_UNSUPPORTED else ProviderFailure.PLAYBACK_UNSUPPORTED)
+    }
+
+    private fun expire() {
+        session = null
+        store.clear()
+        connection = ProviderConnection.SESSION_EXPIRED
+    }
+    private fun clearActivation() {
+        activationStore.clearActivation()
+        pendingActivation = null
+    }
+    override fun signOut() {
+        clearActivation()
+        session = null
+        store.clear()
+        connection = ProviderConnection.NOT_CONNECTED
+        discovery = null
+    }
+
+    companion object {
+        val SEINFELD = ProviderChannelId("9now", "seinfeld")
+        private const val AUTH = "https://login.nine.com.au/api/device"
+        const val BRIGHTCOVE = "https://edge.api.brightcove.com/playback/v1/accounts/4460760524001/videos/"
+        private const val LIVE = "https://api.9now.com.au/ctv/livestreams"
+        private fun encode(value: String) = URLEncoder.encode(value, "UTF-8")
+        internal fun isHttps(value: String) = runCatching {
+            val uri = URI(value)
+            uri.scheme == "https" && !uri.host.isNullOrBlank() && uri.rawUserInfo == null
+        }.getOrDefault(false)
+        private fun entries(data: JSONObject, key: String): List<JSONObject> {
+            val array = data.optJSONArray(key) ?: return emptyList()
+            return (0 until array.length()).mapNotNull { array.optJSONObject(it) }
+        }
+        private fun normalized(value: String) = value.lowercase(Locale.ROOT).replace(Regex("[^a-z0-9]"), "")
+        private fun seinfeldRows(data: JSONObject): List<JSONObject> {
+            // The upstream live catalogue includes some linear services as live events.
+            val rows = entries(data, "channels") + entries(data, "events").filter {
+                it.optString("type") == "live-event"
+            }
+            val names = setOf("seinfeld", "seinfeld247")
+            return rows.filter { row ->
+                row.optString("referenceId").isNotBlank() &&
+                    listOf("slug", "name", "displayName").any { normalized(row.optString(it)) in names }
+            }.groupBy { it.optString("referenceId") }.values.map { duplicates ->
+                // A metadata-only row and its live-event row may describe the same identity.
+                duplicates.firstOrNull { it.optJSONObject("stream")?.optString("url")?.let(::isHttps) == true }
+                    ?: duplicates.firstOrNull { it.optString("type") == "live-event" }
+                    ?: duplicates.first()
+            }
+        }
+        /** Require one identity; never pick arbitrarily from ambiguous matching services. */
+        internal fun parseChannels(data: JSONObject): List<ProviderChannel> {
+            val row = seinfeldRows(data).singleOrNull() ?: return emptyList()
+            val name = row.optString("name").ifBlank { row.optString("displayName") }.ifBlank { "Seinfeld 24/7" }
+            val logo = row.optJSONObject("image")?.optJSONObject("sizes")?.optString("w768")
+                ?.takeIf(::isHttps)
+            return listOf(ProviderChannel(SEINFELD, row.optString("referenceId"), name, logo))
+        }
+    }
+}
+
+/** token applies only to the catalogue request, never to playback/CDN hosts. */
+fun interface NineNowTransport {
+    val lastHttpStatus: Int? get() = null
+    fun request(method: String, url: String, accessToken: String?): JSONObject
+}
+/** Convenience preserves a small fakeable transport while keeping token optional for auth calls. */
+private fun NineNowTransport.request(method: String, url: String): JSONObject = request(method, url, null)

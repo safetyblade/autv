@@ -2,4 +2,6 @@
     <activity android:name=".creator.CreatorPlaybackActivity" android:exported="true" />
     <activity android:name=".PlatformTestActivity" android:exported="false" android:launchMode="singleTask" android:supportsPictureInPicture="true" android:resizeableActivity="true" android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
     <activity android:name=".TvInteractionTestActivity" android:exported="false" android:launchMode="singleTask" android:screenOrientation="landscape" android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+    <activity android:name=".ProviderTestActivity" android:exported="false" />
+    <activity android:name=".ProviderActivationTestActivity" android:exported="false" />
 </application></manifest>

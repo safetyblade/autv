@@ -8,6 +8,8 @@ import androidx.media3.common.Player
 import androidx.media3.common.PlaybackException
 import dev.prestwich.autv.data.*
 import dev.prestwich.autv.guide.*
+import dev.prestwich.autv.data.provider.*
+import dev.prestwich.autv.provider.*
 import dev.prestwich.autv.player.AuTvPlayer
 import dev.prestwich.autv.cast.CastSender
 import dev.prestwich.autv.cast.CastConnection
@@ -18,11 +20,29 @@ import kotlinx.coroutines.sync.withLock
 /** Activity-retained state: UI transitions and PiP never create another playback engine. */
 class PlaybackModel(application: Application, private val guideLoader: () -> Guide, private val epgLoader: () -> Epg,
     senderFactory: (((CastPlayback) -> Unit) -> CastConnection)? = null,
-    guideCache: GuideCache? = null, playlistLoader: ((Guide) -> Guide)? = null, epgCacheLoader: (() -> Epg?)? = null) : AndroidViewModel(application) {
+    guideCache: GuideCache? = null, playlistLoader: ((Guide) -> Guide)? = null, epgCacheLoader: (() -> Epg?)? = null,
+    providerAdapter: ProviderAdapter? = null) : AndroidViewModel(application) {
     constructor(application: Application) : this(application, { GuideRepository().load() }, { EpgRepository(java.io.File(application.filesDir, "programme-guide-v1.xml.gz")).load() },
         guideCache = FileGuideCache(java.io.File(application.filesDir, "channel-guide-v1.json")),
         playlistLoader = { GuideRepository().reconcile(it) },
         epgCacheLoader = { EpgRepository(java.io.File(application.filesDir, "programme-guide-v1.xml.gz")).cached() })
+    private val nineNow = providerAdapter ?: createNineNowProvider(application)
+    var providerConnection by mutableStateOf(nineNow.connection); private set
+    var providerActivation by mutableStateOf<DeviceActivation?>(null); private set
+    var providerError by mutableStateOf<String?>(null); private set
+    var providerBusy by mutableStateOf(false); private set
+    var providerAuthStatus by mutableStateOf<String?>(null); private set
+    private var providerChannels = emptyList<ProviderChannel>()
+    private var fastGuide: Guide? = null
+    private var lastWorkingFast: Channel? = null
+    private val providerMutex = Mutex()
+    private var accountJob: Job? = null
+    private var accountGeneration = 0L
+    private var providerTuneJob: Job? = null
+    private var providerTuneGeneration = 0L
+    private suspend fun <T> providerCall(action: () -> T): T =
+        providerMutex.withLock { withContext(Dispatchers.IO) { action() } }
+
     private val startup = GuideStartup(guideCache, guideLoader, playlistLoader)
     private val rokuResolver = RokuChannelResolver()
     var startupState by mutableStateOf(GuideStartupState.LOADING); private set
@@ -54,10 +74,13 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         override fun onPlayerError(error: PlaybackException) {
             player.currentMediaItem?.mediaId?.toIntOrNull()?.let { failed[it] = "Playback failed" }
             buffering = false
-            restoreGuideTune(player.currentMediaItem?.mediaId?.toIntOrNull())
+            if (selected?.providerChannel != null) recoverProvider()
+            else restoreGuideTune(player.currentMediaItem?.mediaId?.toIntOrNull())
         }
         override fun onPlaybackStateChanged(state: Int) {
             buffering = state == Player.STATE_BUFFERING
+            if (state == Player.STATE_READY && selected?.providerChannel == null &&
+                player.currentMediaItem?.mediaId == selected?.number?.toString()) lastWorkingFast = selected
             if (state == Player.STATE_READY) player.currentMediaItem?.mediaId?.toIntOrNull()?.let { failed.remove(it); guideTuneRecovery.ready(it) }
         }
         override fun onIsPlayingChanged(isPlaying: Boolean) { playing = isPlaying }
@@ -76,13 +99,15 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
             }
         }
         castSender.start()
+        if (providerConnection == ProviderConnection.CONNECTED) refreshProviderChannels()
+        else if (nineNow.pendingActivation != null) connectNineNow()
     }
     fun reload() {
         if (loading) return
         loading = true; loadError = false
         viewModelScope.launch {
             try {
-                startup.refresh(guide) { update ->
+                startup.refresh(fastGuide) { update ->
                     startupState = update.state
                     refreshFailed = update.refreshFailed
                     loadError = update.state == GuideStartupState.ERROR
@@ -95,7 +120,15 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
             } finally { loading = false }
         }
     }
-    private fun applyGuide(loaded: Guide) {
+    private fun applyGuide(fastLoaded: Guide) {
+        fastGuide = fastLoaded
+        // Native-only rows are added after public-cache validation, never persisted in it.
+        val local = providerChannels.map { channel ->
+            Channel(-9001, channel.name, "Australian TV", "9Now", "", "", true, null,
+                channel.id.favouriteKey, channel.logoUrl, channel)
+        }.filter { candidate -> fastLoaded.channels.none { it.number == candidate.number } }
+        val loaded = Guide(fastLoaded.activeCount + local.size, fastLoaded.availableCount + local.size,
+            fastLoaded.channels + local)
         if (guide == loaded) return
         val previous = selected
         guide = loaded
@@ -109,7 +142,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         } else if (previous != null) {
             val refreshed = previous.tvgId?.let { id -> loaded.channels.singleOrNull { it.tvgId == id } }
                 ?: loaded.channels.singleOrNull { it.number == previous.number && it.name == previous.name }
-            if (refreshed == null || (refreshed.streamUrl.isNullOrBlank() && refreshed.number != 297)) {
+            if (refreshed == null || (!refreshed.tunable && refreshed.number != 297)) {
                 selected = refreshed
                 player.stop(); player.clearMediaItems(); buffering = false; guideOpen = true
                 notice = "That channel is no longer available. Choose another channel."
@@ -129,6 +162,10 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     private fun applyRequest(target: TuneTarget?, restoreOnFailure: Boolean = false) {
         val channel = target?.let { ChannelTuning.resolve(guide?.channels.orEmpty(), it) }
         if (channel == null) { guideOpen = true; notice = "That channel is not currently available. Choose another channel."; return }
+        if (channel.providerChannel != null && castSender.connected) {
+            notice = "9Now Cast is unavailable. Disconnect Cast to watch on this device."
+            return
+        }
         if (restoreOnFailure) guideTuneRecovery.begin(selected, channel) else guideTuneRecovery.clear()
         try {
             tune(channel); guideOpen = false; notice = null; publishHome()
@@ -146,6 +183,11 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         return true
     }
     private fun tune(channel: Channel) {
+        cancelProviderTune()
+        if (channel.providerChannel != null) {
+            tuneProvider(channel)
+            return
+        }
         initialSelectionPending = false
         val retry = failed.remove(channel.number) != null
         selected = channel
@@ -168,6 +210,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         playLocal(channel, retry)
     }
     private fun playLocal(channel: Channel, retry: Boolean = false) {
+        if (channel.providerChannel != null) { cancelProviderTune(); tuneProvider(channel); return }
         if (channel.number == 297) {
             buffering = true
             viewModelScope.launch {
@@ -209,6 +252,10 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     private fun onCastChanged(state: CastPlayback) {
         val wasRemote = castPlayback.ownsPlayback
         castPlayback = state
+        if (selected?.providerChannel != null && state.phase != CastPhase.DISCONNECTED) {
+            recoverProvider()
+            return
+        }
         if (state.ownsPlayback) {
             guideTuneRecovery.ready(selected?.number)
             player.stop() // Release local decoding/buffering only after receiver status confirms ownership.
@@ -220,10 +267,177 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         }
     }
     private fun publishHome() {
-        val catalogue = guide ?: return
+        val catalogue = fastGuide ?: return
         val recent = selected?.number
         homeJob?.cancel()
         homeJob = viewModelScope.launch { homeMutex.withLock { withContext(Dispatchers.IO) { TvHomePublisher(getApplication()).publish(catalogue, recent) } } }
     }
+    private fun cancelProviderTune() {
+        providerTuneGeneration++
+        providerTuneJob?.cancel()
+    }
+    private fun tuneProvider(channel: Channel) {
+        if (castSender.connected) {
+            notice = "9Now Cast is unavailable. Disconnect Cast to watch on this device."
+            return
+        }
+        val id = channel.providerChannel?.id ?: return
+        val generation = providerTuneGeneration
+        buffering = true
+        providerTuneJob = viewModelScope.launch {
+            try {
+                val request = providerCall { nineNow.resolve(id) }
+                if (generation != providerTuneGeneration) return@launch
+                selected = channel
+                failed.remove(channel.number)
+                holder.play(request, channel.number)
+                if (!foreground) player.pause()
+            } catch (error: Exception) {
+                if (error is CancellationException) throw error
+                if (generation != providerTuneGeneration) return@launch
+                buffering = false
+                failed[channel.number] = "Playback unavailable"
+                providerError = providerMessage(error)
+                notice = providerError
+                syncProviderConnection()
+                if (selected?.providerChannel != null) recoverProvider()
+            }
+        }
+    }
+    private fun recoverProvider() {
+        cancelProviderTune()
+        val fallback = fastGuide?.channels?.firstOrNull { it.tvgId != null && it.tvgId == lastWorkingFast?.tvgId }
+            ?: fastGuide?.channels?.firstOrNull { it.number == lastWorkingFast?.number }
+            ?: fastGuide?.channels?.firstOrNull { it.tunable }
+        if (fallback != null) {
+            request(TuneTarget.Number(fallback.number))
+            notice = "9Now playback is unavailable. Returned to ${fallback.name}."
+        } else {
+            player.stop(); player.clearMediaItems(); selected = null; buffering = false; guideOpen = true
+            notice = "9Now playback is unavailable. Choose another channel."
+        }
+    }
+    private fun syncProviderConnection() {
+        providerConnection = nineNow.connection
+        if (providerConnection != ProviderConnection.CONNECTED) {
+            providerChannels = emptyList()
+            if (selected?.providerChannel != null) recoverProvider()
+            fastGuide?.let(::applyGuide)
+        }
+    }
+    fun connectNineNow() {
+        if (providerBusy) return
+        providerBusy = true
+        providerError = null
+        providerAuthStatus = if (nineNow.pendingActivation != null) "Resuming your pending Nine activation…" else "Requesting an activation code…"
+        providerActivation = nineNow.pendingActivation
+        val generation = ++accountGeneration
+        accountJob = viewModelScope.launch {
+            var activationApproved = false
+            try {
+                val activation = providerCall { nineNow.beginSignIn() }
+                providerActivation = activation
+                providerConnection = ProviderConnection.CONNECTING
+                providerAuthStatus = "Waiting for Nine approval. Return to AUTV after submitting the code."
+                var interval = activation.pollIntervalMillis
+                while (System.currentTimeMillis() < activation.expiresAt) {
+                    delay(interval)
+                    val approved = try { providerCall { nineNow.pollSignIn(activation) } }
+                    catch (error: ProviderException) {
+                        if (error.failure !in setOf(ProviderFailure.OFFLINE, ProviderFailure.RETRY_LATER)) throw error
+                        interval = (interval + 5_000).coerceAtMost(60_000)
+                        providerAuthStatus = "Activation connection interrupted; retrying the same code. Return to AUTV to continue."
+                        continue
+                    }
+                    if (approved) {
+                        activationApproved = true
+                        providerAuthStatus = "Nine approved this device. Finding channels…"
+                        providerActivation = null
+                        providerChannels = providerCall { nineNow.channels() }
+                        providerConnection = nineNow.connection
+                        fastGuide?.let(::applyGuide)
+                        if (providerChannels.isEmpty()) providerError = providerDiscoveryMessage()
+                        providerAuthStatus = "Device activation complete"
+                        return@launch
+                    }
+                    providerAuthStatus = "Waiting for Nine approval. Return to AUTV after submitting the code."
+                }
+                providerCall { nineNow.signOut() }
+                providerError = "The sign-in code expired. Request a new code."
+                providerAuthStatus = "Activation expired"
+            } catch (error: Exception) {
+                if (error is CancellationException) throw error
+                providerError = (if (activationApproved) "Channel discovery: " else "Device activation: ") + providerMessage(error)
+                if (nineNow.connection == ProviderConnection.CONNECTING) providerCall { nineNow.signOut() }
+                providerAuthStatus = if (activationApproved) "Device activation complete; channel discovery failed" else "Activation did not finish"
+            } finally {
+                // A destroyed Activity/process must not invalidate the saved provider challenge.
+                // Only explicit cancel, expiry, denial or successful token exchange clears it.
+                if (generation == accountGeneration) {
+                    providerActivation = null
+                    providerBusy = false
+                    syncProviderConnection()
+                }
+            }
+        }
+    }
+    fun refreshProviderChannels() {
+        if (providerBusy) return
+        providerBusy = true; providerError = null
+        val generation = ++accountGeneration
+        accountJob = viewModelScope.launch {
+            try {
+                providerChannels = providerCall { nineNow.channels() }
+                if (providerChannels.isEmpty()) providerError = providerDiscoveryMessage()
+                if (selected?.providerChannel?.id?.let { id -> providerChannels.none { it.id == id } } == true)
+                    recoverProvider()
+                fastGuide?.let(::applyGuide)
+            } catch (error: Exception) {
+                if (error is CancellationException) throw error
+                providerError = providerMessage(error)
+            } finally { if (generation == accountGeneration) { providerBusy = false; syncProviderConnection() } }
+        }
+    }
+    fun disconnectNineNow() {
+        // Wait for cancelled blocking IO to finish before clearing secrets, preventing late token writes.
+        accountGeneration++
+        val previous = accountJob
+        previous?.cancel()
+        cancelProviderTune()
+        providerActivation = null
+        providerAuthStatus = null
+        providerBusy = true
+        providerChannels = emptyList()
+        if (selected?.providerChannel != null) recoverProvider()
+        fastGuide?.let(::applyGuide)
+        accountJob = viewModelScope.launch {
+            previous?.join()
+            providerCall { nineNow.signOut() }
+            providerChannels = emptyList()
+            providerError = null
+            providerBusy = false
+            syncProviderConnection()
+        }
+    }
+    private fun providerDiscoveryMessage(): String {
+        val counts = nineNow.discovery
+        return if (counts == null) "Connected to 9Now, but AUTV could not identify Seinfeld 24/7. Try refreshing channels."
+        else "Connected to 9Now. Received ${counts.channels} channels and ${counts.events} event entries, " +
+            "with ${counts.matches} Seinfeld matches. AUTV needs one unique Seinfeld entry."
+    }
+    private fun providerMessage(error: Exception): String = when ((error as? ProviderException)?.failure) {
+        ProviderFailure.ACTIVATION_EXPIRED -> "The activation code expired. Request a new code."
+        ProviderFailure.ACTIVATION_DENIED -> "Nine did not accept this activation. Request a fresh code and try again."
+        ProviderFailure.AUTH_RESPONSE_UNSUPPORTED -> "Nine returned an unrecognised activation response."
+        ProviderFailure.RETRY_LATER -> "Nine is temporarily busy. Try again shortly."
+        ProviderFailure.AUTH_REQUIRED -> "Connect 9Now in Settings to watch."
+        ProviderFailure.SESSION_EXPIRED -> "Your 9Now session expired. Connect again in Settings."
+        ProviderFailure.REGION_DENIED -> "9Now denied this request. Check that you are in Australia."
+        ProviderFailure.OFFLINE -> "Cannot reach 9Now. Check your connection and try again."
+        ProviderFailure.PLAYBACK_UNSUPPORTED -> "9Now lists this channel, but did not supply a supported native playback stream."
+        ProviderFailure.DRM_UNSUPPORTED -> "This 9Now stream needs playback protection that AUTV does not support yet."
+        ProviderFailure.UNSUPPORTED -> "9Now sign-in is unavailable in this build."
+        else -> "9Now is unavailable. Try again later."
+    } + ((error as? ProviderException)?.httpStatus?.takeIf { it in 100..599 }?.let { " (HTTP $it)" } ?: "")
     override fun onCleared() { castSender.release(); player.removeListener(listener); holder.release() }
 }
