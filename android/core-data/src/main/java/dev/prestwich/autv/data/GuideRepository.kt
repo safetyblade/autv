@@ -16,7 +16,11 @@ data class Channel(
     val streamUrl: String?,
     val tvgId: String?,
     val logoUrl: String?,
-)
+    val providerChannel: dev.prestwich.autv.data.provider.ProviderChannel? = null,
+) {
+    val tunable: Boolean get() = providerChannel != null || !streamUrl.isNullOrBlank()
+    val numberLabel: String get() = if (providerChannel == null) number.toString() else ""
+}
 
 data class Guide(val activeCount: Int, val availableCount: Int, val channels: List<Channel>)
 

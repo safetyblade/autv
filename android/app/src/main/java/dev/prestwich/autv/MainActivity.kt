@@ -37,6 +37,7 @@ open class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null && ChannelIntents.isTuneRequest(intent)) playback.request(ChannelIntents.target(intent))
         pipUi = Build.VERSION.SDK_INT >= 26 && isInPictureInPictureMode
         setContent {
+            var settingsOpen by remember { mutableStateOf(false) }
             val favourites = remember { Favourites(applicationContext) }
             LaunchedEffect(playback.castPlayback) { updatePipParams() }
             AuTvScreen(playback.guide, playback.selected, playback.guideOpen, playback.loadError,
@@ -48,7 +49,9 @@ open class MainActivity : AppCompatActivity() {
                 onRetry = playback::reload, onNext = playback::next, onPrevious = playback::previous,
                 onTuneNumber = { playback.request(TuneTarget.Number(it)) }, pictureInPicture = pipUi, notice = playback.notice,
                 castPlayback = playback.castPlayback, favourites = favourites.keys,
-                onFavourite = { favouriteConfirmation(applicationContext, favourites.toggle(it)) })
+                onFavourite = { favouriteConfirmation(applicationContext, favourites.toggle(it)) },
+                onOpenSettings = { settingsOpen = true })
+            if (settingsOpen) dev.prestwich.autv.provider.AustralianServicesSettings(playback) { settingsOpen = false }
         }
         updatePipParams()
     }
@@ -62,7 +65,7 @@ open class MainActivity : AppCompatActivity() {
         !packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK) &&
         packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
     protected open fun automaticPipAllowed() = true
-    private fun pipEligible() = automaticPipAllowed() && mobilePipSupported() && playback.castPlayback.phase == CastPhase.DISCONNECTED && playback.selected?.streamUrl != null && playback.player.isPlaying
+    private fun pipEligible() = automaticPipAllowed() && mobilePipSupported() && playback.castPlayback.phase == CastPhase.DISCONNECTED && (playback.selected?.tunable == true) && playback.player.isPlaying
     private fun pipParams(): PictureInPictureParams {
         val bounds = Rect(); window.decorView.getGlobalVisibleRect(bounds)
         val builder = PictureInPictureParams.Builder().setAspectRatio(Rational(16, 9)).setSourceRectHint(bounds)

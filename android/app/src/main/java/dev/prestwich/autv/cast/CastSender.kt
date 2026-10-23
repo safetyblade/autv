@@ -78,6 +78,8 @@ class CastSender(private val context: Context, private val scope: CoroutineScope
         current()?.let { load(it, reusePlayingMedia = true) }
     }
     override fun load(channel: Channel, reusePlayingMedia: Boolean) {
+        // Account-bound provider media is never sent to the generic receiver.
+        if (channel.providerChannel != null) return
         val remote = client ?: return
         timeout?.cancel()
         val url = try { CastStreamUrl.resolve(requireNotNull(channel.streamUrl)) }

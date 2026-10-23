@@ -44,7 +44,8 @@ internal fun TvDualGuide(
     onRetry: () -> Unit, loadError: Boolean, onFullTune: (Channel) -> Unit = onTune,
     favourites: Set<String> = emptySet(), onFavourite: (Channel) -> Unit = {},
 ) {
-    val categories = remember { listOf("All", "Favourites") + GuideBrowse.categories.drop(1) }
+    val categories = remember(guide) { listOf("All", "Favourites") + GuideBrowse.categories.drop(1) +
+        if (guide?.channels?.any { it.providerChannel != null } == true) listOf("Australian TV") else emptyList() }
     var channelCell by remember { mutableStateOf(false) }
     var full by rememberSaveable { mutableStateOf(false) }
     var quickCategory by rememberSaveable { mutableStateOf("All") }
@@ -240,7 +241,7 @@ internal fun TvDualGuide(
                             Row(Modifier.fillMaxWidth().height(rowHeight).padding(vertical = 2.dp)
                                 .background(if (focused) GuideAccent.copy(alpha = 0.16f) else androidx.compose.ui.graphics.Color.Transparent, RoundedCornerShape(6.dp))
                                 .border(if (focused) 3.dp else 1.dp, if (focused) GuideAccent else GuideAccent.copy(alpha = 0.12f), RoundedCornerShape(6.dp))
-                                .semantics { this.selected = channel.number == playing?.number; this.focused = focused; contentDescription = "${channel.number} ${channel.name}${if (channel.number == playing?.number) ", playing" else ""}${if (isFav) ", favourite" else ""}${current?.title?.let { " · $it" } ?: ""}" }
+                                .semantics { this.selected = channel.number == playing?.number; this.focused = focused; contentDescription = "${channel.numberLabel} ${channel.name}${if (channel.number == playing?.number) ", playing" else ""}${if (isFav) ", favourite" else ""}${current?.title?.let { " · $it" } ?: ""}" }
                                 .testTag("channel-${channel.number}"), verticalAlignment = Alignment.CenterVertically) {
                                 Row(Modifier.width(if (full) 220.dp else 260.dp).fillMaxHeight().then(if (full && focused && channelCell) Modifier.border(3.dp, GuideAccent) else Modifier)
                                     .testTag("channel-cell-${channel.number}")
@@ -251,7 +252,7 @@ internal fun TvDualGuide(
                                     Column(Modifier.padding(start = 8.dp)) {
                                         Row(verticalAlignment = Alignment.CenterVertically) { Text("${channel.number}  ${channel.name}", fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false)); if (isFav) Text(" ★", color = androidx.compose.ui.graphics.Color(0xFFFFD700), style = MaterialTheme.typography.labelSmall) }
                                         if (channel.number == playing?.number) Text("PLAYING", style = MaterialTheme.typography.labelSmall)
-                                        if (channel.streamUrl.isNullOrBlank()) Text("Unavailable", style = MaterialTheme.typography.labelSmall)
+                                        if (!channel.tunable) Text("Unavailable", style = MaterialTheme.typography.labelSmall)
                                         if (failed[channel.number] != null) Text("Playback failed · OK to retry", style = MaterialTheme.typography.labelSmall)
                                     }
                                 }
@@ -287,7 +288,7 @@ internal fun TvDualGuide(
         confirmButton = { TextButton(onClick = { search = false; zone = GuideZone.CHANNELS; scope.launch { withFrameNanos { }; remoteFocus.requestFocus() } }) { Text("Done") } })
     details?.let { item ->
         AlertDialog(onDismissRequest = { details = null }, title = { Text(item.title) },
-            text = { Column { Text("${selected?.number}  ${selected?.name}"); Text("${guideClock(item.start)} – ${guideClock(item.stop)}");
+            text = { Column { Text("${selected?.numberLabel}  ${selected?.name}"); Text("${guideClock(item.start)} – ${guideClock(item.stop)}");
                 if (item.description.isNotBlank()) Text(item.description)
                 if (!Timeline.airing(item, now)) Text("This programme is not currently airing.") } },
             confirmButton = { TextButton(onClick = { if (Timeline.airing(item, now)) tune() else details = null }, modifier = Modifier.testTag("programme-confirm")) {
@@ -296,7 +297,7 @@ internal fun TvDualGuide(
     }
 }
 
-private fun tuneChannel(channel: Channel, tune: (Channel) -> Unit) { if (!channel.streamUrl.isNullOrBlank()) tune(channel) }
+private fun tuneChannel(channel: Channel, tune: (Channel) -> Unit) { if (channel.tunable) tune(channel) }
 private fun guideClock(time: Long) = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date(time))
 
 @Composable

@@ -7,6 +7,7 @@ import java.security.MessageDigest
 /** Provider IDs are canonical: duplicate rows with that ID deliberately share membership. */
 object FavouriteIdentity {
     fun key(channel: Channel): String? {
+        channel.providerChannel?.let { return it.id.favouriteKey }
         channel.tvgId?.trim()?.takeIf { it.isNotEmpty() }?.let { return "id:$it" }
         // Never use a display name or number as identity. Retain routing query parameters,
         // dropping only known rotating credentials; the URL is never used for playback here.
