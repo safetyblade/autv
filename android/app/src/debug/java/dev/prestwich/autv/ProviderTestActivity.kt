@@ -30,7 +30,8 @@ class FixtureProviderAdapter : ProviderAdapter {
     override fun beginSignIn() = DeviceActivation("FIXTURE", "fixture-device", "https://www.9now.com.au/activate",
         System.currentTimeMillis() + 60_000, 1000)
     override fun pollSignIn(activation: DeviceActivation) = true
-    override fun channels() = listOf(ProviderChannel(NineNowAdapter.SEINFELD, "fixture-reference", "Seinfeld 24/7"))
+    var catalogue = listOf(ProviderChannel(NineNowAdapter.SEINFELD, "fixture-reference", "Seinfeld 24/7"))
+    override fun channels() = catalogue
     override fun resolve(channel: ProviderChannelId): ProviderPlaybackRequest {
         if (blockResolve) {
             resolveEntered.countDown()

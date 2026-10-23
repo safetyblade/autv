@@ -2,3 +2,7 @@ plex_upstream.m3u
 .DS_Store
 __pycache__/
 *.pyc
+
+# Android signing material must remain outside source control.
+*.jks
+*.keystore

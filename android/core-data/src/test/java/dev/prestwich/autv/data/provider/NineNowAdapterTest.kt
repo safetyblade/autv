@@ -87,11 +87,11 @@ class NineNowAdapterTest {
             JSONObject(catalogue)
         }, signedInStore(), { 1000 })
         val channels = adapter.channels()
-        assertEquals(1, channels.size)
-        assertEquals("official-reference", channels.single().reference)
-        assertEquals(NineNowAdapter.SEINFELD, channels.single().id)
+        assertEquals(2, channels.size)
+        val seinfeld = channels.single { it.id == NineNowAdapter.SEINFELD }
+        assertEquals("official-reference", seinfeld.reference)
         assertFalse(channels.toString().contains("ssai"))
-        val request = adapter.resolve(channels.single().id)
+        val request = adapter.resolve(seinfeld.id)
         assertEquals("https://example.invalid/ssai/live.m3u8?session=fixture", request.uri)
         assertTrue(request.headers.isEmpty()) // Never leak account bearer to a media host.
         assertEquals("ProviderPlaybackRequest(redacted)", request.toString())
@@ -175,14 +175,29 @@ class NineNowAdapterTest {
         }
     }
 
-    @Test fun ambiguousChannelsAndUnrelatedTitlesAreNotSelectedArbitrarily() {
-        val ambiguous = """{"channels":[
+    @Test fun fullLiveCatalogueKeepsDistinctReferencesAndExcludesOnDemandEntries() {
+        val data = JSONObject("""{"channels":[
             {"name":"Seinfeld 24/7","referenceId":"first"},
-            {"name":"Seinfeld 24/7","referenceId":"second"}]}"""
-        assertTrue(NineNowAdapter.parseChannels(JSONObject(ambiguous)).isEmpty())
-        val unrelated = """{"channels":[{"name":"Best of Seinfeld","slug":"seinfeld-clips","referenceId":"clip"}],
-            "events":[{"type":"episode","name":"Seinfeld","referenceId":"episode"}]}"""
-        assertTrue(NineNowAdapter.parseChannels(JSONObject(unrelated)).isEmpty())
+            {"name":"Seinfeld 24/7","referenceId":"second"},
+            {"name":"Nine","referenceId":"nine","slug":"nine"}],
+            "events":[{"type":"live-event","displayName":"Live sport","referenceId":"sport"},
+                      {"type":"episode","name":"A programme","referenceId":"episode"}]}""")
+        val channels = NineNowAdapter.parseChannels(data)
+        assertEquals(4, channels.size)
+        assertEquals(4, channels.map { it.id }.toSet().size)
+        assertFalse(channels.any { it.id == NineNowAdapter.SEINFELD })
+        val reversed = JSONObject(data.toString()).put("channels", org.json.JSONArray(
+            listOf(data.getJSONArray("channels").getJSONObject(2), data.getJSONArray("channels").getJSONObject(1), data.getJSONArray("channels").getJSONObject(0))))
+        assertEquals(channels.associate { it.reference to it.id }, NineNowAdapter.parseChannels(reversed).associate { it.reference to it.id })
+    }
+
+    @Test fun resolvesEachOfficialChannelIndependently() {
+        val adapter = NineNowAdapter(NineNowTransport { _, _, _ -> JSONObject(catalogue.replace(
+            "\"referenceId\":\"other\",\"name\":\"Nine\"", "\"referenceId\":\"other\",\"name\":\"Nine\",\"stream\":{\"url\":\"https://example.invalid/nine.m3u8\"}")) }, signedInStore(), { 1000 })
+        val nine = adapter.channels().single { it.reference == "other" }
+        assertEquals("https://example.invalid/nine.m3u8", adapter.resolve(nine.id).uri)
+        assertEquals(nine.id, adapter.resolve(nine.id).channelId)
+        expect(ProviderFailure.UNAVAILABLE) { adapter.resolve(ProviderChannelId("9now", "ref:missing")) }
     }
 
     @Test fun listedChannelWithoutNativeStreamIsDistinctFromMissingChannel() {

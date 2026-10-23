@@ -9,6 +9,15 @@ import org.junit.Test
 
 class ProviderSettingsUiTest {
     @get:Rule val ui = createAndroidComposeRule<ProviderTestActivity>()
+    @Test fun providerCardsOpenDetailsWithoutOfferingUnsupportedSignIn() {
+        ui.onNodeWithTag("settings-button").performClick()
+        ui.onNodeWithTag("provider-abc").performScrollTo().performClick()
+        ui.onNodeWithText("ABC iview").assertExists()
+        ui.onNodeWithTag("9now-connect").assertDoesNotExist()
+        ui.onNodeWithTag("providers-back").performScrollTo().performClick()
+        ui.onNodeWithTag("provider-9now").performScrollTo().performClick()
+        ui.onNodeWithTag("9now-connection-state").assertExists()
+    }
     @Test fun settingsSignOutRemovesPrivateChannelsWithoutRecreatingPlayer() {
         ui.waitUntil(30_000) {
             ui.activity.playback.guide?.channels?.any { it.providerChannel != null } == true
@@ -16,6 +25,7 @@ class ProviderSettingsUiTest {
         val player = ui.activity.playback.player
         ui.onNodeWithTag("settings-button").performClick()
         ui.onNodeWithText("Australian services").assertIsDisplayed()
+        ui.onNodeWithTag("provider-9now").performScrollTo().performClick()
         ui.onNodeWithTag("9now-connection-state").assertTextEquals("Connected")
         ui.onNodeWithTag("9now-disconnect").performScrollTo().performClick()
         ui.waitUntil(30_000) {

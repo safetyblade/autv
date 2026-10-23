@@ -1,8 +1,9 @@
 # 9Now native provider prototype
 
-Status: experimental implementation, not verified live 9Now playback.
+Status: experimental implementation. The owner reports native Seinfeld playback
+succeeded on their device. Other live channels are not yet device-verified.
 Scope: Settings → Australian services → user-initiated Nine device activation →
-discover Seinfeld 24/7 → existing AUTV guide → retained native Media3 player.
+discover 9Now live channels/events → existing AUTV guide → retained native Media3 player.
 
 The user explicitly requested implementation of this structure after the initial
 [feasibility decision](https://github.com/safetyblade/autv/blob/docs/9now-native-feasibility-decision/docs/spikes/9now-seinfeld-native-decision.md).
@@ -45,9 +46,9 @@ No provider permission request or message has been sent.
   Connect, channel refresh and sign-out/cancel. Password entry stays exclusively
   on Nine's activation site. Closing Settings does not cancel owner approval;
   the explicit Cancel button does.
-- A successful device session triggers metadata discovery. Only the returned
-  Seinfeld row is exposed, with its actual referenceId. Its editorial slug is
-  a selection filter, not a fabricated playback identifier.
+- A successful device session triggers metadata discovery. The returned
+  live catalogue is exposed, with actual referenceId values. Other services remain
+  visibly unavailable until their own connector is implemented.
 - Access/refresh tokens are encrypted with an Android Keystore AES-GCM key.
   Ciphertext is in noBackupFilesDir. Tokens and activation records have redacted
   string representations; pending activation records are encrypted, device-local and expire with the provider deadline. Sign-out
@@ -55,13 +56,15 @@ No provider permission request or message has been sent.
 - Catalogue records contain no playback URLs. Neither session nor private
   channels are written to guide.json, playlist reconciliation or the public
   guide cache. TV-home publishing uses only the original FAST catalogue.
-- Native-only channel -9001 is an internal routing key, never a published channel
-  number and not displayed as a number. Existing FAST channel numbers and
-  favourite keys are unchanged. Provider favourites use provider:9now:seinfeld,
-  independent of token, reference refresh or stream URL.
+- Native-only negative guide numbers are internal routing keys, never published or
+  displayed as numbers. Seinfeld retains -9001; other references get unique,
+  persisted numbers that survive refreshes and catalogue reorderings. Existing FAST channel numbers and
+  favourite keys are unchanged. Provider favourites use namespaced official IDs;
+  Seinfeld retains provider:9now:seinfeld for compatibility. No token or stream URL
+  participates in identity.
 - The same guide, remote OK/long OK handler, retained model and player are used.
   A provider row is tunable without a fake stream URL. Australian TV appears
-  only when discovery supplies the channel. Until then Settings remains available.
+  only when discovery supplies live channels. Until then Settings remains available.
 - Each tune re-fetches the provider descriptor. The returned HTTPS stream URL is
   used unchanged: no SSAI unwrapping, alternate raw URL, stripping query values,
   cookies harvested from a browser, proxy, geo workaround or ad-blocking logic.
@@ -197,3 +200,27 @@ of provider integration permission; the existing release gates still apply.
 Fixtures verify numeric and reference IDs, token isolation, metadata-only discovery,
 original ad/session query preservation and rejection of protected, DASH and HTTP
 sources. The exact owner-device descriptor remains unknown and requires a retest.
+
+
+## Full live catalogue and provider settings
+
+After the owner confirmed native Seinfeld playback, discovery was expanded to all
+returned channels and live-event entries. Duplicate official references collapse;
+non-live event types are excluded. Resolution re-fetches the catalogue and chooses
+the requested reference, rather than routing all rows to Seinfeld. Every native
+channel gets a unique persisted guide number; the original Seinfeld favourite and
+number are retained. Live events can be upcoming or unavailable, and protected or
+unsupported streams still fail explicitly. This is the live catalogue for the
+existing NSW region request, not a VOD/episode browser or all Australian regions.
+
+Settings now starts with branded Australian service cards, then opens the chosen
+provider's detail page. 9Now shows saved connection status, channel count, refresh,
+official device activation and sign-out. ABC iview, SBS On Demand, 7plus and 10 are
+labelled unavailable and collect no credentials. Icons are bundled locally, with
+sources in docs/australian-provider-assets.md. Touch and TV focus use the same
+controls; the connected player remains retained while Settings changes pages.
+
+Distribution signing/versioning and the one-time secret setup are documented in
+docs/android-updates.md. The Native app workflow now builds signed release updates;
+PR workflow APKs remain development fixtures. A dedicated upgrade fixture checks
+an encrypted session and preferences across adb install -r of a newer version.

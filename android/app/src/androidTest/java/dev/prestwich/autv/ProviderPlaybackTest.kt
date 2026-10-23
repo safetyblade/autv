@@ -27,6 +27,24 @@ class ProviderPlaybackTest {
         await { onMain { it.playback.playing && it.playback.guide?.channels?.any { c -> c.providerChannel != null } == true } }
         onMain { it.playback.player.volume = 0f }
     }
+    @Test fun multipleProviderChannelsKeepUniqueNumbersAcrossCatalogueReordering() {
+        ready()
+        val extra = dev.prestwich.autv.data.provider.ProviderChannel(
+            dev.prestwich.autv.data.provider.ProviderChannelId("9now", "ref:fixture-nine"), "fixture-nine", "Nine")
+        onMain { it.adapter.catalogue = it.adapter.catalogue + extra; it.playback.refreshProviderChannels() }
+        await { onMain { it.playback.providerChannelCount == 2 && !it.playback.providerBusy } }
+        val before = onMain { it.playback.guide!!.channels.filter { c -> c.providerChannel != null }.associate { c -> c.providerChannel!!.id to c.number } }
+        assertEquals(2, before.values.toSet().size)
+        val number = before.getValue(extra.id)
+        onMain { it.adapter.catalogue = it.adapter.catalogue.reversed(); it.playback.refreshProviderChannels() }
+        await { onMain { !it.playback.providerBusy } }
+        onMain {
+            assertEquals(before, it.playback.guide!!.channels.filter { c -> c.providerChannel != null }.associate { c -> c.providerChannel!!.id to c.number })
+            it.playback.request(TuneTarget.Number(number))
+        }
+        await { onMain { it.playback.selected?.providerChannel?.id == extra.id && it.playback.playing } }
+    }
+
     @Test fun nativeProviderUsesRetainedPlayerAndSignOutRestoresFast() {
         ready()
         val player = onMain { it.playback.player }
