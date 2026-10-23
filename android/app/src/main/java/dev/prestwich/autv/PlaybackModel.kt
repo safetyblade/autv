@@ -33,6 +33,17 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     var providerBusy by mutableStateOf(false); private set
     var providerAuthStatus by mutableStateOf<String?>(null); private set
     private var providerChannels = emptyList<ProviderChannel>()
+    val providerChannelCount get() = providerChannels.size
+    private val providerNumbers = application.getSharedPreferences("provider-channel-numbers-v1", 0)
+    private fun providerNumber(channel: ProviderChannel): Int {
+        if (channel.id == NineNowAdapter.SEINFELD) return -9001
+        val key = channel.id.favouriteKey
+        if (providerNumbers.contains(key)) return providerNumbers.getInt(key, -9002)
+        val next = (providerNumbers.all.values.filterIsInstance<Int>().minOrNull() ?: -9001) - 1
+        // Commit before publishing this identity; refresh/reordering must never renumber a channel.
+        check(providerNumbers.edit().putInt(key, next).commit())
+        return next
+    }
     private var fastGuide: Guide? = null
     private var lastWorkingFast: Channel? = null
     private val providerMutex = Mutex()
@@ -124,7 +135,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         fastGuide = fastLoaded
         // Native-only rows are added after public-cache validation, never persisted in it.
         val local = providerChannels.map { channel ->
-            Channel(-9001, channel.name, "Australian TV", "9Now", "", "", true, null,
+            Channel(providerNumber(channel), channel.name, "Australian TV", "9Now", "", "", true, null,
                 channel.id.favouriteKey, channel.logoUrl, channel)
         }.filter { candidate -> fastLoaded.channels.none { it.number == candidate.number } }
         val loaded = Guide(fastLoaded.activeCount + local.size, fastLoaded.availableCount + local.size,
@@ -421,9 +432,9 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     }
     private fun providerDiscoveryMessage(): String {
         val counts = nineNow.discovery
-        return if (counts == null) "Connected to 9Now, but AUTV could not identify Seinfeld 24/7. Try refreshing channels."
+        return if (counts == null) "Connected to 9Now, but no live channels were returned. Try refreshing channels."
         else "Connected to 9Now. Received ${counts.channels} channels and ${counts.events} event entries, " +
-            "with ${counts.matches} Seinfeld matches. AUTV needs one unique Seinfeld entry."
+            "with ${counts.matches} usable live entries. Try refreshing channels."
     }
     private fun providerMessage(error: Exception): String = when ((error as? ProviderException)?.failure) {
         ProviderFailure.ACTIVATION_EXPIRED -> "The activation code expired. Request a new code."

@@ -125,17 +125,18 @@ class NineNowAdapter(
     override fun channels(): List<ProviderChannel> {
         val data = catalogue()
         discovery = ProviderDiscovery(data.optJSONArray("channels")?.length() ?: 0,
-            data.optJSONArray("events")?.length() ?: 0, seinfeldRows(data).size)
+            data.optJSONArray("events")?.length() ?: 0, catalogueRows(data).size)
         return parseChannels(data)
     }
 
     override fun resolve(channel: ProviderChannelId): ProviderPlaybackRequest {
-        if (channel != SEINFELD) throw ProviderException(ProviderFailure.UNAVAILABLE)
+        if (channel.provider != "9now") throw ProviderException(ProviderFailure.UNAVAILABLE)
         val data = catalogue()
-        val row = seinfeldRows(data).singleOrNull()
+        val rows = catalogueRows(data)
+        val row = rows.singleOrNull { channelId(it, rows) == channel }
             ?: throw ProviderException(ProviderFailure.UNAVAILABLE)
         val stream = row.optJSONObject("stream")
-            ?: if (row.optString("type") == "live-event") return resolveLiveEvent(row)
+            ?: if (row.optString("type") == "live-event") return resolveLiveEvent(row, channel)
             else throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
         // Do not infer or bypass protection. This proof only supports provider-returned HLS.
         if (stream.optBoolean("drm", false) || stream.has("key_systems"))
@@ -145,7 +146,7 @@ class NineNowAdapter(
         return ProviderPlaybackRequest(channel, uri, "application/x-mpegURL")
     }
 
-    private fun resolveLiveEvent(row: JSONObject): ProviderPlaybackRequest {
+    private fun resolveLiveEvent(row: JSONObject, channel: ProviderChannelId): ProviderPlaybackRequest {
         // Use only the identity returned by Nine, never a guessed video ID.
         val reference = row.optString("brightcoveId").takeUnless { it.isBlank() || it == "null" }
             ?: row.optString("referenceId")
@@ -165,7 +166,7 @@ class NineNowAdapter(
             val url = source.optString("src")
             if (!isHttps(url)) continue
             // Preserve the provider URL, including its ad/session query, unchanged.
-            return ProviderPlaybackRequest(SEINFELD, url, "application/x-mpegURL")
+            return ProviderPlaybackRequest(channel, url, "application/x-mpegURL")
         }
         throw ProviderException(if (protectedSource) ProviderFailure.DRM_UNSUPPORTED else ProviderFailure.PLAYBACK_UNSUPPORTED)
     }
@@ -202,29 +203,39 @@ class NineNowAdapter(
             return (0 until array.length()).mapNotNull { array.optJSONObject(it) }
         }
         private fun normalized(value: String) = value.lowercase(Locale.ROOT).replace(Regex("[^a-z0-9]"), "")
-        private fun seinfeldRows(data: JSONObject): List<JSONObject> {
-            // The upstream live catalogue includes some linear services as live events.
+        private fun isSeinfeld(row: JSONObject): Boolean =
+            listOf("slug", "name", "displayName").any {
+                normalized(row.optString(it)) in setOf("seinfeld", "seinfeld247")
+            }
+        private fun channelId(row: JSONObject, rows: List<JSONObject>): ProviderChannelId =
+            // Preserve the proof-of-concept favourite while all other IDs use official references.
+            if (isSeinfeld(row) && rows.count(::isSeinfeld) == 1) SEINFELD
+            else ProviderChannelId("9now", "ref:" + row.getString("referenceId"))
+
+        private fun catalogueRows(data: JSONObject): List<JSONObject> {
             val rows = entries(data, "channels") + entries(data, "events").filter {
                 it.optString("type") == "live-event"
             }
-            val names = setOf("seinfeld", "seinfeld247")
-            return rows.filter { row ->
-                row.optString("referenceId").isNotBlank() &&
-                    listOf("slug", "name", "displayName").any { normalized(row.optString(it)) in names }
-            }.groupBy { it.optString("referenceId") }.values.map { duplicates ->
-                // A metadata-only row and its live-event row may describe the same identity.
+            return rows.filter {
+                val reference = it.optString("referenceId")
+                reference.isNotBlank() && reference != "null" &&
+                    listOf("name", "displayName").any { key ->
+                        it.optString(key).let { title -> title.isNotBlank() && title != "null" }
+                    }
+            }.groupBy { it.getString("referenceId") }.values.map { duplicates ->
                 duplicates.firstOrNull { it.optJSONObject("stream")?.optString("url")?.let(::isHttps) == true }
                     ?: duplicates.firstOrNull { it.optString("type") == "live-event" }
                     ?: duplicates.first()
             }
         }
-        /** Require one identity; never pick arbitrarily from ambiguous matching services. */
         internal fun parseChannels(data: JSONObject): List<ProviderChannel> {
-            val row = seinfeldRows(data).singleOrNull() ?: return emptyList()
-            val name = row.optString("name").ifBlank { row.optString("displayName") }.ifBlank { "Seinfeld 24/7" }
-            val logo = row.optJSONObject("image")?.optJSONObject("sizes")?.optString("w768")
-                ?.takeIf(::isHttps)
-            return listOf(ProviderChannel(SEINFELD, row.optString("referenceId"), name, logo))
+            val rows = catalogueRows(data)
+            return rows.map { row ->
+                val name = row.optString("name").ifBlank { row.optString("displayName") }
+                val logo = row.optJSONObject("image")?.optJSONObject("sizes")?.optString("w768")
+                    ?.takeIf(::isHttps)
+                ProviderChannel(channelId(row, rows), row.getString("referenceId"), name, logo)
+            }
         }
     }
 }

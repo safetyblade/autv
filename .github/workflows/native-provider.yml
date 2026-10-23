@@ -5,6 +5,8 @@ on:
     paths:
       - 'android/**'
       - '.github/workflows/native-provider.yml'
+      - '.github/workflows/native-app.yml'
+      - 'scripts/*android*'
   workflow_dispatch:
 
 permissions:
@@ -33,7 +35,9 @@ jobs:
           api-level: 29
           arch: x86_64
           disable-animations: true
-          script: gradle -p android :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.provider.EncryptedProviderSessionStoreTest
+          script: |
+            gradle -p android :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.provider.EncryptedProviderSessionStoreTest
+            bash scripts/test-android-update.sh
       - uses: actions/upload-artifact@v4
         with:
           name: autv-provider-prototype-debug

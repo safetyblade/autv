@@ -10,9 +10,30 @@ android {
         applicationId = "dev.prestwich.autv"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.4.0"
+        versionCode = providers.gradleProperty("autvVersionCode").orElse("1").get().toInt()
+        versionName = providers.gradleProperty("autvVersionName").orElse("0.5.0").get()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+    val signingPath = providers.environmentVariable("AUTV_SIGNING_KEYSTORE_PATH").orNull
+    signingConfigs {
+        if (signingPath != null) create("distribution") {
+            storeFile = file(signingPath)
+            storePassword = providers.environmentVariable("AUTV_SIGNING_STORE_PASSWORD").get()
+            keyAlias = "autv"
+            keyPassword = providers.environmentVariable("AUTV_SIGNING_KEY_PASSWORD").get()
+        }
+    }
+    buildTypes {
+        getByName("release") {
+            if (signingPath != null) signingConfig = signingConfigs.getByName("distribution")
+        }
+    }
+    // Fail closed: distribution builds must never silently use a new debug key or be unsigned.
+    gradle.taskGraph.whenReady {
+        if (allTasks.any { it.project == project && it.name in setOf("assembleRelease", "packageRelease", "bundleRelease") }) {
+            check(signingPath != null) { "Release signing is required. See docs/android-updates.md." }
+            check(defaultConfig.versionCode!! > 1) { "Set -PautvVersionCode to a new distribution build number." }
+        }
     }
     buildFeatures { compose = true }
     compileOptions {
