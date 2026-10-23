@@ -283,7 +283,7 @@ internal fun AuTvScreen(
                                     Modifier.onFocusChanged { if (it.isFocused) playbackControl = 4 else if (playbackControl == 4) playbackControl = 0 }
                                         .focusRequester(settingsFocus).focusProperties { if (isTv && !guideOpen) right = previousFocus }.testTag("settings-button"))
                                 if (digits.isNotEmpty()) Text("Tune $digits", color = Silver, modifier = Modifier.padding(end = 12.dp).semantics { contentDescription = "Tuning channel $digits" })
-                                if (!isTv) CastControl(false, onInteraction = { wake() }, compact = landscape)
+                                if (!isTv) CastControl(false, onInteraction = { wake() }, compact = landscape, providerUnavailable = selected?.providerChannel != null)
                                 else if (!guideOpen) {
                                     FocusButton("CH −", { wake(); onPrevious() }, Modifier.onFocusChanged { if (it.isFocused) playbackControl = 1 else if (playbackControl == 1) playbackControl = 0 }.focusRequester(previousFocus).focusProperties { left = settingsFocus; right = guideControlFocus }.semantics { contentDescription = "Previous channel" }.testTag("ch-minus"), playable)
                                     FocusButton("Guide", { wake(); onOpenGuide() }, Modifier.padding(horizontal = 8.dp).onFocusChanged { if (it.isFocused) playbackControl = 2 else if (playbackControl == 2) playbackControl = 0 }.focusRequester(guideControlFocus)
@@ -470,21 +470,21 @@ private fun ChannelLogo(channel: Channel?, modifier: Modifier) {
 }
 
 @Composable
-private fun CastControl(isTv: Boolean, onInteraction: () -> Unit, compact: Boolean = false) {
+private fun CastControl(isTv: Boolean, onInteraction: () -> Unit, compact: Boolean = false, providerUnavailable: Boolean = false) {
     val context = LocalContext.current
     val supported = remember(context, isTv) { !isTv && runCatching { CastContext.getSharedInstance(context); true }.getOrDefault(false) }
     var explanation by remember { mutableStateOf(false) }
     Box(Modifier.size(if (compact) 48.dp else 52.dp).testTag("cast-control"), contentAlignment = Alignment.Center) {
-        if (supported) AndroidView(factory = { ctx -> MediaRouteButton(ctx).also {
+        if (supported && !providerUnavailable) AndroidView(factory = { ctx -> MediaRouteButton(ctx).also {
             it.setAlwaysVisible(true); it.contentDescription = "Cast to a screen"
             CastButtonFactory.setUpMediaRouteButton(ctx, it)
         } }, modifier = Modifier.size(48.dp))
-        else TextButton(onClick = { onInteraction(); explanation = true }, modifier = Modifier.fillMaxSize().semantics { contentDescription = "Cast options and status" }, contentPadding = PaddingValues(0.dp)) {
-            Text("Cast", color = Silver, maxLines = 1)
+        else TextButton(onClick = { onInteraction(); explanation = true }, modifier = Modifier.fillMaxSize().semantics { contentDescription = if (providerUnavailable) "Cast unavailable for 9Now" else "Cast options and status" }, contentPadding = PaddingValues(0.dp)) {
+            Text(if (providerUnavailable) "Cast unavailable" else "Cast", color = Silver, maxLines = 1)
         }
     }
     if (explanation) AlertDialog(onDismissRequest = { explanation = false; onInteraction() }, title = { Text("Google Cast") },
-        text = { Text(if (isTv) "Use AUTV on a phone or tablet to choose a Cast screen." else "Cast needs Google Play services and a compatible screen on the same Wi-Fi network.") },
+        text = { Text(if (providerUnavailable) "Casting 9Now is unavailable. You can still cast other channels." else if (isTv) "Use AUTV on a phone or tablet to choose a Cast screen." else "Cast needs Google Play services and a compatible screen on the same Wi-Fi network.") },
         confirmButton = { TextButton(onClick = { explanation = false; onInteraction() }) { Text("OK") } })
 }
 
