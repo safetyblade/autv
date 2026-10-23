@@ -18,6 +18,12 @@ class ActivationQrTest {
         assertFalse(decoded.contains("manual-code-fixture"))
         assertFalse(decoded.contains("private-device-fixture"))
     }
+    @Test fun sbsUsesOnlyItsReviewedOfficialAddress() {
+        val sbs = challenge(ActivationDestination.SBS.address)
+        assertEquals("https://sbs.com.au/connect", ActivationQr.payload(sbs, ActivationDestination.SBS))
+        assertNull(ActivationQr.payload(sbs, ActivationDestination.NINE_NOW))
+        assertNull(ActivationQr.payload(challenge("https://sbs.com.au/connect?code=fixture"), ActivationDestination.SBS))
+    }
     @Test fun rejectsUnreviewedUrlsAndPrefillParameters() {
         for (url in listOf("http://www.9now.com.au/activate", "https://www.9now.com.au.evil.invalid/activate",
             "https://www.9now.com.au/activate?code=fixture", "https://www.9now.com.au/activate#token=fixture",

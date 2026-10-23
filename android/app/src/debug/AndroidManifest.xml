@@ -4,4 +4,5 @@
     <activity android:name=".TvInteractionTestActivity" android:exported="false" android:launchMode="singleTask" android:screenOrientation="landscape" android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
     <activity android:name=".ProviderTestActivity" android:exported="false" />
     <activity android:name=".ProviderActivationTestActivity" android:exported="false" />
+    <activity android:name=".SbsTestActivity" android:exported="false" />
 </application></manifest>

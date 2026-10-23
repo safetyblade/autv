@@ -38,7 +38,7 @@ open class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null && ChannelIntents.isTuneRequest(intent)) playback.request(ChannelIntents.target(intent))
         pipUi = Build.VERSION.SDK_INT >= 26 && isInPictureInPictureMode
         setContent {
-            var settingsOpen by rememberSaveable { mutableStateOf(playback.providerActivation != null) }
+            var settingsOpen by rememberSaveable { mutableStateOf(playback.pendingActivationProvider != null) }
             val favourites = remember { Favourites(applicationContext) }
             LaunchedEffect(playback.castPlayback) { updatePipParams() }
             AuTvScreen(playback.guide, playback.selected, playback.guideOpen, playback.loadError,
@@ -66,7 +66,7 @@ open class MainActivity : AppCompatActivity() {
         !packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK) &&
         packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
     protected open fun automaticPipAllowed() = true
-    private fun pipEligible() = automaticPipAllowed() && playback.providerActivation == null && mobilePipSupported() && playback.castPlayback.phase == CastPhase.DISCONNECTED && (playback.selected?.tunable == true) && playback.player.isPlaying
+    private fun pipEligible() = automaticPipAllowed() && playback.pendingActivationProvider == null && mobilePipSupported() && playback.castPlayback.phase == CastPhase.DISCONNECTED && (playback.selected?.tunable == true) && playback.player.isPlaying
     private fun pipParams(): PictureInPictureParams {
         val bounds = Rect(); window.decorView.getGlobalVisibleRect(bounds)
         val builder = PictureInPictureParams.Builder().setAspectRatio(Rational(16, 9)).setSourceRectHint(bounds)
