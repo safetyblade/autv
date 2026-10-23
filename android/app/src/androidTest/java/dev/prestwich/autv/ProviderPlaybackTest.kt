@@ -46,6 +46,20 @@ class ProviderPlaybackTest {
             it.playback.guide!!.channels.none { c -> c.providerChannel != null } } }
         onMain { assertSame(player, it.playback.player) }
     }
+    @Test fun lateProviderResolutionCannotReplaceFastTune() {
+        ready()
+        val adapter = onMain { it.adapter }
+        onMain { adapter.blockResolve = true; it.playback.request(TuneTarget.Number(-9001)) }
+        assertTrue(adapter.resolveEntered.await(5, java.util.concurrent.TimeUnit.SECONDS))
+        onMain { it.playback.request(TuneTarget.Number(100)) }
+        adapter.releaseResolve.countDown()
+        // Wait for the blocked transport worker to finish before assessing stale publication.
+        SystemClock.sleep(500)
+        onMain {
+            assertEquals(100, it.playback.selected!!.number)
+            assertEquals("100", it.playback.player.currentMediaItem!!.mediaId)
+        }
+    }
     @Test fun resolutionDenialKeepsFastAndReportsError() {
         ready()
         onMain { it.adapter.denied = true; it.playback.request(TuneTarget.Number(-9001)) }

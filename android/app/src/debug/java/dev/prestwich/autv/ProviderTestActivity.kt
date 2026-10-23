@@ -24,11 +24,18 @@ class ProviderTestActivity : MainActivity() {
 class FixtureProviderAdapter : ProviderAdapter {
     override var connection = ProviderConnection.CONNECTED
     var denied = false
+    var blockResolve = false
+    val resolveEntered = java.util.concurrent.CountDownLatch(1)
+    val releaseResolve = java.util.concurrent.CountDownLatch(1)
     override fun beginSignIn() = DeviceActivation("FIXTURE", "fixture-device", "https://www.9now.com.au/activate",
         System.currentTimeMillis() + 60_000, 1000)
     override fun pollSignIn(activation: DeviceActivation) = true
     override fun channels() = listOf(ProviderChannel(NineNowAdapter.SEINFELD, "fixture-reference", "Seinfeld 24/7"))
     override fun resolve(channel: ProviderChannelId): ProviderPlaybackRequest {
+        if (blockResolve) {
+            resolveEntered.countDown()
+            releaseResolve.await(10, java.util.concurrent.TimeUnit.SECONDS)
+        }
         if (denied) throw ProviderException(ProviderFailure.REGION_DENIED)
         return ProviderPlaybackRequest(channel, "asset:///pip-test.m3u8?channel=provider", "application/x-mpegURL")
     }

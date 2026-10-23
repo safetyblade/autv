@@ -36,6 +36,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     private var lastWorkingFast: Channel? = null
     private val providerMutex = Mutex()
     private var accountJob: Job? = null
+    private var accountGeneration = 0L
     private var providerTuneJob: Job? = null
     private var providerTuneGeneration = 0L
     private suspend fun <T> providerCall(action: () -> T): T =
@@ -326,6 +327,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         if (providerBusy) return
         providerBusy = true
         providerError = null
+        val generation = ++accountGeneration
         accountJob = viewModelScope.launch {
             try {
                 val activation = providerCall { nineNow.beginSignIn() }
@@ -351,15 +353,18 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
                 if (nineNow.connection == ProviderConnection.CONNECTING) {
                     withContext(NonCancellable) { providerCall { nineNow.signOut() } }
                 }
-                providerActivation = null
-                providerBusy = false
-                syncProviderConnection()
+                if (generation == accountGeneration) {
+                    providerActivation = null
+                    providerBusy = false
+                    syncProviderConnection()
+                }
             }
         }
     }
     fun refreshProviderChannels() {
         if (providerBusy) return
         providerBusy = true; providerError = null
+        val generation = ++accountGeneration
         accountJob = viewModelScope.launch {
             try {
                 providerChannels = providerCall { nineNow.channels() }
@@ -370,16 +375,20 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
             } catch (error: Exception) {
                 if (error is CancellationException) throw error
                 providerError = providerMessage(error)
-            } finally { providerBusy = false; syncProviderConnection() }
+            } finally { if (generation == accountGeneration) { providerBusy = false; syncProviderConnection() } }
         }
     }
     fun disconnectNineNow() {
         // Wait for cancelled blocking IO to finish before clearing secrets, preventing late token writes.
+        accountGeneration++
         val previous = accountJob
         previous?.cancel()
         cancelProviderTune()
         providerActivation = null
         providerBusy = true
+        providerChannels = emptyList()
+        if (selected?.providerChannel != null) recoverProvider()
+        fastGuide?.let(::applyGuide)
         accountJob = viewModelScope.launch {
             previous?.join()
             providerCall { nineNow.signOut() }
