@@ -15,6 +15,11 @@ class SbsProviderTest {
         ui.runOnIdle { ui.activity.sbs.approved = true; ui.activity.playback.sbsAccount.connect() }
         ui.waitUntil(30000) { ui.activity.playback.sbsAccount.connection == ProviderConnection.CONNECTED && !ui.activity.playback.sbsAccount.busy }
     }
+    private fun playing(number: Int): Boolean {
+        var result = false
+        ui.activityRule.scenario.onActivity { result = it.playback.player.isPlaying && it.playback.player.currentMediaItem?.mediaId == number.toString() }
+        return result
+    }
     private fun sbsNumber() = ui.activity.playback.guide!!.channels.first { it.providerChannel?.id?.provider == "sbs" }.number
     @Test fun settingsQrAddsSbsAndNineSignOutKeepsSbsPlaying() {
         ready()
@@ -33,7 +38,7 @@ class SbsProviderTest {
         assertEquals(2, sbsChannels.size)
         for (channel in sbsChannels) {
             ui.runOnIdle { ui.activity.playback.request(TuneTarget.Number(channel.number)) }
-            ui.waitUntil(30000) { player.isPlaying && player.currentMediaItem?.mediaId == channel.number.toString() }
+            ui.waitUntil(30000) { playing(channel.number) }
         }
         ui.runOnIdle { ui.activity.playback.disconnectNineNow() }
         ui.waitUntil(30000) { !ui.activity.playback.providerBusy }
@@ -46,12 +51,12 @@ class SbsProviderTest {
             assertEquals(numbers.size, numbers.toSet().size)
             ui.activity.playback.sbsAccount.disconnect()
         }
-        ui.waitUntil(30000) { !ui.activity.playback.sbsAccount.busy && ui.activity.playback.selected?.number == 100 && player.isPlaying }
+        ui.waitUntil(30000) { !ui.activity.playback.sbsAccount.busy && playing(100) }
     }
     @Test fun sbsSignOutDoesNotChangeNineAccountOrPlayer() {
         ready(); connect()
         ui.runOnIdle { ui.activity.playback.request(TuneTarget.Number(-9001)) }
-        ui.waitUntil(30000) { ui.activity.playback.player.isPlaying && ui.activity.playback.player.currentMediaItem?.mediaId == "-9001" }
+        ui.waitUntil(30000) { playing(-9001) }
         ui.runOnIdle { ui.activity.playback.sbsAccount.disconnect() }
         ui.waitUntil(30000) { !ui.activity.playback.sbsAccount.busy }
         ui.runOnIdle {
@@ -64,7 +69,7 @@ class SbsProviderTest {
     @Test fun lateSbsResolutionCannotPlayAfterSignOut() {
         ready(); connect()
         ui.runOnIdle { ui.activity.playback.request(TuneTarget.Number(100)) }
-        ui.waitUntil(30000) { ui.activity.playback.player.isPlaying && ui.activity.playback.player.currentMediaItem?.mediaId == "100" }
+        ui.waitUntil(30000) { playing(100) }
         ui.runOnIdle { ui.activity.sbs.blocked = true; ui.activity.playback.request(TuneTarget.Number(sbsNumber())) }
         assertTrue(ui.activity.sbs.entered.await(5, java.util.concurrent.TimeUnit.SECONDS))
         ui.runOnIdle { ui.activity.playback.sbsAccount.disconnect() }
