@@ -43,6 +43,17 @@ class SevenPlaybackTest {
             counters!!.ensureUpdated()
             assertTrue(counters.renderedOutputBufferCount > 0)
         }
+        val instrumentation = androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
+        await { main { it.hasWindowFocus() } }
+        instrumentation.sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_GUIDE)
+        await { main { it.playback.guideOpen } }
+        instrumentation.sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK)
+        await { main { !it.playback.guideOpen } }
+        instrumentation.sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_CHANNEL_UP)
+        await { main { it.playback.player.isPlaying && it.playback.selected?.providerChannel?.id?.provider == "9now" } }
+        instrumentation.sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_CHANNEL_DOWN)
+        await { main { it.playback.player.isPlaying && it.playback.player.currentMediaItem?.mediaId == number.toString() } }
+        main { assertTrue(it.resolutions >= 2) }
         activity.scenario.recreate()
         await { main { it.playback.player.isPlaying } }
         main { assertSame(player, it.playback.player); it.playback.sevenAccount.disconnect() }

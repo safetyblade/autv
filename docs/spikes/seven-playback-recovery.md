@@ -151,7 +151,8 @@ scope and terminal Seven session handling. Existing account/QR/store tests remai
 Two new Android tests run the actual adapter with simulated API responses, then
 substitute bundled local video after resolution to exercise retained-player
 routing, video decoder output across a synthetic HLS discontinuity, pause/resume,
-Activity recreation, sign-out/FAST recovery and descriptor denial. The bundled
+simulated Guide/Back/CH+/CH− keys, Activity recreation, sign-out/FAST recovery and
+descriptor denial. The bundled
 clip has no audio, so even local audible-audio verification is not claimed. This local substitution is **not** Seven video/audio or real SSAI evidence.
 CI also runs the existing Nine/SBS/settings/QR/encrypted-store and APK-upgrade suite.
 
