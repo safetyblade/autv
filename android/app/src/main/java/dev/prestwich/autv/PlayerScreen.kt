@@ -479,12 +479,12 @@ private fun CastControl(isTv: Boolean, onInteraction: () -> Unit, compact: Boole
             it.setAlwaysVisible(true); it.contentDescription = "Cast to a screen"
             CastButtonFactory.setUpMediaRouteButton(ctx, it)
         } }, modifier = Modifier.size(48.dp))
-        else TextButton(onClick = { onInteraction(); explanation = true }, modifier = Modifier.fillMaxSize().semantics { contentDescription = if (providerUnavailable) "Cast unavailable for 9Now" else "Cast options and status" }, contentPadding = PaddingValues(0.dp)) {
+        else TextButton(onClick = { onInteraction(); explanation = true }, modifier = Modifier.fillMaxSize().semantics { contentDescription = if (providerUnavailable) "Cast unavailable for account channels" else "Cast options and status" }, contentPadding = PaddingValues(0.dp)) {
             Text(if (providerUnavailable) "Cast unavailable" else "Cast", color = Silver, maxLines = 1)
         }
     }
     if (explanation) AlertDialog(onDismissRequest = { explanation = false; onInteraction() }, title = { Text("Google Cast") },
-        text = { Text(if (providerUnavailable) "Casting 9Now is unavailable. You can still cast other channels." else if (isTv) "Use AUTV on a phone or tablet to choose a Cast screen." else "Cast needs Google Play services and a compatible screen on the same Wi-Fi network.") },
+        text = { Text(if (providerUnavailable) "Casting account channels is unavailable. You can still cast other channels." else if (isTv) "Use AUTV on a phone or tablet to choose a Cast screen." else "Cast needs Google Play services and a compatible screen on the same Wi-Fi network.") },
         confirmButton = { TextButton(onClick = { explanation = false; onInteraction() }) { Text("OK") } })
 }
 
