@@ -50,7 +50,7 @@ No provider permission request or message has been sent.
   a selection filter, not a fabricated playback identifier.
 - Access/refresh tokens are encrypted with an Android Keystore AES-GCM key.
   Ciphertext is in noBackupFilesDir. Tokens and activation records have redacted
-  string representations; activation records exist only in memory. Sign-out
+  string representations; pending activation records are encrypted, device-local and expire with the provider deadline. Sign-out
   serializes against pending IO before deleting credentials and the key.
 - Catalogue records contain no playback URLs. Neither session nor private
   channels are written to guide.json, playlist reconciliation or the public
@@ -141,3 +141,33 @@ channel list, credentials, activation codes or playback URLs. Regression fixture
 cover title variants, events, duplicate rows, ambiguity and missing descriptors.
 The actual device catalogue is still unobserved; a successful live tune remains
 to be verified by the account owner.
+
+
+## Follow-up: browser activation resets to Not connected
+
+The owner reports that Nine's linking page spins, then fails, and AUTV returns to
+Not connected with a new-code button. This does not establish the server's exact
+rejection cause. Two app-side failure modes are addressed: losing an in-memory
+challenge when the app/ViewModel is destroyed during browser handoff, and ending
+authorization on the first transient polling failure.
+
+A pending device challenge is now encrypted in noBackupFilesDir using the same
+Keystore protection as the session. App restart resumes the original unexpired
+challenge without a new code request. Explicit cancellation, expiry, rejection
+and successful token exchange delete it. An absent session file must not erase a
+pending challenge. Destruction of the UI no longer signs out an incomplete flow.
+No password, browser cookie import or background token-harvesting service is added.
+
+Timeouts, provider rate limiting and temporary outages retry within the original
+expiry, with backoff. Known pending, slowdown, denial and expiry responses have
+separate handling, including nested pending codes. The UI shows the stage and
+only allowlisted HTTP status numbers on failure, never raw response bodies.
+Settings survives Activity restoration, and PiP is disabled during device linking.
+When using the same phone, return to AUTV after submitting the activation code;
+another phone/computer can also activate it while AUTV stays open.
+
+Fixtures cover a transient poll failure, backgrounding, old ViewModel destruction,
+new model restoring the same challenge, successful approval and explicit cancel.
+A Keystore test checks encrypted challenge restoration while no session exists.
+The provider's real activation rejection/acceptance remains an owner-device retest;
+these fixtures are not live 9Now evidence.

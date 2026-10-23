@@ -26,11 +26,12 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         guideCache = FileGuideCache(java.io.File(application.filesDir, "channel-guide-v1.json")),
         playlistLoader = { GuideRepository().reconcile(it) },
         epgCacheLoader = { EpgRepository(java.io.File(application.filesDir, "programme-guide-v1.xml.gz")).cached() })
-    private val nineNow = providerAdapter ?: NineNowAdapter(HttpNineNowTransport(), EncryptedProviderSessionStore(application))
+    private val nineNow = providerAdapter ?: createNineNowProvider(application)
     var providerConnection by mutableStateOf(nineNow.connection); private set
     var providerActivation by mutableStateOf<DeviceActivation?>(null); private set
     var providerError by mutableStateOf<String?>(null); private set
     var providerBusy by mutableStateOf(false); private set
+    var providerAuthStatus by mutableStateOf<String?>(null); private set
     private var providerChannels = emptyList<ProviderChannel>()
     private var fastGuide: Guide? = null
     private var lastWorkingFast: Channel? = null
@@ -99,6 +100,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         }
         castSender.start()
         if (providerConnection == ProviderConnection.CONNECTED) refreshProviderChannels()
+        else if (nineNow.pendingActivation != null) connectNineNow()
     }
     fun reload() {
         if (loading) return
@@ -327,32 +329,50 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         if (providerBusy) return
         providerBusy = true
         providerError = null
+        providerAuthStatus = if (nineNow.pendingActivation != null) "Resuming your pending Nine activation…" else "Requesting an activation code…"
+        providerActivation = nineNow.pendingActivation
         val generation = ++accountGeneration
         accountJob = viewModelScope.launch {
+            var activationApproved = false
             try {
                 val activation = providerCall { nineNow.beginSignIn() }
                 providerActivation = activation
                 providerConnection = ProviderConnection.CONNECTING
+                providerAuthStatus = "Waiting for Nine approval. Return to AUTV after submitting the code."
+                var interval = activation.pollIntervalMillis
                 while (System.currentTimeMillis() < activation.expiresAt) {
-                    delay(activation.pollIntervalMillis)
-                    if (providerCall { nineNow.pollSignIn(activation) }) {
+                    delay(interval)
+                    val approved = try { providerCall { nineNow.pollSignIn(activation) } }
+                    catch (error: ProviderException) {
+                        if (error.failure !in setOf(ProviderFailure.OFFLINE, ProviderFailure.RETRY_LATER)) throw error
+                        interval = (interval + 5_000).coerceAtMost(60_000)
+                        providerAuthStatus = "Activation connection interrupted; retrying the same code. Return to AUTV to continue."
+                        continue
+                    }
+                    if (approved) {
+                        activationApproved = true
+                        providerAuthStatus = "Nine approved this device. Finding channels…"
                         providerActivation = null
                         providerChannels = providerCall { nineNow.channels() }
                         providerConnection = nineNow.connection
                         fastGuide?.let(::applyGuide)
                         if (providerChannels.isEmpty()) providerError = providerDiscoveryMessage()
+                        providerAuthStatus = "Device activation complete"
                         return@launch
                     }
+                    providerAuthStatus = "Waiting for Nine approval. Return to AUTV after submitting the code."
                 }
                 providerCall { nineNow.signOut() }
-                providerError = "The sign-in code expired. Try connecting again."
+                providerError = "The sign-in code expired. Request a new code."
+                providerAuthStatus = "Activation expired"
             } catch (error: Exception) {
                 if (error is CancellationException) throw error
-                providerError = providerMessage(error)
+                providerError = (if (activationApproved) "Channel discovery: " else "Device activation: ") + providerMessage(error)
+                if (nineNow.connection == ProviderConnection.CONNECTING) providerCall { nineNow.signOut() }
+                providerAuthStatus = if (activationApproved) "Device activation complete; channel discovery failed" else "Activation did not finish"
             } finally {
-                if (nineNow.connection == ProviderConnection.CONNECTING) {
-                    withContext(NonCancellable) { providerCall { nineNow.signOut() } }
-                }
+                // A destroyed Activity/process must not invalidate the saved provider challenge.
+                // Only explicit cancel, expiry, denial or successful token exchange clears it.
                 if (generation == accountGeneration) {
                     providerActivation = null
                     providerBusy = false
@@ -385,6 +405,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         previous?.cancel()
         cancelProviderTune()
         providerActivation = null
+        providerAuthStatus = null
         providerBusy = true
         providerChannels = emptyList()
         if (selected?.providerChannel != null) recoverProvider()
@@ -405,6 +426,10 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
             "with ${counts.matches} Seinfeld matches. AUTV needs one unique Seinfeld entry."
     }
     private fun providerMessage(error: Exception): String = when ((error as? ProviderException)?.failure) {
+        ProviderFailure.ACTIVATION_EXPIRED -> "The activation code expired. Request a new code."
+        ProviderFailure.ACTIVATION_DENIED -> "Nine did not accept this activation. Request a fresh code and try again."
+        ProviderFailure.AUTH_RESPONSE_UNSUPPORTED -> "Nine returned an unrecognised activation response."
+        ProviderFailure.RETRY_LATER -> "Nine is temporarily busy. Try again shortly."
         ProviderFailure.AUTH_REQUIRED -> "Connect 9Now in Settings to watch."
         ProviderFailure.SESSION_EXPIRED -> "Your 9Now session expired. Connect again in Settings."
         ProviderFailure.REGION_DENIED -> "9Now denied this request. Check that you are in Australia."
@@ -413,6 +438,6 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         ProviderFailure.DRM_UNSUPPORTED -> "This 9Now stream needs playback protection that AUTV does not support yet."
         ProviderFailure.UNSUPPORTED -> "9Now sign-in is unavailable in this build."
         else -> "9Now is unavailable. Try again later."
-    }
+    } + ((error as? ProviderException)?.httpStatus?.takeIf { it in 100..599 }?.let { " (HTTP $it)" } ?: "")
     override fun onCleared() { castSender.release(); player.removeListener(listener); holder.release() }
 }

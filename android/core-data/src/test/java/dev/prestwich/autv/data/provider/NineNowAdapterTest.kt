@@ -79,11 +79,11 @@ class NineNowAdapterTest {
     }
 
     @Test fun refreshDenialClearsCredentialsButOfflineFailureRetainsThem() {
-        for (failure in listOf(ProviderFailure.SESSION_EXPIRED, ProviderFailure.OFFLINE)) {
+        for (failure in listOf(ProviderFailure.SESSION_EXPIRED, ProviderFailure.OFFLINE, ProviderFailure.RETRY_LATER)) {
             val store = signedInStore()
             val adapter = NineNowAdapter(NineNowTransport { _, _, _ -> throw ProviderException(failure) }, store, { 200_000 })
             expect(failure) { adapter.channels() }
-            if (failure == ProviderFailure.OFFLINE) assertNotNull(store.value)
+            if (failure != ProviderFailure.SESSION_EXPIRED) assertNotNull(store.value)
             else { assertNull(store.value); assertEquals(ProviderConnection.SESSION_EXPIRED, adapter.connection) }
         }
     }
@@ -92,7 +92,7 @@ class NineNowAdapterTest {
         val store = MemoryStore()
         val adapter = NineNowAdapter(NineNowTransport { _, _, _ -> JSONObject("""{"error":"authorization_pending"}""") }, store, { 1000 })
         assertFalse(adapter.pollSignIn(DeviceActivation("code", "device", "https://www.9now.com.au/activate", 2000, 5000)))
-        expect(ProviderFailure.AUTH_REQUIRED) {
+        expect(ProviderFailure.ACTIVATION_EXPIRED) {
             adapter.pollSignIn(DeviceActivation("code", "device", "https://www.9now.com.au/activate", 1000, 5000))
         }
         assertNull(store.value)
@@ -152,6 +152,52 @@ class NineNowAdapterTest {
         val adapter = NineNowAdapter(NineNowTransport { _, _, _ -> JSONObject(json) }, signedInStore(), { 1000 })
         assertEquals(1, adapter.channels().size)
         expect(ProviderFailure.PLAYBACK_UNSUPPORTED) { adapter.resolve(NineNowAdapter.SEINFELD) }
+    }
+
+    @Test fun pendingActivationSurvivesAdapterRecreationWithoutRequestingAnotherCode() {
+        val pending = MemoryProviderActivationStore()
+        val sessions = MemoryStore()
+        var creates = 0
+        val transport = NineNowTransport { _, _, _ ->
+            creates++
+            JSONObject("""{"auth_code":"FIXTURE","device_code":"fixture-device","expires_in":300,"interval":1}""")
+        }
+        val first = NineNowAdapter(transport, sessions, { 1000 }, activationStore = pending)
+        val challenge = first.beginSignIn()
+        val restored = NineNowAdapter(transport, sessions, { 2000 }, activationStore = pending)
+        assertEquals(ProviderConnection.CONNECTING, restored.connection)
+        assertSame(challenge, restored.pendingActivation)
+        assertSame(challenge, restored.beginSignIn())
+        assertEquals(1, creates)
+        restored.signOut()
+        assertNull(pending.readActivation())
+    }
+
+    @Test fun expiredSavedActivationIsRemovedWithoutAutomaticallyCreatingANewOne() {
+        val pending = MemoryProviderActivationStore()
+        pending.writeActivation(DeviceActivation("fixture", "fixture", "https://www.9now.com.au/activate", 1000, 1000))
+        val adapter = NineNowAdapter(NineNowTransport { _, _, _ -> fail("Unexpected request"); JSONObject() },
+            MemoryStore(), { 2000 }, activationStore = pending)
+        assertEquals(ProviderConnection.NOT_CONNECTED, adapter.connection)
+        assertNull(adapter.pendingActivation)
+        assertNull(pending.readActivation())
+    }
+
+    @Test fun nestedPendingSlowDownAndTerminalRejectionAreDifferentStates() {
+        val pending = MemoryProviderActivationStore()
+        val challenge = DeviceActivation("fixture", "fixture", "https://www.9now.com.au/activate", 99999, 1000)
+        pending.writeActivation(challenge)
+        var response = """{"error":{"code":"authorization_pending"}}"""
+        val adapter = NineNowAdapter(NineNowTransport { _, _, _ -> JSONObject(response) }, MemoryStore(), { 1000 }, activationStore = pending)
+        assertFalse(adapter.pollSignIn(challenge))
+        assertSame(challenge, adapter.pendingActivation)
+        response = """{"error":"slow_down"}"""
+        expect(ProviderFailure.RETRY_LATER) { adapter.pollSignIn(challenge) }
+        assertSame(challenge, adapter.pendingActivation)
+        response = """{"error":"access_denied"}"""
+        expect(ProviderFailure.ACTIVATION_DENIED) { adapter.pollSignIn(challenge) }
+        assertNull(adapter.pendingActivation)
+        assertNull(pending.readActivation())
     }
 
     private fun expect(failure: ProviderFailure, action: () -> Unit) {

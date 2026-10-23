@@ -42,10 +42,12 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                         // Activation codes are displayed only here, never in semantics logs or storage.
                         Text(activation.userCode, style = MaterialTheme.typography.headlineMedium)
                         Text("Enter this code to connect this device. AUTV does not ask for your password.")
+                        Text("After submitting it, switch back to AUTV to finish connecting. You can also enter the code on another device while AUTV stays open.")
                         TextButton(onClick = { runCatching { uriHandler.openUri(activation.verificationUrl) } }) {
                             Text("Open Nine sign-in")
                         }
                     }
+                    model.providerAuthStatus?.let { Text(it, modifier = Modifier.testTag("9now-auth-status")) }
                     model.providerError?.let { Text(it, color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("9now-error")) }
                     if (!model.providerBusy && model.providerConnection != ProviderConnection.CONNECTED) {
                         Button(onClick = model::connectNineNow, modifier = Modifier.testTag("9now-connect")) { Text("Connect 9Now") }

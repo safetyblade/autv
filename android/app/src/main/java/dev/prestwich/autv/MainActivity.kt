@@ -12,6 +12,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -37,7 +38,7 @@ open class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null && ChannelIntents.isTuneRequest(intent)) playback.request(ChannelIntents.target(intent))
         pipUi = Build.VERSION.SDK_INT >= 26 && isInPictureInPictureMode
         setContent {
-            var settingsOpen by remember { mutableStateOf(false) }
+            var settingsOpen by rememberSaveable { mutableStateOf(playback.providerActivation != null) }
             val favourites = remember { Favourites(applicationContext) }
             LaunchedEffect(playback.castPlayback) { updatePipParams() }
             AuTvScreen(playback.guide, playback.selected, playback.guideOpen, playback.loadError,
@@ -65,7 +66,7 @@ open class MainActivity : AppCompatActivity() {
         !packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK) &&
         packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
     protected open fun automaticPipAllowed() = true
-    private fun pipEligible() = automaticPipAllowed() && mobilePipSupported() && playback.castPlayback.phase == CastPhase.DISCONNECTED && (playback.selected?.tunable == true) && playback.player.isPlaying
+    private fun pipEligible() = automaticPipAllowed() && playback.providerActivation == null && mobilePipSupported() && playback.castPlayback.phase == CastPhase.DISCONNECTED && (playback.selected?.tunable == true) && playback.player.isPlaying
     private fun pipParams(): PictureInPictureParams {
         val bounds = Rect(); window.decorView.getGlobalVisibleRect(bounds)
         val builder = PictureInPictureParams.Builder().setAspectRatio(Rational(16, 9)).setSourceRectHint(bounds)
