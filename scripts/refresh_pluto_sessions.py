@@ -7,7 +7,7 @@ import argparse
 import base64
 import datetime as dt
 import json
-import os
+from urllib.error import HTTPError, URLError
 from pathlib import Path
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 from urllib.request import Request, urlopen
@@ -29,19 +29,24 @@ def token_expiry(token):
 def get_session():
     client = str(uuid4())
     params = {
-        "appName": "web", "appVersion": "", "deviceVersion": "145.0.0",
+        "appName": "web", "appVersion": "8.0.0-111b2b9dc00bd0bea9030b30662159ed9e7c8bc6", "deviceVersion": "122.0.0",
         "deviceModel": "web", "deviceMake": "chrome", "deviceType": "web",
         "clientID": client, "clientModelNumber": "1.0.0",
         "serverSideAds": "false", "drmCapabilities": "widevine:L3",
-        "blockingMode": "", "notificationVersion": "1", "appLaunchCount": "0",
+        "blockingMode": "",
     }
     request = Request(
         BOOT_URL + "?" + urlencode(params),
         headers={"Accept": "application/json", "Origin": "https://pluto.tv",
                  "Referer": "https://pluto.tv/", "User-Agent": "Mozilla/5.0"},
     )
-    with urlopen(request, timeout=15) as response:
-        data = json.load(response)
+    try:
+        with urlopen(request, timeout=15) as response:
+            data = json.load(response)
+    except HTTPError as exc:
+        raise RuntimeError(f"Pluto boot rejected request: HTTP {exc.code}") from None
+    except URLError as exc:
+        raise RuntimeError(f"Pluto boot transport failure: {type(exc.reason).__name__}") from None
     token = data.get("sessionToken")
     if not token or token_expiry(token) - dt.datetime.now(dt.timezone.utc).timestamp() < MIN_SECONDS:
         raise RuntimeError("Pluto boot did not provide a fresh session (6h minimum)")
@@ -71,7 +76,10 @@ def main():
     parser.add_argument("path", type=Path)
     args = parser.parse_args()
     original = args.path.read_text(encoding="utf-8-sig")
-    token, client = get_session()
+    try:
+        token, client = get_session()
+    except RuntimeError as exc:
+        raise SystemExit(str(exc)) from None
     result, count = refresh(original, token, client)
     if not count:
         raise SystemExit("Source contains no Pluto stitcher streams")
