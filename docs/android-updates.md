@@ -9,18 +9,22 @@ counter without preserving the highest distributed versionCode.
 ## One-time setup
 
 On a trusted machine with JDK keytool, Python 3 and GitHub CLI authenticated with
-repository Actions-secret management permission:
+repository Actions-secret and Actions-variable management permission:
 
 ```sh
 bash scripts/setup-android-signing.sh
 ```
 
 The script creates the distribution identity outside the repository, uploads three
-Actions secrets through GitHub CLI, and preserves the same key on subsequent runs.
+Actions secrets and a public certificate SHA-256 repository variable through GitHub CLI, and preserves the same key on subsequent runs.
 The generated password protects AUTV's signing key; it is not an account password.
 Keep an encrypted private backup of the entire printed signing directory. Never
 commit, share in chat, attach to a PR, or delete/regenerate that identity. Missing
 signing secrets make distribution fail, rather than creating a different identity.
+Each build also checks its signing certificate against AUTV_SIGNING_CERT_SHA256.
+The setup script refuses to overwrite an already pinned identity with a different
+local backup. Re-run setup with the original backup to add the certificate pin if
+you configured signing before this check was introduced.
 The connected GitHub tools cannot set these secrets; setup must run with an
 appropriately authorized GitHub CLI session. No permanent signing key is created
 in public CI or included in its APK artifacts.

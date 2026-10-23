@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import dev.prestwich.autv.PlaybackModel
 import dev.prestwich.autv.R
 import dev.prestwich.autv.data.provider.ProviderConnection
@@ -41,7 +42,7 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
     val firstFocus = remember { FocusRequester() }
     val scroll = rememberScrollState()
     LaunchedEffect(selected) { scroll.scrollTo(0); withFrameNanos { }; firstFocus.requestFocus() }
-    Dialog(onDismissRequest = onClose) {
+    Dialog(onDismissRequest = onClose, properties = DialogProperties(usePlatformDefaultWidth = false)) {
         MaterialTheme(colorScheme = darkColorScheme(
             primary = Color(0xFF82DFE8), onPrimary = Color(0xFF00363C),
             surface = Color(0xFF111A25), surfaceContainer = Color(0xFF1A2635),
@@ -49,7 +50,7 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
         )) {
             Surface(shape = RoundedCornerShape(28.dp), color = MaterialTheme.colorScheme.surface,
                 border = BorderStroke(1.dp, Color(0xFF314255)),
-                modifier = Modifier.fillMaxWidth().heightIn(max = 640.dp).testTag("australian-services-settings")) {
+                modifier = Modifier.widthIn(max = 860.dp).fillMaxWidth(0.94f).heightIn(max = 720.dp).testTag("australian-services-settings")) {
                 Column(Modifier.verticalScroll(scroll).padding(24.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)) {
                     Text("AUTV  /  SETTINGS", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
@@ -96,14 +97,9 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                 "${model.providerChannelCount} live channels and events in your guide."
                                 else "Connect your Nine account to bring its live channels and events into AUTV.")
                             model.providerActivation?.let { activation ->
-                                Surface(color = MaterialTheme.colorScheme.surfaceContainer, shape = RoundedCornerShape(16.dp)) {
-                                    Column(Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                                        Text("Visit 9now.com.au/activate", style = MaterialTheme.typography.titleMedium)
-                                        Text(activation.userCode, style = MaterialTheme.typography.headlineLarge)
-                                        Text("Sign in with Nine and enter this code. Return to AUTV after submitting it, or use another device while AUTV stays open.")
-                                        Button(onClick = { runCatching { uriHandler.openUri(activation.verificationUrl) } }) { Text("Open Nine sign-in") }
-                                    }
-                                }
+                                ProviderActivationScreen("9Now", activation, ActivationDestination.NINE_NOW,
+                                    onOpenWebsite = { address -> runCatching { uriHandler.openUri(address) }; Unit },
+                                    onCancel = model::disconnectNineNow)
                             }
                             model.providerAuthStatus?.let { Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("9now-auth-status")) }
                             model.providerError?.let { Text(it, color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("9now-error")) }
@@ -117,7 +113,7 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                             if (model.providerBusy) LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
                             Text("Available in Australia. Plays on this device; Cast is unavailable for 9Now. Your connection is saved securely. AUTV never asks for your password.",
                                 style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            if (model.providerBusy || model.providerConnection in setOf(ProviderConnection.CONNECTED, ProviderConnection.CONNECTING)) {
+                            if (model.providerActivation == null && (model.providerBusy || model.providerConnection in setOf(ProviderConnection.CONNECTED, ProviderConnection.CONNECTING))) {
                                 TextButton(onClick = model::disconnectNineNow, modifier = Modifier.testTag("9now-disconnect")) {
                                     Text(if (model.providerConnection == ProviderConnection.CONNECTED) "Sign out of 9Now" else "Cancel sign-in")
                                 }

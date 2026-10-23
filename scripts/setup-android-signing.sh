@@ -31,9 +31,19 @@ if [[ ! -f "$signing_dir/autv.jks" ]]; then
 fi
 [[ -s "$signing_dir/store-password" ]] || { echo 'Missing password backup; stop and recover it.' >&2; exit 1; }
 keytool -list -keystore "$signing_dir/autv.jks" -alias autv -storepass:file "$signing_dir/store-password" >/dev/null
+certificate=$(keytool -exportcert -keystore "$signing_dir/autv.jks" -alias autv -storepass:file "$signing_dir/store-password" |
+  python3 -c 'import hashlib,sys; print(hashlib.sha256(sys.stdin.buffer.read()).hexdigest())')
+# Public certificate identity is independently pinned so a wrong local backup cannot rotate signing.
+variables=$(gh variable list --repo "$repo" --json name,value)
+registered_certificate=$(printf '%s' "$variables" | python3 -c 'import json,sys; print(next((v["value"] for v in json.load(sys.stdin) if v["name"] == "AUTV_SIGNING_CERT_SHA256"), ""))')
+if [[ -n "$registered_certificate" && "$registered_certificate" != "$certificate" ]]; then
+  echo 'Signing certificate differs from the registered AUTV identity. Restore the original backup; no secrets were changed.' >&2
+  exit 1
+fi
 python3 -c 'import base64,sys; print(base64.b64encode(open(sys.argv[1],"rb").read()).decode())' "$signing_dir/autv.jks" |
   gh secret set AUTV_SIGNING_KEYSTORE_BASE64 --repo "$repo"
 gh secret set AUTV_SIGNING_STORE_PASSWORD --repo "$repo" < "$signing_dir/store-password"
 gh secret set AUTV_SIGNING_KEY_PASSWORD --repo "$repo" < "$signing_dir/store-password"
+gh variable set AUTV_SIGNING_CERT_SHA256 --repo "$repo" --body "$certificate"
 echo "Signing configured. Keep an encrypted, private backup of: $signing_dir"
 echo 'Never delete or regenerate this key. Run the Native app workflow for installable updates.'

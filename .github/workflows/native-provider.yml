@@ -25,8 +25,10 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.13'
+      - name: Verify permanent signing setup continuity
+        run: python3 scripts/test-android-signing-setup.py
       - name: Unit tests and debug APK
-        run: gradle -p android :core-data:testDebugUnitTest :core-guide:testDebugUnitTest :app:assembleDebug :app:assembleDebugAndroidTest
+        run: gradle -p android :app:testDebugUnitTest :core-data:testDebugUnitTest :core-guide:testDebugUnitTest :app:assembleDebug :app:assembleDebugAndroidTest
       - name: Enable KVM
         run: sudo chmod 666 /dev/kvm
       - name: Verify provider routing with local fixture media
@@ -36,7 +38,7 @@ jobs:
           arch: x86_64
           disable-animations: true
           script: |
-            gradle -p android :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.provider.EncryptedProviderSessionStoreTest
+            gradle -p android :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.ProviderQrUiTest,dev.prestwich.autv.ProviderQrIntegrationTest,dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.provider.EncryptedProviderSessionStoreTest
             bash scripts/test-android-update.sh
       - uses: actions/upload-artifact@v4
         with:
