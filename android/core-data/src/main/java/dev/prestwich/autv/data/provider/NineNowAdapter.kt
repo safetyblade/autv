@@ -3,6 +3,7 @@ package dev.prestwich.autv.data.provider
 import org.json.JSONObject
 import java.net.URI
 import java.net.URLEncoder
+import java.util.Locale
 
 /** Consumer endpoints observed in the current provider client flow; experimental, not a public SDK.
  * No upstream implementation is copied. URLs returned by the service are never unwrapped.
@@ -89,14 +90,21 @@ class NineNowAdapter(
         } catch (_: Exception) { throw ProviderException(ProviderFailure.UNAVAILABLE) }
     }
 
-    override fun channels(): List<ProviderChannel> = parseChannels(catalogue())
+    override var discovery: ProviderDiscovery? = null
+        private set
+    override fun channels(): List<ProviderChannel> {
+        val data = catalogue()
+        discovery = ProviderDiscovery(data.optJSONArray("channels")?.length() ?: 0,
+            data.optJSONArray("events")?.length() ?: 0, seinfeldRows(data).size)
+        return parseChannels(data)
+    }
 
     override fun resolve(channel: ProviderChannelId): ProviderPlaybackRequest {
         if (channel != SEINFELD) throw ProviderException(ProviderFailure.UNAVAILABLE)
         val data = catalogue()
-        val row = rows(data).singleOrNull { it.optString("slug") == channel.channel }
+        val row = seinfeldRows(data).singleOrNull()
             ?: throw ProviderException(ProviderFailure.UNAVAILABLE)
-        val stream = row.optJSONObject("stream") ?: throw ProviderException(ProviderFailure.UNAVAILABLE)
+        val stream = row.optJSONObject("stream") ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
         // Do not infer or bypass protection. This proof only supports provider-returned HLS.
         if (stream.optBoolean("drm", false) || stream.has("key_systems"))
             throw ProviderException(ProviderFailure.DRM_UNSUPPORTED)
@@ -114,6 +122,7 @@ class NineNowAdapter(
         session = null
         store.clear()
         connection = ProviderConnection.NOT_CONNECTED
+        discovery = null
     }
 
     companion object {
@@ -125,20 +134,34 @@ class NineNowAdapter(
             val uri = URI(value)
             uri.scheme == "https" && !uri.host.isNullOrBlank() && uri.rawUserInfo == null
         }.getOrDefault(false)
-        private fun rows(data: JSONObject): List<JSONObject> {
-            val array = data.optJSONArray("channels") ?: return emptyList()
+        private fun entries(data: JSONObject, key: String): List<JSONObject> {
+            val array = data.optJSONArray(key) ?: return emptyList()
             return (0 until array.length()).mapNotNull { array.optJSONObject(it) }
         }
-        /** Catalogue records intentionally omit stream/session URLs. Only the one proof channel. */
-        internal fun parseChannels(data: JSONObject): List<ProviderChannel> = rows(data).mapNotNull { row ->
-            if (row.optString("slug") != SEINFELD.channel) return@mapNotNull null
-            val reference = row.optString("referenceId")
-            if (reference.isBlank()) return@mapNotNull null
-            val name = row.optString("name").ifBlank { "Seinfeld 24/7" }
+        private fun normalized(value: String) = value.lowercase(Locale.ROOT).replace(Regex("[^a-z0-9]"), "")
+        private fun seinfeldRows(data: JSONObject): List<JSONObject> {
+            // The upstream live catalogue includes some linear services as live events.
+            val rows = entries(data, "channels") + entries(data, "events").filter {
+                it.optString("type") == "live-event"
+            }
+            val names = setOf("seinfeld", "seinfeld247")
+            return rows.filter { row ->
+                row.optString("referenceId").isNotBlank() &&
+                    listOf("slug", "name", "displayName").any { normalized(row.optString(it)) in names }
+            }.groupBy { it.optString("referenceId") }.values.map { duplicates ->
+                // A metadata-only row and its live-event row may describe the same identity.
+                duplicates.firstOrNull { it.optJSONObject("stream")?.optString("url")?.let(::isHttps) == true }
+                    ?: duplicates.first()
+            }
+        }
+        /** Require one identity; never pick arbitrarily from ambiguous matching services. */
+        internal fun parseChannels(data: JSONObject): List<ProviderChannel> {
+            val row = seinfeldRows(data).singleOrNull() ?: return emptyList()
+            val name = row.optString("name").ifBlank { row.optString("displayName") }.ifBlank { "Seinfeld 24/7" }
             val logo = row.optJSONObject("image")?.optJSONObject("sizes")?.optString("w768")
                 ?.takeIf(::isHttps)
-            ProviderChannel(SEINFELD, reference, name, logo)
-        }.distinctBy { it.id }
+            return listOf(ProviderChannel(SEINFELD, row.optString("referenceId"), name, logo))
+        }
     }
 }
 

@@ -15,7 +15,7 @@ data class ProviderChannel(
 data class ProviderProgramme(val title: String, val start: Long, val end: Long)
 enum class ProviderConnection { NOT_CONNECTED, CONNECTING, CONNECTED, SESSION_EXPIRED, UNSUPPORTED }
 enum class ProviderFailure {
-    AUTH_REQUIRED, SESSION_EXPIRED, REGION_DENIED, UNAVAILABLE, UNSUPPORTED, OFFLINE, DRM_UNSUPPORTED
+    AUTH_REQUIRED, SESSION_EXPIRED, REGION_DENIED, UNAVAILABLE, UNSUPPORTED, OFFLINE, DRM_UNSUPPORTED, PLAYBACK_UNSUPPORTED
 }
 /** Never propagate raw transport errors, URLs, server bodies or credentials to UI/logs. */
 class ProviderException(val failure: ProviderFailure) : Exception(failure.name)
@@ -43,7 +43,10 @@ interface ProviderSessionStore {
     fun write(session: ProviderSession)
     fun clear()
 }
+/** Counts only: no account identifiers, channel list, codes or signed playback URLs. */
+data class ProviderDiscovery(val channels: Int, val events: Int, val matches: Int)
 interface ProviderAdapter {
+    val discovery: ProviderDiscovery? get() = null
     val connection: ProviderConnection
     fun beginSignIn(): DeviceActivation
     /** null means approval is still pending; provider interval/expiry must be respected. */

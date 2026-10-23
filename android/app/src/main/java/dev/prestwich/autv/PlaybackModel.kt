@@ -340,7 +340,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
                         providerChannels = providerCall { nineNow.channels() }
                         providerConnection = nineNow.connection
                         fastGuide?.let(::applyGuide)
-                        if (providerChannels.isEmpty()) providerError = "Seinfeld 24/7 is not currently available."
+                        if (providerChannels.isEmpty()) providerError = providerDiscoveryMessage()
                         return@launch
                     }
                 }
@@ -368,7 +368,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         accountJob = viewModelScope.launch {
             try {
                 providerChannels = providerCall { nineNow.channels() }
-                if (providerChannels.isEmpty()) providerError = "Seinfeld 24/7 is not currently available."
+                if (providerChannels.isEmpty()) providerError = providerDiscoveryMessage()
                 if (selected?.providerChannel?.id?.let { id -> providerChannels.none { it.id == id } } == true)
                     recoverProvider()
                 fastGuide?.let(::applyGuide)
@@ -398,11 +398,18 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
             syncProviderConnection()
         }
     }
+    private fun providerDiscoveryMessage(): String {
+        val counts = nineNow.discovery
+        return if (counts == null) "Connected to 9Now, but AUTV could not identify Seinfeld 24/7. Try refreshing channels."
+        else "Connected to 9Now. Received ${counts.channels} channels and ${counts.events} event entries, " +
+            "with ${counts.matches} Seinfeld matches. AUTV needs one unique Seinfeld entry."
+    }
     private fun providerMessage(error: Exception): String = when ((error as? ProviderException)?.failure) {
         ProviderFailure.AUTH_REQUIRED -> "Connect 9Now in Settings to watch."
         ProviderFailure.SESSION_EXPIRED -> "Your 9Now session expired. Connect again in Settings."
         ProviderFailure.REGION_DENIED -> "9Now denied this request. Check that you are in Australia."
         ProviderFailure.OFFLINE -> "Cannot reach 9Now. Check your connection and try again."
+        ProviderFailure.PLAYBACK_UNSUPPORTED -> "9Now lists this channel, but did not supply a supported native playback stream."
         ProviderFailure.DRM_UNSUPPORTED -> "This 9Now stream needs playback protection that AUTV does not support yet."
         ProviderFailure.UNSUPPORTED -> "9Now sign-in is unavailable in this build."
         else -> "9Now is unavailable. Try again later."

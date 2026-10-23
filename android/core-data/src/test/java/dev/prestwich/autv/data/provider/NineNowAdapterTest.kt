@@ -109,6 +109,51 @@ class NineNowAdapterTest {
         }, store, { 1000 })
         expect(ProviderFailure.DRM_UNSUPPORTED) { protected.resolve(NineNowAdapter.SEINFELD) }
     }
+    @Test fun titleAndSlugVariantsUseTheSameSelectionForDiscoveryAndTune() {
+        for (identity in listOf(
+            "\"slug\":\"seinfeld-247\",\"name\":\"Seinfeld 24/7\"",
+            "\"slug\":\"seinfeld-24-7\",\"name\":\"Seinfeld\"",
+            "\"slug\":\"provider-channel-id\",\"displayName\":\"Seinfeld 24 / 7\""
+        )) {
+            val json = """{"data":{"getLivestream":{"channels":[{$identity,
+                "referenceId":"actual-provider-id","stream":{"url":"https://example.invalid/ssai/variant.m3u8"}}]}}}"""
+            val adapter = NineNowAdapter(NineNowTransport { _, _, _ -> JSONObject(json) }, signedInStore(), { 1000 })
+            assertEquals("actual-provider-id", adapter.channels().single().reference)
+            assertEquals("https://example.invalid/ssai/variant.m3u8", adapter.resolve(NineNowAdapter.SEINFELD).uri)
+            assertEquals(ProviderDiscovery(1, 0, 1), adapter.discovery)
+        }
+    }
+
+    @Test fun liveEventCatalogueEntriesAreDiscoveredAndDuplicateReferencesAreCollapsed() {
+        val row = """{"type":"live-event","displayName":"Seinfeld 24/7","referenceId":"live-reference",
+            "stream":{"url":"https://example.invalid/ssai/event.m3u8"}}"""
+        for (channels in listOf("[]", "[$row]", """[{"name":"Seinfeld","referenceId":"live-reference"}]""")) {
+            val json = """{"data":{"getLivestream":{"channels":$channels,"events":[$row]}}}"""
+            val adapter = NineNowAdapter(NineNowTransport { _, _, _ -> JSONObject(json) }, signedInStore(), { 1000 })
+            assertEquals(1, adapter.channels().size)
+            assertEquals(1, adapter.discovery!!.matches)
+            assertEquals("https://example.invalid/ssai/event.m3u8", adapter.resolve(NineNowAdapter.SEINFELD).uri)
+        }
+    }
+
+    @Test fun ambiguousChannelsAndUnrelatedTitlesAreNotSelectedArbitrarily() {
+        val ambiguous = """{"channels":[
+            {"name":"Seinfeld 24/7","referenceId":"first"},
+            {"name":"Seinfeld 24/7","referenceId":"second"}]}"""
+        assertTrue(NineNowAdapter.parseChannels(JSONObject(ambiguous)).isEmpty())
+        val unrelated = """{"channels":[{"name":"Best of Seinfeld","slug":"seinfeld-clips","referenceId":"clip"}],
+            "events":[{"type":"episode","name":"Seinfeld","referenceId":"episode"}]}"""
+        assertTrue(NineNowAdapter.parseChannels(JSONObject(unrelated)).isEmpty())
+    }
+
+    @Test fun listedChannelWithoutNativeStreamIsDistinctFromMissingChannel() {
+        val json = """{"data":{"getLivestream":{"events":[{"type":"live-event",
+            "displayName":"Seinfeld 24/7","referenceId":"event-reference"}]}}}"""
+        val adapter = NineNowAdapter(NineNowTransport { _, _, _ -> JSONObject(json) }, signedInStore(), { 1000 })
+        assertEquals(1, adapter.channels().size)
+        expect(ProviderFailure.PLAYBACK_UNSUPPORTED) { adapter.resolve(NineNowAdapter.SEINFELD) }
+    }
+
     private fun expect(failure: ProviderFailure, action: () -> Unit) {
         try { action(); fail("Expected provider failure") }
         catch (error: ProviderException) { assertEquals(failure, error.failure) }

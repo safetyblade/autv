@@ -119,3 +119,25 @@ circumventing DRM and ad/technical controls. Treat provider integration permissi
 consumer API stability, ad obligations and valid licence acquisition as release
 gates. If they cannot be met, recommend the official 9Now app as a fallback,
 without calling external playback native AUTV success.
+
+
+## Follow-up: connected account with no discovered channel
+
+A user device screenshot shows Connected followed by an empty Seinfeld discovery
+result. This is user-reported activation evidence, not agent-verified live
+playback. The original parser searched only channels and required slug=seinfeld;
+it omitted the live-event catalogue path observed in SlyGuy and rejected known
+Seinfeld 24/7 title/slug variants.
+
+Discovery and tune now share one exact normalized title/slug matcher over channels
+and live-event entries. Entries sharing the same official referenceId are merged,
+preferring a returned stream descriptor over a metadata-only duplicate; ambiguous
+different identities are rejected. No stream URL is fabricated or unwrapped.
+A listed channel without a native stream has its own unsupported-playback result.
+
+Empty discovery now reports only channel/event/match counts, not a false claim
+that the provider channel is unavailable. These counts contain no account data,
+channel list, credentials, activation codes or playback URLs. Regression fixtures
+cover title variants, events, duplicate rows, ambiguity and missing descriptors.
+The actual device catalogue is still unobserved; a successful live tune remains
+to be verified by the account owner.
