@@ -43,6 +43,8 @@ android {
     kotlinOptions { jvmTarget = "17" }
 }
 dependencies {
+    implementation("com.google.zxing:core:3.5.3")
+    testImplementation("junit:junit:4.13.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4")
     implementation("androidx.appcompat:appcompat:1.7.1")
     implementation(project(":core-data"))

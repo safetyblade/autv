@@ -20,6 +20,7 @@ jobs:
       AUTV_SIGNING_STORE_PASSWORD: ${{ secrets.AUTV_SIGNING_STORE_PASSWORD }}
       AUTV_SIGNING_KEY_PASSWORD: ${{ secrets.AUTV_SIGNING_KEY_PASSWORD }}
       AUTV_SIGNING_KEYSTORE_PATH: /tmp/autv-distribution.jks
+      AUTV_SIGNING_CERT_SHA256: ${{ vars.AUTV_SIGNING_CERT_SHA256 }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-java@v5
@@ -34,14 +35,19 @@ jobs:
         run: |
           set -euo pipefail
           umask 077
-          if [[ -z "$AUTV_SIGNING_KEYSTORE_BASE64" || -z "$AUTV_SIGNING_STORE_PASSWORD" || -z "$AUTV_SIGNING_KEY_PASSWORD" ]]; then
+          if [[ -z "$AUTV_SIGNING_KEYSTORE_BASE64" || -z "$AUTV_SIGNING_STORE_PASSWORD" || -z "$AUTV_SIGNING_KEY_PASSWORD" || -z "$AUTV_SIGNING_CERT_SHA256" ]]; then
             echo '::error::Run scripts/setup-android-signing.sh once. Distribution requires permanent signing secrets.'
             exit 1
           fi
           printf '%s' "$AUTV_SIGNING_KEYSTORE_BASE64" | base64 --decode > "$AUTV_SIGNING_KEYSTORE_PATH"
+          actual_certificate=$(keytool -exportcert -keystore "$AUTV_SIGNING_KEYSTORE_PATH" -alias autv -storepass:env AUTV_SIGNING_STORE_PASSWORD | sha256sum | cut -d ' ' -f 1)
+          if [[ "$actual_certificate" != "$AUTV_SIGNING_CERT_SHA256" ]]; then
+            echo '::error::Signing certificate does not match the permanent AUTV identity. Restore the original signing secrets.'
+            exit 1
+          fi
       - name: Test and build signed update
         run: >-
-          gradle -p android :core-data:testDebugUnitTest :core-guide:testDebugUnitTest :app:assembleRelease
+          gradle -p android :app:testDebugUnitTest :core-data:testDebugUnitTest :core-guide:testDebugUnitTest :app:assembleRelease
           -PautvVersionCode=$((1000 + ${{ github.run_number }}))
           -PautvVersionName=0.5.${{ github.run_number }}
       - name: Verify APK signature
