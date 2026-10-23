@@ -171,3 +171,29 @@ new model restoring the same challenge, successful approval and explicit cancel.
 A Keystore test checks encrypted challenge restoration while no session exists.
 The provider's real activation rejection/acceptance remains an owner-device retest;
 these fixtures are not live 9Now evidence.
+
+
+## Follow-up: activated and discovered, but no stream.url
+
+The owner's latest screenshots show Connected, Device activation complete and a
+Seinfeld guide row, followed by unsupported native playback. These are owner-device
+evidence for activation and discovery, not successful playback or an inspected
+catalogue response.
+
+Reinspection of the pinned 9Now 0.4.6 package established that live_tv routes
+live-event rows through Brightcove using brightcoveId (or referenceId), whereas
+ordinary channels use stream.url. The prototype previously omitted that branch.
+The isolated resolver now requests the playback descriptor for Nine's returned ID,
+using the public distributed-client playback policy on the exact Brightcove account
+endpoint. No account bearer is forwarded to Brightcove or media hosts. A duplicate
+metadata row cannot mask the corresponding live-event resolution route.
+
+The resolver accepts only provider-returned HTTPS HLS sources without declared DRM,
+and preserves the original source URL and query. DASH-only, protected or missing
+sources remain explicit failures. No alternate raw URL, ad URL unwrapping, licence
+exchange or password collection is added. Public client configuration is not proof
+of provider integration permission; the existing release gates still apply.
+
+Fixtures verify numeric and reference IDs, token isolation, metadata-only discovery,
+original ad/session query preservation and rejection of protected, DASH and HTTP
+sources. The exact owner-device descriptor remains unknown and requires a retest.

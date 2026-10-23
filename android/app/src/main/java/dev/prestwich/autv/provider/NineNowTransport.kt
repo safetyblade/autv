@@ -8,12 +8,17 @@ import java.net.URL
 
 /** No request/response logging, redirects, cookies, scraping or TLS overrides. */
 internal class HttpNineNowTransport : NineNowTransport {
+    private companion object {
+        const val BRIGHTCOVE_POLICY = "BCpkADawqM17uNt4BA9TibECIvv8vBVypgHHIgThenKM55b88yzwUAmQ5hHbEfpsaQCimxMfcJglqzWqPTc21Mbnt4H-49t8_htP91BPml8bDw7AjWou9m_avlno4V7DBRsuLWdpLOoUMziK"
+    }
     override var lastHttpStatus: Int? = null
         private set
     override fun request(method: String, url: String, accessToken: String?): JSONObject {
         lastHttpStatus = null
         val uri = URI(url)
-        require(uri.scheme == "https" && uri.host in setOf("login.nine.com.au", "api.9now.com.au"))
+        require(uri.scheme == "https" && uri.host in setOf("login.nine.com.au", "api.9now.com.au", "edge.api.brightcove.com"))
+        require(uri.host != "edge.api.brightcove.com" ||
+            (method == "GET" && url.startsWith(NineNowAdapter.BRIGHTCOVE)))
         require(accessToken == null || uri.host == "api.9now.com.au")
         val connection = URL(url).openConnection() as HttpURLConnection
         return try {
@@ -23,6 +28,10 @@ internal class HttpNineNowTransport : NineNowTransport {
             connection.requestMethod = method
             connection.setRequestProperty("Accept", "application/json")
             connection.setRequestProperty("User-Agent", "AUTV/0.4 (Android)")
+            if (uri.host == "edge.api.brightcove.com") {
+                // Public playback policy from Nine's distributed client, never an account token.
+                connection.setRequestProperty("BCOV-POLICY", BRIGHTCOVE_POLICY)
+            }
             accessToken?.let { connection.setRequestProperty("Authorization", "Bearer $it") }
             if (method == "POST") {
                 connection.doOutput = true

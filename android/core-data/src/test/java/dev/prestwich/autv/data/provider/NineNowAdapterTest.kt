@@ -18,6 +18,45 @@ class NineNowAdapterTest {
     ]}}}"""
     private fun signedInStore() = MemoryStore().apply { value = ProviderSession("access-fixture", "refresh-fixture", 100_000) }
 
+    @Test fun liveEventResolvesReturnedBrightcoveIdWithoutAccountBearer() {
+        val calls = mutableListOf<String>()
+        val adapter = NineNowAdapter(NineNowTransport { method, url, token ->
+            calls.add(url)
+            assertEquals("GET", method)
+            if (url.startsWith(NineNowAdapter.BRIGHTCOVE)) {
+                assertNull(token)
+                assertTrue(url.endsWith("123456"))
+                JSONObject("""{"sources":[{"type":"application/x-mpegURL","src":"https://example.invalid/ssai/event.m3u8?session=fixture&ads=1"}]}""")
+            } else {
+                assertEquals("access-fixture", token)
+                JSONObject("""{"data":{"getLivestream":{"channels":[{"name":"Seinfeld","referenceId":"official-event"}],"events":[{"type":"live-event","name":"Seinfeld","referenceId":"official-event","brightcoveId":"123456"}]}}}""")
+            }
+        }, signedInStore(), { 1000 })
+        assertEquals(1, adapter.channels().size)
+        assertEquals(1, calls.size) // Discovery does not fetch playback descriptors.
+        val request = adapter.resolve(NineNowAdapter.SEINFELD)
+        assertEquals("https://example.invalid/ssai/event.m3u8?session=fixture&ads=1", request.uri)
+        assertTrue(request.headers.isEmpty())
+        assertEquals(3, calls.size)
+    }
+
+    @Test fun liveEventRejectsProtectedAndUnsupportedSources() {
+        for ((sources, failure) in listOf(
+            """[{"type":"application/x-mpegURL","src":"https://example.invalid/drm.m3u8","key_systems":{"com.widevine.alpha":{}}}]""" to ProviderFailure.DRM_UNSUPPORTED,
+            """[{"type":"application/dash+xml","src":"https://example.invalid/live.mpd"}]""" to ProviderFailure.PLAYBACK_UNSUPPORTED,
+            """[{"type":"application/x-mpegURL","src":"http://example.invalid/live.m3u8"}]""" to ProviderFailure.PLAYBACK_UNSUPPORTED,
+        )) {
+            val adapter = NineNowAdapter(NineNowTransport { _, url, token ->
+                if (url.startsWith(NineNowAdapter.BRIGHTCOVE)) {
+                    assertNull(token)
+                    assertTrue(url.endsWith("ref%3Aofficial-event"))
+                    JSONObject("""{"sources":$sources}""")
+                } else JSONObject("""{"data":{"getLivestream":{"channels":[{"type":"live-event","name":"Seinfeld","referenceId":"official-event"}]}}}""")
+            }, signedInStore(), { 1000 })
+            expect(failure) { adapter.resolve(NineNowAdapter.SEINFELD) }
+        }
+    }
+
     @Test fun activationIsUserInitiatedAndHonoursProviderInterval() {
         val store = MemoryStore()
         var calls = 0

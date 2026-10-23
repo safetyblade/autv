@@ -134,13 +134,40 @@ class NineNowAdapter(
         val data = catalogue()
         val row = seinfeldRows(data).singleOrNull()
             ?: throw ProviderException(ProviderFailure.UNAVAILABLE)
-        val stream = row.optJSONObject("stream") ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        val stream = row.optJSONObject("stream")
+            ?: if (row.optString("type") == "live-event") return resolveLiveEvent(row)
+            else throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
         // Do not infer or bypass protection. This proof only supports provider-returned HLS.
         if (stream.optBoolean("drm", false) || stream.has("key_systems"))
             throw ProviderException(ProviderFailure.DRM_UNSUPPORTED)
         val uri = stream.optString("url")
         if (!isHttps(uri)) throw ProviderException(ProviderFailure.UNAVAILABLE)
         return ProviderPlaybackRequest(channel, uri, "application/x-mpegURL")
+    }
+
+    private fun resolveLiveEvent(row: JSONObject): ProviderPlaybackRequest {
+        // Use only the identity returned by Nine, never a guessed video ID.
+        val reference = row.optString("brightcoveId").takeUnless { it.isBlank() || it == "null" }
+            ?: row.optString("referenceId")
+        if (reference.isBlank()) throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        val video = if (reference.all { it in '0'..'9' }) reference else "ref:$reference"
+        val descriptor = transport.request("GET", "$BRIGHTCOVE${encode(video)}")
+        val sources = descriptor.optJSONArray("sources") ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        var protectedSource = false
+        for (index in 0 until sources.length()) {
+            val source = sources.optJSONObject(index) ?: continue
+            if (source.has("key_systems") || source.optBoolean("drm", false)) {
+                protectedSource = true
+                continue
+            }
+            if (source.optString("type").lowercase(Locale.ROOT) !in
+                setOf("application/x-mpegurl", "application/vnd.apple.mpegurl")) continue
+            val url = source.optString("src")
+            if (!isHttps(url)) continue
+            // Preserve the provider URL, including its ad/session query, unchanged.
+            return ProviderPlaybackRequest(SEINFELD, url, "application/x-mpegURL")
+        }
+        throw ProviderException(if (protectedSource) ProviderFailure.DRM_UNSUPPORTED else ProviderFailure.PLAYBACK_UNSUPPORTED)
     }
 
     private fun expire() {
@@ -163,6 +190,7 @@ class NineNowAdapter(
     companion object {
         val SEINFELD = ProviderChannelId("9now", "seinfeld")
         private const val AUTH = "https://login.nine.com.au/api/device"
+        const val BRIGHTCOVE = "https://edge.api.brightcove.com/playback/v1/accounts/4460760524001/videos/"
         private const val LIVE = "https://api.9now.com.au/ctv/livestreams"
         private fun encode(value: String) = URLEncoder.encode(value, "UTF-8")
         internal fun isHttps(value: String) = runCatching {
@@ -186,6 +214,7 @@ class NineNowAdapter(
             }.groupBy { it.optString("referenceId") }.values.map { duplicates ->
                 // A metadata-only row and its live-event row may describe the same identity.
                 duplicates.firstOrNull { it.optJSONObject("stream")?.optString("url")?.let(::isHttps) == true }
+                    ?: duplicates.firstOrNull { it.optString("type") == "live-event" }
                     ?: duplicates.first()
             }
         }
