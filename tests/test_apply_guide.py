@@ -1,7 +1,17 @@
 import unittest
-from scripts.apply_guide import set_attr, set_name
+from scripts.apply_guide import sanitize_url, set_attr, set_name
 
 class TestApplyGuideSecurity(unittest.TestCase):
+    def test_sanitize_url_crlf_prevention(self):
+        url = "https://example.com/stream.m3u8\r\n#EXTINF:-1,Injected Channel\r\nhttps://malicious.com"
+        result = sanitize_url(url)
+        self.assertNotIn("\r", result)
+        self.assertNotIn("\n", result)
+        self.assertEqual(
+            result,
+            "https://example.com/stream.m3u8  #EXTINF:-1,Injected Channel  https://malicious.com",
+        )
+
     def test_set_attr_backreference_safety(self):
         extinf = '#EXTINF:-1 tvg-name="Old Name", Old Name'
         result = set_attr(extinf, "tvg-name", r"Channel \1 & \2")
