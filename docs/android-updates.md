@@ -9,7 +9,7 @@ counter without preserving the highest distributed versionCode.
 ## One-time setup
 
 On a trusted machine with JDK keytool, Python 3 and GitHub CLI authenticated with
-repository Actions-secret management permission:
+repository Actions-secret and Actions-variable management permission:
 
 ```sh
 bash scripts/setup-android-signing.sh

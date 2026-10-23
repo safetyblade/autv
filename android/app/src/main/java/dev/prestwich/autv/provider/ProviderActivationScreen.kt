@@ -9,6 +9,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.asImageBitmap
@@ -29,6 +32,8 @@ internal fun ProviderActivationScreen(
     onOpenWebsite: (String) -> Unit,
     onCancel: () -> Unit,
 ) {
+    val websiteFocus = remember { FocusRequester() }
+    val cancelFocus = remember { FocusRequester() }
     var now by remember(challenge) { mutableLongStateOf(System.currentTimeMillis()) }
     LaunchedEffect(challenge) {
         while (now < challenge.expiresAt) { delay(1000); now = System.currentTimeMillis() }
@@ -82,8 +87,8 @@ internal fun ProviderActivationScreen(
             else Text("Sign in on $providerName's website. AUTV will connect automatically after approval. If using this phone, return to AUTV after submitting the code.")
             Text("Connecting your account does not guarantee that every channel can play.", style = MaterialTheme.typography.bodySmall)
             Button(onClick = { payload?.let(onOpenWebsite) }, enabled = remaining > 0 && payload != null,
-                modifier = Modifier.testTag("activation-open-website")) { Text("Open official sign-in") }
-            TextButton(onClick = onCancel, modifier = Modifier.testTag("activation-cancel")) { Text("Cancel sign-in") }
+                modifier = Modifier.focusProperties { canFocus = true; down = cancelFocus; next = cancelFocus }.focusRequester(websiteFocus).testTag("activation-open-website")) { Text("Open official sign-in") }
+            TextButton(onClick = onCancel, modifier = Modifier.focusProperties { canFocus = true; if (remaining > 0 && payload != null) up = websiteFocus }.focusRequester(cancelFocus).testTag("activation-cancel")) { Text("Cancel sign-in") }
         }
     }
 }

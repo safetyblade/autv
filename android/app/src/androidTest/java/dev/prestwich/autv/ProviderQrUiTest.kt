@@ -7,6 +7,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.InputMode
+import androidx.compose.ui.input.InputModeManager
+import androidx.compose.ui.platform.LocalInputModeManager
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -25,8 +28,9 @@ class ProviderQrUiTest {
     @get:Rule val ui = createComposeRule()
     @Test fun displayedQrScansAndRemoteCanReachCancel() {
         var cancelled = false
+        lateinit var inputMode: InputModeManager
         val challenge = DeviceActivation("123456", "private-fixture", ActivationDestination.NINE_NOW.address, System.currentTimeMillis() + 120000, 5000)
-        ui.setContent { MaterialTheme { Column(Modifier.verticalScroll(rememberScrollState())) {
+        ui.setContent { inputMode = LocalInputModeManager.current; MaterialTheme { Column(Modifier.verticalScroll(rememberScrollState())) {
             ProviderActivationScreen("9Now", challenge, ActivationDestination.NINE_NOW, {}, { cancelled = true })
         } } }
         val bitmap = ui.onNodeWithTag("activation-qr").performScrollTo().captureToImage().asAndroidBitmap()
@@ -36,6 +40,7 @@ class ProviderQrUiTest {
         assertEquals("https://www.9now.com.au/activate", decoded)
         ui.onNodeWithTag("activation-code").performScrollTo().assertTextEquals("123456")
         ui.onNodeWithTag("activation-address").performScrollTo().assertTextEquals(decoded)
+        ui.runOnIdle { inputMode.requestInputMode(InputMode.Keyboard) }
         ui.onNodeWithTag("activation-open-website").performScrollTo().performSemanticsAction(SemanticsActions.RequestFocus) { it() }
         ui.onNodeWithTag("activation-open-website").assertIsFocused().performKeyInput { pressKey(Key.DirectionDown) }
         ui.onNodeWithTag("activation-cancel").assertIsFocused().performKeyInput { pressKey(Key.DirectionCenter) }
