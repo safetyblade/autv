@@ -71,9 +71,8 @@ jobs:
           curl --fail --silent --show-error --location "https://raw.githubusercontent.com/BuddyChewChew/tubi-scraper/main/tubi_epg.xml" --output epg_tubi.xml
           curl --fail --silent --show-error --location "https://i.mjh.nz/SamsungTVPlus/all.xml.gz" --output epg_samsung_all.xml.gz
 
-      - name: Resolve rotating FAST sources
-        run: python3 scripts/build_dynamic_sources.py
-
+      # Channel 203 was intentionally withdrawn; its standalone resolver must not
+      # gate publication of the remaining active channels.
       - name: Build playlist
         run: python3 scripts/merge.py
 
