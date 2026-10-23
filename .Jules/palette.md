@@ -9,3 +9,7 @@
 ## 2025-05-20 - Favourite State Propagation in Custom Compose Rows
 **Learning:** Custom Compose list item components (like `ChannelRow`) that render visual indicators (such as favorite stars) and screen reader descriptions (`contentDescription`) need explicit favorite state boolean properties passed down from list composables so accessibility and visual states update when items are favorited.
 **Action:** Always pass `isFavourite` or item state explicitly to child row Composables to ensure `contentDescription` and UI indicators remain synchronized.
+
+## 2025-05-21 - Text-To-Speech Character Spacing for Activation Codes and Timer Units
+**Learning:** Short alphanumeric user codes (e.g., TV device activation codes) and formatted time strings (`M:SS`) are mispronounced by TalkBack screen readers as words or colon ratios.
+**Action:** Provide explicit `semantics { contentDescription = ... }` with character-spaced characters for activation codes ("A 8 K 9 X") and spelled-out units (minutes/seconds) for countdown timers, and clear semantics on decorative unicode chevrons (`"›"`).

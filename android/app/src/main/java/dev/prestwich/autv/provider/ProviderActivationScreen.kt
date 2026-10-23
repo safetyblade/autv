@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -67,9 +68,15 @@ internal fun ProviderActivationScreen(
                         Text("Or open this official website and enter the code:")
                         Text(destination.address, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("activation-address"))
                         if (remaining > 0) {
-                            Text(challenge.userCode, style = MaterialTheme.typography.headlineLarge, modifier = Modifier.testTag("activation-code"))
+                            val codeDescription = "Activation code: ${challenge.userCode.map { it.toString() }.joinToString(" ")}"
+                            val minutes = remaining / 60
+                            val seconds = remaining % 60
+                            val expiryDescription = "Expires in ${if (minutes > 0) "$minutes ${if (minutes == 1L) "minute" else "minutes"} " else ""}$seconds ${if (seconds == 1L) "second" else "seconds"}"
+                            Text(challenge.userCode, style = MaterialTheme.typography.headlineLarge,
+                                modifier = Modifier.semantics { contentDescription = codeDescription }.testTag("activation-code"))
                             Text("Expires in ${remaining / 60}:${(remaining % 60).toString().padStart(2, '0')}",
-                                style = MaterialTheme.typography.bodySmall, modifier = Modifier.testTag("activation-expiry"))
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.semantics { contentDescription = expiryDescription }.testTag("activation-expiry"))
                         }
                     }
                 }
