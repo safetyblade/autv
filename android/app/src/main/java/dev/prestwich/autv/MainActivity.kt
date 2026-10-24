@@ -51,7 +51,8 @@ open class MainActivity : AppCompatActivity() {
                 onTuneNumber = { playback.request(TuneTarget.Number(it)) }, pictureInPicture = pipUi, notice = playback.notice,
                 castPlayback = playback.castPlayback, favourites = favourites.keys,
                 onFavourite = { favouriteConfirmation(applicationContext, favourites.toggle(it)) },
-                onOpenSettings = { settingsOpen = true })
+                onOpenSettings = { settingsOpen = true },
+                onPlayerViewAttached = playback.holder::attachPlayerView)
             if (settingsOpen) dev.prestwich.autv.provider.AustralianServicesSettings(playback) { settingsOpen = false }
         }
         updatePipParams()
