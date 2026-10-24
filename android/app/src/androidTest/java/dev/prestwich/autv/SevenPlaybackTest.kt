@@ -1,6 +1,5 @@
 package dev.prestwich.autv
 
-import android.os.SystemClock
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -20,9 +19,10 @@ class SevenPlaybackTest {
         return value!!.getOrThrow()
     }
     private fun await(stage: String, check: () -> Boolean) {
-        val deadline = SystemClock.uptimeMillis() + 30000
-        while (SystemClock.uptimeMillis() < deadline) { if (check()) return; SystemClock.sleep(100) }
-        fail("Seven fixture timeout: $stage")
+        // Drive Compose's test clock as well as polling the real Media3 player.
+        // A real-time sleep loop leaves pending UI/focus effects unapplied.
+        try { ui.waitUntil(30000) { check() } }
+        catch (error: Exception) { throw AssertionError("Seven fixture failed: $stage", error) }
     }
     private fun ready(): Int {
         await("initial catalogue/playback") { main { it.playback.guide?.channels?.any { row -> row.providerChannel?.id?.provider == "seven" } == true && it.playback.playing } }
