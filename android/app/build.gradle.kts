@@ -8,6 +8,7 @@ android {
     compileSdk = 36
     defaultConfig {
         applicationId = "dev.prestwich.autv"
+        manifestPlaceholders["autvAppLabel"] = if (providers.gradleProperty("autvMediaLab").orNull == "true") "AUTV Media Lab" else "AU TV"
         minSdk = 24
         targetSdk = 35
         versionCode = providers.gradleProperty("autvVersionCode").orElse("1").get().toInt()
@@ -24,6 +25,9 @@ android {
         }
     }
     buildTypes {
+        getByName("debug") {
+            if (providers.gradleProperty("autvMediaLab").orNull == "true") applicationIdSuffix = ".medialab"
+        }
         getByName("release") {
             if (signingPath != null) signingConfig = signingConfigs.getByName("distribution")
         }

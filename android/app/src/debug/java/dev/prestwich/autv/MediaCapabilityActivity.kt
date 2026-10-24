@@ -22,6 +22,8 @@ class MediaCapabilityActivity : AppCompatActivity() {
     var imaError: Int? = null; private set
     var adStarted = false; private set
     var adEnded = false; private set
+    var completedAds = 0; private set
+    var adMediaObserved = false; private set
     var expired = false; private set
     private var current = "none"
     private lateinit var layout: LinearLayout
@@ -30,6 +32,7 @@ class MediaCapabilityActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         // Public sample session URLs still do not belong in logs/errors.
         Log.setLogLevel(Log.LOG_LEVEL_OFF)
+        android.util.Log.i("AUTV_MEDIA_QA", "environment sdk=${android.os.Build.VERSION.SDK_INT} webview=${if(android.os.Build.VERSION.SDK_INT>=26) android.webkit.WebView.getCurrentWebViewPackage()?.versionName else "pre26"}")
         holder = AuTvPlayer(this, advancedProviderPlayback = true)
         layout = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
         status = TextView(this).apply { text = "AUTV official sample lab — no broadcaster entitlement"; textSize = 16f }
@@ -48,9 +51,11 @@ class MediaCapabilityActivity : AppCompatActivity() {
             override fun onDrmKeysLoaded(eventTime: AnalyticsListener.EventTime) { drmKeys = true; update() }
         })
         holder.player.addListener(object : Player.Listener {
+            override fun onEvents(player: Player, events: Player.Events) { if(player.isPlayingAd) adMediaObserved=true }
             override fun onPlayerError(error: PlaybackException) { errorCode = error.errorCode; update() }
         })
         holder.onAdEvent = { event ->
+            if(event=="COMPLETED") completedAds++
             if (event in setOf("AD_PERIOD_STARTED", "AD_BREAK_STARTED")) adStarted = true
             if (adStarted && event in setOf("AD_PERIOD_ENDED", "AD_BREAK_ENDED")) adEnded = true
             update()
@@ -66,7 +71,7 @@ class MediaCapabilityActivity : AppCompatActivity() {
         holder.attachPlayerView(videoView)
     }
     fun start(sample: String) {
-        current = sample; video = false; audio = false; drmKeys = false; errorCode = null; imaError = null; adStarted = false; adEnded = false; expired = false
+        current = sample; video = false; audio = false; drmKeys = false; errorCode = null; imaError = null; adStarted = false; adEnded = false; completedAds = 0; adMediaObserved = false; expired = false
         val id = ProviderChannelId("public-sample",sample)
         val request = when(sample) {
             "hls" -> ProviderPlaybackRequest(id,"https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",MimeTypes.APPLICATION_M3U8)
