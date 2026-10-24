@@ -13,6 +13,7 @@ import dev.prestwich.autv.player.AuTvPlayer
 class MediaLabSession(app: Application) : AndroidViewModel(app) {
     val holder = AuTvPlayer(app, advancedProviderPlayback = true)
     var changed: (() -> Unit)? = null
+    var resumeAfterPause = false
     var current = "none"; private set
     var video = false; private set
     var audio = false; private set
@@ -100,6 +101,7 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
     }
     fun start(sample: String) {
         require(sample in SAMPLES.map { it.first })
+        resumeAfterPause=true
         current=sample;video=false;audio=false;drmKeys=false;errorCode=null;imaError=null;sessionFailure=null
         adStarted=false;adEnded=false;completedAds=0;adMediaObserved=false;returnedToProgramme=false;expired=false
         fallbackVideo=false;fallbackAudio=false;recovering=false;programmePosition=null

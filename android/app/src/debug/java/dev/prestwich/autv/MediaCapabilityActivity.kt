@@ -76,8 +76,8 @@ class MediaCapabilityActivity : AppCompatActivity() {
     }
     fun start(sample: String)=session.start(sample)
     override fun onSaveInstanceState(outState: Bundle) { outState.putString("sample",session.current);super.onSaveInstanceState(outState) }
-    override fun onPause() { handler.removeCallbacks(ticker);holder.player.pause();videoView.onPause();super.onPause() }
-    override fun onResume() { super.onResume();videoView.onResume();if(holder.player.mediaItemCount>0) holder.player.play();handler.post(ticker) }
+    override fun onPause() { handler.removeCallbacks(ticker);session.resumeAfterPause=holder.player.playWhenReady;holder.player.pause();videoView.onPause();super.onPause() }
+    override fun onResume() { super.onResume();videoView.onResume();if(session.resumeAfterPause && holder.player.mediaItemCount>0) holder.player.play();handler.post(ticker) }
     override fun onDestroy() {
         handler.removeCallbacks(ticker);session.changed=null
         holder.detachPlayerView(videoView);videoView.player=null

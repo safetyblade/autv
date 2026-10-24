@@ -49,6 +49,10 @@ class MediaLabRecoveryTest {
         activity.scenario.recreate();waitFor { it.holder.player.isPlaying }
         assertSame(player,main { it.holder.player });assertEquals(item,main { it.holder.player.currentMediaItem });visibleMovingVideo()
         assertTrue(main { it.session.summary().contains("Audio: yes") })
+        main { it.holder.player.pause() }
+        activity.scenario.moveToState(Lifecycle.State.CREATED);activity.scenario.moveToState(Lifecycle.State.RESUMED)
+        assertFalse(main { it.holder.player.playWhenReady })
+        main { it.holder.player.play() };waitFor { it.holder.player.isPlaying }
     }
     @Test fun expiredAndFailedAdSessionsRecoverToVisibleAudioVideoAndRetune() {
         main { it.start("expiry") };waitFor { it.expired && it.fallbackVideo && it.fallbackAudio && it.holder.player.isPlaying };visibleMovingVideo()
