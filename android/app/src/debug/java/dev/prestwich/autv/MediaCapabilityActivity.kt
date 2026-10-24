@@ -63,7 +63,7 @@ class MediaCapabilityActivity : AppCompatActivity() {
             "widevine" -> ProviderPlaybackRequest(id,"https://storage.googleapis.com/wvmedia/cenc/h264/tears/tears.mpd",MimeTypes.APPLICATION_MPD,
                 options=ProviderMediaOptions(widevine=ProviderWidevine("https://proxy.uat.widevine.com/proxy?video_id=2015_tears&provider=widevine_test")))
             "ima-hls", "ima-dash" -> ProviderPlaybackRequest(id,"https://dai.google.com",if(sample=="ima-dash") MimeTypes.APPLICATION_MPD else MimeTypes.APPLICATION_M3U8,
-                options=ProviderMediaOptions(imaLive=ProviderImaLive(if(sample=="ima-dash") "0ndl1dJcRmKDUPxTRjvdog" else "c-rArva4ShKVIAkNfy6HUQ",networkCode="21775744923")))
+                options=ProviderMediaOptions(imaLive=ProviderImaLive(if(sample=="ima-dash") "PSzZMzAkSXCmlJOWDmRj8Q" else "c-rArva4ShKVIAkNfy6HUQ",networkCode="21775744923")))
             "expiry" -> ProviderPlaybackRequest(id,"asset:///pip-test.m3u8",MimeTypes.APPLICATION_M3U8,options=ProviderMediaOptions(expiresAt=System.currentTimeMillis()+1500))
             "interstitial" -> ProviderPlaybackRequest(id,"asset:///interstitial-test.m3u8",MimeTypes.APPLICATION_M3U8,options=ProviderMediaOptions(hlsInterstitials=true))
             "transition" -> ProviderPlaybackRequest(id,"asset:///ssai-transition-test.m3u8",MimeTypes.APPLICATION_M3U8)

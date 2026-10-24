@@ -30,8 +30,8 @@ class PublicMediaCapabilityTest {
     } }
     private fun rendered(sample: String) {
         main { it.start(sample) }
-        waitFor { (it.video && it.audio && it.holder.player.isPlaying) || it.errorCode != null }
-        report(sample)
+        try { waitFor { (it.video && it.audio && it.holder.player.isPlaying) || it.errorCode != null } }
+        finally { report(sample) }
         assertNull("Public sample renderer error",main { it.errorCode })
         assertTrue(main { it.video && it.audio })
     }
@@ -48,7 +48,7 @@ class PublicMediaCapabilityTest {
     @Test fun officialImaDashPlaysCompleteAdBreakAndContinues() {
         rendered("ima-dash")
         assertTrue(main { it.holder.player.isCurrentMediaItemLive })
-        try { waitFor(180000) { (it.adStarted && it.adEnded && it.holder.player.isPlaying) || it.errorCode != null } }
+        try { waitFor(360000) { (it.adStarted && it.adEnded && it.holder.player.isPlaying) || it.errorCode != null } }
         finally { report("ima-dash-ad-break") }
         assertNull(main { it.errorCode })
         assertTrue(main { it.adStarted && it.adEnded })

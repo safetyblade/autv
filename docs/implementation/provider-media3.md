@@ -48,7 +48,7 @@ PublicMediaCapabilityTest uses the real Media3/IMA SDK and a visible PlayerView:
 | DASH | AndroidX clear Tears of Steel: video and audio rendering |
 | Widevine | AndroidX encrypted Tears/licence sample: keys and A/V, or explicitly recorded device DRM limitation and safe FAST recovery |
 | IMA live HLS | Google's live BBB asset: A/V, live timeline, release to local FAST |
-| IMA live DASH | AndroidX's every-minute-ad sample: A/V, live, complete SDK ad period and continuing playback |
+| IMA live DASH | Google's current live Tears of Steel sample: A/V, live, complete SDK ad period and continuing playback |
 | SSAI-style discontinuities | Explicit synthetic local playlist, original discontinuities retained |
 | Interstitial | Explicit synthetic **VOD** playlist through HlsInterstitialsAdsLoader and content return |
 | Expiry | Ephemeral fixture deadline, same player returns to FAST fixture |
@@ -69,6 +69,13 @@ Widevine availability/provisioning on an emulator does not establish entitlement
 or compatibility on a Kogan TV; no L3/security downgrade is attempted.
 
 Local: Android debug and test APKs compile; JVM suite results accompany the PR.
+First public CI run (40089861393) rendered A/V for HLS, DASH, Widevine with keys,
+and IMA live HLS. Existing provider/QR/FAST regression run 40089861403 passed.
+DASH IMA and the synthetic interstitial were not yet accepted in that run; current
+fixes add the required interstitial AdsConfiguration and test the current Google
+published live DASH asset. Final rerun results are in the PR; do not count the
+failed checks as playback success.
+
 Remote: provider-media.yml runs actual public playback on a Google APIs emulator;
 scripts/test-provider-media.sh exports only fixed sample counters/error codes.
 Existing provider workflow independently exercises Nine/QR/storage/FAST routing.

@@ -46,6 +46,10 @@ internal object ProviderMediaSourceFactory {
             builder.setDrmConfiguration(MediaItem.DrmConfiguration.Builder(C.WIDEVINE_UUID).setLicenseUri(it.licenceUri)
                 .setForceDefaultLicenseUri(true).setMultiSession(it.multiSession).build())
         }
+        if (request.options.hlsInterstitials) {
+            builder.setAdsConfiguration(MediaItem.AdsConfiguration.Builder(android.net.Uri.parse("hls://interstitials"))
+                .setAdsId("interstitial:$channelNumber:${System.nanoTime()}").build())
+        }
         return builder.build()
     }
     fun validate(request: ProviderPlaybackRequest, advanced: Boolean, now: Long = System.currentTimeMillis()) {

@@ -25,12 +25,14 @@ class AuTvPlayer(private val context: Context, private val advancedProviderPlayb
     private var interstitials: HlsInterstitialsAdsLoader? = null
     private val handler = Handler(Looper.getMainLooper())
     private var expiry: Runnable? = null
+    private var generation = 0L
     private val adViews = object : AdViewProvider {
         override fun getAdViewGroup(): ViewGroup? = view?.adViewGroup
         override fun getAdOverlayInfos(): List<AdOverlayInfo> = view?.adOverlayInfos.orEmpty()
     }
     fun attachPlayerView(view: PlayerView?) { this.view = view }
     private fun endProviderSession() {
+        generation++
         expiry?.let(handler::removeCallbacks); expiry = null
         // Detach old media before releasing its session/SDK. Never retain a prior account's ad state.
         player.stop(); player.clearMediaItems()
@@ -49,6 +51,7 @@ class AuTvPlayer(private val context: Context, private val advancedProviderPlayb
         if (request.options.imaLive != null || request.options.hlsInterstitials) check(view != null) { "Ad view is not attached" }
         val base = ProviderMediaSourceFactory.base(context, request)
         endProviderSession()
+        val activeGeneration = generation
         try {
             var uri = Uri.parse(request.uri)
             val source = when {
@@ -58,7 +61,7 @@ class AuTvPlayer(private val context: Context, private val advancedProviderPlayb
                     ImaSdkFactory.getInstance().initialize(context, settings)
                     val loader = ImaServerSideAdInsertionMediaSource.AdsLoader.Builder(context, adViews)
                         .setImaSdkSettings(settings)
-                        .setAdEventListener { event -> onAdEvent?.invoke(event.type.name) }.build()
+                        .setAdEventListener { event -> if (generation == activeGeneration) onAdEvent?.invoke(event.type.name) }.build()
                     loader.setPlayer(player); ima = loader
                     val address = ImaServerSideAdInsertionUriBuilder().setAssetKey(config.assetKey)
                         .setAdsId("${request.channelId.provider}:$channelNumber:${System.nanoTime()}")
