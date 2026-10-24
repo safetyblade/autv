@@ -255,3 +255,39 @@ to copy that resolver's HMAC key. A valid provider descriptor and sanctioned DAI
 auth/session parameters are still required to integrate IMA and verify original
 commercials. The concrete unsent request above asks for exactly those artefacts.
 No extra boilerplate/sign-in façade is enabled while they are absent.
+
+## PR #85 adapter implementation follow-up
+
+`TenAdapter` now implements ProviderAdapter over an explicit TenProviderAccess:
+registered-client code generation/validation, pending restoration with the same
+persistent device identity, expiry, alternativeToken/refreshToken renewal, VIC
+catalogue and fresh official descriptor lookup. `plugin.py:playlist` in the actual
+0.4.5 package establishes **row.key** as the catalogue identity field; the adapter
+uses it instead of streamUrl/title. Only a selected returned proofChannelKey can
+tune; no guessed main-channel key or companion enablement is included.
+
+The returned live assetKey and X-DAI-AUTH become ProviderImaLive, consumed by the
+actual Media3/IMA setAuthToken path from PR #86. The catalogue URL is an official
+API resolver address, never treated as an HLS manifest. The SDK obtains the
+original ad-supported stream; no events-to-master derivation or ad filtering.
+Optional descriptor expiry is explicit, not inferred from the login token.
+Foreign resolver origins, VOD, missing auth and unsupported protection fail before
+playback. A descriptor failure keeps a valid account connected.
+
+`createTenProvider` supplies `autv.ten.session.v1` / `ten-session-v1` encrypted
+storage and `ten-device-v1` persistent UUID without changing Nine/SBS/Seven stores.
+The existing account/QR UI can consume this ProviderAdapter after approved client
+access is supplied; no fake activation button is exposed meanwhile.
+
+Four new state-machine tests cover pending recreation, refresh rotation inputs,
+VIC/key identity, original DAI handoff/expiry, VOD/foreign/sibling rejection and
+scoped sign-out. App/test APKs and **100 JVM tests pass locally** (96 shared baseline plus four
+Ten adapter tests); exact CI/build results are in the PR. Provider responses are synthetic, not real Ten session evidence.
+
+TenProviderAccess is the remaining approved-client boundary: config acquisition
+and authConfig endpoints, genuine client/platform fields, permitted request-signing
+or alternative live access, current regional catalogue and original live descriptor
+with DAI auth. No embedded X-N10-SIG key, LG/Android impersonation or Google test
+network code is used for Ten. Any required networkCode must be issued/approved;
+it defaults to absent rather than Google's public sample value. Real main Ten
+A/V, key delivery and complete normal commercial return remain device QA gates.
