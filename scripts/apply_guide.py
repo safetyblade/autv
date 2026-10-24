@@ -65,6 +65,10 @@ def set_name(extinf, name):
         return f"{extinf[:idx]},{safe_name}"
     return f"{extinf},{safe_name}"
 
+def sanitize_url(url):
+    """Sanitize stream URLs to prevent CRLF injection and M3U line breakout."""
+    return str(url or "").replace("\r", " ").replace("\n", " ")
+
 # Performance optimization: @cache memoizes expensive NFKD normalization and regex replacements
 @cache
 def canonical(value):
@@ -123,7 +127,7 @@ ranked.sort(key=lambda item: (item[0], item[1]))
 
 out = [header]
 for _, _, extinf, url in ranked:
-    out.extend([extinf, url])
+    out.extend([extinf, sanitize_url(url)])
 
 PLAYLIST.write_text("\n".join(out) + "\n", encoding="utf-8")
 
