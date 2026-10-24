@@ -35,8 +35,10 @@ class ProviderPlaybackRequest(
     val channelId: ProviderChannelId,
     val uri: String,
     val mimeType: String,
-    val headers: Map<String, String> = emptyMap(),
+    headers: Map<String, String> = emptyMap(),
+    val options: ProviderMediaOptions = ProviderMediaOptions(),
 ) {
+    val headers = headers.toMap().also(ProviderOriginHeaders::validateHeaders)
     override fun toString() = "ProviderPlaybackRequest(redacted)"
 }
 interface ProviderSessionStore {
