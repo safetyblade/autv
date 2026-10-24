@@ -228,3 +228,37 @@ and stable Victorian feed identity. The unsent request above specifies those ite
 No permission request is being substituted for parser/resolver work that can be
 implemented without it; that work is now present. UI linking remains unenabled
 until real provider-issued challenges and the authorised network interface exist.
+
+## PR #85 adapter implementation follow-up
+
+`AbcAdapter` now implements ProviderAdapter's actual state machine over an injected
+AbcProviderAccess: provider-issued linking challenge, persisted requestId/deviceId,
+status-to-UID confirmation, Seesaw token expiry/UID renewal, catalogue/programme
+resolution, explicit media authorisation and scoped sign-out. An explicitly
+approved anonymous mode can discover/resolve without inventing a Connected account.
+Only an externally selected provider-returned proof houseNumber can be tuned.
+No registration key, source HMAC or production card is embedded/enabled.
+
+`createAbcProvider` gives it its own persistent device UUID and encrypted
+`autv.abc.session.v1` / `abc-session-v1` namespace. Optional bounded private context
+on existing session/challenge objects retains UID/requestId/returned deviceId;
+EncryptedProviderSessionStore encrypts it with the existing AES-GCM key/no-backup
+pattern. Records without context still read identically; other provider aliases
+and account data are not migrated. An instrumented test covers encrypted context
+and recreation. Source interface calls redact unexpected transport exceptions.
+
+Four new adapter tests cover pending recreation, UID renewal, authorised-media
+failure preserving connection, explicit anonymous semantics, expiry and offline
+sign-out. Local app/test APK build and **100 JVM tests pass** (96 shared baseline plus four
+ABC adapter tests).
+These tests use fake provider responses and do not establish live account access.
+
+Production AbcProviderAccess still requires ABC's registered profile client
+configuration (including permitted productId and profile API access), current
+link/status/token schema and an approved authoriseMedia method for the original
+feed. That last method is an explicit interface, not a signing-secret stub or
+silent unsigned fallback. No HTTP client sends another app's profile key or claims
+its Origin/device identity. Main Victorian houseNumber/region mapping remains to
+be confirmed from authorised discovery. The working Media3 implementation in
+PR #86 independently supplies HLS/DASH/Widevine/IMA capability; it does not grant
+ABC access. Device QA starts with the exact gates above once these inputs exist.

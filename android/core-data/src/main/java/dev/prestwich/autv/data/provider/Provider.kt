@@ -22,13 +22,16 @@ enum class ProviderFailure {
 class ProviderException(val failure: ProviderFailure, val httpStatus: Int? = null) : Exception(failure.name)
 
 /** Sensitive values deliberately have no data-class toString/copy/serialization. */
-class ProviderSession(val accessToken: String, val refreshToken: String, val expiresAt: Long) {
+class ProviderSession(val accessToken: String, val refreshToken: String, val expiresAt: Long, privateContext: Map<String,String> = emptyMap()) {
+    val privateContext = privateContext.toMap().also(::validatePrivateContext)
     override fun toString() = "ProviderSession(redacted)"
 }
 class DeviceActivation(
     val userCode: String, val deviceCode: String,
     val verificationUrl: String, val expiresAt: Long, val pollIntervalMillis: Long,
+    privateContext: Map<String,String> = emptyMap(),
 ) {
+    val privateContext = privateContext.toMap().also(::validatePrivateContext)
     override fun toString() = "DeviceActivation(redacted)"
 }
 class ProviderPlaybackRequest(
@@ -69,4 +72,8 @@ interface ProviderAdapter {
     fun channels(): List<ProviderChannel>
     fun resolve(channel: ProviderChannelId): ProviderPlaybackRequest
     fun signOut()
+}
+
+private fun validatePrivateContext(context: Map<String,String>) {
+    require(context.size <= 16 && context.all { (key,value) -> key.matches(Regex("[A-Za-z0-9_-]{1,64}")) && value.length <= 4096 && value.none { it.isISOControl() } })
 }
