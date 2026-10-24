@@ -14,6 +14,7 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
     val holder = AuTvPlayer(app, advancedProviderPlayback = true)
     var changed: (() -> Unit)? = null
     var resumeAfterPause = false
+    var foreground = false
     var current = "none"; private set
     var video = false; private set
     var audio = false; private set
@@ -41,6 +42,7 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
         holder.player.isPlayingAd -> "Advertising"
         holder.player.playbackState==Player.STATE_ENDED -> "Completed"
         holder.player.isPlaying && (video || fallbackVideo) -> "Playing"
+        holder.player.playbackState==Player.STATE_READY && !holder.player.playWhenReady -> "Paused"
         current=="none" -> "Idle"
         else -> "Loading"
     }
@@ -66,7 +68,7 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
                 refresh()
             }
             override fun onPlayerError(error: PlaybackException) {
-                errorCode=error.errorCode;lastStartupStage=stage;recover();refresh()
+                errorCode=error.errorCode;lastStartupStage=stage;startupDuration=startupDuration ?: elapsed;recover();refresh()
             }
         })
         holder.onProviderStage = { stage=it;refresh() }
@@ -77,8 +79,8 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
             refresh()
         }
         holder.onImaError = { imaError=it;lastStartupStage=stage;refresh() }
-        holder.onProviderSessionFailure = { sessionFailure=it;errorCode=it;lastStartupStage=stage;recover();refresh() }
-        holder.onProviderSessionExpired = { expired=true;lastStartupStage=stage;recover();refresh() }
+        holder.onProviderSessionFailure = { sessionFailure=it;errorCode=it;lastStartupStage=stage;startupDuration=startupDuration ?: elapsed;recover();refresh() }
+        holder.onProviderSessionExpired = { expired=true;lastStartupStage=stage;startupDuration=startupDuration ?: elapsed;recover();refresh() }
     }
     private fun recover() {
         if(recovering) return
@@ -87,7 +89,7 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
         val tuneStartedAt=startedAt
         android.os.Handler(android.os.Looper.getMainLooper()).post {
             if(!recovering || tuneStartedAt!=startedAt) return@post
-            holder.play(LOCAL,100);stage="LOCAL_RECOVERY";refresh()
+            holder.play(LOCAL,100);if(!foreground) holder.player.pause();stage="LOCAL_RECOVERY";refresh()
         }
     }
     fun refresh() {
@@ -127,6 +129,7 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
             else -> { holder.play(LOCAL,100);refresh();return }
         }
         try { holder.play(request,-999) } catch(_: Exception) { errorCode=PlaybackException.ERROR_CODE_FAILED_RUNTIME_CHECK;lastStartupStage=stage;recover() }
+        if(!foreground) holder.player.pause()
         refresh()
     }
     fun summary(): String {

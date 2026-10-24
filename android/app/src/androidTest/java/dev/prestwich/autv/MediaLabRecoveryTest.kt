@@ -51,7 +51,7 @@ class MediaLabRecoveryTest {
         assertTrue(main { it.session.summary().contains("Audio: yes") })
         main { it.holder.player.pause() }
         activity.scenario.moveToState(Lifecycle.State.CREATED);activity.scenario.moveToState(Lifecycle.State.RESUMED)
-        assertFalse(main { it.holder.player.playWhenReady })
+        assertFalse(main { it.holder.player.playWhenReady });assertEquals("Paused",main { it.session.state })
         main { it.holder.player.play() };waitFor { it.holder.player.isPlaying }
     }
     @Test fun everyControlIsReachableInPortraitAndLandscapeAndCopiesObservedSummary() {
@@ -84,7 +84,11 @@ class MediaLabRecoveryTest {
         }
     }
     @Test fun expiredAndFailedAdSessionsRecoverToVisibleAudioVideoAndRetune() {
-        main { it.start("expiry") };waitFor { it.expired && it.fallbackVideo && it.fallbackAudio && it.holder.player.isPlaying };visibleMovingVideo()
+        main { it.start("expiry") }
+        activity.scenario.moveToState(Lifecycle.State.CREATED);SystemClock.sleep(3500)
+        assertFalse(main { it.holder.player.playWhenReady })
+        activity.scenario.moveToState(Lifecycle.State.RESUMED)
+        waitFor { it.expired && it.fallbackVideo && it.fallbackAudio && it.holder.player.isPlaying };visibleMovingVideo()
         main { it.start("broken-interstitial") };waitFor { it.sessionFailure!=null && it.fallbackVideo && it.fallbackAudio };visibleMovingVideo()
         main { it.start("fast") };waitFor { it.video && it.audio && it.holder.player.isPlaying }
         assertNull(main { it.errorCode });assertFalse(main { it.adStarted });assertFalse(main { it.session.returnedToProgramme })
