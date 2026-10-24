@@ -19,19 +19,19 @@ class SevenPlaybackTest {
         activity.scenario.onActivity { value = runCatching { block(it) } }
         return value!!.getOrThrow()
     }
-    private fun await(check: () -> Boolean) {
+    private fun await(stage: String, check: () -> Boolean) {
         val deadline = SystemClock.uptimeMillis() + 30000
         while (SystemClock.uptimeMillis() < deadline) { if (check()) return; SystemClock.sleep(100) }
-        fail("Seven fixture state did not arrive")
+        fail("Seven fixture timeout: $stage")
     }
     private fun ready(): Int {
-        await { main { it.playback.guide?.channels?.any { row -> row.providerChannel?.id?.provider == "seven" } == true && it.playback.playing } }
+        await("initial catalogue/playback") { main { it.playback.guide?.channels?.any { row -> row.providerChannel?.id?.provider == "seven" } == true && it.playback.playing } }
         return main { it.playback.player.volume = 0f; it.playback.guide!!.channels.first { row -> row.providerChannel?.id?.provider == "seven" }.number }
     }
     @Test fun originalResolverFeedsRetainedPlayerAndLocalSignOutRestoresFast() {
         val number = ready(); val player = main { it.playback.player }
         main { it.playback.request(TuneTarget.Number(number)) }
-        await { main { player.isPlaying && player.currentMediaItem?.mediaId == number.toString() } }
+        await("initial Seven media") { main { player.isPlaying && player.currentMediaItem?.mediaId == number.toString() } }
         main {
             assertSame(player, it.playback.player)
             assertTrue(it.resolutions > 0)
@@ -39,7 +39,7 @@ class SevenPlaybackTest {
             it.playback.pause(); assertFalse(player.playWhenReady); it.playback.resume()
         }
         // Cross an 8-second synthetic discontinuity without trimming or skipping it.
-        await { main { player.isPlaying && player.currentPosition > 8500 } }
+        await("synthetic discontinuity") { main { player.isPlaying && player.currentPosition > 8500 } }
         main {
             val counters = (player as androidx.media3.exoplayer.ExoPlayer).videoDecoderCounters
             assertNotNull(counters)
@@ -47,24 +47,24 @@ class SevenPlaybackTest {
             assertTrue(counters.renderedOutputBufferCount > 0)
         }
         val instrumentation = androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
-        await { main { it.hasWindowFocus() } }
+        await("window focus") { main { it.hasWindowFocus() } }
         instrumentation.sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_GUIDE)
-        await { main { it.playback.guideOpen } }
+        await("Guide key opens guide") { main { it.playback.guideOpen } }
         ui.onNodeWithTag("guide-panel").assertIsDisplayed()
         ui.waitForIdle()
         instrumentation.sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK)
-        await { main { !it.playback.guideOpen } }
+        await("Back closes guide") { main { !it.playback.guideOpen } }
         ui.onNodeWithTag("guide-panel").assertDoesNotExist()
         ui.waitForIdle()
         instrumentation.sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_CHANNEL_UP)
-        await { main { it.playback.player.isPlaying && it.playback.selected?.providerChannel?.id?.provider == "9now" } }
+        await("CH+ tunes Nine") { main { it.playback.player.isPlaying && it.playback.selected?.providerChannel?.id?.provider == "9now" } }
         instrumentation.sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_CHANNEL_DOWN)
-        await { main { it.playback.player.isPlaying && it.playback.player.currentMediaItem?.mediaId == number.toString() } }
+        await("CH- returns Seven") { main { it.playback.player.isPlaying && it.playback.player.currentMediaItem?.mediaId == number.toString() } }
         main { assertTrue(it.resolutions >= 2) }
         activity.scenario.recreate()
-        await { main { it.playback.player.isPlaying } }
+        await("recreated playback") { main { it.playback.player.isPlaying } }
         main { assertSame(player, it.playback.player); it.playback.sevenAccount.disconnect() }
-        await { main { !it.playback.sevenAccount.busy && player.isPlaying && player.currentMediaItem?.mediaId == "100" } }
+        await("Seven logout restores FAST") { main { !it.playback.sevenAccount.busy && player.isPlaying && player.currentMediaItem?.mediaId == "100" } }
         main {
             assertEquals(ProviderConnection.CONNECTED, it.playback.providerConnection)
             assertFalse(it.playback.guide!!.channels.any { row -> row.providerChannel?.id?.provider == "seven" })
@@ -73,7 +73,7 @@ class SevenPlaybackTest {
     @Test fun deniedDescriptorKeepsFastAndTheSevenAccountConnected() {
         val number = ready()
         main { it.denied = true; it.playback.request(TuneTarget.Number(number)) }
-        await { main { it.playback.sevenAccount.error != null && !it.playback.buffering } }
+        await("denied descriptor error") { main { it.playback.sevenAccount.error != null && !it.playback.buffering } }
         main {
             assertTrue(it.playback.sevenAccount.error!!.contains("[7-DESCRIPTOR]"))
             assertEquals(ProviderConnection.CONNECTED, it.playback.sevenAccount.connection)
