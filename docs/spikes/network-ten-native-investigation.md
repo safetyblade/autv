@@ -11,8 +11,8 @@ Seven remains paused with its account/catalogue and HTTP-400 diagnostics intact.
 and normal commercials are technically compatible, but no authorised AUTV live
 catalogue/account/playback contract was established. Do not copy application
 signing material, impersonate an official device family or substitute a public
-playlist. This report is the concrete deliverable; it adds no nonfunctional
-activation button or speculative SDK integration.
+playlist. The engineering follow-up adds network-free catalogue/DAI protocol components,
+not a nonfunctional activation button or speculative SDK integration.
 
 ## Current official service and account experience
 
@@ -176,10 +176,82 @@ Guide/Back/CH/Favourites, offline recovery, retained sessions across restart and
 in-place update, then Nine/SBS/FAST regression. Synthetic clips do not prove any
 broadcaster media gate.
 
-This work changes only this document. Whitespace and changed-path checks apply;
-there is no implementation to Android-build, no new APK and no claim of synthetic
-or real playback success. Current enforced runtime policy excludes Ten API/CDN
+The initial investigation changed only this document. The follow-up below adds
+compiled protocol components and tests; it does not claim broadcaster playback. Current enforced runtime policy excludes Ten API/CDN
 hosts; none was bypassed. Official help was researched through available web
 tools; no owner account, challenge, token, catalogue, manifest or physical TV was
 accessed. ABC code, Seven's preserved latest diagnostic, existing encrypted
 sessions, QR linking, public playlist, six-hour refresh and all FAST remain intact.
+
+## Engineering follow-up: July evidence and executable DAI boundary
+
+The maintainer's [July 9 and July 14, 2026 posts](https://forums.whirlpool.net.au/thread/91mxxqq8?p=7)
+report Victorian Ten playing with Kodi ffmpeg, InputStream Adaptive and VLC, and
+identify ad-domain blocking as a possible failure. July 14's 0.4.5 change addresses
+**VOD** InputStream version selection, not a new live authentication path. Actual
+0.4.4/0.4.5 ZIP comparison confirms api.py is identical; plugin.py changes the
+non-live quality workaround's version check to InputStream >=21.5.20. Thus porting
+that patch would not solve AUTV's unestablished live client/configuration access.
+Other posts mention key-fetch failures; those do not establish an absence of DRM
+or a reason to bypass media authorisation. These are dated upstream reports, not
+new AUTV tests, and no historical private media/key URLs were used.
+
+[Official Media3 HLS documentation](https://developer.android.com/media/media3/exoplayer/hls)
+lists ordinary AES-128, ID3 and live HLS support. Ordinary manifest-directed key
+fetches differ from Widevine licensing; neither may be guessed from a forum log.
+The Kodi InputStream/ffmpeg toggle has no direct equivalent patch to apply to
+Media3. Actual Ten manifest format and ad-boundary codec/key behaviour remain
+unverified. Existing Media3/player dependencies are unchanged.
+
+`android/core-data/.../provider/TenLiveProtocol.kt` now implements:
+
+- Source-derived channels/name/streamUrl catalogue parsing. A resolver address
+  remains private metadata, not an invented stable channel/Favourites identity.
+- Live-only dai.assetKey and provider-returned X-DAI-AUTH parsing, rejecting VOD
+  descriptors, missing authentication and declared unsupported protection. No
+  auth token, signing key or approved-device identity is generated locally.
+- Google's documented live-session response parsing, preserving stream_manifest,
+  metadata_url, media_verification_url, optional session_update_url and polling
+  interval as a unit. No events-to-master filename substitution is allowed.
+  Objects redact their values when converted to text.
+
+[Google's live API contract](https://developers.google.com/ad-manager/dynamic-ad-insertion/api/full-service/video-player-live)
+requires continuing metadata polling, in-stream event processing and verification
+requests for REST clients. Android's supported IMA integration can own the ad
+lifecycle once the approved Ten inputs are available. The parsed session therefore
+has **no convenience conversion to a plain ProviderPlaybackRequest** that would
+discard those duties. No DAI session is created or played by this component.
+
+Four new synthetic protocol tests cover media/session parameter preservation,
+measurement retention, VOD/auth/DRM rejection, missing-URL refusal (including the
+old events-filename fallback), polling validation and catalogue identity boundaries.
+Local Android debug build and **87 current-main JVM tests pass**, including the
+four new Ten tests. These are protocol
+fixtures, not an extracted live manifest, authorised Ten session or device result.
+
+### Comparison against successful AUTV connectors
+
+Reviewed Nine in main and the existing working SBS branch; neither is modified.
+
+| Boundary | Nine/SBS working pattern | Ten-specific difference and implemented part |
+| --- | --- | --- |
+| Login/QR | Provider-issued challenge, retained local QR UI | Approved config/activation still missing; no password or static code UI |
+| Catalogue | Provider IDs separated from guide numbers | Parse source-derived rows; stable VIC ID still needs provider evidence |
+| Renewal | Provider-specific refresh in encrypted store | Ten alternativeToken/refreshToken contract; not interchangeable with ABC UID |
+| Descriptor | Original provider-returned supported HLS | Parse live assetKey/X-DAI-AUTH, reject VOD/protection; no signing material |
+| HLS/DASH/DRM | Supported HLS path; protection gated | Negotiated format explicit in session model, no guessed licence or clear fallback |
+| Advertising | Preserve original server stream | Retain original manifest plus required DAI measurement endpoints together |
+| Media3 | Existing native HLS | Future supported IMA path, no broad player changes now |
+| Evidence | Owner-confirmed Nine/SBS | Four protocol tests and build only; no Ten playback verified |
+
+### Precise remaining dependency
+
+Ten must provide AUTV's registered client/config access or a permitted unsigned
+native-live alternative, including approved device context, challenge/renewal and
+current Victorian catalogue identity. The maintained web extractor proves there
+is an alternative VOD request shape, not a supported native live contract. The
+July live reports establish technical feasibility after resolution, not permission
+to copy that resolver's HMAC key. A valid provider descriptor and sanctioned DAI
+auth/session parameters are still required to integrate IMA and verify original
+commercials. The concrete unsent request above asks for exactly those artefacts.
+No extra boilerplate/sign-in façade is enabled while they are absent.
