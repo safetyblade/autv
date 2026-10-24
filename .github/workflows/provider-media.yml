@@ -24,6 +24,8 @@ jobs:
           gradle-version: '8.13'
       - name: JVM tests and Media Lab APK
         run: gradle -p android :app:testDebugUnitTest :core-data:testDebugUnitTest :core-guide:testDebugUnitTest :core-player:testDebugUnitTest :app:assembleDebug :app:assembleDebugAndroidTest
+      - name: Diagnose official sample sessions (availability only)
+        run: python3 scripts/probe-public-dai-samples.py
       - name: Enable KVM
         run: sudo chmod 666 /dev/kvm
       - name: Play official public media and exercise session recovery
@@ -43,4 +45,5 @@ jobs:
             android/app/build/outputs/apk/debug/app-debug.apk
             android/app/build/reports/androidTests/connected/debug/**
             media-sample-results.txt
+            dai-sample-probes.json
           retention-days: 7

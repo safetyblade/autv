@@ -1,114 +1,86 @@
 package dev.prestwich.autv
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.media3.common.*
+import androidx.lifecycle.ViewModelProvider
 import androidx.media3.common.util.Log
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.exoplayer.analytics.AnalyticsListener
 import androidx.media3.ui.PlayerView
-import dev.prestwich.autv.data.provider.*
-import dev.prestwich.autv.player.AuTvPlayer
 
-/** Debug-only official sample lab. Never accepts arbitrary URLs, credentials or broadcaster IDs. */
+/** Isolated debug-only public sample UI; retains one player/session across recreation. */
 class MediaCapabilityActivity : AppCompatActivity() {
-    lateinit var holder: AuTvPlayer; private set
+    lateinit var session: MediaLabSession; private set
+    val holder get()=session.holder
+    val video get()=session.video
+    val audio get()=session.audio
+    val drmKeys get()=session.drmKeys
+    val errorCode get()=session.errorCode
+    val imaError get()=session.imaError
+    val sessionFailure get()=session.sessionFailure
+    val adStarted get()=session.adStarted
+    val adEnded get()=session.adEnded
+    val completedAds get()=session.completedAds
+    val adMediaObserved get()=session.adMediaObserved
+    val expired get()=session.expired
+    val fallbackVideo get()=session.fallbackVideo
+    val fallbackAudio get()=session.fallbackAudio
     private lateinit var status: TextView
-    var video = false; private set
-    var audio = false; private set
-    var drmKeys = false; private set
-    var errorCode: Int? = null; private set
-    var imaError: Int? = null; private set
-    var sessionFailure: Int? = null; private set
-    var adStarted = false; private set
-    var adEnded = false; private set
-    var completedAds = 0; private set
-    var adMediaObserved = false; private set
-    var expired = false; private set
-    private var current = "none"
-    private lateinit var layout: LinearLayout
+    private lateinit var videoArea: FrameLayout
     private lateinit var videoView: PlayerView
+    private val handler=Handler(Looper.getMainLooper())
+    private val ticker=object : Runnable { override fun run() { session.refresh();handler.postDelayed(this,500) } }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Public sample session URLs still do not belong in logs/errors.
         Log.setLogLevel(Log.LOG_LEVEL_OFF)
-        android.util.Log.i("AUTV_MEDIA_QA", "environment sdk=${android.os.Build.VERSION.SDK_INT} webview=${if(android.os.Build.VERSION.SDK_INT>=26) android.webkit.WebView.getCurrentWebViewPackage()?.versionName else "pre26"}")
-        holder = AuTvPlayer(this, advancedProviderPlayback = true)
-        layout = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
-        status = TextView(this).apply { text = "AUTV official sample lab — no broadcaster entitlement"; textSize = 16f }
-        layout.addView(status)
-        // Use two columns, not a single unscrollable row: the IMA controls were
-        // offscreen on narrow phone displays. Keep each sample directly tappable.
-        val samples = listOf(
-            "hls" to "HLS", "dash" to "DASH",
-            "widevine" to "Widevine", "ima-hls" to "Live IMA HLS",
-            "ima-dash" to "Live IMA DASH", "fast" to "FAST fixture"
-        )
-        for (pair in samples.chunked(2)) {
-            val row = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
-            for ((name, label) in pair) {
-                row.addView(Button(this).apply {
-                    text = label
-                    isAllCaps = false
-                    minHeight = (48 * resources.displayMetrics.density).toInt()
-                    setOnClickListener { start(name) }
-                }, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
+        session=ViewModelProvider(this)[MediaLabSession::class.java]
+        android.util.Log.i("AUTV_MEDIA_QA","environment sdk=${android.os.Build.VERSION.SDK_INT} webview=${if(android.os.Build.VERSION.SDK_INT>=26) android.webkit.WebView.getCurrentWebViewPackage()?.versionName else "pre26"}")
+        val root=LinearLayout(this).apply { orientation=LinearLayout.VERTICAL;setBackgroundColor(0xff10141a.toInt()) }
+        // Reserve visible video space even when the status text grows. All controls scroll separately.
+        videoArea=FrameLayout(this)
+        root.addView(videoArea,LinearLayout.LayoutParams(-1,0,1f))
+        val scroll=ScrollView(this).apply { isFillViewport=true }
+        val controls=LinearLayout(this).apply { orientation=LinearLayout.VERTICAL;setPadding(dp(12),dp(8),dp(12),dp(8)) }
+        scroll.addView(controls)
+        root.addView(scroll,LinearLayout.LayoutParams(-1,0,1f))
+        for(pair in MediaLabSession.SAMPLES.chunked(2)) {
+            val row=LinearLayout(this)
+            for((name,label) in pair) row.addView(Button(this).apply {
+                text=label;isAllCaps=false;minHeight=dp(48);isFocusable=true
+                tag=name;setOnClickListener { start(name) }
+            },LinearLayout.LayoutParams(0,-2,1f))
+            controls.addView(row)
+        }
+        controls.addView(Button(this).apply {
+            text="Copy QA summary";isAllCaps=false;minHeight=dp(48);tag="copy-qa"
+            setOnClickListener {
+                val clipboard=getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                clipboard.setPrimaryClip(android.content.ClipData.newPlainText("AUTV Media Lab",session.summary()))
+                Toast.makeText(this@MediaCapabilityActivity,"QA summary copied",Toast.LENGTH_SHORT).show()
             }
-            layout.addView(row, LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ))
-        }
-        videoView = PlayerView(this).apply { player = holder.player; useController = true }
-        layout.addView(videoView, LinearLayout.LayoutParams(-1,0,1f)); setContentView(layout)
-        holder.attachPlayerView(videoView)
-        (holder.player as ExoPlayer).addAnalyticsListener(object : AnalyticsListener {
-            override fun onRenderedFirstFrame(eventTime: AnalyticsListener.EventTime, output: Any, renderTimeMs: Long) { video = true; update() }
-            override fun onAudioPositionAdvancing(eventTime: AnalyticsListener.EventTime, playoutStartSystemTimeMs: Long) { audio = true; update() }
-            override fun onDrmKeysLoaded(eventTime: AnalyticsListener.EventTime) { drmKeys = true; update() }
         })
-        holder.player.addListener(object : Player.Listener {
-            override fun onEvents(player: Player, events: Player.Events) { if(player.isPlayingAd) adMediaObserved=true }
-            override fun onPlayerError(error: PlaybackException) { errorCode = error.errorCode; update() }
-        })
-        holder.onAdEvent = { event ->
-            if(event=="COMPLETED") completedAds++
-            if (event in setOf("AD_PERIOD_STARTED", "AD_BREAK_STARTED")) adStarted = true
-            if (adStarted && event in setOf("AD_PERIOD_ENDED", "AD_BREAK_ENDED")) adEnded = true
-            update()
-        }
-        holder.onImaError = { imaError=it;update() }
-        holder.onProviderSessionFailure = { sessionFailure=it;errorCode=it;update() }
-        holder.onProviderSessionExpired = { expired = true; holder.play("asset:///pip-test.m3u8",100); update() }
+        status=TextView(this).apply { textSize=15f;setTextColor(0xffeeeeee.toInt());setTextIsSelectable(true) }
+        controls.addView(status)
+        setContentView(root);rebindVideoView()
+        session.changed={ status.text=session.summary() }
+        status.text=session.summary()
+        // Only a reviewed sample ID survives process death, never a DAI URL/session/token.
+        if(session.current=="none") savedInstanceState?.getString("sample")?.takeIf { key -> MediaLabSession.SAMPLES.any { it.first==key } }?.let(::start)
     }
+    private fun dp(value: Int)=(value*resources.displayMetrics.density).toInt()
     fun rebindVideoView() {
-        videoView.player = null; layout.removeView(videoView)
-        videoView = PlayerView(this).apply { player = holder.player; useController = true }
-        layout.addView(videoView,LinearLayout.LayoutParams(-1,0,1f))
-        holder.attachPlayerView(videoView)
+        if(::videoView.isInitialized) { holder.detachPlayerView(videoView);videoView.player=null;videoArea.removeView(videoView) }
+        videoView=PlayerView(this).apply { player=holder.player;useController=true;keepScreenOn=true;tag="media-video" }
+        videoArea.addView(videoView,FrameLayout.LayoutParams(-1,-1));holder.attachPlayerView(videoView)
     }
-    fun start(sample: String) {
-        current = sample; video = false; audio = false; drmKeys = false; errorCode = null; imaError = null; sessionFailure = null; adStarted = false; adEnded = false; completedAds = 0; adMediaObserved = false; expired = false
-        val id = ProviderChannelId("public-sample",sample)
-        val request = when(sample) {
-            "hls" -> ProviderPlaybackRequest(id,"https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",MimeTypes.APPLICATION_M3U8)
-            "dash" -> ProviderPlaybackRequest(id,"https://storage.googleapis.com/wvmedia/clear/h264/tears/tears.mpd",MimeTypes.APPLICATION_MPD)
-            "widevine" -> ProviderPlaybackRequest(id,"https://storage.googleapis.com/wvmedia/cenc/h264/tears/tears.mpd",MimeTypes.APPLICATION_MPD,
-                options=ProviderMediaOptions(widevine=ProviderWidevine("https://proxy.uat.widevine.com/proxy?video_id=2015_tears&provider=widevine_test")))
-            "ima-hls", "ima-dash" -> ProviderPlaybackRequest(id,"https://dai.google.com",if(sample=="ima-dash") MimeTypes.APPLICATION_MPD else MimeTypes.APPLICATION_M3U8,
-                options=ProviderMediaOptions(imaLive=ProviderImaLive(if(sample=="ima-dash") "PSzZMzAkSXCmlJOWDmRj8Q" else "c-rArva4ShKVIAkNfy6HUQ",networkCode="21775744923")))
-            "expiry" -> ProviderPlaybackRequest(id,"asset:///pip-test.m3u8",MimeTypes.APPLICATION_M3U8,options=ProviderMediaOptions(expiresAt=System.currentTimeMillis()+1500))
-            "broken-interstitial" -> ProviderPlaybackRequest(id,"asset:///broken-interstitial-test.m3u8",MimeTypes.APPLICATION_M3U8,options=ProviderMediaOptions(hlsInterstitials=true))
-            "interstitial" -> ProviderPlaybackRequest(id,"asset:///interstitial-test.m3u8",MimeTypes.APPLICATION_M3U8,options=ProviderMediaOptions(hlsInterstitials=true))
-            "transition" -> ProviderPlaybackRequest(id,"asset:///ssai-transition-test.m3u8",MimeTypes.APPLICATION_M3U8)
-            else -> { holder.play("asset:///pip-test.m3u8",100); update(); return }
-        }
-        try { holder.play(request,-999) } catch (_: Exception) { errorCode = PlaybackException.ERROR_CODE_FAILED_RUNTIME_CHECK }
-        update()
+    fun start(sample: String)=session.start(sample)
+    override fun onSaveInstanceState(outState: Bundle) { outState.putString("sample",session.current);super.onSaveInstanceState(outState) }
+    override fun onPause() { handler.removeCallbacks(ticker);session.foreground=false;session.resumeAfterPause=holder.player.playWhenReady;holder.player.pause();videoView.onPause();super.onPause() }
+    override fun onResume() { super.onResume();session.foreground=true;videoView.onResume();if(session.resumeAfterPause && holder.player.mediaItemCount>0) holder.player.play();handler.post(ticker) }
+    override fun onDestroy() {
+        handler.removeCallbacks(ticker);session.changed=null
+        holder.detachPlayerView(videoView);videoView.player=null
+        super.onDestroy() // ViewModel releases only when actually finished, retaining DAI on rotation.
     }
-    private fun update() { status.text = "$current  Video=$video  Audio-renderer=$audio  Keys=$drmKeys  Ad=$adStarted/$adEnded  Error=${errorCode ?: "none"} IMA=${imaError ?: "none"}" }
-    override fun onPause() { holder.player.pause(); super.onPause() }
-    override fun onResume() { super.onResume(); if (::holder.isInitialized && holder.player.mediaItemCount > 0) holder.player.play() }
-    override fun onDestroy() { holder.release(); super.onDestroy() }
 }
