@@ -92,6 +92,14 @@ class PublicMediaCapabilityTest {
         assertNull(main { it.errorCode })
         report("synthetic-vod-interstitial")
     }
+    @Test fun failedInterstitialStopsInsteadOfPlayingUnadvertisedContent() {
+        main { it.start("broken-interstitial") }
+        waitFor(35000) { it.sessionFailure != null }
+        assertEquals(androidx.media3.common.PlaybackException.ERROR_CODE_IO_UNSPECIFIED,main { it.sessionFailure })
+        assertEquals(0,main { it.holder.player.mediaItemCount })
+        main { it.start("fast") }; waitFor { it.video && it.holder.player.isPlaying }
+        report("failed-interstitial-fast-recovery")
+    }
     @Test fun expiryReturnsToFastAndSyntheticDiscontinuityPlaysWithoutRemoval() {
         main { it.start("expiry") }
         waitFor { it.expired && it.holder.player.currentMediaItem?.mediaId == "100" && it.holder.player.isPlaying }

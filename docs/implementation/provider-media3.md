@@ -136,3 +136,16 @@ Android, and uses a current API-35 image to separate legacy-emulator/WebView
 behaviour from media capability. No emulator failure is relabelled as success.
 The stricter ad check requires a completed ad and observed native ad media, not
 only an ad-break notification. See the latest run for actual results.
+
+Interstitial fixture correction is source-backed: Media3 1.11.1
+HlsInterstitialsAdsLoader, when mapping assetUri, passes that URI unchanged to
+MediaItem and sets APPLICATION_M3U8. HlsPlaylistParser parses X-ASSET-URI directly.
+The test therefore uses an absolute HLS asset URI, not a relative URI or MP4.
+This does not change provider manifests; unsupported interstitial variants remain
+a real SDK/provider compatibility limit, not permission to omit commercials.
+
+An interstitial prepare/asset-list failure now stops the failed session and sends
+a fixed recovery signal to the host; it cannot silently continue with the missing
+ad omitted. The negative instrumentation fixture uses a deliberately missing HLS
+ad and verifies source removal plus FAST return. It does not inject failure into
+a real broadcaster or call any SDK ad-skip method.
