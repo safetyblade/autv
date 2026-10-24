@@ -47,23 +47,27 @@ internal class EncryptedProviderSessionStore(
         try { output.write(encrypted); target.finishWrite(output) }
         catch (error: Exception) { target.failWrite(output); throw error }
     }
+    private fun privateContext(json: JSONObject): Map<String,String> {
+        val extra = json.optJSONObject("context") ?: return emptyMap()
+        return extra.keys().asSequence().associateWith { extra.get(it) as String }
+    }
     override fun read(): ProviderSession? {
         val json = readJson(file) ?: return null
-        return runCatching { ProviderSession(json.getString("access"), json.getString("refresh"), json.getLong("expires")) }
+        return runCatching { ProviderSession(json.getString("access"), json.getString("refresh"), json.getLong("expires"), privateContext(json)) }
             .getOrElse { file.delete(); null }
     }
     override fun write(session: ProviderSession) {
-        writeJson(file, JSONObject().put("access", session.accessToken).put("refresh", session.refreshToken).put("expires", session.expiresAt))
+        writeJson(file, JSONObject().put("access", session.accessToken).put("refresh", session.refreshToken).put("expires", session.expiresAt).apply { if (session.privateContext.isNotEmpty()) put("context", JSONObject(session.privateContext)) })
     }
     override fun readActivation(): DeviceActivation? {
         val json = readJson(activationFile) ?: return null
         return runCatching { DeviceActivation(json.getString("code"), json.getString("device"),
-            json.getString("url"), json.getLong("expires"), json.getLong("interval")) }
+            json.getString("url"), json.getLong("expires"), json.getLong("interval"), privateContext(json)) }
             .getOrElse { activationFile.delete(); null }
     }
     override fun writeActivation(activation: DeviceActivation) {
         writeJson(activationFile, JSONObject().put("code", activation.userCode).put("device", activation.deviceCode)
-            .put("url", activation.verificationUrl).put("expires", activation.expiresAt).put("interval", activation.pollIntervalMillis))
+            .put("url", activation.verificationUrl).put("expires", activation.expiresAt).put("interval", activation.pollIntervalMillis).apply { if (activation.privateContext.isNotEmpty()) put("context", JSONObject(activation.privateContext)) })
     }
     override fun clearActivation() { activationFile.delete() }
     override fun clear() {
