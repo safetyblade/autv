@@ -8,9 +8,9 @@ and the full [PR #74 decision](https://github.com/safetyblade/autv/blob/7e2499cc
 
 **Decision: hold runtime enablement; the account protocol evidence has improved,
 but an authorised AUTV playback route is not established.** This is not a claim
-that ABC is technically unplayable. No app code, sessions, public playlist or
-provider settings change in this workstream. The next concrete dependency is an
-ABC-approved integration contract, not a guessed URL or a ported signing secret.
+that ABC is technically unplayable. The follow-up implements network-free ABC protocol components and
+tests; no production adapter, sessions, public playlist or provider settings are
+changed. The next concrete dependency is an ABC-approved integration contract, not a guessed URL or a ported signing secret.
 
 ## New evidence versus the previous decision
 
@@ -167,10 +167,64 @@ scoped sign-out, original manifest/video/audio and sustained playback through
 programme junctions; then Guide/Back/CH/Favourites and Nine/SBS/FAST regressions.
 Synthetic fixtures cannot satisfy the media gates.
 
-This PR is documentation-only: `git diff --check` and changed-path isolation are
-appropriate validation; no Android build or new APK is claimed. Existing app
-build/test results are not relabelled as ABC results. The enforced runtime
+The original investigation was documentation-only. The follow-up below adds
+compiled protocol components and reports its own build/test evidence; existing
+provider successes are not relabelled as ABC results. The enforced runtime
 network policy excludes ABC API/CDN hosts; no denial was bypassed. Public help and
 GitHub sources were read through their available tools. No physical TV is attached.
 Seven's implementation, current diagnostic, normal ads, all sessions and FAST
 remain unchanged. Network 10 proceeds in its own independent workstream.
+
+## Engineering follow-up: executable protocol boundary
+
+`android/core-data/.../provider/AbcLiveProtocol.kt` now implements the source-derived
+live collection, livestream entry and programme-resolution components. It has no
+network transport, copied key, account impersonation or production UI registration.
+
+- Extract the single live collection and provider houseNumber/programme metadata;
+  restrict programme requests to the official API route, reject conflicting entries,
+  wrong identities and unavailable/non-live records. HouseNumber remains a candidate
+  identity until its live-feed stability is verified; no Favourites keys are added.
+- Select an original HLS variant without rewriting its path or session parameters.
+  Require an explicit MediaAuthoriser and propagate failures; there is no unsigned
+  fallback. Separate ad/DRM declarations cannot be silently treated as clear media.
+- Produce the existing ephemeral ProviderPlaybackRequest only after the authoriser
+  succeeds. Media carries no account headers. The future registered ABC transport
+  must supply this authoriser, using the approved auth/cookie/licence contract.
+
+This is **partial engineering**, not an enabled provider or proof that copied
+fixture JSON is production output. The four new tests use explicitly synthetic,
+source-derived records: original signed-session preservation, authorisation failure
+without fallback, identity/host/protection rejection and ambiguous/missing live
+metadata. Android debug APK build and **87 current-main JVM tests pass locally**, including
+the four new ABC tests.
+No real ABC link, catalogue, manifest, audio/video or TV QA has occurred.
+
+### Comparison against successful AUTV connectors
+
+Reviewed Nine in main and the working SBS/Seven branch without modifying either.
+The owner reports real Nine/SBS playback; that evidence is distinct from local tests.
+
+| Boundary | Nine | SBS | ABC follow-up |
+| --- | --- | --- | --- |
+| Login/QR | Provider code/token; local QR | Device link/poll; local QR | Newer link/status protocol documented; no AUTV-approved client wired |
+| Catalogue/identity | Provider channel/live-event IDs | mpxMediaID | Source-derived livestream houseNumber/self link parsed; regional stability unverified |
+| Renewal | Refresh-token flow | Refresh-token/JWT expiry | UID/Seesaw differs; no fabricated refresh token |
+| Descriptor | Provider-returned HLS | Original returned HLS | Programme/HLS parsing implemented; authorised media exchange still external |
+| Media/DRM | Supported HLS only | Supported HLS; separate DAI/DRM gated | HLS request after explicit authoriser; no invented DASH/licence support |
+| Advertising | Original stream retained | Original stream retained | Original URL retained; no unsigned fallback or ad rewriting |
+| Media3 | Existing native HLS lifecycle | Same provider-scoped player | Existing request type; no player modification |
+| Evidence | Owner-confirmed working | Owner-confirmed working | Four protocol tests/build only; no actual playback |
+
+### Precise remaining dependency
+
+An ABC-approved AUTV client must provide current media authorisation for the
+provider-returned Victorian feed without the add-on's embedded HMAC secret. The
+independently read access guidelines describe the approval route; the maintained
+source demonstrates the signing dependency but is not a grant. Request the native
+anonymous-live alternative explicitly, since the website login exemption alone
+does not describe it. Also confirm the current device-link client configuration
+and stable Victorian feed identity. The unsent request above specifies those items.
+No permission request is being substituted for parser/resolver work that can be
+implemented without it; that work is now present. UI linking remains unenabled
+until real provider-issued challenges and the authorised network interface exist.
