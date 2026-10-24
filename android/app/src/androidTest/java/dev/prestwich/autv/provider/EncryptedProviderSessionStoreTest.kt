@@ -9,6 +9,23 @@ import java.io.File
 import java.security.KeyStore
 
 class EncryptedProviderSessionStoreTest {
+    @Test fun abcPrivateUidAndPendingRequestContextRemainEncryptedAcrossRecreation() {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val store = EncryptedProviderSessionStore(context,"autv.abc.fixture.context","abc-context-fixture")
+        store.clear()
+        try {
+            store.write(ProviderSession("fixture-token","",999999L,mapOf("uid" to "private-uid-fixture")))
+            store.writeActivation(DeviceActivation("TEST","fixture-device","https://www.abc.net.au/linktv",999999L,3000,mapOf("requestId" to "private-request-fixture")))
+            for(name in listOf("abc-context-fixture","abc-context-fixture-activation")) {
+                val encrypted=File(context.noBackupFilesDir,name).readBytes().toString(Charsets.ISO_8859_1)
+                assertFalse(encrypted.contains("private-uid-fixture"));assertFalse(encrypted.contains("private-request-fixture"))
+            }
+            val restored=EncryptedProviderSessionStore(context,"autv.abc.fixture.context","abc-context-fixture")
+            assertEquals("private-uid-fixture",restored.read()!!.privateContext["uid"])
+            assertEquals("private-request-fixture",restored.readActivation()!!.privateContext["requestId"])
+        } finally { store.clear() }
+    }
+
     @Test fun pendingChallengeIsEncryptedAndSurvivesReadingAnAbsentSession() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val alias = "autv.9now.fixture.activation"
