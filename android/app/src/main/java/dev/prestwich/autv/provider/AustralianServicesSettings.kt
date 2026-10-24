@@ -68,9 +68,9 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                     ServiceIcon(service)
                                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                         Text(service.name, style = MaterialTheme.typography.titleMedium)
-                                        Text(when (service.id) { "9now" -> connectionLabel(model.providerConnection); "sbs" -> connectionLabel(model.sbsAccount.connection); else -> "Not available yet" },
+                                        Text(when (service.id) { "9now" -> connectionLabel(model.providerConnection); "sbs" -> connectionLabel(model.sbsAccount.connection); "seven" -> connectionLabel(model.sevenAccount.connection); else -> "Not available yet" },
                                             style = MaterialTheme.typography.labelMedium,
-                                            color = if (service.id in setOf("9now", "sbs")) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+                                            color = if (service.id in setOf("9now", "sbs", "seven")) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
                                     }
                                     Text("›", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 }
@@ -86,30 +86,33 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                 Text(service.description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         }
-                        if (service.id !in setOf("9now", "sbs")) {
+                        if (service.id !in setOf("9now", "sbs", "seven")) {
                             Text("Not available yet", style = MaterialTheme.typography.titleMedium)
                             Text("${service.name} account connections are not supported in AUTV yet. Your existing guide channels remain available.",
                                 color = MaterialTheme.colorScheme.onSurfaceVariant)
                         } else {
                             val sbs = service.id == "sbs"
-                            val connection = if (sbs) model.sbsAccount.connection else model.providerConnection
-                            val activation = if (sbs) model.sbsAccount.activation else model.providerActivation
-                            val busy = if (sbs) model.sbsAccount.busy else model.providerBusy
-                            val count = if (sbs) model.sbsAccount.channels.size else model.providerChannelCount
-                            val status = if (sbs) model.sbsAccount.status else model.providerAuthStatus
-                            val error = if (sbs) model.sbsAccount.error else model.providerError
-                            val connect: () -> Unit = if (sbs) model.sbsAccount::connect else model::connectNineNow
-                            val disconnect: () -> Unit = if (sbs) model.sbsAccount::disconnect else model::disconnectNineNow
-                            val refresh: () -> Unit = if (sbs) model.sbsAccount::refresh else model::refreshProviderChannels
+                            val account = when (service.id) { "sbs" -> model.sbsAccount; "seven" -> model.sevenAccount; else -> null }
+                            val connection = if (account != null) account.connection else model.providerConnection
+                            val activation = if (account != null) account.activation else model.providerActivation
+                            val busy = if (account != null) account.busy else model.providerBusy
+                            val count = if (account != null) account.channels.size else model.providerChannelCount
+                            val status = if (account != null) account.status else model.providerAuthStatus
+                            val error = if (account != null) account.error else model.providerError
+                            val connect: () -> Unit = if (account != null) account::connect else model::connectNineNow
+                            val disconnect: () -> Unit = if (account != null) account::disconnect else model::disconnectNineNow
+                            val refresh: () -> Unit = if (account != null) account::refresh else model::refreshProviderChannels
                             Text(connectionLabel(connection), color = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier.testTag("${service.id}-connection-state"))
                             Text(if (connection == ProviderConnection.CONNECTED)
-                                "$count live channels and events in your guide."
+                                if (service.id == "seven") "$count channels listed. Native 7plus playback is not available yet." else "$count live channels and events in your guide."
                                 else "Connect your ${service.name} account to bring its live channels into AUTV.")
+                            if (service.id == "seven") Text("Experimental account linking and channel discovery. Playback is unavailable while licence and advertising support is being developed.",
+                                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             if (sbs) Text("Experimental native HLS. Some channels may require an unsupported ad-session or protection path.",
                                 style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             activation?.let { challenge ->
-                                ProviderActivationScreen(service.name, challenge, if (sbs) ActivationDestination.SBS else ActivationDestination.NINE_NOW,
+                                ProviderActivationScreen(service.name, challenge, when (service.id) { "sbs" -> ActivationDestination.SBS; "seven" -> ActivationDestination.SEVEN_PLUS; else -> ActivationDestination.NINE_NOW },
                                     onOpenWebsite = { address -> runCatching { uriHandler.openUri(address) }; Unit }, onCancel = disconnect)
                             }
                             status?.let { Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("${service.id}-auth-status")) }

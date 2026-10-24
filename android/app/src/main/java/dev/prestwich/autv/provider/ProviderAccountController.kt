@@ -107,7 +107,7 @@ internal class ProviderAccountController(
         ProviderFailure.RETRY_LATER -> "$name is temporarily busy. Try again shortly."
         ProviderFailure.DRM_UNSUPPORTED -> "This $name stream needs playback protection AUTV does not support yet."
         ProviderFailure.AD_SESSION_UNSUPPORTED -> "This $name channel requires an ad-session playback path AUTV does not support yet."
-        ProviderFailure.PLAYBACK_UNSUPPORTED -> "$name did not return a supported native HLS stream."
+        ProviderFailure.PLAYBACK_UNSUPPORTED -> if (name == "7plus") "7plus is connected, but native playback is not available in this build." else "$name did not return a supported native HLS stream."
         ProviderFailure.REGION_DENIED -> "$name denied access. Check your Australian connection and account."
         else -> "$name is unavailable. Try again later."
     } + ((failure as? ProviderException)?.httpStatus?.takeIf { it in 100..599 }?.let { " (HTTP $it)" } ?: "")

@@ -38,7 +38,7 @@ jobs:
           arch: x86_64
           disable-animations: true
           script: |
-            gradle -p android :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.SbsProviderTest,dev.prestwich.autv.ProviderQrUiTest,dev.prestwich.autv.ProviderQrIntegrationTest,dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.provider.EncryptedProviderSessionStoreTest
+            gradle -p android :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.SevenProviderTest,dev.prestwich.autv.SbsProviderTest,dev.prestwich.autv.ProviderQrUiTest,dev.prestwich.autv.ProviderQrIntegrationTest,dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.provider.EncryptedProviderSessionStoreTest
             bash scripts/test-android-update.sh
       - uses: actions/upload-artifact@v4
         with:

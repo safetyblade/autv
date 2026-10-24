@@ -24,6 +24,14 @@ class ActivationQrTest {
         assertNull(ActivationQr.payload(sbs, ActivationDestination.NINE_NOW))
         assertNull(ActivationQr.payload(challenge("https://sbs.com.au/connect?code=fixture"), ActivationDestination.SBS))
     }
+    @Test fun sevenQrDecodesOnlyOfficialAddressWithoutCodes() {
+        val matrix = ActivationQr.encode(challenge(ActivationDestination.SEVEN_PLUS.address), ActivationDestination.SEVEN_PLUS)!!
+        val pixels = IntArray(matrix.width * matrix.height) { i -> if (matrix[i % matrix.width, i / matrix.width]) -0x1000000 else -1 }
+        val decoded = MultiFormatReader().decode(BinaryBitmap(HybridBinarizer(RGBLuminanceSource(matrix.width, matrix.height, pixels)))).text
+        assertEquals("https://7plus.com.au/connect", decoded)
+        assertNull(ActivationQr.payload(challenge("https://7plus.com.au/connect?code=fixture"), ActivationDestination.SEVEN_PLUS))
+        assertNull(ActivationQr.payload(challenge(ActivationDestination.SBS.address), ActivationDestination.SEVEN_PLUS))
+    }
     @Test fun rejectsUnreviewedUrlsAndPrefillParameters() {
         for (url in listOf("http://www.9now.com.au/activate", "https://www.9now.com.au.evil.invalid/activate",
             "https://www.9now.com.au/activate?code=fixture", "https://www.9now.com.au/activate#token=fixture",
