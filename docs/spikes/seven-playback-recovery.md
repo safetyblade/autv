@@ -164,3 +164,27 @@ remote result is claimed. Owner-provided connection/discovery success remains
 valid evidence for PR #75 only. Keep the playback proof draft and test Channel 7
 before enabling siblings. This does not yet meet the mission's playback success
 criterion.
+
+## Owner failure follow-up
+
+The owner tested the first playback APK and supplied a screenshot showing failed
+Seven and 7mate rows. Seven's generic unsupported message does not establish
+which resolution step failed; no real playback success is claimed. 7mate remains
+outside this proof. A source review found that AUTV required an absolute content
+link, whereas SlyGuy's `_get_url` also handles relative links. AUTV now resolves
+relative metadata links against the official Seven origin before extracting the
+slug. It never follows the content link as a network request, and still rejects
+external/protocol-relative authorities, credentials, HTTP and ambiguous queries.
+This fixes a demonstrated parser limitation, **not a confirmed cause of the
+owner's failure**; no owner payload was obtained.
+
+Fixed, non-sensitive failure-stage codes now distinguish `7-CAT` (catalogue),
+`7-CHANNEL` (missing/out-of-scope row), `7-LINK` (content link), `7-PLAYER` (player
+metadata), `7-IDENTITY` (account/reference extraction), `7-DESCRIPTOR` (media API)
+and `7-SOURCE` (source selection). The UI preserves sanitized HTTP status and
+failure category. No URL, token, account/reference/channel ID or response body is
+included. These codes let the next owner test identify the actual gap without
+requesting private API dumps. This update does not broaden source/DRM/ad handling
+or enable sibling channels. Real Seven video/audio and ad-break stability remain
+unverified. The owner should select **Seven**, and report the full displayed
+error including the fixed code if it fails.

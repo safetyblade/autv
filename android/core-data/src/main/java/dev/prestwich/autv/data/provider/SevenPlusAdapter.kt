@@ -107,38 +107,53 @@ class SevenPlusAdapter(
     }
     override fun resolve(channel: ProviderChannelId): ProviderPlaybackRequest {
         if (channel.provider != "seven") throw ProviderException(ProviderFailure.UNAVAILABLE)
-        val catalogue = catalogue()
-        val row = catalogue.rows.singleOrNull { it.optString("channelId") == channel.channel }
-            ?: throw ProviderException(ProviderFailure.UNAVAILABLE)
-        // One primary-network proof. Official IDs are never invented or replaced with IPTV slugs.
-        if (row.optString("name").trim() !in setOf("7", "Seven", "Channel 7", "7HD"))
-            throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
-        val link = text(row.optJSONObject("contentLink") ?: JSONObject(), "url")
-            ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
-        val slug = channelSlug(link)
-        val player = transport.request("GET", "$PLAYER/$slug?${contentQuery(catalogue.market)}&signedUp=True")
-            .optJSONObject("videoPlayer") ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
-        val video = text(player, "videoUrl") ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
-        val identity = playbackIdentity(video)
+        val catalogue = step(ProviderPlaybackStage.SEVEN_CATALOGUE) { catalogue() }
+        val row = step(ProviderPlaybackStage.SEVEN_CHANNEL) {
+            val selected = catalogue.rows.singleOrNull { it.optString("channelId") == channel.channel }
+                ?: throw ProviderException(ProviderFailure.UNAVAILABLE)
+            // One primary-network proof. Official IDs are never invented or replaced with IPTV slugs.
+            if (selected.optString("name").trim() !in setOf("7", "Seven", "Channel 7", "7HD"))
+                throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+            selected
+        }
+        val slug = step(ProviderPlaybackStage.SEVEN_LINK) {
+            val link = text(row.optJSONObject("contentLink") ?: JSONObject(), "url")
+                ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+            channelSlug(link)
+        }
+        val video = step(ProviderPlaybackStage.SEVEN_PLAYER) {
+            val player = transport.request("GET", "$PLAYER/$slug?${contentQuery(catalogue.market)}&signedUp=True")
+                .optJSONObject("videoPlayer") ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+            text(player, "videoUrl") ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        }
+        val identity = step(ProviderPlaybackStage.SEVEN_IDENTITY) { playbackIdentity(video) }
         val parameters = linkedMapOf(
             "appId" to "7plus", "deviceType" to "androidtv", "platformType" to "tv",
             "deviceId" to deviceId, "accountId" to identity.first, "referenceId" to identity.second,
             "marketId" to catalogue.market, "videoType" to "live",
         )
         // No invented postcode, tracking identity, SDK attestation or ad-delivery override.
-        val descriptor = try { transport.playback(parameters, session!!.accessToken) }
+        val descriptor = try { step(ProviderPlaybackStage.SEVEN_DESCRIPTOR) { transport.playback(parameters, session!!.accessToken) } }
         catch (error: ProviderException) {
             if (error.failure == ProviderFailure.SESSION_EXPIRED) {
                 store.clear(); session = null; connection = ProviderConnection.SESSION_EXPIRED
             }
             throw error
         }
-        return SevenLiveSource.select(channel, descriptor)
+        return step(ProviderPlaybackStage.SEVEN_SOURCE) { SevenLiveSource.select(channel, descriptor) }
     }
+    private inline fun <T> step(stage: ProviderPlaybackStage, action: () -> T): T = try { action() }
+    catch (error: ProviderException) { throw ProviderException(error.failure, error.httpStatus, error.stage ?: stage) }
+    catch (_: Exception) { throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED, stage = stage) }
     private fun contentQuery(market: String) = "platform-id=androidtv&market-id=${URLEncoder.encode(market, "UTF-8")}&platform-version=5.25.0.0&api-version=5.9.0.0"
     private fun channelSlug(link: String): String {
-        val uri = runCatching { URI(link) }.getOrNull()
+        val returned = runCatching { URI(link) }.getOrNull()
             ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        // SlyGuy extracts a slug from both relative and absolute content links.
+        // Resolve metadata against the official origin; never follow this link over the network.
+        if (returned.scheme == null && returned.rawAuthority != null)
+            throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+        val uri = URI("https://7plus.com.au/").resolve(returned)
         if (uri.scheme != "https" || uri.host != "7plus.com.au" || uri.port != -1 || uri.rawUserInfo != null || uri.fragment != null)
             throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
         val query = query(uri)

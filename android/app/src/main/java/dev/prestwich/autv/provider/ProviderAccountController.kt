@@ -107,8 +107,15 @@ internal class ProviderAccountController(
         ProviderFailure.RETRY_LATER -> "$name is temporarily busy. Try again shortly."
         ProviderFailure.DRM_UNSUPPORTED -> "This $name stream needs playback protection AUTV does not support yet."
         ProviderFailure.AD_SESSION_UNSUPPORTED -> "This $name channel requires an ad-session playback path AUTV does not support yet."
-        ProviderFailure.PLAYBACK_UNSUPPORTED -> if (name == "7plus") "This 7plus channel has no supported Channel 7 playback path in this build." else "$name did not return a supported native HLS stream."
+        ProviderFailure.PLAYBACK_UNSUPPORTED -> if (name == "7plus") when ((failure as? ProviderException)?.stage) {
+            ProviderPlaybackStage.SEVEN_CHANNEL -> "Only the main Seven channel is supported by this playback proof."
+            ProviderPlaybackStage.SEVEN_LINK -> "7plus returned an unsupported channel link."
+            ProviderPlaybackStage.SEVEN_PLAYER -> "7plus did not return supported player metadata."
+            ProviderPlaybackStage.SEVEN_IDENTITY -> "7plus did not return a supported playback identity."
+            ProviderPlaybackStage.SEVEN_SOURCE -> "7plus returned no supported Channel 7 stream."
+            else -> "This 7plus channel has no supported Channel 7 playback path in this build."
+        } else "$name did not return a supported native HLS stream."
         ProviderFailure.REGION_DENIED -> "$name denied access. Check your Australian connection and account."
         else -> "$name is unavailable. Try again later."
-    } + ((failure as? ProviderException)?.httpStatus?.takeIf { it in 100..599 }?.let { " (HTTP $it)" } ?: "")
+    } + ((failure as? ProviderException)?.stage?.let { " [${it.code}]" } ?: "") + ((failure as? ProviderException)?.httpStatus?.takeIf { it in 100..599 }?.let { " (HTTP $it)" } ?: "")
 }

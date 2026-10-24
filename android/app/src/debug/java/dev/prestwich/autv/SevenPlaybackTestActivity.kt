@@ -19,7 +19,7 @@ class SevenPlaybackTestActivity : MainActivity() {
     private val realAdapter = SevenPlusAdapter(object : SevenPlusTransport {
         override fun request(method: String, url: String, form: Map<String, String>): JSONObject = when {
             url == SevenPlusAdapter.MARKET -> JSONObject("""{"_id":"fixture-market"}""")
-            url.startsWith(SevenPlusAdapter.CONTENT) -> JSONObject("""{"items":[{"childType":"channelItem","mediaItems":[{"type":"ChannelItem","channelId":"official-main-fixture","name":"Seven","contentLink":{"url":"https://7plus.com.au/live-tv?channel-id=MAIN_FIXTURE"}}]}]}""")
+            url.startsWith(SevenPlusAdapter.CONTENT) -> JSONObject("""{"items":[{"childType":"channelItem","mediaItems":[{"type":"ChannelItem","channelId":"official-main-fixture","name":"Seven","contentLink":{"url":"/live-tv?channel-id=MAIN_FIXTURE"}}]}]}""")
             else -> JSONObject("""{"videoPlayer":{"videoUrl":"https://videoservice.swm.digital/playback?accountId=account-fixture&referenceId=ref%3Amain-fixture"}}""")
         }
         override fun playback(parameters: Map<String, String>, accessToken: String): JSONObject {

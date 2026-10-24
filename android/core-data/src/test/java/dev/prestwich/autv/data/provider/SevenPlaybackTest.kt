@@ -53,6 +53,44 @@ class SevenPlaybackTest {
         assertEquals("application/x-mpegURL", request.mimeType)
         assertEquals(2, calls.count { it.startsWith(SevenPlusAdapter.CONTENT) })
     }
+    @Test fun officialRelativeContentLinksResolveWithoutFollowingAnExternalUrl() {
+        for (link in listOf("/live-tv?channel-id=MAIN", "live-tv?channel-id=MAIN", "/MAIN")) {
+            val adapter = SevenPlusAdapter(object : SevenPlusTransport {
+                override fun request(method: String, url: String, form: Map<String, String>): JSONObject = when {
+                    url == SevenPlusAdapter.MARKET -> JSONObject("""{"_id":"market"}""")
+                    url.startsWith(SevenPlusAdapter.CONTENT) -> catalogue(link = link)
+                    else -> {
+                        assertTrue(url.startsWith("${SevenPlusAdapter.PLAYER}/MAIN?"))
+                        JSONObject("""{"videoPlayer":{"videoUrl":"https://videoservice.swm.digital/playback?accountId=account&referenceId=ref"}}""")
+                    }
+                }
+                override fun playback(parameters: Map<String, String>, accessToken: String) = descriptor()
+            }, Store(), MemoryProviderActivationStore(), "id") { 1000 }
+            assertEquals(original, adapter.resolve(channel).uri)
+        }
+    }
+    @Test fun unsupportedResponsesExposeOnlyFixedResolutionStageAndFailure() {
+        for (stage in listOf(ProviderPlaybackStage.SEVEN_LINK, ProviderPlaybackStage.SEVEN_PLAYER,
+            ProviderPlaybackStage.SEVEN_IDENTITY, ProviderPlaybackStage.SEVEN_SOURCE)) {
+            val adapter = SevenPlusAdapter(object : SevenPlusTransport {
+                override fun request(method: String, url: String, form: Map<String, String>): JSONObject = when {
+                    url == SevenPlusAdapter.MARKET -> JSONObject("""{"_id":"market"}""")
+                    url.startsWith(SevenPlusAdapter.CONTENT) -> catalogue(link = if (stage == ProviderPlaybackStage.SEVEN_LINK) "//evil.invalid/MAIN" else "/MAIN")
+                    stage == ProviderPlaybackStage.SEVEN_PLAYER -> JSONObject()
+                    else -> JSONObject().put("videoPlayer", JSONObject().put("videoUrl", if (stage == ProviderPlaybackStage.SEVEN_IDENTITY)
+                        "https://evil.invalid/private?secret=fixture" else "https://videoservice.swm.digital/playback?accountId=account&referenceId=ref"))
+                }
+                override fun playback(parameters: Map<String, String>, accessToken: String) = JSONObject()
+            }, Store(), MemoryProviderActivationStore(), "id") { 1000 }
+            try { adapter.resolve(channel); fail("Expected unsupported response") } catch (error: ProviderException) {
+                assertEquals(stage, error.stage)
+                assertEquals(ProviderFailure.PLAYBACK_UNSUPPORTED, error.failure)
+                assertEquals("PLAYBACK_UNSUPPORTED", error.message)
+                assertFalse(error.toString().contains("secret"))
+                assertTrue(stage.code.startsWith("7-"))
+            }
+        }
+    }
     @Test fun foreignMissingAndNonPrimaryChannelsCannotRequestPlayback() {
         var playRequests = 0
         val adapter = SevenPlusAdapter(object : SevenPlusTransport {
@@ -66,7 +104,7 @@ class SevenPlaybackTest {
         assertEquals(0, playRequests)
     }
     @Test fun unreviewedLinksAndAmbiguousReferenceQueriesNeverBecomeRequests() {
-        val links = listOf("http://7plus.com.au/live-tv?channel-id=MAIN", "https://evil.invalid/MAIN", "https://7plus.com.au/live-tv?channel-id=ONE&channel-id=TWO")
+        val links = listOf("http://7plus.com.au/live-tv?channel-id=MAIN", "https://evil.invalid/MAIN", "//evil.invalid/MAIN", "https://7plus.com.au/live-tv?channel-id=ONE&channel-id=TWO")
         val videos = listOf("https://evil.invalid/playback?accountId=one&referenceId=two", "https://videoservice.swm.digital/playback?accountId=one&accountId=two&referenceId=three")
         for ((link, video) in links.map { it to "" } + videos.map { "https://7plus.com.au/MAIN" to it }) {
             val adapter = SevenPlusAdapter(SevenPlusTransport { _, url, _ ->

@@ -68,6 +68,7 @@ class SevenPlaybackTest {
         main { it.denied = true; it.playback.request(TuneTarget.Number(number)) }
         await { main { it.playback.sevenAccount.error != null && !it.playback.buffering } }
         main {
+            assertTrue(it.playback.sevenAccount.error!!.contains("[7-DESCRIPTOR]"))
             assertEquals(ProviderConnection.CONNECTED, it.playback.sevenAccount.connection)
             assertEquals("100", it.playback.player.currentMediaItem!!.mediaId)
             assertTrue(it.playback.player.isPlaying)

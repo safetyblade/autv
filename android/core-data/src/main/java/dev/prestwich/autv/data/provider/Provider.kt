@@ -18,8 +18,14 @@ enum class ProviderFailure {
     AUTH_REQUIRED, SESSION_EXPIRED, REGION_DENIED, UNAVAILABLE, UNSUPPORTED, OFFLINE, DRM_UNSUPPORTED, PLAYBACK_UNSUPPORTED, RETRY_LATER,
     AD_SESSION_UNSUPPORTED, ACTIVATION_EXPIRED, ACTIVATION_DENIED, AUTH_RESPONSE_UNSUPPORTED
 }
+/** Fixed diagnostic codes only; no provider URLs, IDs or account values. */
+enum class ProviderPlaybackStage(val code: String) {
+    SEVEN_CATALOGUE("7-CAT"), SEVEN_CHANNEL("7-CHANNEL"), SEVEN_LINK("7-LINK"),
+    SEVEN_PLAYER("7-PLAYER"), SEVEN_IDENTITY("7-IDENTITY"),
+    SEVEN_DESCRIPTOR("7-DESCRIPTOR"), SEVEN_SOURCE("7-SOURCE")
+}
 /** Never propagate raw transport errors, URLs, server bodies or credentials to UI/logs. */
-class ProviderException(val failure: ProviderFailure, val httpStatus: Int? = null) : Exception(failure.name)
+class ProviderException(val failure: ProviderFailure, val httpStatus: Int? = null, val stage: ProviderPlaybackStage? = null) : Exception(failure.name)
 
 /** Sensitive values deliberately have no data-class toString/copy/serialization. */
 class ProviderSession(val accessToken: String, val refreshToken: String, val expiresAt: Long) {

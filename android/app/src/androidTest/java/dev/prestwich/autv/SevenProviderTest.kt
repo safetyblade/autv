@@ -29,6 +29,7 @@ class SevenProviderTest {
         }
         ui.waitUntil(10000) { ui.activity.playback.sevenAccount.error != null }
         ui.runOnIdle {
+            assertTrue(ui.activity.playback.sevenAccount.error!!.contains("[7-CHANNEL]"))
             assertEquals(ProviderConnection.CONNECTED, ui.activity.playback.sevenAccount.connection)
             assertEquals(ProviderConnection.CONNECTED, ui.activity.playback.providerConnection)
             assertFalse(ui.activity.playback.player.currentMediaItem?.mediaId == ui.activity.playback.guide!!.channels.first { it.providerChannel?.id?.provider == "seven" }.number.toString())
