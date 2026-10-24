@@ -1,7 +1,9 @@
 package dev.prestwich.autv
 
 import android.os.SystemClock
-import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import dev.prestwich.autv.data.provider.ProviderConnection
 import dev.prestwich.autv.guide.TuneTarget
 import org.junit.Assert.*
@@ -10,7 +12,8 @@ import org.junit.Test
 
 /** Local media substitution after the real fixture resolver; no live Seven playback claim. */
 class SevenPlaybackTest {
-    @get:Rule val activity = ActivityScenarioRule(SevenPlaybackTestActivity::class.java)
+    @get:Rule val ui = createAndroidComposeRule<SevenPlaybackTestActivity>()
+    private val activity get() = ui.activityRule
     private fun <T> main(block: (SevenPlaybackTestActivity) -> T): T {
         var value: Result<T>? = null
         activity.scenario.onActivity { value = runCatching { block(it) } }
@@ -47,8 +50,12 @@ class SevenPlaybackTest {
         await { main { it.hasWindowFocus() } }
         instrumentation.sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_GUIDE)
         await { main { it.playback.guideOpen } }
+        ui.onNodeWithTag("guide-panel").assertIsDisplayed()
+        ui.waitForIdle()
         instrumentation.sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK)
         await { main { !it.playback.guideOpen } }
+        ui.onNodeWithTag("guide-panel").assertDoesNotExist()
+        ui.waitForIdle()
         instrumentation.sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_CHANNEL_UP)
         await { main { it.playback.player.isPlaying && it.playback.selected?.providerChannel?.id?.provider == "9now" } }
         instrumentation.sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_CHANNEL_DOWN)
