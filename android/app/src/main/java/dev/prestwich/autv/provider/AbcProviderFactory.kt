@@ -20,3 +20,8 @@ internal fun createAbcProvider(context: Context, access: AbcProviderAccess, proo
     }
     return AbcAdapter(access,store,store,id,proofHouseNumber,anonymousLiveApproved)
 }
+
+/** Enable only with ABC-issued AUTV configuration and the discovered Victorian proof identity. */
+internal fun createRegisteredAbcProvider(context: Context, registration: AbcClientRegistration,
+    anonymousLiveApproved: Boolean = false): AbcAdapter =
+    createAbcProvider(context,AbcHttpAccess(registration),registration.mainHouseNumber,anonymousLiveApproved)
