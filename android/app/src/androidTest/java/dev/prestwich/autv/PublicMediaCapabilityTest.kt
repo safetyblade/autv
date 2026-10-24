@@ -26,7 +26,7 @@ class PublicMediaCapabilityTest {
         fail("Public sample did not reach its required rendering/session state")
     }
     private fun report(sample: String) { main {
-        Log.i("AUTV_MEDIA_QA","$sample video=${it.video} audio=${it.audio} keys=${it.drmKeys} ads=${it.adStarted}/${it.adEnded} error=${it.errorCode} ima=${it.imaError} live=${it.holder.player.isCurrentMediaItemLive}")
+        Log.i("AUTV_MEDIA_QA","$sample video=${it.video} audio=${it.audio} keys=${it.drmKeys} ads=${it.adStarted}/${it.adEnded} completed=${it.completedAds} adMedia=${it.adMediaObserved} error=${it.errorCode} ima=${it.imaError} live=${it.holder.player.isCurrentMediaItemLive}")
     } }
     private fun rendered(sample: String) {
         main { it.start(sample) }
@@ -34,6 +34,15 @@ class PublicMediaCapabilityTest {
         finally { report(sample) }
         assertNull("Public sample renderer error",main { it.errorCode })
         assertTrue(main { it.video && it.audio })
+    }
+    @Test fun officialImaBootstrapIsReachableFromAndroid() {
+        val connection=java.net.URL("https://imasdk.googleapis.com/native/sdkloader/native_sdk_v3.html").openConnection() as java.net.HttpURLConnection
+        try {
+            connection.connectTimeout=15000;connection.readTimeout=15000
+            val status=connection.responseCode
+            Log.i("AUTV_MEDIA_QA","ima-bootstrap http=$status")
+            assertEquals("Official IMA bootstrap HTTP status",200,status)
+        } finally { connection.disconnect() }
     }
     @Test fun officialHlsRendersVideoAndAudio() { rendered("hls") }
     @Test fun officialDashRendersVideoAndAudio() { rendered("dash") }
@@ -53,10 +62,10 @@ class PublicMediaCapabilityTest {
     @Test fun officialImaDashPlaysCompleteAdBreakAndContinues() {
         rendered("ima-dash")
         assertTrue(main { it.holder.player.isCurrentMediaItemLive })
-        try { waitFor(360000) { (it.adStarted && it.adEnded && it.holder.player.isPlaying) || it.errorCode != null } }
+        try { waitFor(360000) { (it.adStarted && it.adEnded && it.completedAds>0 && it.adMediaObserved && it.holder.player.isPlaying) || it.errorCode != null } }
         finally { report("ima-dash-ad-break") }
         assertNull(main { it.errorCode })
-        assertTrue(main { it.adStarted && it.adEnded })
+        assertTrue(main { it.adStarted && it.adEnded && it.completedAds>0 && it.adMediaObserved })
         val position = main { it.holder.player.currentPosition }
         waitFor(20000) { it.holder.player.currentPosition > position+2000 && it.holder.player.isPlaying }
     }
@@ -82,6 +91,14 @@ class PublicMediaCapabilityTest {
         waitFor(35000) { it.errorCode != null || (!it.holder.player.isPlayingAd && it.holder.player.currentPosition > 9000) }
         assertNull(main { it.errorCode })
         report("synthetic-vod-interstitial")
+    }
+    @Test fun failedInterstitialStopsInsteadOfPlayingUnadvertisedContent() {
+        main { it.start("broken-interstitial") }
+        waitFor(35000) { it.sessionFailure != null }
+        assertEquals(androidx.media3.common.PlaybackException.ERROR_CODE_IO_UNSPECIFIED,main { it.sessionFailure })
+        assertEquals(0,main { it.holder.player.mediaItemCount })
+        main { it.start("fast") }; waitFor { it.video && it.holder.player.isPlaying }
+        report("failed-interstitial-fast-recovery")
     }
     @Test fun expiryReturnsToFastAndSyntheticDiscontinuityPlaysWithoutRemoval() {
         main { it.start("expiry") }

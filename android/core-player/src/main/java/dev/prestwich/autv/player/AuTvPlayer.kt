@@ -97,6 +97,15 @@ class AuTvPlayer(private val context: Context, private val advancedProviderPlayb
                 }
                 request.options.hlsInterstitials -> {
                     val loader = HlsInterstitialsAdsLoader(ProviderMediaSourceFactory.data(context, request.options.originHeaders))
+                    loader.addListener(object : HlsInterstitialsAdsLoader.Listener {
+                        private fun failAd() { handler.post {
+                            if (generation==activeGeneration) {
+                                endProviderSession();onProviderSessionFailure?.invoke(PlaybackException.ERROR_CODE_IO_UNSPECIFIED)
+                            }
+                        } }
+                        override fun onPrepareError(mediaItem: MediaItem, adsId: Any, adGroupIndex: Int, adIndexInAdGroup: Int, exception: java.io.IOException) { failAd() }
+                        override fun onAssetListLoadFailed(mediaItem: MediaItem, adsId: Any, adGroupIndex: Int, adIndexInAdGroup: Int, ioException: java.io.IOException?, cancelled: Boolean) { if(!cancelled) failAd() }
+                    })
                     loader.setPlayer(player); interstitials = loader
                     HlsInterstitialsAdsLoader.AdsMediaSourceFactory(loader, adViews, base)
                         .createMediaSource(ProviderMediaSourceFactory.item(request, channelNumber, uri))

@@ -48,7 +48,7 @@ PublicMediaCapabilityTest uses the real Media3/IMA SDK and a visible PlayerView:
 | DASH | AndroidX clear Tears of Steel: video and audio rendering |
 | Widevine | AndroidX encrypted Tears/licence sample: keys and A/V, or explicitly recorded device DRM limitation and safe FAST recovery |
 | IMA live HLS | Google's live BBB asset: A/V, live timeline, release to local FAST |
-| IMA live DASH | Google's current live Tears of Steel sample: A/V, live, complete SDK ad period and continuing playback |
+| IMA live DASH | Google's current live Tears of Steel sample: A/V, live, completed ad + observed ad media + complete SDK period and continuing playback |
 | SSAI-style discontinuities | Explicit synthetic local playlist, original discontinuities retained |
 | Interstitial | Explicit synthetic **VOD** playlist through HlsInterstitialsAdsLoader and content return |
 | Expiry | Ephemeral fixture deadline, same player returns to FAST fixture |
@@ -76,7 +76,7 @@ fixes add the required interstitial AdsConfiguration and test the current Google
 published live DASH asset. Final rerun results are in the PR; do not count the
 failed checks as playback success.
 
-Remote: provider-media.yml runs actual public playback on a Google APIs emulator;
+Remote: provider-media.yml runs actual public playback on a Google APIs emulator (API 35 for the current WebView image);
 scripts/test-provider-media.sh exports only fixed sample counters/error codes.
 Existing provider workflow independently exercises Nine/QR/storage/FAST routing.
 No physical Australian TV is attached. Current runtime egress does not permit
@@ -85,7 +85,10 @@ than bypassing that policy here. See CI for actual pass/failure, not this plan.
 
 ## Owner QA
 
-Debug APK includes an additional **AUTV Media Lab** launcher. Pick HLS, DASH,
+The public-sample workflow builds with `-PautvMediaLab=true`, producing the
+separate `dev.prestwich.autv.medialab` test application and **AUTV Media Lab**
+launcher. It installs beside AUTV and cannot read/replace its sessions. Regular
+builds retain the original application ID, label and update path. Pick HLS, DASH,
 Widevine, Live IMA HLS and Live IMA DASH. Observe actual sound/picture; leave DAI
 running through a complete normal break and return. Test pause/resume, Back,
 recreation and FAST fixture return. Main AUTV retains its feature gate. Debug
@@ -124,3 +127,25 @@ separate resolver output from Kodi DASH/licence setup. Its Codeberg implementati
 was inaccessible through the available reader, so those are documentation evidence,
 not a claim of source inspection. No documented client-key extraction, shared
 server, or foreign broadcaster identity is imported into AUTV.
+
+The initial API-29 public runs repeatedly rendered clear/DRM media but stalled
+inside IMA, with the bounded path now reporting timeout 1003. This is an observed
+SDK-startup problem, not a claimed broadcaster denial. The isolated lab records
+WebView version and tests the SDK's official public native HTML bootstrap from
+Android, and uses a current API-35 image to separate legacy-emulator/WebView
+behaviour from media capability. No emulator failure is relabelled as success.
+The stricter ad check requires a completed ad and observed native ad media, not
+only an ad-break notification. See the latest run for actual results.
+
+Interstitial fixture correction is source-backed: Media3 1.11.1
+HlsInterstitialsAdsLoader, when mapping assetUri, passes that URI unchanged to
+MediaItem and sets APPLICATION_M3U8. HlsPlaylistParser parses X-ASSET-URI directly.
+The test therefore uses an absolute HLS asset URI, not a relative URI or MP4.
+This does not change provider manifests; unsupported interstitial variants remain
+a real SDK/provider compatibility limit, not permission to omit commercials.
+
+An interstitial prepare/asset-list failure now stops the failed session and sends
+a fixed recovery signal to the host; it cannot silently continue with the missing
+ad omitted. The negative instrumentation fixture uses a deliberately missing HLS
+ad and verifies source removal plus FAST return. It does not inject failure into
+a real broadcaster or call any SDK ad-skip method.

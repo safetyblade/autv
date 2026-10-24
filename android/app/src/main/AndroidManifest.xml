@@ -10,7 +10,7 @@
         android:allowBackup="true"
         android:banner="@drawable/tv_banner"
         android:icon="@drawable/app_icon"
-        android:label="AU TV"
+        android:label="${autvAppLabel}"
         android:theme="@style/Theme.AuTv">
         <meta-data
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
