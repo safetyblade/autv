@@ -262,3 +262,42 @@ its Origin/device identity. Main Victorian houseNumber/region mapping remains to
 be confirmed from authorised discovery. The working Media3 implementation in
 PR #86 independently supplies HLS/DASH/Widevine/IMA capability; it does not grant
 ABC access. Device QA starts with the exact gates above once these inputs exist.
+
+## Directive 04: concrete transport continuation
+
+Reconciled merged #85/#86/#89/#90/#91/#92 on main c08242c. Latest ABC iView+ HEAD
+remains 1ce1e18fd30858296adf5e4f5ea667a4217474fa; the existing source trace is still
+applicable. No generic codec/account/QR architecture is reopened. Owner public
+HLS/DASH/Widevine and IMA DASH acceptance is retained separately from ABC access.
+
+`AbcHttpAccess.kt` implements the actual native HTTP request construction for
+profile link/status/unlink, Seesaw UID renewal, v2 home/collection/programme.
+The X-API-KEY is supplied by an ABC AUTV registration and sent only to profile
+POSTs. No old bearer goes to the token endpoint, and no account/profile header
+goes to metadata or CDN origins. Redirects are refused, JSON is bounded, timeouts
+and safe HTTP errors are enforced. Status 204/404 remains pending. Device name
+is AUTV; browser Origin/tablet identity and upstream signing material are absent.
+
+`AbcClientRegistration` requires an explicit VIC/main houseNumber selected from
+approved discovery and media authoriser. `createRegisteredAbcProvider` composes
+it with the existing UUID/encrypted namespace, pending restoration, UID renewal
+and original HLS resolver. Anonymous mode remains an explicit approved opt-in,
+never a fake Connected account. It does not guess a Victorian houseNumber or
+silently use another state's feed. Media authorisation must return the complete
+approved URL; its failure propagates, with no unsigned source substitution.
+
+Four new transport tests execute link/unlink body construction, scoped profile
+headers, UID-without-bearer renewal, pending/redirect handling, programme-path
+validation, catalogue requests and exact original media authorisation failure.
+They use synthetic connections/JSON, not a real ABC grant or production response.
+
+**Precise external dependency:** ABC's AUTV profile productId/API access and
+approved media-authorisation implementation for the returned Victorian main feed,
+including confirmation of its stable identity and anonymous/account policy.
+Neither a private HMAC key nor another application's registration is copied.
+Original HLS is the verified upstream resolver contract; a provider-issued DASH/
+Widevine descriptor can use the existing player capability but has not been
+observed for this ABC feed and is not fabricated here. Guide/Favourites retain
+provider identity boundaries, with no new production card or guessed channel
+number enabled before those inputs exist. No real ABC catalogue/manifest/A/V or
+physical programme-junction acceptance is claimed by these transport fixtures.
