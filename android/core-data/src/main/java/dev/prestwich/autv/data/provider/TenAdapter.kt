@@ -3,7 +3,8 @@ package dev.prestwich.autv.data.provider
 import org.json.JSONObject
 import java.net.URI
 
-class TenPlaybackDescriptor(val data: JSONObject, val daiAuth: String, val expiresAt: Long? = null) {
+class TenPlaybackDescriptor(val data: JSONObject, val daiAuth: String, val expiresAt: Long? = null, val mimeType: String = "application/x-mpegURL") {
+    init { require(mimeType in setOf("application/x-mpegURL","application/dash+xml")) }
     override fun toString() = "TenPlaybackDescriptor(redacted)"
 }
 /** Implement with registered client access; no private X-N10 signing key or platform disguise here. */
@@ -85,7 +86,7 @@ class TenAdapter(private val access: TenProviderAccess, private val store: Provi
         if(origin!="https://10.com.au" || !uri.path.startsWith("/api/")) unsupported()
         val descriptor=call { access.playback(url,bearer()) }
         val live=TenLiveProtocol.liveRequest(descriptor.data,descriptor.daiAuth)
-        return ProviderPlaybackRequest(channel,url,"application/x-mpegURL",options=ProviderMediaOptions(
+        return ProviderPlaybackRequest(channel,url,descriptor.mimeType,options=ProviderMediaOptions(
             imaLive=ProviderImaLive(live.assetKey,networkCode=daiNetworkCode,authToken=live.authToken),expiresAt=descriptor.expiresAt))
     }
     override fun signOut() { pendingStore.clearActivation();pendingActivation=null;session=null;store.clear();connection=ProviderConnection.NOT_CONNECTED }

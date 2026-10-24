@@ -20,3 +20,8 @@ internal fun createTenProvider(context: Context, access: TenProviderAccess, proo
     }
     return TenAdapter(access,store,store,id,proofChannelKey,daiNetworkCode)
 }
+
+/** Uses Ten's registered inputs; no public Google sample identity is supplied to a broadcaster. */
+internal fun createRegisteredTenProvider(context: Context, registration: TenClientRegistration,
+    returnedProofChannelKey: String, issuedDaiNetworkCode: String? = null): TenAdapter =
+    createTenProvider(context,TenHttpAccess(registration),returnedProofChannelKey,issuedDaiNetworkCode)

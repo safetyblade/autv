@@ -291,3 +291,43 @@ with DAI auth. No embedded X-N10-SIG key, LG/Android impersonation or Google tes
 network code is used for Ten. Any required networkCode must be issued/approved;
 it defaults to absent rather than Google's public sample value. Real main Ten
 A/V, key delivery and complete normal commercial return remain device QA gates.
+
+## Directive 04: concrete transport continuation
+
+Reconciled merged #85/#86/#89/#90/#91/#92 on main c08242c; Seven is paused.
+The owner confirms public IMA DASH video, a mid-roll and programme return on a
+physical device (model unknown). This is accepted player evidence, **not Ten
+account/descriptor/channel acceptance**; emulator startup failures do not erase it.
+
+Latest mirror check still lists 0.4.5, blob 8a1afd2b14fb4707d4d5464b87827aea7c32f8c1.
+Reused actual packaged api.py `_config`, `_request`, `device_code`, `device_login`,
+`_refresh_token`, `live_channels`, `play` and the existing adapter, not a new
+protocol. No other-region player ownership or Kodi filename workaround is copied.
+
+`TenHttpAccess.kt` now executes HTTPS config/device/poll/renewal/VIC catalogue and
+fresh descriptor requests. It consumes returned authConfig/liveTvEndpoint routes,
+uses exact body/URL request-authorisation from TenClientRegistration, bounded JSON,
+timeouts, no automatic redirects, explicit origin scope, safe HTTP categories and
+provider-returned X-DAI-AUTH. No signed response/body/URL is logged. It refuses VOD,
+missing DAI auth and unsupported protection before constructing media inputs.
+The registered contract explicitly selects HLS/DASH; TenPlaybackDescriptor carries
+that negotiated MIME through the adapter into existing ProviderImaLive/Media3.
+No Google sample asset, key or network identity is used for Ten.
+
+`createRegisteredTenProvider` composes this real transport with existing persistent
+UUID, encrypted pending/session namespace and proof-channel adapter. It is not
+enabled without registration and an actual returned Victorian proof key.
+Four new transport tests execute HttpURLConnection configuration/body/headers,
+renewal and catalogue schemas, request-authorisation over exact URL/body, DAI
+header/MIME handling, redirect/foreign-origin rejection and sanitised errors.
+They use synthetic connections/JSON and do not claim live Ten API results.
+
+**One concrete external integration dependency remains:** Ten's AUTV client
+registration: allowed API origins, approved config/device/playback fields and
+request-authorisation implementation (or a documented permitted unsigned native
+alternative), plus approved negotiated format/network inputs. The implementation
+does not embed the package's HMAC secret, LG/NVIDIA context or manufacture a
+Google asset. ABC and Ten registrations are not interchangeable. Once supplied,
+the factory can attempt the actual returned main VIC channel through descriptor
+-> SDK DAI session -> native playback, including normal commercials. No real
+Ten connection, catalogue, descriptor or A/V has yet passed a device gate.
