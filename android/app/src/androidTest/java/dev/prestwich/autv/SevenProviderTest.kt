@@ -21,7 +21,7 @@ class SevenProviderTest {
         ui.runOnIdle { ui.activity.approved = true }
         ui.waitUntil(30000) { ui.activity.playback.sevenAccount.connection == ProviderConnection.CONNECTED && !ui.activity.playback.sevenAccount.busy }
         ui.onNodeWithTag("seven-connection-state").performScrollTo().assertTextEquals("Connected")
-        ui.onNodeWithText("1 channels listed. Native 7plus playback is not available yet.").performScrollTo().assertExists()
+        ui.onNodeWithText("1 channels listed. Channel 7 native playback is experimental.").performScrollTo().assertExists()
         ui.onNodeWithTag("close-settings").performScrollTo().performClick()
         ui.runOnIdle {
             val channel = ui.activity.playback.guide!!.channels.first { it.providerChannel?.id?.provider == "seven" }
@@ -29,6 +29,7 @@ class SevenProviderTest {
         }
         ui.waitUntil(10000) { ui.activity.playback.sevenAccount.error != null }
         ui.runOnIdle {
+            assertTrue(ui.activity.playback.sevenAccount.error!!.contains("[7-CHANNEL]"))
             assertEquals(ProviderConnection.CONNECTED, ui.activity.playback.sevenAccount.connection)
             assertEquals(ProviderConnection.CONNECTED, ui.activity.playback.providerConnection)
             assertFalse(ui.activity.playback.player.currentMediaItem?.mediaId == ui.activity.playback.guide!!.channels.first { it.providerChannel?.id?.provider == "seven" }.number.toString())

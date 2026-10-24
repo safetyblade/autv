@@ -5,6 +5,16 @@ import org.junit.Assert.fail
 import org.junit.Test
 
 class SevenTransportPolicyTest {
+    @Test fun bearerIsConfinedToExactPlaybackApiAndCannotReachMediaOrMetadata() {
+        val query = "appId=7plus&deviceType=androidtv&platformType=tv&deviceId=fixture&accountId=account&referenceId=ref%3Amain&marketId=market&videoType=live"
+        validateSevenRequest("GET", "${SevenPlusAdapter.PLAYBACK}?$query", "account-fixture")
+        validateSevenRequest("GET", "${SevenPlusAdapter.PLAYER}/MAIN?platform-id=androidtv&market-id=market&platform-version=5.25.0.0&api-version=5.9.0.0&signedUp=True")
+        for (url in listOf(SevenPlusAdapter.MARKET, "${SevenPlusAdapter.AUTH}/connect/token", "https://csm-fixture.yospace.com/master.m3u8",
+            "${SevenPlusAdapter.PLAYBACK}?$query&accountId=duplicate", "${SevenPlusAdapter.PLAYBACK}?$query&pc=3181")) {
+            try { validateSevenRequest("GET", url, "account-fixture"); fail("Bearer destination not scoped") } catch (_: IllegalArgumentException) { }
+        }
+        try { validateSevenRequest("GET", "${SevenPlusAdapter.PLAYBACK}?$query"); fail("Missing account authorization") } catch (_: IllegalArgumentException) { }
+    }
     @Test fun onlyReviewedApiMethodsHostsAndPathsAreAllowed() {
         validateSevenRequest("POST", "${SevenPlusAdapter.AUTH}/account/device/authorize")
         validateSevenRequest("POST", "${SevenPlusAdapter.AUTH}/connect/token")

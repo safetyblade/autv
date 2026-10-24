@@ -18,8 +18,18 @@ enum class ProviderFailure {
     AUTH_REQUIRED, SESSION_EXPIRED, REGION_DENIED, UNAVAILABLE, UNSUPPORTED, OFFLINE, DRM_UNSUPPORTED, PLAYBACK_UNSUPPORTED, RETRY_LATER,
     AD_SESSION_UNSUPPORTED, ACTIVATION_EXPIRED, ACTIVATION_DENIED, AUTH_RESPONSE_UNSUPPORTED
 }
+/** Fixed diagnostic codes only; no provider URLs, IDs or account values. */
+enum class ProviderPlaybackStage(val code: String) {
+    SEVEN_CATALOGUE("7-CATALOGUE"), SEVEN_CHANNEL("7-CHANNEL"), SEVEN_LINK("7-LINK"),
+    SEVEN_PLAYER("7-PLAYER-METADATA"), SEVEN_IDENTITY("7-IDENTITY"),
+    SEVEN_IDENTITY_TYPE("7-IDENTITY-TYPE"), SEVEN_IDENTITY_QUERY("7-IDENTITY-QUERY"),
+    SEVEN_IDENTITY_ACCOUNT("7-IDENTITY-ACCOUNT"), SEVEN_IDENTITY_REFERENCE("7-IDENTITY-REFERENCE"),
+    SEVEN_IDENTITY_AMBIGUOUS("7-IDENTITY-AMBIGUOUS"), SEVEN_IDENTITY_VALUE("7-IDENTITY-VALUE"),
+    SEVEN_DESCRIPTOR("7-DESCRIPTOR"), SEVEN_SOURCE("7-SOURCE"),
+    SEVEN_MANIFEST("7-MANIFEST"), SEVEN_DRM("7-DRM"), SEVEN_ADS("7-ADS"), SEVEN_RENDERER("7-PLAYER")
+}
 /** Never propagate raw transport errors, URLs, server bodies or credentials to UI/logs. */
-class ProviderException(val failure: ProviderFailure, val httpStatus: Int? = null) : Exception(failure.name)
+class ProviderException(val failure: ProviderFailure, val httpStatus: Int? = null, val stage: ProviderPlaybackStage? = null, val sevenRejection: SevenDescriptorRejection? = null) : Exception(failure.name)
 
 /** Sensitive values deliberately have no data-class toString/copy/serialization. */
 class ProviderSession(val accessToken: String, val refreshToken: String, val expiresAt: Long) {

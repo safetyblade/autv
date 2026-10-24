@@ -6,4 +6,5 @@
     <activity android:name=".ProviderActivationTestActivity" android:exported="false" />
     <activity android:name=".SbsTestActivity" android:exported="false" />
     <activity android:name=".SevenTestActivity" android:exported="false" />
+    <activity android:name=".SevenPlaybackTestActivity" android:exported="false" />
 </application></manifest>
