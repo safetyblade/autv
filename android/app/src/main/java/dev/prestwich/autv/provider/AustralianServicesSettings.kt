@@ -18,6 +18,9 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -72,13 +75,13 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                             style = MaterialTheme.typography.labelMedium,
                                             color = if (service.id == "9now") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
                                     }
-                                    Text("›", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                    Text("›", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.clearAndSetSemantics {})
                                 }
                             }
                         }
                     } else {
                         val service = services.first { it.id == selected }
-                        TextButton(onClick = { selected = null }, modifier = Modifier.focusRequester(firstFocus).testTag("providers-back")) { Text("‹ All services") }
+                        TextButton(onClick = { selected = null }, modifier = Modifier.focusRequester(firstFocus).semantics { contentDescription = "Back to all services" }.testTag("providers-back")) { Text("‹ All services") }
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                             ServiceIcon(service)
                             Column {
