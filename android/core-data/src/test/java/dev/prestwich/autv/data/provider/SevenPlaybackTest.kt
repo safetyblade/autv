@@ -91,6 +91,26 @@ class SevenPlaybackTest {
             }
         }
     }
+    @Test fun descriptor400RetainsDiagnosticAndConnectedSessionAcrossAdapterBoundary() {
+        val store = Store()
+        val diagnostic = SevenDescriptorRejection.read("""{"error":"video_not_in_market"}""")
+        val adapter = SevenPlusAdapter(object : SevenPlusTransport {
+            override fun request(method: String, url: String, form: Map<String, String>) = when {
+                url == SevenPlusAdapter.MARKET -> JSONObject("""{"_id":"market"}""")
+                url.startsWith(SevenPlusAdapter.CONTENT) -> catalogue()
+                else -> JSONObject("""{"videoPlayer":{"videoUrl":"/metadata?accountId=account&referenceId=reference"}}""")
+            }
+            override fun playback(parameters: Map<String, String>, accessToken: String): JSONObject =
+                throw ProviderException(ProviderFailure.UNAVAILABLE, 400, sevenRejection = diagnostic)
+        }, store, MemoryProviderActivationStore(), "id") { 1000 }
+        try { adapter.resolve(channel); fail("Expected rejection") } catch (error: ProviderException) {
+            assertEquals(ProviderPlaybackStage.SEVEN_DESCRIPTOR, error.stage)
+            assertEquals(400, error.httpStatus)
+            assertSame(diagnostic, error.sevenRejection)
+            assertNotNull(store.session)
+            assertEquals(ProviderConnection.CONNECTED, adapter.connection)
+        }
+    }
     @Test fun foreignMissingAndNonPrimaryChannelsCannotRequestPlayback() {
         var playRequests = 0
         val adapter = SevenPlusAdapter(object : SevenPlusTransport {

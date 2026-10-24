@@ -29,7 +29,7 @@ enum class ProviderPlaybackStage(val code: String) {
     SEVEN_MANIFEST("7-MANIFEST"), SEVEN_DRM("7-DRM"), SEVEN_ADS("7-ADS"), SEVEN_RENDERER("7-PLAYER")
 }
 /** Never propagate raw transport errors, URLs, server bodies or credentials to UI/logs. */
-class ProviderException(val failure: ProviderFailure, val httpStatus: Int? = null, val stage: ProviderPlaybackStage? = null) : Exception(failure.name)
+class ProviderException(val failure: ProviderFailure, val httpStatus: Int? = null, val stage: ProviderPlaybackStage? = null, val sevenRejection: SevenDescriptorRejection? = null) : Exception(failure.name)
 
 /** Sensitive values deliberately have no data-class toString/copy/serialization. */
 class ProviderSession(val accessToken: String, val refreshToken: String, val expiresAt: Long) {

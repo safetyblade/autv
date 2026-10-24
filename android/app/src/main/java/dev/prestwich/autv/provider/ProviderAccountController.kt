@@ -123,5 +123,5 @@ internal class ProviderAccountController(
         } else "$name did not return a supported native HLS stream."
         ProviderFailure.REGION_DENIED -> "$name denied access. Check your Australian connection and account."
         else -> "$name is unavailable. Try again later."
-    } + ((failure as? ProviderException)?.stage?.let { " [${it.code}]" } ?: "") + ((failure as? ProviderException)?.httpStatus?.takeIf { it in 100..599 }?.let { " (HTTP $it)" } ?: "")
+    } + ((failure as? ProviderException)?.stage?.let { " [${it.code}]" } ?: "") + ((failure as? ProviderException)?.httpStatus?.takeIf { it in 100..599 }?.let { " (HTTP $it)" } ?: "") + ((failure as? ProviderException)?.sevenRejection?.let { " ${it.summary}" } ?: "")
 }

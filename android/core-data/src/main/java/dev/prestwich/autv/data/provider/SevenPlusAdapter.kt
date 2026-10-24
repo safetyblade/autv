@@ -143,7 +143,7 @@ class SevenPlusAdapter(
         return step(ProviderPlaybackStage.SEVEN_SOURCE) { SevenLiveSource.select(channel, descriptor) }
     }
     private inline fun <T> step(stage: ProviderPlaybackStage, action: () -> T): T = try { action() }
-    catch (error: ProviderException) { throw ProviderException(error.failure, error.httpStatus, error.stage ?: stage) }
+    catch (error: ProviderException) { throw ProviderException(error.failure, error.httpStatus, error.stage ?: stage, error.sevenRejection) }
     catch (_: Exception) { throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED, stage = stage) }
     private fun contentQuery(market: String) = "platform-id=androidtv&market-id=${URLEncoder.encode(market, "UTF-8")}&platform-version=5.25.0.0&api-version=5.9.0.0"
     private fun channelSlug(link: String): String {

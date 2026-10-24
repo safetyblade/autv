@@ -28,7 +28,7 @@ internal fun validateSevenRequest(method: String, address: String, bearer: Strin
 }
 
 /** No cookies, redirects, request/body logging, CDN credentials or official-device impersonation. */
-internal class HttpSevenTransport : SevenPlusTransport {
+internal class HttpSevenTransport(private val open: (String) -> HttpURLConnection = { URL(it).openConnection() as HttpURLConnection }) : SevenPlusTransport {
     override fun request(method: String, url: String, form: Map<String, String>): JSONObject = execute(method, url, form, null)
     override fun playback(parameters: Map<String, String>, accessToken: String): JSONObject {
         val query = parameters.entries.joinToString("&") { java.net.URLEncoder.encode(it.key, "UTF-8") + "=" + java.net.URLEncoder.encode(it.value, "UTF-8") }
@@ -36,7 +36,7 @@ internal class HttpSevenTransport : SevenPlusTransport {
     }
     private fun execute(method: String, url: String, form: Map<String, String>, bearer: String?): JSONObject {
         validateSevenRequest(method, url, bearer)
-        val connection = URL(url).openConnection() as HttpURLConnection
+        val connection = open(url)
         return try {
             connection.connectTimeout = 10000; connection.readTimeout = 15000
             connection.instanceFollowRedirects = false; connection.requestMethod = method
@@ -54,6 +54,26 @@ internal class HttpSevenTransport : SevenPlusTransport {
             }
             val status = connection.responseCode
             val token = URI(url).path == "/connect/token"
+            if (status == 400 && bearer != null) {
+                // Inspect only a bounded response in memory; retain enum-only diagnostics.
+                val rejection = try {
+                    val bytes = connection.errorStream?.use { input ->
+                        val output = java.io.ByteArrayOutputStream()
+                        val buffer = ByteArray(1024)
+                        while (output.size() <= SevenDescriptorRejection.MAX_BYTES) {
+                            val count = input.read(buffer, 0, minOf(buffer.size, SevenDescriptorRejection.MAX_BYTES + 1 - output.size()))
+                            if (count < 0) break
+                            output.write(buffer, 0, count)
+                        }
+                        output.toByteArray() }
+                    when {
+                        bytes == null -> SevenDescriptorRejection.unavailable()
+                        bytes.size > SevenDescriptorRejection.MAX_BYTES -> SevenDescriptorRejection.oversized()
+                        else -> SevenDescriptorRejection.read(bytes.toString(Charsets.UTF_8))
+                    }
+                } catch (_: Exception) { SevenDescriptorRejection.unavailable() }
+                throw ProviderException(ProviderFailure.UNAVAILABLE, status, ProviderPlaybackStage.SEVEN_DESCRIPTOR, rejection)
+            }
             if (status == 429 || status in 500..599) throw ProviderException(ProviderFailure.RETRY_LATER, status)
             if (status == 401 && bearer != null) throw ProviderException(ProviderFailure.SESSION_EXPIRED, status)
             if (status == 403) throw ProviderException(

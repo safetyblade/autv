@@ -328,3 +328,114 @@ CH+/CH−/Guide/Back, session recovery and physical Kogan behaviour be verified.
 Sibling channels remain out of scope. This work stays on PR #79's existing branch;
 #75 and its dependencies are still open, so no overlapping branch or automatic
 merge/consolidation is introduced.
+
+## Descriptor HTTP 400 investigation — 24 October 2026
+
+Owner evidence now reaches `7-DESCRIPTOR (HTTP 400)` on main Seven, with the
+account connected, activation complete and 53 discovered channels. This confirms
+AUTV passed its local identity parser and attempted the descriptor request. It
+**does not confirm Seven accepted the account/reference pair**. The actual 400
+body is unavailable; its cause is not yet established. Do not substitute a
+parameter hypothesis for a confirmed provider validation failure.
+
+### Exact request reconstruction and package comparison
+
+Current mirror directory listings still end at **slyguy.7plus 0.5.8** (blob
+`6f58375d1a9f7845add32b208f64f3085b8a7c98`) and **plugin.video.au.freeview 0.20.5**
+(blob `709cc31bad789be49b945de2bf75c98fc5c245e6`). Actual extracted package files,
+not README examples, were re-read. The pinned package links and shared-helper
+version earlier in this report remain the source references.
+
+| Stage/field | SlyGuy standalone 0.5.8 | AUTV current request |
+| --- | --- | --- |
+| Identity | `plugin.py:play_channel` lines 435–445: `api.video_player(slug)`, parse `videoUrl` query; pass `accountId`, `referenceId` to `_play(..., live=True)` | `SevenPlusAdapter.resolve`: fresh catalogue row by `ChannelItem.channelId`, official `contentLink` → slug → `videoPlayer.videoUrl` → query identity; values preserved, query encoded once |
+| Metadata | `api.py:video_player` lines 83–92: GET component `/player/live/{slug}`, platform, market, versions and `signedUp=True` | Same endpoint and parameter names; platform androidtv, platform-version 5.25.0.0, api-version 5.9.0.0 |
+| Descriptor method/path/body | `api.py:play` lines 137–166: GET `https://videoservice.swm.digital/playback`, no body | Same GET/path; no body |
+| Common parameters | `appId=7plus`, `deviceType=androidtv`, `platformType=tv`, deviceId, accountId, referenceId, marketId; videoType=live | These eight keys only; persistent AUTV device-local UUID, provider metadata IDs, current IP-detected market |
+| Additional request fields | `pc=3181`, `advertid=null`, `deliveryId=csai`, fixed ozid, `sdkverification=true` | Omitted; do not copy a fixed postcode/tracking identity or assert SDK verification that AUTV has not performed |
+| Capability fields | `cp.encryptionType=cenc`, `cp.drmSystems=widevine`, `cp.containerFormat=cmaf`, `cp.supportedCodecs=avc`, `cp.drmAuth=true` | Omitted; this proof has no established authorised Seven DRM/licence integration and must not assert it |
+| Region | `api.py:_market_id`: configured region or IP lookup, caches 5 min; failure falls back to Sydney | IP lookup, same market used for catalogue/player/descriptor; fails instead of inventing a fallback region |
+| Auth/session | `api.play` calls `_refresh_token`; saved bearer; shared session headers from `constants.py` | Existing session refreshed through catalogue flow as needed; saved bearer scoped only to descriptor; same distributed public API header configuration, not a permission grant |
+| Headers | `constants.py:HEADERS`: Seven-branded Android/ExoPlayer user agent, public x-swm-apikey | Honest `AUTV/0.5 (Android TV)` user agent; Accept application/json, accept-language en, public x-swm-apikey; no cookies or redirects |
+| Errors | `api.play` lines 174–185 parses JSON before rejecting; handles `location_verification_required`, `video_not_in_market`; other messages may be displayed by Kodi | Previously threw on non-2xx before reading the body, losing validation context. Revision inspects only bounded HTTP-400 descriptor responses and retains enum-only hints |
+
+**IPTV AU differs at acquisition, not just stream format.** In 0.20.5
+`resources/lib/plugin.py:get_channels` lines 99 onward, regional gzipped JSON
+provides channel rows. `play` lines 76–96 reads the selected row's `mjh_master`,
+headers/certificate and manifest hint, then configures MPD or live HLS. It does
+not construct this Eight/Seven video-service descriptor query, exchange the
+owner's Seven bearer, or establish which fields Seven requires for AUTV.
+`script.module.slyguy 0.87.3:util.process_brightcove` consumes media sources after
+resolution; it cannot repair HTTP 400 before a descriptor exists. No alternate
+IPTV source or old signed link is adopted.
+
+### What is established and what remains uncertain
+
+- **Identity interpretation/format:** values come from the metadata query as in
+  `play_channel`, with no guessed account or catalogue-ID substitution. Only
+  local parsing succeeded; provider validity remains unconfirmed.
+- **Missing field:** eleven additional query fields exist in the reference.
+  Source presence alone does not establish their requiredness or legitimate
+  values for AUTV. No one-field trial or fabricated value is justified yet.
+- **Client/platform:** common platform fields agree, user-agent differs honestly;
+  whether Seven permits this third-party client or requires an approved SDK/API
+  agreement remains unestablished. No approved-device identity is impersonated.
+- **Auth/session:** connection survives this 400; that alone does not establish
+  token audience/descriptor entitlement. Existing 401 session expiry remains
+  separate. No extra token or private credential is requested.
+- **Region/market:** AUTV propagates a single current IP market through the flow;
+  no owner-specific comparison result or documented postcode obligation is known.
+- **Advertising/session:** `deliveryId=csai`, SDK and related fields are a concrete
+  difference, not proof CSAI is mandatory or optional. If required, obtain the
+  authorised ad-session interface before adding it. Original broadcaster ads
+  remain intact; no source-selection or Media3 change is made in this revision.
+
+### Minimal diagnostic correction and privacy boundary
+
+The proven implementation gap is discarded HTTP-400 error context. The request
+itself is unchanged. `HttpSevenTransport` now reads at most **16,385 bytes** to
+detect an over-limit body, parses at most 16 KB in memory and drops all raw
+content. `SevenDescriptorRejection` retains only enum labels: the two exact error
+codes explicitly handled by upstream `api.play`, and a fixed allowlist of query
+field names found in bounded error/message/validation properties. Hints are
+labelled **not a confirmed cause**; a field mention can describe an invalid
+value, a missing field or incidental context. Arbitrary error codes, descriptions,
+URLs, account/reference values and personal session data never reach UI/logs.
+These are upstream-recognised codes, not a claim of a published Seven API spec.
+Malformed, absent, oversized and unrecognised bodies produce fixed diagnostics;
+no raw-body export or disk storage is offered. The existing exception/stage path
+carries this safe context across the adapter boundary to the guide/settings.
+No new failure framework or shared player behaviour is introduced.
+
+Regression fixtures cover the confirmed **loss of HTTP-400 context**, not a
+fabricated reproduction of the unknown owner body: request destination/method,
+bearer scope, disabled redirects, known-code allowlisting, unknown-code/value
+redaction, validation hints, malformed/oversized response bounds, and context plus
+connected-session preservation through `SevenPlusAdapter.step`.
+
+### Sequential gates and next owner test
+
+| Gate | Evidence/status |
+| --- | --- |
+| 1. Identity accepted | AUTV local extraction passed; **Seven acceptance unconfirmed** |
+| 2. Descriptor accepted | **Failed: HTTP 400**; exact reason awaits safe diagnostics |
+| 3. Supported stream information | Not reached |
+| 4. Manifest loads | Not reached |
+| 5. Video and audio | Not reached |
+| 6. Normal commercials | Not reached |
+| 7. Return to programme | Not reached |
+
+Install the PR's new test build using a compatible signing key; preserve the
+existing connected account. Select main **Seven** once. Report only the displayed
+stage, HTTP status and `Descriptor rejection` summary, including fixed code and
+field hints if present. Do not send private URLs, tokens, account IDs or raw
+responses. A known location/market rejection identifies the provider requirement;
+a field hint narrows investigation but does not authorise inventing a value.
+If the summary has no recognised code/hints, provider documentation or an
+authorised developer support interface is still needed; do not claim the cause
+is known. If descriptor resolution succeeds, report the next stage separately
+before attempting the full video/audio/commercial-break acceptance sequence.
+
+No Australian Android TV or owner session is available in this environment.
+Current enforced network policy excludes Seven API hosts; no bypass is attempted.
+No real-device result, successful descriptor or corrected request is claimed.
