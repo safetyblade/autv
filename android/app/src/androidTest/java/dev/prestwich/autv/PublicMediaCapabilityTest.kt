@@ -26,7 +26,7 @@ class PublicMediaCapabilityTest {
         fail("Public sample did not reach its required rendering/session state")
     }
     private fun report(sample: String) { main {
-        Log.i("AUTV_MEDIA_QA","$sample video=${it.video} audio=${it.audio} keys=${it.drmKeys} ads=${it.adStarted}/${it.adEnded} completed=${it.completedAds} adMedia=${it.adMediaObserved} error=${it.errorCode} ima=${it.imaError} live=${it.holder.player.isCurrentMediaItemLive}")
+        Log.i("AUTV_MEDIA_QA","$sample video=${it.video} audio=${it.audio} keys=${it.drmKeys} ads=${it.adStarted}/${it.adEnded} completed=${it.completedAds} adMedia=${it.adMediaObserved} error=${it.errorCode} ima=${it.imaError} stage=${it.session.stage} failureStage=${it.session.lastStartupStage} elapsedMs=${it.session.elapsed} fallback=${it.fallbackVideo}/${it.fallbackAudio} resumed=${it.session.returnedToProgramme} live=${it.holder.player.isCurrentMediaItemLive}")
     } }
     private fun rendered(sample: String) {
         main { it.start(sample) }
@@ -49,6 +49,9 @@ class PublicMediaCapabilityTest {
     @Test fun officialImaHlsIsLiveAndReleasesToFast() {
         rendered("ima-hls")
         assertTrue(main { it.holder.player.isCurrentMediaItemLive })
+        try { waitFor(360000) { it.session.returnedToProgramme || it.errorCode != null } }
+        finally { report("ima-hls-ad-break") }
+        assertNull(main { it.errorCode });assertTrue(main { it.session.returnedToProgramme })
         val retained = main { it.holder.player }
         val media = main { it.holder.player.currentMediaItem }
         val position = main { it.holder.player.currentPosition }
@@ -96,13 +99,14 @@ class PublicMediaCapabilityTest {
         main { it.start("broken-interstitial") }
         waitFor(35000) { it.sessionFailure != null }
         assertEquals(androidx.media3.common.PlaybackException.ERROR_CODE_IO_UNSPECIFIED,main { it.sessionFailure })
-        assertEquals(0,main { it.holder.player.mediaItemCount })
-        main { it.start("fast") }; waitFor { it.video && it.holder.player.isPlaying }
+        waitFor { it.fallbackVideo && it.fallbackAudio && it.holder.player.isPlaying }
+        assertEquals("100",main { it.holder.player.currentMediaItem?.mediaId })
+        main { it.start("fast") }; waitFor { it.video && it.audio && it.holder.player.isPlaying }
         report("failed-interstitial-fast-recovery")
     }
     @Test fun expiryReturnsToFastAndSyntheticDiscontinuityPlaysWithoutRemoval() {
         main { it.start("expiry") }
-        waitFor { it.expired && it.holder.player.currentMediaItem?.mediaId == "100" && it.holder.player.isPlaying }
+        waitFor { it.expired && it.fallbackVideo && it.fallbackAudio && it.holder.player.currentMediaItem?.mediaId == "100" && it.holder.player.isPlaying }
         main { it.start("transition") }
         waitFor(35000) { it.errorCode != null || (it.video && it.holder.player.currentPosition > 17000) }
         assertNull(main { it.errorCode })

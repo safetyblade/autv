@@ -20,6 +20,8 @@ import dev.prestwich.autv.data.provider.*
 class AuTvPlayer(private val context: Context, private val advancedProviderPlayback: Boolean = false) {
     val player: Player = ExoPlayer.Builder(context).build()
     var onProviderSessionExpired: (() -> Unit)? = null
+    /** Fixed stage names only; never forwards stream/session IDs or URLs. */
+    var onProviderStage: ((String) -> Unit)? = null
     var onAdEvent: ((String) -> Unit)? = null
     var onImaError: ((Int) -> Unit)? = null
     var onProviderSessionFailure: ((Int) -> Unit)? = null
@@ -73,6 +75,7 @@ class AuTvPlayer(private val context: Context, private val advancedProviderPlayb
         val base = ProviderMediaSourceFactory.base(context, request)
         endProviderSession()
         val activeGeneration = generation
+        onProviderStage?.invoke("SOURCE_SELECTED")
         try {
             var uri = Uri.parse(request.uri)
             val source = when {
@@ -81,9 +84,11 @@ class AuTvPlayer(private val context: Context, private val advancedProviderPlayb
                     val settings = initialiseIma(context.applicationContext)
                     val loader = ImaServerSideAdInsertionMediaSource.AdsLoader.Builder(context.applicationContext, adViews)
                         .setImaSdkSettings(settings)
+                        .setStreamEventListener { _, _ -> if (generation == activeGeneration) onProviderStage?.invoke("IMA_SESSION_RECEIVED") }
                         .setAdEventListener { event -> if (generation == activeGeneration) onAdEvent?.invoke(event.type.name) }
                         .setAdErrorListener { event -> if (generation == activeGeneration) onImaError?.invoke(event.error.errorCodeNumber) }.build()
                     loader.setPlayer(player); ima = loader
+                    onProviderStage?.invoke("IMA_LOADER_READY")
                     val address = ImaServerSideAdInsertionUriBuilder().setAssetKey(config.assetKey)
                         .setAdsId("${request.channelId.provider}:$channelNumber:${System.nanoTime()}")
                         .setFormat(if(request.mimeType == MimeTypes.APPLICATION_MPD) C.CONTENT_TYPE_DASH else C.CONTENT_TYPE_HLS)
@@ -113,7 +118,9 @@ class AuTvPlayer(private val context: Context, private val advancedProviderPlayb
                 else -> base.createMediaSource(ProviderMediaSourceFactory.item(request, channelNumber, uri))
             }
             (player as ExoPlayer).setMediaSource(source)
+            onProviderStage?.invoke("SOURCE_CREATED")
             player.prepare(); player.play()
+            onProviderStage?.invoke("PREPARING")
             if (request.options.imaLive != null) {
                 startup=Runnable {
                     if (generation==activeGeneration && player.playbackState!=Player.STATE_READY) {
