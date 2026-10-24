@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.media3.common.*
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.hls.HlsInterstitialsAdsLoader
@@ -20,24 +21,44 @@ class AuTvPlayer(private val context: Context, private val advancedProviderPlayb
     val player: Player = ExoPlayer.Builder(context).build()
     var onProviderSessionExpired: (() -> Unit)? = null
     var onAdEvent: ((String) -> Unit)? = null
+    var onImaError: ((Int) -> Unit)? = null
+    var onProviderSessionFailure: ((Int) -> Unit)? = null
     private var view: PlayerView? = null
+    private val adOverlay = FrameLayout(context.applicationContext)
     private var ima: ImaServerSideAdInsertionMediaSource.AdsLoader? = null
     private var interstitials: HlsInterstitialsAdsLoader? = null
     private val handler = Handler(Looper.getMainLooper())
     private var expiry: Runnable? = null
+    private var startup: Runnable? = null
     private var generation = 0L
     private val adViews = object : AdViewProvider {
-        override fun getAdViewGroup(): ViewGroup? = view?.adViewGroup
+        override fun getAdViewGroup(): ViewGroup? = if (view != null) adOverlay else null
         override fun getAdOverlayInfos(): List<AdOverlayInfo> = view?.adOverlayInfos.orEmpty()
     }
-    fun attachPlayerView(view: PlayerView?) { this.view = view }
+    init {
+        if (advancedProviderPlayback) initialiseIma(context.applicationContext)
+        player.addListener(object : Player.Listener {
+            override fun onPlaybackStateChanged(state: Int) {
+                if (state == Player.STATE_READY) { startup?.let(handler::removeCallbacks); startup=null }
+            }
+        })
+    }
+    fun attachPlayerView(view: PlayerView?) {
+        if (this.view === view) return
+        (adOverlay.parent as? ViewGroup)?.removeView(adOverlay)
+        this.view = view
+        view?.adViewGroup?.addView(adOverlay, FrameLayout.LayoutParams(-1,-1))
+    }
+    fun detachPlayerView(view: PlayerView) { if (this.view === view) attachPlayerView(null) }
     private fun endProviderSession() {
         generation++
+        startup?.let(handler::removeCallbacks); startup=null
         expiry?.let(handler::removeCallbacks); expiry = null
         // Detach old media before releasing its session/SDK. Never retain a prior account's ad state.
         player.stop(); player.clearMediaItems()
         ima?.release(); ima = null
         interstitials?.setPlayer(null); interstitials?.release(); interstitials = null
+        adOverlay.removeAllViews()
     }
     fun play(url: String?, channelNumber: Int? = null) {
         if (url.isNullOrBlank()) return
@@ -57,11 +78,11 @@ class AuTvPlayer(private val context: Context, private val advancedProviderPlayb
             val source = when {
                 request.options.imaLive != null -> {
                     val config = request.options.imaLive!!
-                    val settings = ImaSdkFactory.getInstance().createImaSdkSettings()
-                    ImaSdkFactory.getInstance().initialize(context, settings)
-                    val loader = ImaServerSideAdInsertionMediaSource.AdsLoader.Builder(context, adViews)
+                    val settings = initialiseIma(context.applicationContext)
+                    val loader = ImaServerSideAdInsertionMediaSource.AdsLoader.Builder(context.applicationContext, adViews)
                         .setImaSdkSettings(settings)
-                        .setAdEventListener { event -> if (generation == activeGeneration) onAdEvent?.invoke(event.type.name) }.build()
+                        .setAdEventListener { event -> if (generation == activeGeneration) onAdEvent?.invoke(event.type.name) }
+                        .setAdErrorListener { event -> if (generation == activeGeneration) onImaError?.invoke(event.error.errorCodeNumber) }.build()
                     loader.setPlayer(player); ima = loader
                     val address = ImaServerSideAdInsertionUriBuilder().setAssetKey(config.assetKey)
                         .setAdsId("${request.channelId.provider}:$channelNumber:${System.nanoTime()}")
@@ -84,11 +105,26 @@ class AuTvPlayer(private val context: Context, private val advancedProviderPlayb
             }
             (player as ExoPlayer).setMediaSource(source)
             player.prepare(); player.play()
+            if (request.options.imaLive != null) {
+                startup=Runnable {
+                    if (generation==activeGeneration && player.playbackState!=Player.STATE_READY) {
+                        endProviderSession();onProviderSessionFailure?.invoke(PlaybackException.ERROR_CODE_TIMEOUT)
+                    }
+                }.also { handler.postDelayed(it,45000) }
+            }
             request.options.expiresAt?.let { deadline ->
                 expiry = Runnable { endProviderSession(); onProviderSessionExpired?.invoke() }
                     .also { handler.postDelayed(it, (deadline - System.currentTimeMillis()).coerceAtLeast(0)) }
             }
         } catch (error: Exception) { endProviderSession(); throw error }
     }
-    fun release() { endProviderSession(); view = null; player.release() }
+    companion object {
+        private val imaSettings by lazy { ImaSdkFactory.getInstance().createImaSdkSettings() }
+        private var imaInitialised=false
+        private fun initialiseIma(context: Context): com.google.ads.interactivemedia.v3.api.ImaSdkSettings {
+            if (!imaInitialised) { ImaSdkFactory.getInstance().initialize(context.applicationContext,imaSettings);imaInitialised=true }
+            return imaSettings
+        }
+    }
+    fun release() { endProviderSession(); attachPlayerView(null); player.release() }
 }

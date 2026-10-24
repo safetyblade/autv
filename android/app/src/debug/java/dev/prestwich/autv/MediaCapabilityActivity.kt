@@ -19,16 +19,19 @@ class MediaCapabilityActivity : AppCompatActivity() {
     var audio = false; private set
     var drmKeys = false; private set
     var errorCode: Int? = null; private set
+    var imaError: Int? = null; private set
     var adStarted = false; private set
     var adEnded = false; private set
     var expired = false; private set
     private var current = "none"
+    private lateinit var layout: LinearLayout
+    private lateinit var videoView: PlayerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Public sample session URLs still do not belong in logs/errors.
         Log.setLogLevel(Log.LOG_LEVEL_OFF)
         holder = AuTvPlayer(this, advancedProviderPlayback = true)
-        val layout = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        layout = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
         status = TextView(this).apply { text = "AUTV official sample lab — no broadcaster entitlement"; textSize = 16f }
         layout.addView(status)
         val buttons = LinearLayout(this)
@@ -36,9 +39,9 @@ class MediaCapabilityActivity : AppCompatActivity() {
             buttons.addView(Button(this).apply { text = label; setOnClickListener { start(name) } })
         }
         layout.addView(buttons)
-        val view = PlayerView(this).apply { player = holder.player; useController = true }
-        layout.addView(view, LinearLayout.LayoutParams(-1,0,1f)); setContentView(layout)
-        holder.attachPlayerView(view)
+        videoView = PlayerView(this).apply { player = holder.player; useController = true }
+        layout.addView(videoView, LinearLayout.LayoutParams(-1,0,1f)); setContentView(layout)
+        holder.attachPlayerView(videoView)
         (holder.player as ExoPlayer).addAnalyticsListener(object : AnalyticsListener {
             override fun onRenderedFirstFrame(eventTime: AnalyticsListener.EventTime, output: Any, renderTimeMs: Long) { video = true; update() }
             override fun onAudioPositionAdvancing(eventTime: AnalyticsListener.EventTime, playoutStartSystemTimeMs: Long) { audio = true; update() }
@@ -52,10 +55,18 @@ class MediaCapabilityActivity : AppCompatActivity() {
             if (adStarted && event in setOf("AD_PERIOD_ENDED", "AD_BREAK_ENDED")) adEnded = true
             update()
         }
+        holder.onImaError = { imaError=it;update() }
+        holder.onProviderSessionFailure = { errorCode=it;update() }
         holder.onProviderSessionExpired = { expired = true; holder.play("asset:///pip-test.m3u8",100); update() }
     }
+    fun rebindVideoView() {
+        videoView.player = null; layout.removeView(videoView)
+        videoView = PlayerView(this).apply { player = holder.player; useController = true }
+        layout.addView(videoView,LinearLayout.LayoutParams(-1,0,1f))
+        holder.attachPlayerView(videoView)
+    }
     fun start(sample: String) {
-        current = sample; video = false; audio = false; drmKeys = false; errorCode = null; adStarted = false; adEnded = false; expired = false
+        current = sample; video = false; audio = false; drmKeys = false; errorCode = null; imaError = null; adStarted = false; adEnded = false; expired = false
         val id = ProviderChannelId("public-sample",sample)
         val request = when(sample) {
             "hls" -> ProviderPlaybackRequest(id,"https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",MimeTypes.APPLICATION_M3U8)
@@ -72,7 +83,7 @@ class MediaCapabilityActivity : AppCompatActivity() {
         try { holder.play(request,-999) } catch (_: Exception) { errorCode = PlaybackException.ERROR_CODE_FAILED_RUNTIME_CHECK }
         update()
     }
-    private fun update() { status.text = "$current  Video=$video  Audio-renderer=$audio  Keys=$drmKeys  Ad=$adStarted/$adEnded  Error=${errorCode ?: "none"}" }
+    private fun update() { status.text = "$current  Video=$video  Audio-renderer=$audio  Keys=$drmKeys  Ad=$adStarted/$adEnded  Error=${errorCode ?: "none"} IMA=${imaError ?: "none"}" }
     override fun onPause() { holder.player.pause(); super.onPause() }
     override fun onResume() { super.onResume(); if (::holder.isInitialized && holder.player.mediaItemCount > 0) holder.player.play() }
     override fun onDestroy() { holder.release(); super.onDestroy() }

@@ -76,6 +76,7 @@ internal fun AuTvScreen(
     favourites: Set<String> = emptySet(), onFavourite: (Channel) -> Unit = {},
     onOpenSettings: () -> Unit = {},
     onPlayerViewAttached: (PlayerView?) -> Unit = {},
+    onPlayerViewReleased: (PlayerView) -> Unit = {},
 ) {
     val categories = remember(guide) { listOf("All", "Favourites") + GuideBrowse.categories.drop(1) +
         if (guide?.channels?.any { it.providerChannel != null } == true) listOf("Australian TV") else emptyList() }
@@ -260,7 +261,7 @@ internal fun AuTvScreen(
                 AndroidView(factory = { ctx -> PlayerView(ctx).apply {
                     this.player = player; useController = false; isFocusable = false; isFocusableInTouchMode = false
                     descendantFocusability = android.view.ViewGroup.FOCUS_BLOCK_DESCENDANTS
-                } }, update = { it.player = player; onPlayerViewAttached(it) }, onRelease = { onPlayerViewAttached(null); it.player = null }, modifier = Modifier.fillMaxSize().testTag("video"))
+                } }, update = { it.player = player; onPlayerViewAttached(it) }, onRelease = { onPlayerViewReleased(it); it.player = null }, modifier = Modifier.fillMaxSize().testTag("video"))
                 if (!pictureInPicture) AnimatedVisibility(visible = chrome || guideOpen, enter = fadeIn(tween(180)), exit = fadeOut(tween(250))) {
                     Box(Modifier.fillMaxSize().testTag("chrome")) {
                         Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Ink.copy(alpha = 0.82f), Color.Transparent, Ink.copy(alpha = 0.92f)))))

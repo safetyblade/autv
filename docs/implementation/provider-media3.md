@@ -100,3 +100,27 @@ its server/PVR/MySQL architecture is not added to native AUTV.
 not a source of Australian account authorisation. Existing ABC iView+ and actual
 SlyGuy package traces remain in provider reports. Neither precedent supplies an
 AUTV signing credential or proves Australian audio/video in this build.
+
+### Recovery/view-lifecycle hardening
+
+IMA uses one process-initialised SDK/settings object with application context.
+The retained player owns a stable ad FrameLayout that is reparented when a
+PlayerView is replaced; SDK session/media are not retuned for a UI rebind.
+Stale view-release and prior-generation SDK callbacks cannot detach/modify the
+new tune. The live-HLS instrumentation check also replaces the view and verifies
+continued playback with the same item/player. A 45-second initial IMA startup
+watchdog reports a fixed timeout and invokes the existing FAST recovery instead
+of leaving an indefinitely buffering session. Numeric SDK diagnostics retain no
+ad URL, token, session ID or error message. This does not skip a commercial: the
+failed session stops and a user retry requires a new authorised resolution.
+
+Reference audit: OpenTV `PlayerController.kt` at commit
+[43b95c0](https://github.com/opentvproject/opentv/blob/43b95c05d8f6a042f51c0cff662ef80789ee7528/app/src/main/java/app/opentv/player/PlayerController.kt)
+uses DefaultMediaSourceFactory and bounded playback/retry ownership; its account
+or IPTV assumptions are not copied. EasyPlayTV's
+[architecture](https://www.scottrix.co.uk/EasyPlayTV-docs/pages/architecture.html)
+and [provider matrix](https://www.scottrix.co.uk/EasyPlayTV-docs/pages/provider-matrix.html)
+separate resolver output from Kodi DASH/licence setup. Its Codeberg implementation
+was inaccessible through the available reader, so those are documentation evidence,
+not a claim of source inspection. No documented client-key extraction, shared
+server, or foreign broadcaster identity is imported into AUTV.

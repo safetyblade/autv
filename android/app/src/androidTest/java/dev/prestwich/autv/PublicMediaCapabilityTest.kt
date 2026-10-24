@@ -26,7 +26,7 @@ class PublicMediaCapabilityTest {
         fail("Public sample did not reach its required rendering/session state")
     }
     private fun report(sample: String) { main {
-        Log.i("AUTV_MEDIA_QA","$sample video=${it.video} audio=${it.audio} keys=${it.drmKeys} ads=${it.adStarted}/${it.adEnded} error=${it.errorCode} live=${it.holder.player.isCurrentMediaItemLive}")
+        Log.i("AUTV_MEDIA_QA","$sample video=${it.video} audio=${it.audio} keys=${it.drmKeys} ads=${it.adStarted}/${it.adEnded} error=${it.errorCode} ima=${it.imaError} live=${it.holder.player.isCurrentMediaItemLive}")
     } }
     private fun rendered(sample: String) {
         main { it.start(sample) }
@@ -41,6 +41,11 @@ class PublicMediaCapabilityTest {
         rendered("ima-hls")
         assertTrue(main { it.holder.player.isCurrentMediaItemLive })
         val retained = main { it.holder.player }
+        val media = main { it.holder.player.currentMediaItem }
+        val position = main { it.holder.player.currentPosition }
+        main { it.rebindVideoView() }
+        waitFor(20000) { it.holder.player.isPlaying && it.holder.player.currentPosition > position+1000 }
+        assertEquals(media,main { it.holder.player.currentMediaItem })
         main { it.start("fast") }
         waitFor { it.holder.player.isPlaying && it.video }
         assertSame(retained,main { it.holder.player })

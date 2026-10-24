@@ -109,6 +109,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
                 delay(30 * 60_000L)
             }
         }
+        holder.onProviderSessionFailure = { if (selected?.providerChannel != null) recoverProvider() }
         holder.onProviderSessionExpired = { if (selected?.providerChannel != null) recoverProvider() }
         castSender.start()
         if (providerConnection == ProviderConnection.CONNECTED) refreshProviderChannels()
