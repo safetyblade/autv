@@ -70,6 +70,12 @@ class SevenPlaybackTest {
             assertFalse(it.playback.guide!!.channels.any { row -> row.providerChannel?.id?.provider == "seven" })
         }
     }
+    @Test fun mediaLoadFailureReportsManifestStageAndKeepsFastUsable() {
+        val number = ready()
+        main { it.brokenMedia = true; it.playback.request(TuneTarget.Number(number)) }
+        await("manifest failure recovery") { main { it.playback.notice?.contains("[7-MANIFEST]") == true && it.playback.selected?.number == 100 && it.playback.player.isPlaying } }
+        main { assertEquals(ProviderConnection.CONNECTED, it.playback.sevenAccount.connection) }
+    }
     @Test fun deniedDescriptorKeepsFastAndTheSevenAccountConnected() {
         val number = ready()
         main { it.denied = true; it.playback.request(TuneTarget.Number(number)) }

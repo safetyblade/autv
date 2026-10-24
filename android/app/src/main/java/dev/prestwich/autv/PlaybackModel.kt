@@ -111,8 +111,11 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         override fun onPlayerError(error: PlaybackException) {
             player.currentMediaItem?.mediaId?.toIntOrNull()?.let { failed[it] = "Playback failed" }
             buffering = false
+            val sevenFailure = if (selected?.providerChannel?.id?.provider == "seven")
+                "Seven playback failed [${sevenPlayerFailureStage(error.errorCode).code}] (Media3 ${error.errorCode})." else null
             if (selected?.providerChannel != null) recoverProvider()
             else restoreGuideTune(player.currentMediaItem?.mediaId?.toIntOrNull())
+            if (sevenFailure != null) notice = "$sevenFailure Retry Seven or choose another channel."
         }
         override fun onPlaybackStateChanged(state: Int) {
             buffering = state == Player.STATE_BUFFERING

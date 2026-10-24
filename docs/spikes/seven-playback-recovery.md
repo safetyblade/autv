@@ -1,7 +1,9 @@
 # Channel 7 playback recovery: evidence and decision
 
 24 October 2026, Australia/Sydney. Continuation of PR #75 at `2217ecc`.
-Status: investigate then implement a single-channel experimental original-HLS path;
+Status: single-channel experimental original-HLS path; identity/ad/player recovery
+revision follows the original research below. The earlier Yospace-only gate is
+superseded by the final section;
 real Channel 7 video/audio and continued playback are **awaiting owner test**.
 No claim that a fixture, redirect or connected account proves playback.
 
@@ -80,7 +82,7 @@ it must not be sent as channelId/accountId/referenceId or interpreted as HLS.
 No authenticated owner catalogue is accessible to the agent. Actual identity must
 come from the owner's fresh catalogue, following the exact chain above.
 
-## Architecture decision before implementation
+## Initial architecture decision before implementation (superseded below)
 
 Implement **Channel 7 only**, selected through the actual row's reviewed content
 link/channel slug, retaining its official channelId and guide number/favourite key.
@@ -188,3 +190,141 @@ requesting private API dumps. This update does not broaden source/DRM/ad handlin
 or enable sibling channels. Real Seven video/audio and ad-break stability remain
 unverified. The owner should select **Seven**, and report the full displayed
 error including the fixed code if it fails.
+
+## Identity, normal advertising and native-player revision
+
+The owner's latest evidence is **7plus Connected, activation complete, 53 channel
+rows and failure `7-IDENTITY` on Seven**. This proves the main row, link and player
+metadata stages completed and that the former `playbackIdentity(videoUrl)` failed
+before `transport.playback`. It does not prove that either the descriptor or
+manifest was requested. It does not identify which internal check rejected the
+value, because the previous build collapsed them into one code.
+
+### Immediate identity mismatch and evidence limit
+
+Re-read the extracted standalone package, especially `plugin.py:play_channel`,
+`api.py:video_player/play` and shared `util.py:process_brightcove`. Standalone
+extracts the query's `accountId` and `referenceId` and makes a separate fixed Seven
+playback request. AUTV instead required the metadata URL itself to have one exact
+host/path, rejected any repeated or valueless query parameter, and limited the
+reference to an ASCII punctuation regex. Those extra restrictions do not come
+from the inspected query-only flow. They were AUTV assumptions, not a verified
+provider identity contract. The metadata URL is never fetched, so its path is not
+a network allowlist boundary.
+
+`SevenPlaybackIdentity.read` now extracts only the two required query fields from
+the provider's `videoPlayer.videoUrl`. It ignores unrelated flags/repeated fields,
+allows repeated identical required values, rejects conflicting required values,
+and safely bounds/encodes the original values without a guessed reference-ID
+character subset. The fixed Seven playback endpoint, TLS, bearer scoping and
+redirect restrictions remain unchanged. No account/reference is manufactured;
+metadata hosts/paths cannot become network destinations. No alternative JSON
+layout or path-only Brightcove identity is invented if the required query fields
+are absent. `videoPlayer.videoUrl` must be text, not an object coerced into text.
+
+**The exact rejected owner value/shape remains unknown.** The agent has no owner
+metadata payload and cannot reach Seven API hosts under its enforced network
+policy. The new fixtures are source-derived regression cases (changed metadata
+path, unrelated repeated query fields, trailing flag/ampersand and punctuation in
+a reference), not falsely labelled captured owner responses. A complete observed
+response-shape fixture can only be recorded after the value-free diagnostic
+identifies that shape or the provider supplies a sanitized schema. The next
+build distinguishes missing accountId, missing referenceId, absent query,
+non-text videoUrl, conflicting fields and invalid values using fixed subcodes.
+No private values are needed in chat or repository fixtures.
+
+The [Brightcove fields reference](https://apis.support.brightcove.com/playback/references/playback-api-video-fields-reference.html)
+describes reference IDs as account-unique values rather than AUTV's former narrow
+regex. It is not a Seven API grant, and AUTV does not switch to Brightcove's
+separate playback endpoint, use someone else's policy key or scrape licence data.
+
+### Original television and advertising
+
+The current authenticated Channel 7 mechanism cannot be classified yet: identity
+failure prevents obtaining its descriptor. The old Yospace observation was from
+IPTV AU's third-party route, not the owner's authenticated Seven session. A host
+suffix is therefore not a valid permanent source-selection policy. The selector
+now accepts original HTTPS provider-returned HLS in provider order, without a
+Yospace restriction, ad-free ranking, origin/quality rewrite, query stripping,
+commercial skipping, source substitution or ad-tag removal. Normal commercials,
+local advertisements and original session parameters are intended behaviour.
+No CDN account bearer is attached. Empty optional ad/protection containers are
+not misclassified as an integration requirement; actual non-empty declarations
+remain meaningful.
+
+Non-empty separate advertising configuration reports `7-ADS` until its supported
+session/SDK contract is established. Declared protected media reports `7-DRM`;
+DASH remains outside the existing HLS implementation. Neither is worked around
+by removing metadata or seeking an unprotected/ad-free substitute. If Seven
+requires CSAI, Google DAI, a Yospace SDK/beacons or another lifecycle, establish
+its actual returned config, client permission and consent requirements first.
+The inspected source's `deliveryId=csai` request and its eventual HLS output do
+not establish which of those applies to this owner. Nothing in this revision
+claims that all commercial tracking obligations are already satisfied.
+
+### Ad-transition research and Media3 evaluation
+
+Re-read [IA #1071](https://github.com/xbmc/inputstream.adaptive/issues/1071),
+[SlyGuy #305](https://github.com/matthuisman/slyguy.addons/issues/305) and
+[#1193](https://github.com/matthuisman/slyguy.addons/issues/1193), including comments.
+#1071 closed in December 2023 referring to merged
+[IA PR #1431, head 545bd4b](https://github.com/xbmc/inputstream.adaptive/pull/1431):
+its HLS update-interval bug could stop the refresh worker after a manifest update.
+That is a Kodi/IA implementation fix, not a patch for AUTV's Media3. #305's history
+also shows that disabling IA was not a universal cure; removing discontinuities
+was discussed as a hack that could break timestamp/format handling. No such
+workaround is adopted. #1193 remains open with 2026 commercial-transition failure
+reports. Thus IPTV AU's historical success is not stable-current-playback proof.
+No attached signed stream/private licence/session log is reused.
+
+[Official Media3 HLS support](https://developer.android.com/media/media3/exoplayer/hls)
+was reviewed against AUTV's HLS module **1.11.1**. It supports regular live HLS,
+playlist reloads, TS/fMP4 and ID3; codec/device capability remains separate.
+Actual Seven discontinuity sequences, A/V format changes, timed ad metadata,
+local ad transitions and live-edge behaviour still require a real manifest and
+Kogan/device testing. The existing HlsMediaSource retains default reload,
+format/timestamp and transient-load handling; this revision makes no broad
+buffering, codec, seek/live-edge or retry changes. A terminal error retains the
+existing FAST recovery and explicit fresh-resolver retry rather than looping
+around a failed commercial or stripping its playlist entry.
+
+The documentation lists **live HLS interstitial support as incomplete**. Default
+ExoPlayer ignores interstitials; HlsInterstitialsAdsLoader is a separate path.
+Do not treat an interstitial-dependent live manifest as proven ordinary SSAI.
+[ServerSideAdInsertionMediaSource](https://developer.android.com/reference/androidx/media3/exoplayer/source/ads/ServerSideAdInsertionMediaSource)
+needs supplied ad playback states; merely wrapping HLS does not implement an
+unknown broadcaster's ad contract. If Seven supplies supported Google DAI
+configuration, use the documented
+[Media3/IMA DAI extension architecture](https://developers.google.com/ad-manager/dynamic-ad-insertion/sdk/android/get-started/exoplayer-extension),
+with provider-authorized session data and tracking; do not guess an asset key or
+advertising endpoint. No IMA/DRM component is wired speculatively in this build.
+
+### Diagnostics and acceptance
+
+The existing typed stage enum is extended rather than adding a second framework:
+`7-CATALOGUE`, `7-LINK`, `7-IDENTITY` (with value-free field subcodes),
+`7-DESCRIPTOR`, `7-MANIFEST`, `7-DRM`, `7-ADS` and actual `7-PLAYER` failure.
+Player-metadata lookup is separately labelled `7-PLAYER-METADATA`.
+Only numeric Media3 error codes and fixed stage labels are surfaced after Seven
+player failure, and they survive the existing FAST recovery. HTTP/resource or
+manifest parsing errors are classified as manifest/load failures; this is not
+proof the manifest loaded successfully. Other providers' error handling is
+unchanged. No bearer, private URL, cookie, password, licence challenge, identity
+value or raw personal response is logged or displayed.
+
+Local fixture tests verify the revised query extraction, absent/conflicting field
+codes, original media/session URL preservation across CDN hosts, non-empty ad/DRM
+gates and Seven media-load error recovery. Fixtures remain distinct from actual
+Seven output. The native synthetic clip has video only; no audible audio or
+complete broadcaster commercial break is claimed. CI continues to run existing
+Nine/SBS/FAST/guide/navigation/session-storage and APK-upgrade regressions.
+
+**Final acceptance remains unmet:** no agent-accessible Australian Android TV,
+authenticated Seven descriptor/manifest, authorised licence exchange or real
+Seven video/audio/commercial-break result is available. The owner must retest
+Seven with the new field-specific diagnostics; only after playback begins can a
+complete commercial break, return to programming, continued playlist refresh,
+CH+/CH−/Guide/Back, session recovery and physical Kogan behaviour be verified.
+Sibling channels remain out of scope. This work stays on PR #79's existing branch;
+#75 and its dependencies are still open, so no overlapping branch or automatic
+merge/consolidation is introduced.

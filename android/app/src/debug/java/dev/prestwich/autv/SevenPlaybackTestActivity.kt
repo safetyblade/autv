@@ -9,6 +9,7 @@ import org.json.JSONObject
  * Never evidence of a real Seven manifest, entitlement, ads, licence or video/audio. */
 class SevenPlaybackTestActivity : MainActivity() {
     var denied = false
+    var brokenMedia = false
     var resolutions = 0
     private val store = object : ProviderSessionStore {
         var value: ProviderSession? = ProviderSession("fixture-access", "fixture-refresh", Long.MAX_VALUE)
@@ -20,7 +21,7 @@ class SevenPlaybackTestActivity : MainActivity() {
         override fun request(method: String, url: String, form: Map<String, String>): JSONObject = when {
             url == SevenPlusAdapter.MARKET -> JSONObject("""{"_id":"fixture-market"}""")
             url.startsWith(SevenPlusAdapter.CONTENT) -> JSONObject("""{"items":[{"childType":"channelItem","mediaItems":[{"type":"ChannelItem","channelId":"official-main-fixture","name":"Seven","contentLink":{"url":"/live-tv?channel-id=MAIN_FIXTURE"}}]}]}""")
-            else -> JSONObject("""{"videoPlayer":{"videoUrl":"https://videoservice.swm.digital/playback?accountId=account-fixture&referenceId=ref%3Amain-fixture"}}""")
+            else -> JSONObject("""{"videoPlayer":{"videoUrl":"https://metadata.invalid/reference?accountId=account-fixture&referenceId=ref%3Amain-fixture&unused=1&unused=2&flag&"}}""")
         }
         override fun playback(parameters: Map<String, String>, accessToken: String): JSONObject {
             resolutions++
@@ -32,7 +33,7 @@ class SevenPlaybackTestActivity : MainActivity() {
         override fun resolve(channel: ProviderChannelId): ProviderPlaybackRequest {
             val request = realAdapter.resolve(channel)
             check(request.headers.isEmpty())
-            return ProviderPlaybackRequest(request.channelId, "asset:///seven-ssai-fixture.m3u8?channel=seven-proof-fixture", request.mimeType)
+            return ProviderPlaybackRequest(request.channelId, if (brokenMedia) "asset:///missing-seven-fixture.m3u8" else "asset:///seven-ssai-fixture.m3u8?channel=seven-proof-fixture", request.mimeType)
         }
     }
     override fun createPlaybackModel() = PlaybackModel(application, {

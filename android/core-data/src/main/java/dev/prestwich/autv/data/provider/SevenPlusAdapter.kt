@@ -124,12 +124,12 @@ class SevenPlusAdapter(
         val video = step(ProviderPlaybackStage.SEVEN_PLAYER) {
             val player = transport.request("GET", "$PLAYER/$slug?${contentQuery(catalogue.market)}&signedUp=True")
                 .optJSONObject("videoPlayer") ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
-            text(player, "videoUrl") ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+            player.opt("videoUrl")
         }
-        val identity = step(ProviderPlaybackStage.SEVEN_IDENTITY) { playbackIdentity(video) }
+        val identity = step(ProviderPlaybackStage.SEVEN_IDENTITY) { SevenPlaybackIdentity.read(video) }
         val parameters = linkedMapOf(
             "appId" to "7plus", "deviceType" to "androidtv", "platformType" to "tv",
-            "deviceId" to deviceId, "accountId" to identity.first, "referenceId" to identity.second,
+            "deviceId" to deviceId, "accountId" to identity.account, "referenceId" to identity.reference,
             "marketId" to catalogue.market, "videoType" to "live",
         )
         // No invented postcode, tracking identity, SDK attestation or ad-delivery override.
@@ -160,18 +160,6 @@ class SevenPlusAdapter(
         val slug = query["channel-id"] ?: uri.path.trimEnd('/').substringAfterLast('/')
         if (!slug.matches(Regex("[A-Za-z0-9_-]{1,128}"))) throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
         return slug
-    }
-    private fun playbackIdentity(address: String): Pair<String, String> {
-        val uri = runCatching { URI(address) }.getOrNull()
-            ?: throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
-        if (uri.scheme != "https" || uri.host != "videoservice.swm.digital" || uri.path != "/playback" ||
-            uri.port != -1 || uri.rawUserInfo != null || uri.fragment != null)
-            throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
-        val query = query(uri)
-        val account = query["accountId"]?.takeIf { it.matches(Regex("[A-Za-z0-9_-]{1,128}")) }
-        val reference = query["referenceId"]?.takeIf { it.matches(Regex("[A-Za-z0-9_.:-]{1,256}")) }
-        if (account == null || reference == null) throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
-        return account to reference
     }
     private fun query(uri: URI): Map<String, String> = try {
         val pairs = uri.rawQuery?.split('&')?.map {

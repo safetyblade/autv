@@ -107,7 +107,7 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                             Text(if (connection == ProviderConnection.CONNECTED)
                                 if (service.id == "seven") "$count channels listed. Channel 7 native playback is experimental." else "$count live channels and events in your guide."
                                 else "Connect your ${service.name} account to bring its live channels into AUTV.")
-                            if (service.id == "seven") Text("Channel 7 only: testing original server-ad HLS. Other channels and protected streams are not supported by this proof.",
+                            if (service.id == "seven") Text("Channel 7 only: testing broadcaster HLS with normal advertising. Protected streams and separate ad sessions need additional provider support.",
                                 style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             if (sbs) Text("Experimental native HLS. Some channels may require an unsupported ad-session or protection path.",
                                 style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)

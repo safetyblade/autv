@@ -14,14 +14,14 @@ internal fun validateSevenRequest(method: String, address: String, bearer: Strin
     val auth = uri.host == "auth2.swm.digital" && uri.path in setOf("/account/device/authorize", "/connect/token") && method == "POST" && uri.query == null
     val market = address == SevenPlusAdapter.MARKET && method == "GET"
     val content = uri.host == "component-cdn.swm.digital" && uri.path == "/content/live-tv" && method == "GET" &&
-        uri.rawQuery?.matches(Regex("platform-id=androidtv&market-id=[A-Za-z0-9%+_.-]+&platform-version=5[.]25[.]0[.]0&api-version=5[.]9[.]0[.]0")) == true
+        uri.rawQuery?.matches(Regex("platform-id=androidtv&market-id=[A-Za-z0-9%+_.*-]+&platform-version=5[.]25[.]0[.]0&api-version=5[.]9[.]0[.]0")) == true
     val player = uri.host == "component.swm.digital" && uri.path.matches(Regex("/player/live/[A-Za-z0-9_-]{1,128}")) && method == "GET" &&
-        uri.rawQuery?.matches(Regex("platform-id=androidtv&market-id=[A-Za-z0-9%+_.-]+&platform-version=5[.]25[.]0[.]0&api-version=5[.]9[.]0[.]0&signedUp=True")) == true
+        uri.rawQuery?.matches(Regex("platform-id=androidtv&market-id=[A-Za-z0-9%+_.*-]+&platform-version=5[.]25[.]0[.]0&api-version=5[.]9[.]0[.]0&signedUp=True")) == true
     val playback = uri.host == "videoservice.swm.digital" && uri.path == "/playback" && method == "GET"
     if (playback) {
         val pairs = uri.rawQuery?.split('&')?.map { it.split('=', limit = 2) }.orEmpty()
         val keys = setOf("appId", "deviceType", "platformType", "deviceId", "accountId", "referenceId", "marketId", "videoType")
-        require(pairs.size == keys.size && pairs.all { it.size == 2 && it[0] in keys && it[1].matches(Regex("[A-Za-z0-9%+_.-]+")) } && pairs.map { it[0] }.toSet() == keys)
+        require(pairs.size == keys.size && pairs.all { it.size == 2 && it[0] in keys && it[1].matches(Regex("[A-Za-z0-9%+_.*-]+")) } && pairs.map { it[0] }.toSet() == keys)
     }
     require(auth || market || content || player || playback)
     require((bearer != null) == playback)

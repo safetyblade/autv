@@ -31,7 +31,7 @@ class SevenPlaybackTest {
                     url.startsWith(SevenPlusAdapter.CONTENT) -> catalogue()
                     url.startsWith(SevenPlusAdapter.PLAYER) -> {
                         assertTrue(url.contains("/MAIN_FROM_PROVIDER?")); assertTrue(url.contains("market-id=detected-market"))
-                        JSONObject("""{"videoPlayer":{"videoUrl":"https://videoservice.swm.digital/playback?accountId=official-account&referenceId=ref%3Amain-live"}}""")
+                        JSONObject("""{"videoPlayer":{"videoUrl":"https://metadata.invalid/reference/v2?accountId=official-account&referenceId=ref%3Amain-live&unused=1&unused=2&flag&"}}""")
                     }
                     else -> throw AssertionError("Unexpected network destination")
                 }
@@ -71,13 +71,13 @@ class SevenPlaybackTest {
     }
     @Test fun unsupportedResponsesExposeOnlyFixedResolutionStageAndFailure() {
         for (stage in listOf(ProviderPlaybackStage.SEVEN_LINK, ProviderPlaybackStage.SEVEN_PLAYER,
-            ProviderPlaybackStage.SEVEN_IDENTITY, ProviderPlaybackStage.SEVEN_SOURCE)) {
+            ProviderPlaybackStage.SEVEN_IDENTITY_ACCOUNT, ProviderPlaybackStage.SEVEN_SOURCE)) {
             val adapter = SevenPlusAdapter(object : SevenPlusTransport {
                 override fun request(method: String, url: String, form: Map<String, String>): JSONObject = when {
                     url == SevenPlusAdapter.MARKET -> JSONObject("""{"_id":"market"}""")
                     url.startsWith(SevenPlusAdapter.CONTENT) -> catalogue(link = if (stage == ProviderPlaybackStage.SEVEN_LINK) "//evil.invalid/MAIN" else "/MAIN")
                     stage == ProviderPlaybackStage.SEVEN_PLAYER -> JSONObject()
-                    else -> JSONObject().put("videoPlayer", JSONObject().put("videoUrl", if (stage == ProviderPlaybackStage.SEVEN_IDENTITY)
+                    else -> JSONObject().put("videoPlayer", JSONObject().put("videoUrl", if (stage == ProviderPlaybackStage.SEVEN_IDENTITY_ACCOUNT)
                         "https://evil.invalid/private?secret=fixture" else "https://videoservice.swm.digital/playback?accountId=account&referenceId=ref"))
                 }
                 override fun playback(parameters: Map<String, String>, accessToken: String) = JSONObject()
@@ -105,7 +105,7 @@ class SevenPlaybackTest {
     }
     @Test fun unreviewedLinksAndAmbiguousReferenceQueriesNeverBecomeRequests() {
         val links = listOf("http://7plus.com.au/live-tv?channel-id=MAIN", "https://evil.invalid/MAIN", "//evil.invalid/MAIN", "https://7plus.com.au/live-tv?channel-id=ONE&channel-id=TWO")
-        val videos = listOf("https://evil.invalid/playback?accountId=one&referenceId=two", "https://videoservice.swm.digital/playback?accountId=one&accountId=two&referenceId=three")
+        val videos = listOf("https://videoservice.swm.digital/playback?accountId=one&accountId=two&referenceId=three")
         for ((link, video) in links.map { it to "" } + videos.map { "https://7plus.com.au/MAIN" to it }) {
             val adapter = SevenPlusAdapter(SevenPlusTransport { _, url, _ ->
                 when {
@@ -127,11 +127,19 @@ class SevenPlaybackTest {
         sources.remove(0)
         failWith(ProviderFailure.DRM_UNSUPPORTED) { SevenLiveSource.select(channel, response) }
     }
-    @Test fun rejectsAdFreeAlternativeExplicitAdsHttpAndLookalikeHosts() {
-        for (url in listOf("https://fixture.invalid/ad-free.m3u8", "https://yospace.com.evil.invalid/master.m3u8", "http://csm.yospace.com/master.m3u8", "https://user@csm.yospace.com/master.m3u8"))
-            failWith(ProviderFailure.AD_SESSION_UNSUPPORTED) { SevenLiveSource.select(channel, descriptor(url)) }
+    @Test fun preservesBroadcasterHlsRegardlessOfCdnAndRequiresAdAndDrmContractsWhenDeclared() {
+        val originalCdn = "https://broadcaster-cdn.invalid/channel7/master.m3u8?ads=normal&session=fixture"
+        val source = descriptor(originalCdn)
+        source.getJSONObject("media").put("ad_sources", org.json.JSONArray())
+        source.getJSONObject("media").getJSONArray("sources").getJSONObject(0).put("key_systems", JSONObject()).put("encryption_type", "none")
+        assertEquals(originalCdn, SevenLiveSource.select(channel, source).uri)
+        for (url in listOf("http://csm.yospace.com/master.m3u8", "https://user@csm.yospace.com/master.m3u8"))
+            failWith(ProviderFailure.PLAYBACK_UNSUPPORTED) { SevenLiveSource.select(channel, descriptor(url)) }
         val response = descriptor().put("adConfig", JSONObject().put("adTagUrl", "https://fixture.invalid/ads"))
-        failWith(ProviderFailure.AD_SESSION_UNSUPPORTED) { SevenLiveSource.select(channel, response) }
+        try { SevenLiveSource.select(channel, response); fail("Separate ad configuration needs integration") } catch (error: ProviderException) {
+            assertEquals(ProviderFailure.AD_SESSION_UNSUPPORTED, error.failure)
+            assertEquals(ProviderPlaybackStage.SEVEN_ADS, error.stage)
+        }
         failWith(ProviderFailure.REGION_DENIED) { SevenLiveSource.select(channel, JSONObject("""{"error":"location_verification_required"}""")) }
     }
     @Test fun providerSessionFailureExpiresOnlySeven() {
