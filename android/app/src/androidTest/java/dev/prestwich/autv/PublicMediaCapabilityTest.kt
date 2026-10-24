@@ -46,6 +46,10 @@ class PublicMediaCapabilityTest {
     }
     @Test fun officialHlsRendersVideoAndAudio() { rendered("hls") }
     @Test fun officialDashRendersVideoAndAudio() { rendered("dash") }
+    @Test fun repeatedlySwitchesHlsAndDashWithoutReplacingPlayer() {
+        val player=main { it.holder.player }
+        for(sample in listOf("hls","dash","hls","dash")) { rendered(sample);assertSame(player,main { it.holder.player }) }
+    }
     @Test fun officialImaHlsIsLiveAndReleasesToFast() {
         rendered("ima-hls")
         assertTrue(main { it.holder.player.isCurrentMediaItemLive })
@@ -61,6 +65,9 @@ class PublicMediaCapabilityTest {
         main { it.start("fast") }
         waitFor { it.holder.player.isPlaying && it.video }
         assertSame(retained,main { it.holder.player })
+        rendered("ima-hls") // New SDK loader/session after the old one released.
+        assertSame(retained,main { it.holder.player })
+        main { it.start("fast") };waitFor { it.video && it.audio && it.holder.player.isPlaying }
     }
     @Test fun officialImaDashPlaysCompleteAdBreakAndContinues() {
         rendered("ima-dash")

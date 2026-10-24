@@ -54,6 +54,35 @@ class MediaLabRecoveryTest {
         assertFalse(main { it.holder.player.playWhenReady })
         main { it.holder.player.play() };waitFor { it.holder.player.isPlaying }
     }
+    @Test fun everyControlIsReachableInPortraitAndLandscapeAndCopiesObservedSummary() {
+        main { it.start("fast") };waitFor { it.video && it.audio }
+        for((requested,expected) in listOf(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT to android.content.res.Configuration.ORIENTATION_PORTRAIT,
+            android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE to android.content.res.Configuration.ORIENTATION_LANDSCAPE)) {
+            main { it.requestedOrientation=requested };waitFor { it.resources.configuration.orientation==expected }
+            SystemClock.sleep(700)
+            for(tag in MediaLabSession.SAMPLES.map { it.first }+"copy-qa") {
+                main {
+                    val button=it.window.decorView.findViewWithTag<android.widget.Button>(tag)
+                    assertNotNull(button);assertTrue(button.isFocusable);assertTrue(button.requestFocus())
+                    button.requestRectangleOnScreen(android.graphics.Rect(0,0,button.width,button.height),true)
+                }
+                SystemClock.sleep(50)
+                assertTrue("Control must be reachable and visible: $tag",main {
+                    val button=it.window.decorView.findViewWithTag<android.widget.Button>(tag)
+                    val rect=android.graphics.Rect()
+                    button.getGlobalVisibleRect(rect) && rect.height()>=button.height-2
+                })
+            }
+        }
+        main {
+            it.window.decorView.findViewWithTag<android.widget.Button>("copy-qa").performClick()
+            val clipboard=it.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+            val text=clipboard.primaryClip!!.getItemAt(0).text.toString()
+            assertTrue(text.contains("Video: yes"));assertTrue(text.contains("Audio: yes"))
+            assertTrue(text.contains("Ad completed: no"));assertTrue(text.contains("Returned to programme: no"))
+            assertFalse(text.contains("asset:///"));assertFalse(text.contains("https://"))
+        }
+    }
     @Test fun expiredAndFailedAdSessionsRecoverToVisibleAudioVideoAndRetune() {
         main { it.start("expiry") };waitFor { it.expired && it.fallbackVideo && it.fallbackAudio && it.holder.player.isPlaying };visibleMovingVideo()
         main { it.start("broken-interstitial") };waitFor { it.sessionFailure!=null && it.fallbackVideo && it.fallbackAudio };visibleMovingVideo()
