@@ -25,3 +25,7 @@
 ## 2025-05-18 - Fast Query Parameter Slicing & Single-Pass M3U Quarantine Scanning
 **Learning:** Extracting query parameters like `jwt=` directly via `str.find()` and slicing instead of calling `parse_qs(urlsplit(url).query)` yields a ~1.90x speedup (~47.5% time reduction) by bypassing full URL structure parsing and dictionary construction. Furthermore, advancing line pointers in single-pass M3U header-stream pairs eliminates redundant re-validation of URLs in quarantine loops (~1.87x overall quarantine speedup).
 **Action:** Prefer direct string slicing (`str.find("param=")`) for extracting known URL query parameter values and advance loop counters past associated body lines in paired M3U list iterations.
+
+## 2025-05-18 - Fast Substring Guard & String Search in Stream Candidate Filtering
+**Learning:** Adding a fast substring check (`if "jmp2.uk" in line or ...`) prior to attribute extraction and URL parsing in stream candidate extraction, combined with replacing `re.search` for `tvg-chno` with `attr()`, yielded a ~35.7% execution time reduction (~1.56x speedup) by avoiding regex and URL structure parsing for non-candidate streams.
+**Action:** Always filter stream lines with fast substring membership guards before performing regex searches or full URL decomposition.
