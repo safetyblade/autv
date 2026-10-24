@@ -31,6 +31,7 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.focused
 import androidx.compose.ui.semantics.selected
@@ -423,10 +424,10 @@ private fun ChannelRow(channel: Channel, selected: Boolean, failed: String?, sch
             focused = it.isFocused
             if (it.isFocused) onFocused(channel)
         }
-        .semantics {
+        .clearAndSetSemantics {
             this.selected = selected
             this.focused = focused
-            contentDescription = "${channel.numberLabel} ${channel.name}${if (selected) ", playing" else ""}${if (isFavourite) ", favourite" else ""}${schedule.now?.title?.let { " · $it" } ?: ""}"
+            contentDescription = "${channel.numberLabel} ${channel.name}${if (selected) ", playing" else ""}${if (isFavourite) ", favourite" else ""}${if (!known) ", no live stream" else ""}${if (failed != null) ", could not play" else ""}${schedule.now?.title?.let { " · $it" } ?: ""}"
         }
         .background(if (focused && tv) Silver.copy(alpha = 0.22f) else if (selected || focused) Color.White.copy(alpha = 0.075f) else Color.Black.copy(alpha = 0.18f), RoundedCornerShape(12.dp))
         .border(if (focused && tv) 3.dp else if (focused) 2.dp else 1.dp, if (focused) WarmWhite else if (selected) Silver.copy(alpha = 0.55f) else Color.White.copy(alpha = 0.06f), RoundedCornerShape(12.dp))
