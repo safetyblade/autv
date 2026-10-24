@@ -38,11 +38,28 @@ class MediaCapabilityActivity : AppCompatActivity() {
         layout = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
         status = TextView(this).apply { text = "AUTV official sample lab — no broadcaster entitlement"; textSize = 16f }
         layout.addView(status)
-        val buttons = LinearLayout(this)
-        for ((name,label) in listOf("hls" to "HLS", "dash" to "DASH", "widevine" to "Widevine", "ima-hls" to "Live IMA HLS", "ima-dash" to "Live IMA DASH", "fast" to "FAST fixture")) {
-            buttons.addView(Button(this).apply { text = label; setOnClickListener { start(name) } })
+        // Use two columns, not a single unscrollable row: the IMA controls were
+        // offscreen on narrow phone displays. Keep each sample directly tappable.
+        val samples = listOf(
+            "hls" to "HLS", "dash" to "DASH",
+            "widevine" to "Widevine", "ima-hls" to "Live IMA HLS",
+            "ima-dash" to "Live IMA DASH", "fast" to "FAST fixture"
+        )
+        for (pair in samples.chunked(2)) {
+            val row = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
+            for ((name, label) in pair) {
+                row.addView(Button(this).apply {
+                    text = label
+                    isAllCaps = false
+                    minHeight = (48 * resources.displayMetrics.density).toInt()
+                    setOnClickListener { start(name) }
+                }, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
+            }
+            layout.addView(row, LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ))
         }
-        layout.addView(buttons)
         videoView = PlayerView(this).apply { player = holder.player; useController = true }
         layout.addView(videoView, LinearLayout.LayoutParams(-1,0,1f)); setContentView(layout)
         holder.attachPlayerView(videoView)
