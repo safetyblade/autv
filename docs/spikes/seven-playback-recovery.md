@@ -374,7 +374,7 @@ IPTV source or old signed link is adopted.
 - **Identity interpretation/format:** values come from the metadata query as in
   `play_channel`, with no guessed account or catalogue-ID substitution. Only
   local parsing succeeded; provider validity remains unconfirmed.
-- **Missing field:** eleven additional query fields exist in the reference.
+- **Missing field:** ten additional query fields exist in the reference.
   Source presence alone does not establish their requiredness or legitimate
   values for AUTV. No one-field trial or fabricated value is justified yet.
 - **Client/platform:** common platform fields agree, user-agent differs honestly;
