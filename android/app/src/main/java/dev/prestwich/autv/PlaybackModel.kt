@@ -319,9 +319,11 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         homeJob = viewModelScope.launch { homeMutex.withLock { withContext(Dispatchers.IO) { TvHomePublisher(getApplication()).publish(catalogue, recent) } } }
     }
     private fun cancelProviderTune() {
+        val resolving=providerTuneJob?.isActive==true
         providerTuneGeneration++
         providerTuneJob?.cancel()
         providerTuneProvider=null
+        if(resolving) buffering=player.playbackState==Player.STATE_BUFFERING
     }
     private fun tuneProvider(channel: Channel) {
         if (castSender.connected) {
@@ -351,7 +353,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
                 failed[channel.number] = "Playback unavailable"
                 if(id.provider=="9now") { providerError=providerMessage(error);notice=providerError;syncProviderConnection() }
                 else notice=providerAccounts[id.provider]?.error
-                if (selected?.providerChannel != null) recoverProvider()
+                if (selected?.providerChannel?.id==id) recoverProvider()
             }
         }
     }

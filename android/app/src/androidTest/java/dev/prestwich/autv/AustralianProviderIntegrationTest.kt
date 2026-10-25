@@ -75,13 +75,21 @@ class AustralianProviderIntegrationTest {
     }
     @Test fun cancelledTenResolutionCannotReplaceAbcOrExposeSignedFailure() {
         ready();connectTen();val model=ui.activity.playback;tune("abc")
+        ui.runOnIdle { ui.activity.ten.denied=true;model.request(TuneTarget.Number(channel("ten").number)) }
+        ui.waitUntil(30000) { account("ten").error!=null && !model.buffering }
+        ui.runOnIdle {
+            assertEquals("abc",model.selected?.providerChannel?.id?.provider)
+            assertTrue(model.player.isPlaying)
+            assertFalse(account("ten").error!!.contains("https://"))
+            ui.activity.ten.denied=false
+        }
         ui.runOnIdle { ui.activity.ten.blocked=true;model.request(TuneTarget.Number(channel("ten").number)) }
         assertTrue(ui.activity.ten.entered.await(5,java.util.concurrent.TimeUnit.SECONDS))
         ui.runOnIdle { account("ten").disconnect() };ui.activity.ten.release.countDown()
         ui.waitUntil(30000) { !account("ten").busy }
         ui.runOnIdle {
             assertEquals("abc",model.selected?.providerChannel?.id?.provider)
-            assertTrue(model.player.isPlaying);assertEquals(ProviderConnection.CONNECTED,model.providerConnection)
+            assertTrue(model.player.isPlaying);assertFalse(model.buffering);assertEquals(ProviderConnection.CONNECTED,model.providerConnection)
             assertEquals(ProviderConnection.NOT_CONNECTED,account("abc").connection)
         }
     }
