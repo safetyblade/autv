@@ -13,3 +13,7 @@
 ## 2025-05-21 - Text-To-Speech Character Spacing for Activation Codes and Timer Units
 **Learning:** Short alphanumeric user codes (e.g., TV device activation codes) and formatted time strings (`M:SS`) are mispronounced by TalkBack screen readers as words or colon ratios.
 **Action:** Provide explicit `semantics { contentDescription = ... }` with character-spaced characters for activation codes ("A 8 K 9 X") and spelled-out units (minutes/seconds) for countdown timers, and clear semantics on decorative unicode chevrons (`"›"`).
+
+## 2025-05-22 - Unavailability and Playback Error Semantics in EPG Channel Rows
+**Learning:** Custom Compose channel rows setting explicit `contentDescription` on the parent row must include channel availability (`!channel.tunable`) and error state (`failed != null`) alongside `clearAndSetSemantics` so TalkBack announces stream errors or unavailability rather than omitting error context or pronouncing raw child text.
+**Action:** Always append error and availability states into `contentDescription` and use `clearAndSetSemantics` on composite list item rows.
