@@ -50,6 +50,7 @@ class PublicMediaCapabilityTest {
         val player=main { it.holder.player }
         for(sample in listOf("hls","dash","hls","dash")) { rendered(sample);assertSame(player,main { it.holder.player }) }
     }
+    @Test fun officialOriginalImaHlsStartsWithVideoAndAudio() { rendered("ima-hls-original") }
     @Test fun officialImaHlsIsLiveAndReleasesToFast() {
         rendered("ima-hls")
         assertTrue(main { it.holder.player.isCurrentMediaItemLive })

@@ -21,6 +21,8 @@ dependencies {
     implementation("androidx.media3:media3-exoplayer-hls:1.11.1")
     implementation("androidx.media3:media3-exoplayer-dash:1.11.1")
     api("androidx.media3:media3-exoplayer-ima:1.11.1")
+    // 3.39.0 can lose loadUrl/onLoadStream after a successful DAI session (androidx/media#3335).
+    implementation("com.google.ads.interactivemedia.v3:interactivemedia:3.40.0")
     implementation("androidx.media3:media3-datasource-okhttp:1.11.1")
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
