@@ -47,13 +47,13 @@ class MediaCapabilityActivity : AppCompatActivity() {
         for(pair in MediaLabSession.SAMPLES.chunked(2)) {
             val row=LinearLayout(this)
             for((name,label) in pair) row.addView(Button(this).apply {
-                text=label;isAllCaps=false;minHeight=dp(48);isFocusable=true
+                text=label;isAllCaps=false;minHeight=dp(48);isFocusable=true;isFocusableInTouchMode=true
                 tag=name;setOnClickListener { start(name) }
             },LinearLayout.LayoutParams(0,-2,1f))
             controls.addView(row)
         }
         controls.addView(Button(this).apply {
-            text="Copy QA summary";isAllCaps=false;minHeight=dp(48);tag="copy-qa"
+            text="Copy QA summary";isAllCaps=false;isFocusableInTouchMode=true;minHeight=dp(48);tag="copy-qa"
             setOnClickListener {
                 val clipboard=getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
                 clipboard.setPrimaryClip(android.content.ClipData.newPlainText("AUTV Media Lab",session.summary()))

@@ -50,6 +50,7 @@ class PublicMediaCapabilityTest {
         val player=main { it.holder.player }
         for(sample in listOf("hls","dash","hls","dash")) { rendered(sample);assertSame(player,main { it.holder.player }) }
     }
+    @Test fun officialOriginalImaHlsStartsWithVideoAndAudio() { rendered("ima-hls-original") }
     @Test fun officialImaHlsIsLiveAndReleasesToFast() {
         rendered("ima-hls")
         assertTrue(main { it.holder.player.isCurrentMediaItemLive })
@@ -58,9 +59,9 @@ class PublicMediaCapabilityTest {
         assertNull(main { it.errorCode });assertTrue(main { it.session.returnedToProgramme })
         val retained = main { it.holder.player }
         val media = main { it.holder.player.currentMediaItem }
-        val position = main { it.holder.player.currentPosition }
+        val surfaceFrames = main { it.session.videoSurfaceFrames }
         main { it.rebindVideoView() }
-        waitFor(20000) { it.holder.player.isPlaying && it.holder.player.currentPosition > position+1000 }
+        waitFor(20000) { it.holder.player.isPlaying && it.session.videoSurfaceFrames>surfaceFrames }
         assertEquals(media,main { it.holder.player.currentMediaItem })
         main { it.start("fast") }
         waitFor { it.holder.player.isPlaying && it.video }
@@ -76,8 +77,9 @@ class PublicMediaCapabilityTest {
         finally { report("ima-dash-ad-break") }
         assertNull(main { it.errorCode })
         assertTrue(main { it.adStarted && it.adEnded && it.completedAds>0 && it.adMediaObserved })
-        val position = main { it.holder.player.currentPosition }
-        waitFor(20000) { it.holder.player.currentPosition > position+2000 && it.holder.player.isPlaying }
+        val frames = main { it.session.renderedFrames }
+        waitFor(20000) { it.session.renderedFrames>frames+30 && it.session.returnedToProgramme && it.holder.player.isPlaying }
+        report("ima-dash-programme-resumed")
     }
     @Test fun widevineReportsActualDeviceResultWithoutSecurityDowngrade() {
         if (!MediaDrm.isCryptoSchemeSupported(C.WIDEVINE_UUID)) {

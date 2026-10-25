@@ -1,6 +1,6 @@
 # Implemented provider media capability
 
-SDKs: Media3 **1.11.1**, Google IMA DAI **3.39.0** (the Media3 extension's dependency),
+SDKs: Media3 **1.11.1**, Google IMA DAI **3.40.0** (explicit fix for the extension's former 3.39.0 transitive dependency),
 OkHttp **4.12.0**, JDK library desugaring **2.1.5**. No broadcaster SDK identity or
 signing key is included. This implements PR #85 deliverable A, not an ABC/Ten
 entitlement. No automatic merge.
@@ -195,3 +195,29 @@ remain “no”, never inferred from lack of errors. Failed ad/expiry sessions s
 and load the independent local recovery source; sample and fallback observations
 are recorded separately. Real ABC/Ten playback and regression on physical Nine/SBS
 still require device tests, not public sample claims. See PR/CI for exact results.
+
+### Targeted SDK correction: IMA 3.40.0
+
+Google's current [DAI Android release history](https://developers.google.com/ad-manager/dynamic-ad-insertion/sdk/android/history)
+explicitly identifies a 3.39.0 defect: successful DAI stream requests can silently
+omit onLoadStream/loadUrl. Version 3.40.0 fixes it. The Media3 maintainer reproduced
+live asset resolution failures in [issue #3335](https://github.com/androidx/media/issues/3335).
+This matches AUTV's observed IMA_SESSION_RECEIVED followed by no manifest/render
+and watchdog timeout, rather than establishing a decoder or geographic failure.
+
+Pin IMA 3.40.0 alongside unchanged Media3 1.11.1; the required API 24 minimum was
+already AUTV's minimum. Do not alter assets, advertisements or the working DASH
+format to compensate for a lost SDK callback. Both official HLS samples remain
+available; tests now also require the original no-key HLS asset to start. Public
+REST probes received 201 sessions and valid 200 manifests for original HLS and
+DASH. Their returned URLs/IDs are never logged or used to replace the SDK path.
+The initial keyed REST probe used an unestablished authentication request shape;
+its 401 did not contradict the keyed HLS SDK's completed commercials and has
+been removed. The SDK still receives that documented public key via setApiKey.
+
+Separately, each new provider tune gets a fresh SDK ad container; a retained
+session keeps its container on UI rebind. Late old-session teardown cannot mutate
+new-session WebViews. Current regressions exercise full ad breaks, new SDK loaders,
+clear HLS/DASH switching, offline moving-video/audio fallback, background expiry,
+manual pause, surface recreation, portrait/landscape focus and copied QA. See the
+follow-up PR for actual results; prior failed runs remain recorded as failures.

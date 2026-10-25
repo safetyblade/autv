@@ -17,10 +17,17 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
     var foreground = false
     var current = "none"; private set
     var video = false; private set
+    var videoSurfaceFrames = 0; private set
+    val renderedFrames: Long get() {
+        val counters=(holder.player as ExoPlayer).videoDecoderCounters ?: return 0
+        counters.ensureUpdated()
+        return counters.renderedOutputBufferCount.toLong()
+    }
     var audio = false; private set
     var drmKeys = false; private set
     var errorCode: Int? = null; private set
     var imaError: Int? = null; private set
+    var lastImaEvent = "NONE"; private set
     var sessionFailure: Int? = null; private set
     var adStarted = false; private set
     var adEnded = false; private set
@@ -34,7 +41,7 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
     var lastStartupStage = "IDLE"; private set
     private var startedAt = 0L
     private var startupDuration: Long? = null
-    private var programmePosition: Long? = null
+    private var programmeFrames: Long? = null
     private var recovering = false
     val elapsed get() = startupDuration ?: if(startedAt==0L) 0 else SystemClock.elapsedRealtime()-startedAt
     val state get() = when {
@@ -49,6 +56,7 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
     init {
         (holder.player as ExoPlayer).addAnalyticsListener(object : AnalyticsListener {
             override fun onRenderedFirstFrame(eventTime: AnalyticsListener.EventTime, output: Any, renderTimeMs: Long) {
+                videoSurfaceFrames++
                 if(recovering) fallbackVideo=true else video=true
                 refresh()
             }
@@ -73,6 +81,7 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
         })
         holder.onProviderStage = { stage=it;refresh() }
         holder.onAdEvent = {
+            lastImaEvent=it
             if(it=="STARTED") adStarted=true
             if(it=="COMPLETED") completedAds++
             if(adStarted && it in setOf("AD_PERIOD_ENDED","AD_BREAK_ENDED")) adEnded=true
@@ -95,18 +104,18 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
     fun refresh() {
         if(video && audio && startupDuration==null) { startupDuration=elapsed;stage="RENDERING" }
         if(adEnded && completedAds>0 && adMediaObserved && !holder.player.isPlayingAd && holder.player.isPlaying && !recovering) {
-            val start=programmePosition
-            if(start==null) programmePosition=holder.player.currentPosition
-            else if(holder.player.currentPosition>start+1000) returnedToProgramme=true
+            val start=programmeFrames
+            if(start==null || renderedFrames<start) programmeFrames=renderedFrames
+            else if(renderedFrames>start+24) returnedToProgramme=true
         }
         changed?.invoke()
     }
     fun start(sample: String) {
         require(sample in SAMPLES.map { it.first })
         resumeAfterPause=true
-        current=sample;video=false;audio=false;drmKeys=false;errorCode=null;imaError=null;sessionFailure=null
+        current=sample;video=false;videoSurfaceFrames=0;audio=false;drmKeys=false;errorCode=null;imaError=null;lastImaEvent="NONE";sessionFailure=null
         adStarted=false;adEnded=false;completedAds=0;adMediaObserved=false;returnedToProgramme=false;expired=false
-        fallbackVideo=false;fallbackAudio=false;recovering=false;programmePosition=null
+        fallbackVideo=false;fallbackAudio=false;recovering=false;programmeFrames=null
         startedAt=SystemClock.elapsedRealtime();startupDuration=null;stage="SELECTED";lastStartupStage=stage
         val id=ProviderChannelId("public-sample",sample)
         val request=when(sample) {
@@ -143,6 +152,7 @@ State: $state
 Startup stage: $stage; last failure stage: $lastStartupStage
 Startup duration: ${elapsed} ms
 Video: ${video.yn()}
+Rendered frames: $renderedFrames
 Audio: ${audio.yn()}
 DRM keys loaded: ${drmKeys.yn()}
 Ad started: ${adStarted.yn()}
@@ -151,6 +161,7 @@ Ad media observed: ${adMediaObserved.yn()}
 Returned to programme: ${returnedToProgramme.yn()}
 Expired: ${expired.yn()}
 Fallback video: ${fallbackVideo.yn()}; audio: ${fallbackAudio.yn()}
+Last IMA event: $lastImaEvent
 Error: ${errorCode ?: "none"}; IMA: ${imaError ?: "none"}"""
     }
     override fun onCleared() { changed=null;holder.release() }

@@ -14,10 +14,10 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 
 opener = urllib.request.build_opener(NoRedirect)
 # https://developers.google.com/ad-manager/dynamic-ad-insertion/streams
-PUBLIC_TEST_KEY = "8B1DA006064BD04C5CD474456AB8C9BDA790628E3184E95074EC65E308331EBC"
+# Probe only the documented no-key REST contract. The keyed sample is verified
+# by IMA setApiKey in instrumentation; its REST auth shape is not assumed here.
 samples = [
     ("hls-original", "hls", "c-rArva4ShKVIAkNfy6HUQ", {}),
-    ("hls-public-key", "hls", "XYrjlG09QTa8pxAo5Fzjww", {"api_key": PUBLIC_TEST_KEY}),
     ("dash-owner-confirmed", "dash", "PSzZMzAkSXCmlJOWDmRj8Q", {}),
 ]
 results = []
