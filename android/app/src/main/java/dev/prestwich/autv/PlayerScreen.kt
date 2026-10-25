@@ -150,8 +150,9 @@ internal fun AuTvScreen(
     // Normal guide browsing should not rebuild the channel list every time the 15-second
     // programme-progress clock ticks. Only programme-title searches need a time key.
     val searchClock = if (committedQuery.isBlank()) 0L else now / 60_000L
-    val filtered = remember(categoryChannels, committedQuery, epg, searchClock) {
-        GuideBrowse.filter(categoryChannels, "All", committedQuery, epg, now)
+    val filtered = remember(category, categoryChannels, committedQuery, epg, searchClock) {
+        val rows=GuideBrowse.filter(categoryChannels, "All", committedQuery, epg, now)
+        if(category=="Australian TV") dev.prestwich.autv.guide.AustralianChannelOrder.order(rows) else rows
     }
     LaunchedEffect(committedQuery) {
         if (guideOpen && committedQuery.isNotEmpty()) listState.scrollToItem(0)

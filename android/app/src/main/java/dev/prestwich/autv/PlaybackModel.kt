@@ -21,12 +21,43 @@ import kotlinx.coroutines.sync.withLock
 class PlaybackModel(application: Application, private val guideLoader: () -> Guide, private val epgLoader: () -> Epg,
     senderFactory: (((CastPlayback) -> Unit) -> CastConnection)? = null,
     guideCache: GuideCache? = null, playlistLoader: ((Guide) -> Guide)? = null, epgCacheLoader: (() -> Epg?)? = null,
-    providerAdapter: ProviderAdapter? = null) : AndroidViewModel(application) {
+    providerAdapter: ProviderAdapter? = null, sbsAdapter: ProviderAdapter? = null,
+    providerOverrides: Map<String,ProviderAdapter> = emptyMap(),
+    anonymousProviderIds: Set<String> = emptySet()) : AndroidViewModel(application) {
     constructor(application: Application) : this(application, { GuideRepository().load() }, { EpgRepository(java.io.File(application.filesDir, "programme-guide-v1.xml.gz")).load() },
         guideCache = FileGuideCache(java.io.File(application.filesDir, "channel-guide-v1.json")),
         playlistLoader = { GuideRepository().reconcile(it) },
         epgCacheLoader = { EpgRepository(java.io.File(application.filesDir, "programme-guide-v1.xml.gz")).cached() })
     private val nineNow = providerAdapter ?: createNineNowProvider(application)
+    private val configuration=(application as? AuTvApplication)?.australianProviders ?: AustralianProviderConfiguration()
+    private val configuredAdapters = (configuredAustralianAdapters(application,configuration) +
+        (sbsAdapter?.let { mapOf("sbs" to it) } ?: emptyMap()) + providerOverrides).also {
+        require(it.keys.all { key -> key in setOf("sbs","seven","ten","abc") })
+        require(anonymousProviderIds.all { key -> key=="abc" })
+    }
+    internal val providerAccounts: Map<String,ProviderAccountController> = configuredAdapters.mapValues { (id,adapter) ->
+        ProviderAccountController(providerName(id),id,adapter,viewModelScope,
+            onChannelsChanged={ accountChannelsChanged(id) },onDisconnect={
+                if(selected?.providerChannel?.id?.provider==id) recoverProvider()
+                else if(providerTuneProvider==id) cancelProviderTune()
+            },anonymousLiveApproved=id in anonymousProviderIds || (id=="abc" && configuration.abcAnonymousLiveApproved),
+            accountLinkingEnabled=id!="abc" || configuration.abc?.accountLinkingEnabled!=false)
+    }
+    internal val sbsAccount get()=providerAccounts.getValue("sbs")
+    val pendingActivationProvider: String? get()=if(providerActivation!=null || nineNow.pendingActivation!=null) "9now"
+        else providerAccounts.entries.firstOrNull { it.value.activation!=null }?.key
+    private fun accountChannelsChanged(id: String) {
+        if(selected?.providerChannel?.id?.let { it.provider==id && providerAccounts[id]?.channels?.none { row -> row.id==it }==true }==true) recoverProvider()
+        fastGuide?.let(::applyGuide)
+    }
+    internal fun providerUnavailableReason(id: String): String? = when {
+        id=="9now" || providerAccounts.containsKey(id) -> null
+        id=="ten" -> "10 connection requires AUTV's registered client configuration in this build."
+        id=="abc" -> "ABC connection requires AUTV's registered profile and media-authorisation configuration in this build."
+        else -> "This service is not enabled in this build."
+    }
+    private fun providerName(id: String)=when(id) { "sbs"->"SBS On Demand";"seven"->"7plus";"ten"->"10";"abc"->"ABC iview";else->"9Now" }
+    private var providerTuneProvider: String? = null
     var providerConnection by mutableStateOf(nineNow.connection); private set
     var providerActivation by mutableStateOf<DeviceActivation?>(null); private set
     var providerError by mutableStateOf<String?>(null); private set
@@ -58,7 +89,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     private val rokuResolver = RokuChannelResolver()
     var startupState by mutableStateOf(GuideStartupState.LOADING); private set
     var refreshFailed by mutableStateOf(false); private set
-    val holder = AuTvPlayer(application)
+    val holder = AuTvPlayer(application, advancedProviderPlayback = configuredAdapters.keys.any { it in setOf("ten","abc") })
     val player = holder.player
     var guide by mutableStateOf<Guide?>(null); private set
     var selected by mutableStateOf<Channel?>(null); private set
@@ -85,7 +116,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         override fun onPlayerError(error: PlaybackException) {
             player.currentMediaItem?.mediaId?.toIntOrNull()?.let { failed[it] = "Playback failed" }
             buffering = false
-            if (selected?.providerChannel != null) recoverProvider()
+            if (selected?.providerChannel != null) { providerAccounts[selected?.providerChannel?.id?.provider]?.playbackFailed(error.errorCode); recoverProvider() }
             else restoreGuideTune(player.currentMediaItem?.mediaId?.toIntOrNull())
         }
         override fun onPlaybackStateChanged(state: Int) {
@@ -109,11 +140,12 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
                 delay(30 * 60_000L)
             }
         }
-        holder.onProviderSessionFailure = { if (selected?.providerChannel != null) recoverProvider() }
-        holder.onProviderSessionExpired = { if (selected?.providerChannel != null) recoverProvider() }
+        holder.onProviderSessionFailure = { code -> if (selected?.providerChannel != null) { providerAccounts[selected?.providerChannel?.id?.provider]?.playbackFailed(code);recoverProvider() } }
+        holder.onProviderSessionExpired = { if (selected?.providerChannel != null) { providerAccounts[selected?.providerChannel?.id?.provider]?.playbackFailed();recoverProvider() } }
         castSender.start()
         if (providerConnection == ProviderConnection.CONNECTED) refreshProviderChannels()
         else if (nineNow.pendingActivation != null) connectNineNow()
+        providerAccounts.values.forEach { it.start() }
     }
     fun reload() {
         if (loading) return
@@ -136,8 +168,8 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     private fun applyGuide(fastLoaded: Guide) {
         fastGuide = fastLoaded
         // Native-only rows are added after public-cache validation, never persisted in it.
-        val local = providerChannels.map { channel ->
-            Channel(providerNumber(channel), channel.name, "Australian TV", "9Now", "", "", true, null,
+        val local = (providerChannels + providerAccounts.values.flatMap { it.channels }).map { channel ->
+            Channel(providerNumber(channel), channel.name, "Australian TV", providerName(channel.id.provider), "", "", true, null,
                 channel.id.favouriteKey, channel.logoUrl, channel)
         }.filter { candidate -> fastLoaded.channels.none { it.number == candidate.number } }
         val loaded = Guide(fastLoaded.activeCount + local.size, fastLoaded.availableCount + local.size,
@@ -176,7 +208,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         val channel = target?.let { ChannelTuning.resolve(guide?.channels.orEmpty(), it) }
         if (channel == null) { guideOpen = true; notice = "That channel is not currently available. Choose another channel."; return }
         if (channel.providerChannel != null && castSender.connected) {
-            notice = "9Now Cast is unavailable. Disconnect Cast to watch on this device."
+            notice = "Provider Cast is unavailable. Disconnect Cast to watch on this device."
             return
         }
         if (restoreOnFailure) guideTuneRecovery.begin(selected, channel) else guideTuneRecovery.clear()
@@ -286,20 +318,28 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         homeJob = viewModelScope.launch { homeMutex.withLock { withContext(Dispatchers.IO) { TvHomePublisher(getApplication()).publish(catalogue, recent) } } }
     }
     private fun cancelProviderTune() {
+        val resolving=providerTuneJob?.isActive==true
         providerTuneGeneration++
         providerTuneJob?.cancel()
+        providerTuneProvider=null
+        if(resolving) buffering=player.playbackState==Player.STATE_BUFFERING
     }
     private fun tuneProvider(channel: Channel) {
         if (castSender.connected) {
-            notice = "9Now Cast is unavailable. Disconnect Cast to watch on this device."
+            notice = "Provider Cast is unavailable. Disconnect Cast to watch on this device."
             return
         }
         val id = channel.providerChannel?.id ?: return
         val generation = providerTuneGeneration
+        providerTuneProvider=id.provider
         buffering = true
         providerTuneJob = viewModelScope.launch {
             try {
-                val request = providerCall { nineNow.resolve(id) }
+                val request = when(id.provider) {
+                    "9now" -> providerCall { nineNow.resolve(id) }
+                    else -> providerAccounts[id.provider]?.resolve(id) ?: throw ProviderException(ProviderFailure.UNAVAILABLE)
+                }
+                if(request.channelId!=id) throw ProviderException(ProviderFailure.UNAVAILABLE)
                 if (generation != providerTuneGeneration) return@launch
                 selected = channel
                 failed.remove(channel.number)
@@ -310,10 +350,10 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
                 if (generation != providerTuneGeneration) return@launch
                 buffering = false
                 failed[channel.number] = "Playback unavailable"
-                providerError = providerMessage(error)
-                notice = providerError
-                syncProviderConnection()
-                if (selected?.providerChannel != null) recoverProvider()
+                val explanation=if(id.provider=="9now") { providerError=providerMessage(error);syncProviderConnection();providerError }
+                    else providerAccounts[id.provider]?.error
+                if (selected?.providerChannel?.id==id) recoverProvider()
+                notice=explanation ?: notice
             }
         }
     }
@@ -324,17 +364,17 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
             ?: fastGuide?.channels?.firstOrNull { it.tunable }
         if (fallback != null) {
             request(TuneTarget.Number(fallback.number))
-            notice = "9Now playback is unavailable. Returned to ${fallback.name}."
+            notice = "Provider playback is unavailable. Returned to ${fallback.name}."
         } else {
             player.stop(); player.clearMediaItems(); selected = null; buffering = false; guideOpen = true
-            notice = "9Now playback is unavailable. Choose another channel."
+            notice = "Provider playback is unavailable. Choose another channel."
         }
     }
     private fun syncProviderConnection() {
         providerConnection = nineNow.connection
         if (providerConnection != ProviderConnection.CONNECTED) {
             providerChannels = emptyList()
-            if (selected?.providerChannel != null) recoverProvider()
+            if (selected?.providerChannel?.id?.provider=="9now") recoverProvider()
             fastGuide?.let(::applyGuide)
         }
     }
@@ -402,7 +442,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
             try {
                 providerChannels = providerCall { nineNow.channels() }
                 if (providerChannels.isEmpty()) providerError = providerDiscoveryMessage()
-                if (selected?.providerChannel?.id?.let { id -> providerChannels.none { it.id == id } } == true)
+                if (selected?.providerChannel?.id?.let { id -> id.provider=="9now" && providerChannels.none { it.id == id } } == true)
                     recoverProvider()
                 fastGuide?.let(::applyGuide)
             } catch (error: Exception) {
@@ -416,12 +456,12 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         accountGeneration++
         val previous = accountJob
         previous?.cancel()
-        cancelProviderTune()
+        if(selected?.providerChannel?.id?.provider=="9now" || providerTuneProvider=="9now") cancelProviderTune()
         providerActivation = null
         providerAuthStatus = null
         providerBusy = true
         providerChannels = emptyList()
-        if (selected?.providerChannel != null) recoverProvider()
+        if (selected?.providerChannel?.id?.provider=="9now") recoverProvider()
         fastGuide?.let(::applyGuide)
         accountJob = viewModelScope.launch {
             previous?.join()

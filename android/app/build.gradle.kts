@@ -3,12 +3,16 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
 }
+val mediaLab = providers.gradleProperty("autvMediaLab").orElse("false").get().also {
+    require(it in setOf("true", "false")) { "autvMediaLab must be true or false" }
+} == "true"
 android {
     namespace = "dev.prestwich.autv"
     compileSdk = 36
     defaultConfig {
         applicationId = "dev.prestwich.autv"
-        manifestPlaceholders["autvAppLabel"] = if (providers.gradleProperty("autvMediaLab").orNull == "true") "AUTV Media Lab" else "AU TV"
+        manifestPlaceholders["autvApplicationClass"] = providers.gradleProperty("autvApplicationClass").orElse("dev.prestwich.autv.AuTvApplication").get()
+        manifestPlaceholders["autvAppLabel"] = if (mediaLab) "AUTV Media Lab" else "AUTV"
         minSdk = 24
         targetSdk = 35
         versionCode = providers.gradleProperty("autvVersionCode").orElse("1").get().toInt()
@@ -26,7 +30,7 @@ android {
     }
     buildTypes {
         getByName("debug") {
-            if (providers.gradleProperty("autvMediaLab").orNull == "true") applicationIdSuffix = ".medialab"
+            if (mediaLab) applicationIdSuffix = ".medialab"
         }
         getByName("release") {
             if (signingPath != null) signingConfig = signingConfigs.getByName("distribution")
@@ -34,11 +38,16 @@ android {
     }
     // Fail closed: distribution builds must never silently use a new debug key or be unsigned.
     gradle.taskGraph.whenReady {
+        if (allTasks.any { it.project == project && it.name == "assembleFullAppDebug" })
+            check(!mediaLab) { "Full AUTV requested with Media Lab enabled. Pass -PautvMediaLab=false." }
         if (allTasks.any { it.project == project && it.name in setOf("assembleRelease", "packageRelease", "bundleRelease") }) {
             check(signingPath != null) { "Release signing is required. See docs/android-updates.md." }
             check(defaultConfig.versionCode!! > 1) { "Set -PautvVersionCode to a new distribution build number." }
         }
     }
+    if (mediaLab) sourceSets.getByName("debug").manifest.srcFile("src/mediaLab/AndroidManifest.xml")
+    // Optional private, provider-approved registration implementation; no credentials are committed.
+    providers.gradleProperty("autvProviderSources").orNull?.let { sourceSets.getByName("main").java.srcDir(it) }
     buildFeatures { compose = true }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
@@ -51,6 +60,7 @@ dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
     implementation("com.google.zxing:core:3.5.3")
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.json:json:20240303")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4")
     implementation("androidx.appcompat:appcompat:1.7.1")
     implementation(project(":core-data"))
@@ -72,4 +82,13 @@ dependencies {
     implementation("androidx.media3:media3-ui:1.11.1")
     implementation("com.google.android.gms:play-services-cast:22.3.1")
     implementation("com.google.android.gms:play-services-cast-framework:22.3.1")
+}
+
+// Explicit owner-facing build. Never relabel a Lab APK as the full television application.
+tasks.register<Copy>("assembleFullAppDebug") {
+    dependsOn("assembleDebug")
+    from(layout.buildDirectory.file("outputs/apk/debug/app-debug.apk"))
+    into(layout.buildDirectory.dir("outputs/apk/full-app"))
+    rename { "AUTV-Full-App-Debug.apk" }
+    doFirst { check(!mediaLab) { "Full AUTV requested with Media Lab enabled. Pass -PautvMediaLab=false." } }
 }

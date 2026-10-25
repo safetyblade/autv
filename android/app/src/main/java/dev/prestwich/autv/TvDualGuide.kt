@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import dev.prestwich.autv.data.*
 import dev.prestwich.autv.guide.FavouriteIdentity
+import dev.prestwich.autv.guide.AustralianChannelOrder
 import dev.prestwich.autv.guide.GuideBrowse
 import dev.prestwich.autv.guide.GuideViewport
 import dev.prestwich.autv.guide.GuideRowBounds
@@ -68,10 +69,11 @@ internal fun TvDualGuide(
     val remoteFocus = remember { FocusRequester() }
     val scope = rememberCoroutineScope()
     val channels = remember(guide, category, query, favourites) {
-        guide?.channels.orEmpty().filter {
+        val rows=guide?.channels.orEmpty().filter {
             (category == "All" || if (category == "Favourites") FavouriteIdentity.contains(it, favourites) else it.genre == category) &&
                 (query.isBlank() || it.name.contains(query, true) || it.number.toString().contains(query))
         }
+        if(category=="Australian TV") AustralianChannelOrder.order(rows) else rows
     }
     val number = if (full) fullNumber else quickNumber
     val selected = channels.firstOrNull { it.number == number } ?: channels.firstOrNull()

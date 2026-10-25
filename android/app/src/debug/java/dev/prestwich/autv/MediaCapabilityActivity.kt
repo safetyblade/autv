@@ -60,6 +60,10 @@ class MediaCapabilityActivity : AppCompatActivity() {
                 Toast.makeText(this@MediaCapabilityActivity,"QA summary copied",Toast.LENGTH_SHORT).show()
             }
         })
+        controls.addView(Button(this).apply {
+            text="AUTV provider settings";isAllCaps=false;minHeight=dp(48);isFocusableInTouchMode=true;tag="provider-settings"
+            setOnClickListener { startActivity(android.content.Intent(this@MediaCapabilityActivity,MainActivity::class.java).putExtra("autvOpenAustralianServices",true)) }
+        })
         status=TextView(this).apply { textSize=15f;setTextColor(0xffeeeeee.toInt());setTextIsSelectable(true) }
         controls.addView(status)
         setContentView(root);rebindVideoView()
