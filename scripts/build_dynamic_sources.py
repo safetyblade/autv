@@ -23,7 +23,10 @@ def read_url(url, max_bytes=65536, allow_partial=False):
         return resp.geturl(), resp.read(max_bytes)
 
 
-def valid_hls(url):
+def valid_hls(url, depth=0):
+    # Bound recursion depth to 3 to prevent stack overflow or DoS on circular playlists
+    if depth >= 3:
+        return False
     try:
         base, content = read_url(url)
         text = content.decode("utf-8-sig", errors="replace")
@@ -34,7 +37,7 @@ def valid_hls(url):
             idx = next(i for i, x in enumerate(lines) if x.startswith("#EXT-X-STREAM-INF:"))
             if idx + 1 >= len(lines) or lines[idx + 1].startswith("#"):
                 return False
-            return valid_hls(urljoin(base, lines[idx + 1]))
+            return valid_hls(urljoin(base, lines[idx + 1]), depth + 1)
         if not any(x.startswith("#EXTINF:") for x in lines):
             return False
         segment = next((x for x in lines if not x.startswith("#")), None)

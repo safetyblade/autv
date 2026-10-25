@@ -37,6 +37,12 @@ class TestTna203Health(unittest.TestCase):
             mod.read_url("file:///etc/passwd")
         self.assertIn("Unsupported URL scheme: file", str(ctx.exception))
 
+    def test_circular_master_playlist_bounded(self):
+        def fake_read(url, max_bytes=65536, allow_partial=False):
+            return url, b"#EXTM3U\n#EXT-X-STREAM-INF:BANDWIDTH=2000000\nmaster.m3u8\n"
+        with patch.object(mod, "read_url", side_effect=fake_read):
+            self.assertFalse(mod.valid_hls("https://example.org/master.m3u8"))
+
 
 if __name__ == "__main__":
     unittest.main()
