@@ -81,7 +81,7 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                         }
                     } else {
                         val service = services.first { it.id == selected }
-                        TextButton(onClick = { selected = null }, modifier = Modifier.focusRequester(firstFocus).semantics { contentDescription = "Back to all services" }.testTag("providers-back")) { Text("‹ All services") }
+                        TextButton(onClick = { selected = null }, modifier = Modifier.focusRequester(firstFocus).clearAndSetSemantics { contentDescription = "Back to all services" }.testTag("providers-back")) { Text("‹ All services") }
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                             ServiceIcon(service)
                             Column {

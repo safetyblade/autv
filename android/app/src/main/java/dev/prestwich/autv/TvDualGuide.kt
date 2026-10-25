@@ -241,7 +241,7 @@ internal fun TvDualGuide(
                             Row(Modifier.fillMaxWidth().height(rowHeight).padding(vertical = 2.dp)
                                 .background(if (focused) GuideAccent.copy(alpha = 0.16f) else androidx.compose.ui.graphics.Color.Transparent, RoundedCornerShape(6.dp))
                                 .border(if (focused) 3.dp else 1.dp, if (focused) GuideAccent else GuideAccent.copy(alpha = 0.12f), RoundedCornerShape(6.dp))
-                                .semantics { this.selected = channel.number == playing?.number; this.focused = focused; contentDescription = "${channel.numberLabel} ${channel.name}${if (channel.number == playing?.number) ", playing" else ""}${if (isFav) ", favourite" else ""}${current?.title?.let { " · $it" } ?: ""}" }
+                                .clearAndSetSemantics { this.selected = channel.number == playing?.number; this.focused = focused; contentDescription = "${channel.numberLabel} ${channel.name}${if (channel.number == playing?.number) ", playing" else ""}${if (isFav) ", favourite" else ""}${if (!channel.tunable) ", unavailable" else ""}${if (failed[channel.number] != null) ", playback failed" else ""}${current?.title?.let { " · $it" } ?: ""}" }
                                 .testTag("channel-${channel.number}"), verticalAlignment = Alignment.CenterVertically) {
                                 Row(Modifier.width(if (full) 220.dp else 260.dp).fillMaxHeight().then(if (full && focused && channelCell) Modifier.border(3.dp, GuideAccent) else Modifier)
                                     .testTag("channel-cell-${channel.number}")
