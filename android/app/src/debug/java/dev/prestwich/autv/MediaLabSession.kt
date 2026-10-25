@@ -18,7 +18,11 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
     var current = "none"; private set
     var video = false; private set
     var videoSurfaceFrames = 0; private set
-    var renderedFrames = 0L; private set
+    val renderedFrames: Long get() {
+        val counters=(holder.player as ExoPlayer).videoDecoderCounters ?: return 0
+        counters.ensureUpdated()
+        return counters.renderedOutputBufferCount.toLong()
+    }
     var audio = false; private set
     var drmKeys = false; private set
     var errorCode: Int? = null; private set
@@ -59,9 +63,6 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
             override fun onAudioPositionAdvancing(eventTime: AnalyticsListener.EventTime, playoutStartSystemTimeMs: Long) {
                 if(recovering) fallbackAudio=true else audio=true
                 refresh()
-            }
-            override fun onVideoFrameProcessingOffset(eventTime: AnalyticsListener.EventTime, totalProcessingOffsetUs: Long, frameCount: Int) {
-                renderedFrames+=frameCount;refresh()
             }
             override fun onDrmKeysLoaded(eventTime: AnalyticsListener.EventTime) { drmKeys=true; refresh() }
             override fun onLoadStarted(eventTime: AnalyticsListener.EventTime, loadEventInfo: androidx.media3.exoplayer.source.LoadEventInfo, mediaLoadData: androidx.media3.exoplayer.source.MediaLoadData) {
@@ -104,7 +105,7 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
         if(video && audio && startupDuration==null) { startupDuration=elapsed;stage="RENDERING" }
         if(adEnded && completedAds>0 && adMediaObserved && !holder.player.isPlayingAd && holder.player.isPlaying && !recovering) {
             val start=programmeFrames
-            if(start==null) programmeFrames=renderedFrames
+            if(start==null || renderedFrames<start) programmeFrames=renderedFrames
             else if(renderedFrames>start+24) returnedToProgramme=true
         }
         changed?.invoke()
@@ -112,7 +113,7 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
     fun start(sample: String) {
         require(sample in SAMPLES.map { it.first })
         resumeAfterPause=true
-        current=sample;video=false;videoSurfaceFrames=0;renderedFrames=0;audio=false;drmKeys=false;errorCode=null;imaError=null;lastImaEvent="NONE";sessionFailure=null
+        current=sample;video=false;videoSurfaceFrames=0;audio=false;drmKeys=false;errorCode=null;imaError=null;lastImaEvent="NONE";sessionFailure=null
         adStarted=false;adEnded=false;completedAds=0;adMediaObserved=false;returnedToProgramme=false;expired=false
         fallbackVideo=false;fallbackAudio=false;recovering=false;programmeFrames=null
         startedAt=SystemClock.elapsedRealtime();startupDuration=null;stage="SELECTED";lastStartupStage=stage
