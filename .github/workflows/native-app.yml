@@ -2,9 +2,6 @@ name: Native app
 
 on:
   workflow_dispatch:
-  # Owner-authorised integration APK; retains the permanent update signing identity.
-  push:
-    branches: [codex/australian-provider-integration]
 
 permissions:
   contents: read

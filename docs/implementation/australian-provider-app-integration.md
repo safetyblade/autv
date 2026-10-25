@@ -10,14 +10,21 @@ Ten requires its AUTV-approved `TenClientRegistration`: API origins, configurati
 
 ABC requires an AUTV-approved `AbcClientRegistration`, a returned Victorian main house number and the approved media-authorisation implementation. Profile linking additionally requires ABC's `productId` and profile API key. Explicitly approved anonymous live mode uses `accountLinkingEnabled=false` plus `abcAnonymousLiveApproved=true`; no profile request is sent and the UI does not claim an account is connected. Anonymous metadata alone does not grant stream authorisation. The default app has no such grant and exposes no fake account connection.
 
-SBS reuses the existing successful adapter, original stream resolution and encrypted store aliases. Nine's adapter, account aliases and FAST refresh are unchanged. Seven remains paused.
+SBS reuses the existing successful adapter, original stream resolution and encrypted store aliases. Nine's adapter, account aliases and FAST refresh are unchanged. Seven now reuses its existing account/catalogue/Channel 7 resolver and encrypted aliases. The last owner result remains `7-DESCRIPTOR (HTTP 400)` with a non-JSON response; the full app retains this safe diagnosis and adds response-format classification. No successful descriptor or real Channel 7 playback is claimed. No hard-coded postcode, tracking identity or false SDK verification is copied from upstream.
 
-## Builds and QA
+## Full AUTV build and delivery
 
-The separate Media Lab APK retains its own application ID. Its new **AUTV provider settings** control opens the real settings/guide integration inside that isolated package; it cannot read the production package's broadcaster sessions. Existing Media Lab HLS/DASH/Widevine/IMA/recovery controls remain available.
+The normal owner build is the real television application, **AUTV**, package `dev.prestwich.autv`, launcher `MainActivity`:
 
-The native-provider workflow runs `AustralianProviderIntegrationTest` and `SbsProviderTest` alongside existing account, guide, QR, FAST and upgrade tests. The new cases exercise real application routing using explicitly synthetic provider responses and visible local media: Ten QR approval, native tuning, programme lookup, stable numbers/Favourites, approved anonymous ABC, scoped sign-out and cancellation of a late resolver. They do not establish real Ten or ABC broadcast playback.
+```
+gradle -p android -PautvMediaLab=false :app:assembleFullAppDebug
+python3 scripts/verify-full-app-apk.py android/app/build/outputs/apk/full-app/AUTV-Full-App-Debug.apk
+```
 
-The distribution workflow also builds this integration branch with the existing permanent signing identity and monotonic version code, so its release APK can update the installed production app. Do not install a debug production APK over a release installation; use the signed distribution artifact or the isolated Media Lab APK.
+The explicit full-app task rejects Lab configuration. The packaged manifest check verifies the actual application name, ID and phone/TV launcher; it also records the public signing certificate fingerprint. The **AUTV Full Application Debug** workflow publishes artifact **AUTV-Full-App-Debug**, containing **AUTV-Full-App-Debug.apk**. Normal debug builds no longer advertise the QA activity as a launcher. Public Media Lab sample workflows run only when explicitly dispatched; their source and capabilities are retained.
 
-Owner QA: open Media Lab, run HLS/DASH/Widevine, then both live IMA modes; copy the observed QA summary after a complete ad break. Run FAST recovery and check moving picture plus audio, then select another sample. Open **AUTV provider settings** to inspect the actual app UI. In an approved registered build, connect Ten or refresh approved anonymous ABC, tune the main Victorian channel, test Guide/Back/CH+/CH− and Favourites, restart to check persistence, and sign out one provider while another plays. Real broadcaster video/audio and commercial return require separate device acceptance; public sample success is not broadcaster success.
+This is a normal Android debug-signed APK, independent of permanent release-signing setup. It can update an existing installation only when its signing certificate and version are compatible. Do not uninstall an existing AUTV merely to overcome a signature mismatch: that can remove encrypted broadcaster sessions. Use the original signing identity or a separate test device/emulator. No private permanent signing key is generated or uploaded by this change.
+
+ABC and Ten settings accurately show unavailable status until approved configuration is supplied. Technical registration requirements above belong outside the ordinary viewing workflow. Their existing transports, session renewal, catalogue, native resolver and IMA handoff are wired to the real app; this does not establish real broadcaster playback. Seven uses the restored native guide/resolver path and preserves precise failed-stage/HTTP diagnostics without stopping other channels.
+
+Australian TV display and CH navigation order groups ABC, SBS, Seven, Nine and Ten, with known companion names before thematic channels. It changes no persisted channel numbers or provider IDs. Favourites membership/storage and their existing display ordering are untouched; native and similarly named FAST identities remain distinct.

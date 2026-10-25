@@ -32,7 +32,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     private val configuration=(application as? AuTvApplication)?.australianProviders ?: AustralianProviderConfiguration()
     private val configuredAdapters = (configuredAustralianAdapters(application,configuration) +
         (sbsAdapter?.let { mapOf("sbs" to it) } ?: emptyMap()) + providerOverrides).also {
-        require(it.keys.all { key -> key in setOf("sbs","ten","abc") })
+        require(it.keys.all { key -> key in setOf("sbs","seven","ten","abc") })
         require(anonymousProviderIds.all { key -> key=="abc" })
     }
     internal val providerAccounts: Map<String,ProviderAccountController> = configuredAdapters.mapValues { (id,adapter) ->
@@ -54,10 +54,9 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         id=="9now" || providerAccounts.containsKey(id) -> null
         id=="ten" -> "10 connection requires AUTV's registered client configuration in this build."
         id=="abc" -> "ABC connection requires AUTV's registered profile and media-authorisation configuration in this build."
-        id=="seven" -> "7plus playback remains paused at its recorded descriptor failure."
         else -> "This service is not enabled in this build."
     }
-    private fun providerName(id: String)=when(id) { "sbs"->"SBS On Demand";"ten"->"10";"abc"->"ABC iview";else->"9Now" }
+    private fun providerName(id: String)=when(id) { "sbs"->"SBS On Demand";"seven"->"7plus";"ten"->"10";"abc"->"ABC iview";else->"9Now" }
     private var providerTuneProvider: String? = null
     var providerConnection by mutableStateOf(nineNow.connection); private set
     var providerActivation by mutableStateOf<DeviceActivation?>(null); private set
@@ -351,9 +350,10 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
                 if (generation != providerTuneGeneration) return@launch
                 buffering = false
                 failed[channel.number] = "Playback unavailable"
-                if(id.provider=="9now") { providerError=providerMessage(error);notice=providerError;syncProviderConnection() }
-                else notice=providerAccounts[id.provider]?.error
+                val explanation=if(id.provider=="9now") { providerError=providerMessage(error);syncProviderConnection();providerError }
+                    else providerAccounts[id.provider]?.error
                 if (selected?.providerChannel?.id==id) recoverProvider()
+                notice=explanation ?: notice
             }
         }
     }

@@ -92,7 +92,7 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                         val unavailable=model.providerUnavailableReason(service.id)
                         if (unavailable!=null) {
                             Text("Connection not enabled",style=MaterialTheme.typography.titleMedium)
-                            Text(unavailable,color=MaterialTheme.colorScheme.onSurfaceVariant,modifier=Modifier.testTag("${service.id}-unavailable"))
+                            Text("This service is not enabled in this build. Your saved account has not been removed.",color=MaterialTheme.colorScheme.onSurfaceVariant,modifier=Modifier.testTag("${service.id}-unavailable"))
                         } else {
                             val account=model.providerAccounts[service.id]
                             val connection=account?.connection ?: model.providerConnection
@@ -109,7 +109,7 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                 color=MaterialTheme.colorScheme.primary,modifier=Modifier.testTag("${service.id}-connection-state"))
                             Text(if(canBrowse) "$count live channels in your guide." else "Connect your ${service.name} account to add its live channels.")
                             activation?.let { challenge ->
-                                val destination=when(service.id) { "sbs"->ActivationDestination.SBS;"ten"->ActivationDestination.TEN;"abc"->ActivationDestination.ABC;else->ActivationDestination.NINE_NOW }
+                                val destination=when(service.id) { "seven"->ActivationDestination.SEVEN;"sbs"->ActivationDestination.SBS;"ten"->ActivationDestination.TEN;"abc"->ActivationDestination.ABC;else->ActivationDestination.NINE_NOW }
                                 ProviderActivationScreen(service.name,challenge,destination,
                                     onOpenWebsite={ address -> runCatching { uriHandler.openUri(address) };Unit },onCancel=disconnect)
                             }

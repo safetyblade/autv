@@ -3,7 +3,7 @@ package dev.prestwich.autv.guide
 import dev.prestwich.autv.data.Channel
 
 class GuideNavigator(channels: List<Channel>) {
-    private val ordered = channels.sortedBy { it.number }
+    private val ordered = AustralianChannelOrder.withinNativeSlots(channels.sortedBy { it.number })
 
     fun next(current: Channel?): Channel? = seek(current, 1)
     fun previous(current: Channel?): Channel? = seek(current, -1)

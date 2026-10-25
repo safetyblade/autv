@@ -22,6 +22,7 @@ class AustralianProviderConfiguration(
 /** Production composition: concrete transports + their existing encrypted account factories. */
 internal fun configuredAustralianAdapters(context: Context, configuration: AustralianProviderConfiguration): Map<String,ProviderAdapter> = buildMap {
     put("sbs",createSbsProvider(context))
+    put("seven",createSevenProvider(context))
     configuration.ten?.let { registration ->
         put("ten",createRegisteredTenProvider(context,registration,configuration.tenProofChannelKey!!,configuration.tenDaiNetworkCode))
     }
