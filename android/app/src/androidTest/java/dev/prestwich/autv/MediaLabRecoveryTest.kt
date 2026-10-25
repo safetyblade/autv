@@ -63,7 +63,7 @@ class MediaLabRecoveryTest {
             for(tag in MediaLabSession.SAMPLES.map { it.first }+"copy-qa") {
                 main {
                     val button=it.window.decorView.findViewWithTag<android.widget.Button>(tag)
-                    assertNotNull(button);assertTrue(button.isFocusable);assertTrue(button.requestFocus())
+                    assertNotNull("Missing control: $tag",button);assertTrue("Not focusable: $tag",button.isFocusable);assertTrue("Focus rejected: $tag",button.requestFocus())
                     button.requestRectangleOnScreen(android.graphics.Rect(0,0,button.width,button.height),true)
                 }
                 SystemClock.sleep(50)

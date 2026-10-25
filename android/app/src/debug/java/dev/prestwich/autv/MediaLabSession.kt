@@ -21,6 +21,7 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
     var drmKeys = false; private set
     var errorCode: Int? = null; private set
     var imaError: Int? = null; private set
+    var lastImaEvent = "NONE"; private set
     var sessionFailure: Int? = null; private set
     var adStarted = false; private set
     var adEnded = false; private set
@@ -73,6 +74,7 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
         })
         holder.onProviderStage = { stage=it;refresh() }
         holder.onAdEvent = {
+            lastImaEvent=it
             if(it=="STARTED") adStarted=true
             if(it=="COMPLETED") completedAds++
             if(adStarted && it in setOf("AD_PERIOD_ENDED","AD_BREAK_ENDED")) adEnded=true
@@ -104,7 +106,7 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
     fun start(sample: String) {
         require(sample in SAMPLES.map { it.first })
         resumeAfterPause=true
-        current=sample;video=false;audio=false;drmKeys=false;errorCode=null;imaError=null;sessionFailure=null
+        current=sample;video=false;audio=false;drmKeys=false;errorCode=null;imaError=null;lastImaEvent="NONE";sessionFailure=null
         adStarted=false;adEnded=false;completedAds=0;adMediaObserved=false;returnedToProgramme=false;expired=false
         fallbackVideo=false;fallbackAudio=false;recovering=false;programmePosition=null
         startedAt=SystemClock.elapsedRealtime();startupDuration=null;stage="SELECTED";lastStartupStage=stage
@@ -151,6 +153,7 @@ Ad media observed: ${adMediaObserved.yn()}
 Returned to programme: ${returnedToProgramme.yn()}
 Expired: ${expired.yn()}
 Fallback video: ${fallbackVideo.yn()}; audio: ${fallbackAudio.yn()}
+Last IMA event: $lastImaEvent
 Error: ${errorCode ?: "none"}; IMA: ${imaError ?: "none"}"""
     }
     override fun onCleared() { changed=null;holder.release() }

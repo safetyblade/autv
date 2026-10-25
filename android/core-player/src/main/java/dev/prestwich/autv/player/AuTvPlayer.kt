@@ -26,7 +26,7 @@ class AuTvPlayer(private val context: Context, private val advancedProviderPlayb
     var onImaError: ((Int) -> Unit)? = null
     var onProviderSessionFailure: ((Int) -> Unit)? = null
     private var view: PlayerView? = null
-    private val adOverlay = FrameLayout(context.applicationContext)
+    private var adOverlay = FrameLayout(context.applicationContext)
     private var ima: ImaServerSideAdInsertionMediaSource.AdsLoader? = null
     private var interstitials: HlsInterstitialsAdsLoader? = null
     private val handler = Handler(Looper.getMainLooper())
@@ -58,9 +58,15 @@ class AuTvPlayer(private val context: Context, private val advancedProviderPlayb
         expiry?.let(handler::removeCallbacks); expiry = null
         // Detach old media before releasing its session/SDK. Never retain a prior account's ad state.
         player.stop(); player.clearMediaItems()
+        // Each SDK session owns its container. Late teardown from an old loader must
+        // never remove/modify a newly initialised loader's WebView in the same group.
+        val retiredOverlay=adOverlay
+        (retiredOverlay.parent as? ViewGroup)?.removeView(retiredOverlay)
         ima?.release(); ima = null
         interstitials?.setPlayer(null); interstitials?.release(); interstitials = null
-        adOverlay.removeAllViews()
+        retiredOverlay.removeAllViews()
+        adOverlay=FrameLayout(context.applicationContext)
+        view?.adViewGroup?.addView(adOverlay,FrameLayout.LayoutParams(-1,-1))
     }
     fun play(url: String?, channelNumber: Int? = null) {
         if (url.isNullOrBlank()) return
