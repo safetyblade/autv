@@ -41,7 +41,7 @@ private val services = listOf(
 @Composable
 internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Unit) {
     val uriHandler = LocalUriHandler.current
-    var selected by rememberSaveable { mutableStateOf<String?>(if (model.providerActivation != null) "9now" else null) }
+    var selected by rememberSaveable { mutableStateOf<String?>(model.pendingActivationProvider) }
     val firstFocus = remember { FocusRequester() }
     val scroll = rememberScrollState()
     LaunchedEffect(selected) { scroll.scrollTo(0); withFrameNanos { }; firstFocus.requestFocus() }
@@ -71,9 +71,9 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                     ServiceIcon(service)
                                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                         Text(service.name, style = MaterialTheme.typography.titleMedium)
-                                        Text(if (service.id == "9now") connectionLabel(model.providerConnection) else "Not available yet",
+                                        Text(when { service.id=="9now" -> connectionLabel(model.providerConnection); model.providerAccounts[service.id]!=null -> model.providerAccounts.getValue(service.id).let { if(it.anonymousLiveApproved && it.connection!=ProviderConnection.CONNECTED) "Live TV without account" else connectionLabel(it.connection) }; else -> "Connection not configured" },
                                             style = MaterialTheme.typography.labelMedium,
-                                            color = if (service.id == "9now") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+                                            color = if (model.providerUnavailableReason(service.id)==null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
                                     }
                                     Text("›", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.clearAndSetSemantics {})
                                 }
@@ -89,37 +89,40 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                 Text(service.description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         }
-                        if (service.id != "9now") {
-                            Text("Not available yet", style = MaterialTheme.typography.titleMedium)
-                            Text("${service.name} account connections are not supported in AUTV yet. Your existing guide channels remain available.",
-                                color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        val unavailable=model.providerUnavailableReason(service.id)
+                        if (unavailable!=null) {
+                            Text("Connection not enabled",style=MaterialTheme.typography.titleMedium)
+                            Text(unavailable,color=MaterialTheme.colorScheme.onSurfaceVariant,modifier=Modifier.testTag("${service.id}-unavailable"))
                         } else {
-                            Text(connectionLabel(model.providerConnection), color = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.testTag("9now-connection-state"))
-                            Text(if (model.providerConnection == ProviderConnection.CONNECTED)
-                                "${model.providerChannelCount} live channels and events in your guide."
-                                else "Connect your Nine account to bring its live channels and events into AUTV.")
-                            model.providerActivation?.let { activation ->
-                                ProviderActivationScreen("9Now", activation, ActivationDestination.NINE_NOW,
-                                    onOpenWebsite = { address -> runCatching { uriHandler.openUri(address) }; Unit },
-                                    onCancel = model::disconnectNineNow)
+                            val account=model.providerAccounts[service.id]
+                            val connection=account?.connection ?: model.providerConnection
+                            val activation=account?.activation ?: if(service.id=="9now") model.providerActivation else null
+                            val busy=account?.busy ?: model.providerBusy
+                            val count=account?.channels?.size ?: model.providerChannelCount
+                            val status=account?.status ?: if(service.id=="9now") model.providerAuthStatus else null
+                            val error=account?.error ?: if(service.id=="9now") model.providerError else null
+                            val canBrowse=account?.canBrowse ?: (connection==ProviderConnection.CONNECTED)
+                            val connect: ()->Unit=account?.let { it::connect } ?: model::connectNineNow
+                            val disconnect: ()->Unit=account?.let { it::disconnect } ?: model::disconnectNineNow
+                            val refresh: ()->Unit=account?.let { it::refresh } ?: model::refreshProviderChannels
+                            Text(if(account?.anonymousLiveApproved==true && connection!=ProviderConnection.CONNECTED) "Live TV available without an account" else connectionLabel(connection),
+                                color=MaterialTheme.colorScheme.primary,modifier=Modifier.testTag("${service.id}-connection-state"))
+                            Text(if(canBrowse) "$count live channels in your guide." else "Connect your ${service.name} account to add its live channels.")
+                            activation?.let { challenge ->
+                                val destination=when(service.id) { "sbs"->ActivationDestination.SBS;"ten"->ActivationDestination.TEN;"abc"->ActivationDestination.ABC;else->ActivationDestination.NINE_NOW }
+                                ProviderActivationScreen(service.name,challenge,destination,
+                                    onOpenWebsite={ address -> runCatching { uriHandler.openUri(address) };Unit },onCancel=disconnect)
                             }
-                            model.providerAuthStatus?.let { Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("9now-auth-status")) }
-                            model.providerError?.let { Text(it, color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("9now-error")) }
-                            if (!model.providerBusy && model.providerConnection != ProviderConnection.CONNECTED) {
-                                Button(onClick = model::connectNineNow, modifier = Modifier.fillMaxWidth().testTag("9now-connect")) { Text("Connect 9Now") }
+                            status?.let { Text(it,color=MaterialTheme.colorScheme.onSurfaceVariant,modifier=Modifier.testTag("${service.id}-auth-status")) }
+                            error?.let { Text(it,color=MaterialTheme.colorScheme.error,modifier=Modifier.testTag("${service.id}-error")) }
+                            if(!busy && connection!=ProviderConnection.CONNECTED && account?.accountLinkingEnabled!=false) {
+                                Button(onClick=connect,modifier=Modifier.fillMaxWidth().testTag("${service.id}-connect")) { Text("Connect ${service.name}") }
                             }
-                            if (model.providerConnection == ProviderConnection.CONNECTED) {
-                                Button(onClick = model::refreshProviderChannels, enabled = !model.providerBusy,
-                                    modifier = Modifier.fillMaxWidth()) { Text(if (model.providerBusy) "Refreshing…" else "Refresh channels") }
-                            }
-                            if (model.providerBusy) LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-                            Text("Available in Australia. Plays on this device; Cast is unavailable for 9Now. Your connection is saved securely. AUTV never asks for your password.",
-                                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            if (model.providerActivation == null && (model.providerBusy || model.providerConnection in setOf(ProviderConnection.CONNECTED, ProviderConnection.CONNECTING))) {
-                                TextButton(onClick = model::disconnectNineNow, modifier = Modifier.testTag("9now-disconnect")) {
-                                    Text(if (model.providerConnection == ProviderConnection.CONNECTED) "Sign out of 9Now" else "Cancel sign-in")
-                                }
+                            if(canBrowse) Button(onClick=refresh,enabled=!busy,modifier=Modifier.fillMaxWidth().testTag("${service.id}-refresh")) { Text(if(busy) "Refreshing…" else "Refresh channels") }
+                            if(busy) LinearProgressIndicator(modifier=Modifier.fillMaxWidth())
+                            Text("Available in Australia. Native playback on this device; Cast is unavailable. Your connection is saved securely. AUTV never asks for your password.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+                            if(activation==null && (busy || connection in setOf(ProviderConnection.CONNECTED,ProviderConnection.CONNECTING))) {
+                                TextButton(onClick=disconnect,modifier=Modifier.testTag("${service.id}-disconnect")) { Text(if(connection==ProviderConnection.CONNECTED) "Sign out of ${service.name}" else "Cancel sign-in") }
                             }
                         }
                     }

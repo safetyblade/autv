@@ -60,7 +60,7 @@ class MediaLabRecoveryTest {
             android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE to android.content.res.Configuration.ORIENTATION_LANDSCAPE)) {
             main { it.requestedOrientation=requested };waitFor { it.resources.configuration.orientation==expected }
             SystemClock.sleep(700)
-            for(tag in MediaLabSession.SAMPLES.map { it.first }+"copy-qa") {
+            for(tag in MediaLabSession.SAMPLES.map { it.first }+listOf("copy-qa","provider-settings")) {
                 main {
                     val button=it.window.decorView.findViewWithTag<android.widget.Button>(tag)
                     assertNotNull("Missing control: $tag",button);assertTrue("Not focusable: $tag",button.isFocusable);assertTrue("Focus rejected: $tag",button.requestFocus())

@@ -20,6 +20,17 @@ class AbcHttpAccessTest {
     }
     private fun registration(authorise: (String,String,String?)->String={_,url,_->url})=
         AbcClientRegistration("autv-registered-fixture","synthetic-profile-key","VIC","returned-main-vic",authorise)
+    @Test fun approvedAnonymousRegistrationDoesNotSendUnregisteredProfileRequests() {
+        var calls=0
+        val config=AbcClientRegistration("","","VIC","returned-main-vic",{_,url,_->url},accountLinkingEnabled=false)
+        val access=AbcHttpAccess(config) { calls++;Connection(it) }
+        for(action in listOf<()->Any>({access.link("device")},{access.accountToken("uid")},{access.linkStatus("device",null)})) {
+            try { action();fail() } catch(e: ProviderException) { assertEquals(ProviderFailure.UNSUPPORTED,e.failure) }
+        }
+        assertEquals(0,calls)
+        access.home();assertEquals(1,calls)
+        assertEquals("https://cdn.example/approved.m3u8",access.authoriseMedia("returned-main-vic","https://cdn.example/approved.m3u8",null))
+    }
     @Test fun profileKeyIsScopedToLinkUnlinkAndUidRenewalHasNoOldBearer() {
         val calls=mutableListOf<Connection>()
         val access=AbcHttpAccess(registration()) { Connection(it).also(calls::add) }

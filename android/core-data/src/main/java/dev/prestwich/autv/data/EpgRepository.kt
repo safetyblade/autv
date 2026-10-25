@@ -32,10 +32,14 @@ class Epg(val programmes: Map<String, List<Programme>>, val channelNames: Map<St
         if (channel.tvgId != null && programmes.containsKey(channel.tvgId)) return channel.tvgId
         return idsByNormalizedName[identity(channel.name)]
     }
-    fun schedule(channel: Channel?): List<Programme> = programmes[idFor(channel)].orEmpty()
-    fun at(channel: Channel?, time: Long): NowNext = at(idFor(channel), time)
+    fun schedule(channel: Channel?): List<Programme> = channel?.providerChannel?.let { native ->
+        native.programmes.filter { it.end>it.start }.sortedBy { it.start }.map { Programme(it.title,it.start,it.end) }
+    } ?: programmes[idFor(channel)].orEmpty()
+    fun at(channel: Channel?, time: Long): NowNext = if(channel?.providerChannel!=null) lookup(schedule(channel),time) else at(idFor(channel), time)
     fun at(id: String?, time: Long): NowNext {
-        val schedule = programmes[id].orEmpty()
+        return lookup(programmes[id].orEmpty(),time)
+    }
+    private fun lookup(schedule: List<Programme>,time: Long): NowNext {
         if (schedule.isEmpty()) return NowNext(null, null)
 
         // Schedules are sorted by start time during parsing. Find the first programme

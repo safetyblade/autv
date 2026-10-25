@@ -11,10 +11,10 @@ import java.net.URLEncoder
  */
 class AbcClientRegistration(val productId: String, val profileApiKey: String,
     val region: String, val mainHouseNumber: String,
-    val mediaAuthoriser: (String,String,String?)->String) {
+    val mediaAuthoriser: (String,String,String?)->String, val accountLinkingEnabled: Boolean = true) {
     init {
-        require(productId.isNotBlank() && productId.length<=256 && productId.none(Char::isISOControl))
-        require(profileApiKey.isNotBlank() && profileApiKey.length<=4096 && profileApiKey.none(Char::isISOControl))
+        require((!accountLinkingEnabled || productId.isNotBlank()) && productId.length<=256 && productId.none(Char::isISOControl))
+        require((!accountLinkingEnabled || profileApiKey.isNotBlank()) && profileApiKey.length<=4096 && profileApiKey.none(Char::isISOControl))
         require(region=="VIC" && mainHouseNumber.matches(Regex("[A-Za-z0-9_-]{1,128}")))
     }
     override fun toString()="AbcClientRegistration(redacted)"
@@ -24,18 +24,22 @@ class AbcHttpAccess internal constructor(private val registration: AbcClientRegi
     private val open: (URL)->HttpURLConnection): AbcProviderAccess {
     constructor(registration: AbcClientRegistration): this(registration,{ it.openConnection() as HttpURLConnection })
     override fun link(deviceId: String): JSONObject = guarded {
+        if (!registration.accountLinkingEnabled) throw ProviderException(ProviderFailure.UNSUPPORTED)
         send("POST","$PROFILE/ctv/link",JSONObject().put("productId",registration.productId).put("deviceId",deviceId).put("deviceName","AUTV"),profileKey=true)
     }
     override fun linkStatus(deviceId: String,requestId: String?): JSONObject = guarded {
+        if (!registration.accountLinkingEnabled) throw ProviderException(ProviderFailure.UNSUPPORTED)
         val values=linkedMapOf("productId" to registration.productId,"deviceId" to deviceId)
         requestId?.let { values["requestId"]=it }
         send("GET",query("$PROFILE/ctv/status",values),pending=true)
     }
     override fun accountToken(uid: String): JSONObject = guarded {
+        if (!registration.accountLinkingEnabled) throw ProviderException(ProviderFailure.UNSUPPORTED)
         // UID renewal deliberately has no old bearer/profile key or shared cookie jar.
         send("GET",query("https://api.seesaw.abc.net.au/v2/token",mapOf("UID" to uid,"source" to "iview")))
     }
     override fun unlink(deviceId: String) { guarded {
+        if (!registration.accountLinkingEnabled) throw ProviderException(ProviderFailure.UNSUPPORTED)
         send("POST","$PROFILE/ctv/unlink",JSONObject().put("productId",registration.productId).put("deviceId",deviceId),profileKey=true)
     } }
     override fun home(): JSONObject = guarded { send("GET","$IVIEW/home") }
@@ -55,6 +59,7 @@ class AbcHttpAccess internal constructor(private val registration: AbcClientRegi
         registration.mediaAuthoriser(houseNumber,originalHls,accountToken).also { ProviderOriginHeaders.origin(it) }
     }
     private fun send(method: String,address: String,body: JSONObject?=null,profileKey: Boolean=false,pending: Boolean=false): JSONObject {
+        if (!registration.accountLinkingEnabled && (profileKey || address.startsWith(PROFILE) || address.startsWith("https://api.seesaw.abc.net.au/"))) throw ProviderException(ProviderFailure.UNSUPPORTED)
         val origin=ProviderOriginHeaders.origin(address)
         require(origin in setOf("https://mylogin-api.abc.net.au","https://api.seesaw.abc.net.au","https://api.iview.abc.net.au"))
         require(!profileKey || (origin=="https://mylogin-api.abc.net.au" && method=="POST"))

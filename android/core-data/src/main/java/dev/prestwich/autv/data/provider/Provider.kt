@@ -16,7 +16,7 @@ data class ProviderProgramme(val title: String, val start: Long, val end: Long)
 enum class ProviderConnection { NOT_CONNECTED, CONNECTING, CONNECTED, SESSION_EXPIRED, UNSUPPORTED }
 enum class ProviderFailure {
     AUTH_REQUIRED, SESSION_EXPIRED, REGION_DENIED, UNAVAILABLE, UNSUPPORTED, OFFLINE, DRM_UNSUPPORTED, PLAYBACK_UNSUPPORTED, RETRY_LATER,
-    ACTIVATION_EXPIRED, ACTIVATION_DENIED, AUTH_RESPONSE_UNSUPPORTED
+    ACTIVATION_EXPIRED, ACTIVATION_DENIED, AUTH_RESPONSE_UNSUPPORTED, AD_SESSION_UNSUPPORTED
 }
 /** Never propagate raw transport errors, URLs, server bodies or credentials to UI/logs. */
 class ProviderException(val failure: ProviderFailure, val httpStatus: Int? = null) : Exception(failure.name)

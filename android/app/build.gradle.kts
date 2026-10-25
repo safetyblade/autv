@@ -8,6 +8,7 @@ android {
     compileSdk = 36
     defaultConfig {
         applicationId = "dev.prestwich.autv"
+        manifestPlaceholders["autvApplicationClass"] = providers.gradleProperty("autvApplicationClass").orElse("dev.prestwich.autv.AuTvApplication").get()
         manifestPlaceholders["autvAppLabel"] = if (providers.gradleProperty("autvMediaLab").orNull == "true") "AUTV Media Lab" else "AU TV"
         minSdk = 24
         targetSdk = 35
@@ -39,6 +40,8 @@ android {
             check(defaultConfig.versionCode!! > 1) { "Set -PautvVersionCode to a new distribution build number." }
         }
     }
+    // Optional private, provider-approved registration implementation; no credentials are committed.
+    providers.gradleProperty("autvProviderSources").orNull?.let { sourceSets.getByName("main").java.srcDir(it) }
     buildFeatures { compose = true }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true

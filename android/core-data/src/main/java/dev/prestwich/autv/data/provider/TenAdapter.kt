@@ -75,7 +75,18 @@ class TenAdapter(private val access: TenProviderAccess, private val store: Provi
     }
     override fun channels()=catalogue().map { row ->
         val key=text(row,"key")!!
-        ProviderChannel(ProviderChannelId("ten",key),key,text(row,"name") ?: unsupported())
+        ProviderChannel(ProviderChannelId("ten",key),key,text(row,"name") ?: unsupported(),logoUrl=text(row,"logoUrl"),programmes=schedule(row))
+    }
+    private fun schedule(row: JSONObject): List<ProviderProgramme> {
+        val rows=row.optJSONArray("schedule") ?: return emptyList()
+        return (0 until minOf(rows.length(),200)).mapNotNull { index ->
+            val event=rows.optJSONObject(index) ?: return@mapNotNull null
+            val title=text(event,"title")?.takeIf { it!="No Stream Available" } ?: return@mapNotNull null
+            fun date(key: String)=runCatching { java.time.Instant.parse(event.getString(key)).toEpochMilli() }.getOrNull()
+            val start=date("startTime") ?: return@mapNotNull null
+            val end=date("endTime") ?: return@mapNotNull null
+            if(end<=start) null else ProviderProgramme(title,start,end)
+        }.sortedBy { it.start }
     }
     override fun resolve(channel: ProviderChannelId): ProviderPlaybackRequest {
         if(channel.provider!="ten" || channel.channel!=proofChannelKey) throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
