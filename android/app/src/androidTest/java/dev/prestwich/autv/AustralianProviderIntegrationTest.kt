@@ -12,12 +12,17 @@ import org.junit.Test
 class AustralianProviderIntegrationTest {
     @get:Rule val ui=createAndroidComposeRule<AustralianIntegrationTestActivity>()
     private fun account(id: String)=ui.activity.playback.providerAccounts.getValue(id)
-    private fun ready()=ui.waitUntil(30000) { ui.activity.playback.guide?.channels?.any { it.providerChannel?.id?.provider=="abc" }==true && ui.activity.playback.playing }
+    private fun observed(predicate: (PlaybackModel)->Boolean): Boolean {
+        var value=false
+        ui.activityRule.scenario.onActivity { value=predicate(it.playback) }
+        return value
+    }
+    private fun ready()=ui.waitUntil(30000) { observed { model -> model.guide?.channels?.any { it.providerChannel?.id?.provider=="abc" }==true && model.playing } }
     private fun channel(id: String)=ui.activity.playback.guide!!.channels.first { it.providerChannel?.id?.provider==id }
     private fun tune(id: String) {
         val number=channel(id).number
         ui.runOnIdle { ui.activity.playback.request(TuneTarget.Number(number)) }
-        ui.waitUntil(30000) { ui.activity.playback.player.isPlaying && ui.activity.playback.player.currentMediaItem?.mediaId==number.toString() }
+        ui.waitUntil(30000) { observed { it.player.isPlaying && it.player.currentMediaItem?.mediaId==number.toString() } }
     }
     private fun connectTen() {
         ui.runOnIdle { ui.activity.ten.approved=true;account("ten").connect() }
@@ -52,7 +57,7 @@ class AustralianProviderIntegrationTest {
         }
         ui.waitUntil(30000) { !model.providerBusy }
         ui.runOnIdle { assertSame(player,model.player);assertEquals("ten",model.selected?.providerChannel?.id?.provider);assertTrue(player.isPlaying);account("ten").disconnect() }
-        ui.waitUntil(30000) { !account("ten").busy && model.player.currentMediaItem?.mediaId=="100" && model.playing }
+        ui.waitUntil(30000) { observed { !account("ten").busy && it.player.currentMediaItem?.mediaId=="100" && it.playing } }
         ui.runOnIdle { assertTrue(model.guide!!.channels.any { it.providerChannel?.id?.provider=="abc" }) }
     }
     @Test fun anonymousAbcGuideTunesWithoutFakeConnectionAndDoesNotStopTen() {
@@ -70,7 +75,7 @@ class AustralianProviderIntegrationTest {
         ui.waitUntil(30000) { !account("abc").busy && account("abc").channels.isNotEmpty() }
         tune("abc")
         ui.runOnIdle { model.next() }
-        ui.waitUntil(30000) { model.playing }
+        ui.waitUntil(30000) { observed { it.playing } }
         ui.runOnIdle { assertTrue(model.selected!!.tunable) }
     }
     @Test fun cancelledTenResolutionCannotReplaceAbcOrExposeSignedFailure() {
