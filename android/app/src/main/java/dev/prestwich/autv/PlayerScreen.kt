@@ -285,7 +285,7 @@ internal fun AuTvScreen(
                                 }
                                 FocusButton("Settings", { wake(); onOpenSettings() },
                                     Modifier.onFocusChanged { if (it.isFocused) playbackControl = 4 else if (playbackControl == 4) playbackControl = 0 }
-                                        .focusRequester(settingsFocus).focusProperties { if (isTv && !guideOpen) right = previousFocus }.testTag("settings-button"))
+                                        .focusRequester(settingsFocus).focusProperties { if (isTv && !guideOpen) right = previousFocus }.semantics { contentDescription = "Open settings" }.testTag("settings-button"))
                                 if (digits.isNotEmpty()) Text("Tune $digits", color = Silver, modifier = Modifier.padding(end = 12.dp).semantics { contentDescription = "Tuning channel $digits" })
                                 if (!isTv) CastControl(false, onInteraction = { wake() }, compact = landscape, providerUnavailable = selected?.providerChannel != null)
                                 else if (!guideOpen) {
@@ -495,8 +495,9 @@ private fun CastControl(isTv: Boolean, onInteraction: () -> Unit, compact: Boole
 @Composable
 private fun FocusButton(label: String, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true) {
     var focused by remember { mutableStateOf(false) }
+    val borderColor = if (focused) WarmWhite else if (enabled) Silver.copy(alpha = 0.4f) else Silver.copy(alpha = 0.15f)
     OutlinedButton(onClick = onClick, enabled = enabled, modifier = modifier.onFocusChanged { focused = it.isFocused }
-        .heightIn(min = 48.dp).border(if (focused) 3.dp else 1.dp, if (focused) WarmWhite else Silver.copy(alpha = 0.4f), RoundedCornerShape(8.dp)),
+        .heightIn(min = 48.dp).border(if (focused) 3.dp else 1.dp, borderColor, RoundedCornerShape(8.dp)),
         shape = RoundedCornerShape(8.dp), colors = ButtonDefaults.outlinedButtonColors(containerColor = if (focused) Silver.copy(alpha = 0.22f) else Color.Transparent)) {
         Text(label)
     }
