@@ -1899,10 +1899,6 @@
     <display-name>FilmRise Classic TV</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/e2e10d08139b56aba73a448f5555b6fd/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1673450928764_FilmRise-ClassicTV_260x147_copy.png" />
   </channel>
-  <channel id="6a0629e467b5502c906136dadac290a0">
-    <display-name>FilmRise Horror</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/6a0629e467b5502c906136dadac290a0/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1774448513257_RokuChannel_FilmRiseHorror_HUD_Logo_260x147.png" />
-  </channel>
   <channel id="d6f71998860459eca1bed73db5988330">
     <display-name>FilmRise Free Movies</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/d6f71998860459eca1bed73db5988330/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1766001381678_RokuChannel_FilmRiseFreeMovies_HUD_Logo_260x147.png" />
@@ -1995,10 +1991,6 @@
     <display-name>LOL Network</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/52c137ae3cdc50768ad7ea3cdaf0f2f4/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1779492449719_LOL-HUD_260x147White.png" />
   </channel>
-  <channel id="4b236d75ad3e5831a1707f53e41beede">
-    <display-name>The Red Green Channel</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/4b236d75ad3e5831a1707f53e41beede/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1669146930018_Casey_Murawski_-_1167936_RGS_Roku_Image_HUD1_260x147_%25281%2529.png" />
-  </channel>
   <channel id="46967ee2691c134faa248a86293e9a0f">
     <display-name>Sam and Colby</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/46967ee2691c134faa248a86293e9a0f/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1787162091220_sam_and_colby_logo_hud.png" />
@@ -2042,10 +2034,6 @@
   <channel id="d93912b4b21158fd95af2ceb8979c586">
     <display-name>Dove</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/d93912b4b21158fd95af2ceb8979c586/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1738599967209_DoveRefresh_RokuLinear_260X147.png" />
-  </channel>
-  <channel id="ada4254a1dd65c138f62e7c45affb45c">
-    <display-name>GARDEN with Monty Don</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/ada4254a1dd65c138f62e7c45affb45c/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1777303688429_GWMD_Rebrand_HUD_Logo.png" />
   </channel>
   <channel id="5a1dec25daac971f191b10e808ec0c5d">
     <display-name>Tastemade Home</display-name>
