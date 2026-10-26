@@ -109,22 +109,33 @@ class TestBuildEpg(unittest.TestCase):
                             )
                         elem.clear()
 
+        target_sources = {}
+        for target_id, target_name in playlist:
+            source_id = target_id if target_id in source_channels else None
+            if source_id:
+                target_sources[target_id] = source_id
+
+        from collections import Counter
+        source_counts = Counter(target_sources.values())
+
         root = ET.Element("tv", {"generator-info-name": "autv"})
         for target_id, target_name in playlist:
+            if target_id not in target_sources:
+                continue
+            source_id = target_sources[target_id]
             guide_genre = guide_genre_by_name.get(build_epg.canonical(target_name), "")
             android_category = build_epg.ANDROID_GENRE.get(guide_genre, "Entertainment")
-            source_id = target_id if target_id in source_channels else None
 
-            if source_id:
-                channel = build_epg.copy.deepcopy(source_channels[source_id])
-                channel.set("id", target_id)
-                root.append(channel)
+            is_unique = source_counts[source_id] == 1
+            channel = source_channels.pop(source_id) if is_unique else build_epg.copy.deepcopy(source_channels[source_id])
+            channel.set("id", target_id)
+            root.append(channel)
 
-                for programme in programmes_by_id.get(source_id, []):
-                    cloned = build_epg.copy.deepcopy(programme)
-                    cloned.set("channel", target_id)
-                    build_epg.add_android_category(cloned, android_category)
-                    root.append(cloned)
+            programmes = programmes_by_id.pop(source_id, []) if is_unique else [build_epg.copy.deepcopy(p) for p in programmes_by_id.get(source_id, [])]
+            for programme in programmes:
+                programme.set("channel", target_id)
+                build_epg.add_android_category(programme, android_category)
+                root.append(programme)
 
         xml_bytes = ET.tostring(root, encoding="utf-8", xml_declaration=True)
         with gzip.open(self.output_path, "wb", compresslevel=9) as handle:

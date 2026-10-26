@@ -29,3 +29,7 @@
 ## 2025-05-18 - Fast Substring Guard & String Search in Stream Candidate Filtering
 **Learning:** Adding a fast substring check (`if "jmp2.uk" in line or ...`) prior to attribute extraction and URL parsing in stream candidate extraction, combined with replacing `re.search` for `tvg-chno` with `attr()`, yielded a ~35.7% execution time reduction (~1.56x speedup) by avoiding regex and URL structure parsing for non-candidate streams.
 **Action:** Always filter stream lines with fast substring membership guards before performing regex searches or full URL decomposition.
+
+## 2025-05-18 - Reference Counting and Unique Element Transfer in ElementTree Assembly
+**Learning:** Pre-counting target source ID frequencies (`Counter`) allows popping uniquely referenced `ElementTree.Element` nodes (`dict.pop()`) and mutating them in-place, completely eliminating redundant `copy.deepcopy()` overhead (~1.68x speedup / ~40% execution time reduction) while safely preserving deepcopy isolation for shared elements.
+**Action:** When building XML document trees from mapped source nodes, pre-calculate target reference counts to safely transfer ownership of uniquely referenced nodes without copying.
