@@ -84,9 +84,12 @@ def slug(value: str) -> str:
     value = RE_SLUG.sub("-", value).strip("-").lower()
     return value or "channel"
 
+RE_XML_INVALID = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x84\x86-\x9f]")
+
 def xml_escape(value: str) -> str:
-    """Safely escape special XML characters including quotes for attribute values."""
-    return escape(value or "", entities={'"': '&quot;', "'": '&apos;'})
+    """Safely escape special XML characters including quotes for attribute values and strip invalid control characters."""
+    sanitized = RE_XML_INVALID.sub("", value or "")
+    return escape(sanitized, entities={'"': '&quot;', "'": '&apos;'})
 
 def sanitize_attr(value: str) -> str:
     """Sanitize attribute values to prevent attribute breakout and M3U line injection."""

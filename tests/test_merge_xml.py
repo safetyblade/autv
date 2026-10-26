@@ -39,6 +39,13 @@ class TestXmlEscape(unittest.TestCase):
         self.assertEqual(xml_escape(""), "")
         self.assertEqual(xml_escape(None), "")
 
+    def test_xml_escape_invalid_control_characters(self):
+        # XML 1.0 forbids control chars \x00-\x08, \x0b, \x0c, \x0e-\x1f, \x7f-\x84, \x86-\x9f
+        self.assertEqual(
+            xml_escape('Channel \x00\x07\x1fName & "Test"\x7f'),
+            'Channel Name &amp; &quot;Test&quot;'
+        )
+
 
 class TestAddSelected(unittest.TestCase):
     def test_add_selected_exact_substring_and_missing(self):
