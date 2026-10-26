@@ -41,6 +41,12 @@ class TestApplyGuideSecurity(unittest.TestCase):
         self.assertIn('custom-tvg-name="fake_name"', result)
         self.assertIn('tvg-name="new_name"', result)
 
+    def test_set_attr_new_attribute_with_custom_header(self):
+        extinf = '#EXTINF:0 custom-tvg-name="fake_name", Channel'
+        result = set_attr(extinf, "tvg-name", "new_name")
+        self.assertIn('custom-tvg-name="fake_name"', result)
+        self.assertIn('#EXTINF:0 tvg-name="new_name"', result)
+
     def test_canonical_normalization(self):
         from scripts.apply_guide import canonical
         self.assertEqual(canonical("101  SpongeBob (AU) geo "), "spongebob")
