@@ -17,3 +17,7 @@
 ## 2025-05-22 - Unavailability and Playback Error Semantics in EPG Channel Rows
 **Learning:** Custom Compose channel rows setting explicit `contentDescription` on the parent row must include channel availability (`!channel.tunable`) and error state (`failed != null`) alongside `clearAndSetSemantics` so TalkBack announces stream errors or unavailability rather than omitting error context or pronouncing raw child text.
 **Action:** Always append error and availability states into `contentDescription` and use `clearAndSetSemantics` on composite list item rows.
+
+## 2025-05-23 - Content Description for Provider Settings Service Cards
+**Learning:** OutlinedCard components in settings lists that display service status omit descriptive metadata (`service.description`) from TalkBack when merged automatically; explicit `contentDescription` combining service name, description, and connection status provides full context for screen reader users browsing service options.
+**Action:** Use `semantics(mergeDescendants = true) { contentDescription = "${service.name}, ${service.description} · $statusText" }` on provider service selection cards in settings menus.
