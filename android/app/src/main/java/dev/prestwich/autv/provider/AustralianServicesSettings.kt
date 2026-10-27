@@ -62,16 +62,21 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                         Text("Your networks. One guide.", style = MaterialTheme.typography.titleMedium)
                         Text("Choose a service to manage its connection.", color = MaterialTheme.colorScheme.onSurfaceVariant)
                         services.forEach { service ->
+                            val statusLabel = when { service.id=="9now" -> connectionLabel(model.providerConnection); model.providerAccounts[service.id]!=null -> model.providerAccounts.getValue(service.id).let { if(it.anonymousLiveApproved && it.connection!=ProviderConnection.CONNECTED) "Live TV without account" else connectionLabel(it.connection) }; else -> "Connection not configured" }
                             OutlinedCard(onClick = { selected = service.id },
                                 shape = RoundedCornerShape(18.dp),
                                 colors = CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                                modifier = Modifier.fillMaxWidth().then(if (service.id == "9now") Modifier.focusRequester(firstFocus) else Modifier).testTag("provider-${service.id}")) {
+                                modifier = Modifier.fillMaxWidth().then(if (service.id == "9now") Modifier.focusRequester(firstFocus) else Modifier)
+                                    .semantics(mergeDescendants = true) {
+                                        contentDescription = "${service.name}, $statusLabel"
+                                    }
+                                    .testTag("provider-${service.id}")) {
                                 Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.spacedBy(14.dp)) {
                                     ServiceIcon(service)
                                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                         Text(service.name, style = MaterialTheme.typography.titleMedium)
-                                        Text(when { service.id=="9now" -> connectionLabel(model.providerConnection); model.providerAccounts[service.id]!=null -> model.providerAccounts.getValue(service.id).let { if(it.anonymousLiveApproved && it.connection!=ProviderConnection.CONNECTED) "Live TV without account" else connectionLabel(it.connection) }; else -> "Connection not configured" },
+                                        Text(statusLabel,
                                             style = MaterialTheme.typography.labelMedium,
                                             color = if (model.providerUnavailableReason(service.id)==null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
                                     }
