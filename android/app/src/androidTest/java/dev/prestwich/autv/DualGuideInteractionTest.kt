@@ -125,4 +125,9 @@ class DualGuideInteractionTest {
         compose.onNodeWithTag("guide-search")
             .assertContentDescriptionEquals("Search channels or programmes")
     }
+    @Test fun guideNavigationLegendHasAccessibleContentDescription() {
+        launch()
+        compose.onNodeWithText("↑↓ Channels", substring = true)
+            .assertContentDescriptionEquals("Navigation shortcuts: Up or Down for Channels, Left or Right for Categories, OK to Select, Hold OK for Favourite, Guide or Menu to Switch view, Back to Close.")
+    }
 }

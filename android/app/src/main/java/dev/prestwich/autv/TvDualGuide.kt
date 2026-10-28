@@ -279,7 +279,11 @@ internal fun TvDualGuide(
                         ?: "${selected?.name.orEmpty()} · OK to watch live", style = MaterialTheme.typography.bodySmall)
                     Text(programme?.description.orEmpty(), style = MaterialTheme.typography.bodySmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
-                Text("↑↓ Channels   ←→ ${if (full) "Programmes" else "Categories"}   OK Select · Hold OK Favourite   Guide/Menu Switch   Back ${if (full) "Quick Guide" else "Close"}", style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(top = 6.dp))
+                Text("↑↓ Channels   ←→ ${if (full) "Programmes" else "Categories"}   OK Select · Hold OK Favourite   Guide/Menu Switch   Back ${if (full) "Quick Guide" else "Close"}",
+                    style = MaterialTheme.typography.labelSmall,
+                    modifier = Modifier.padding(top = 6.dp).semantics {
+                        contentDescription = "Navigation shortcuts: Up or Down for Channels, Left or Right for ${if (full) "Programmes" else "Categories"}, OK to Select, Hold OK for Favourite, Guide or Menu to Switch view, Back to ${if (full) "Quick Guide" else "Close"}."
+                    })
             }
         }
     }

@@ -17,3 +17,7 @@
 ## 2025-05-22 - Unavailability and Playback Error Semantics in EPG Channel Rows
 **Learning:** Custom Compose channel rows setting explicit `contentDescription` on the parent row must include channel availability (`!channel.tunable`) and error state (`failed != null`) alongside `clearAndSetSemantics` so TalkBack announces stream errors or unavailability rather than omitting error context or pronouncing raw child text.
 **Action:** Always append error and availability states into `contentDescription` and use `clearAndSetSemantics` on composite list item rows.
+
+## 2025-05-23 - Accessible Content Descriptions for Visual Shortcut Legends
+**Learning:** Visual remote or keyboard shortcut legends containing directional unicode symbols ("↑↓", "←→") and bullet separators ("·") are spoken verbatim by TalkBack screen readers as raw character names, cluttering accessibility navigation.
+**Action:** Wrap visual shortcut legend composables in `semantics { contentDescription = ... }` with clear, plain-language descriptions of directions and key actions.
