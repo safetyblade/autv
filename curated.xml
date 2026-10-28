@@ -1919,10 +1919,6 @@
     <display-name>Movie Hub Action</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/c5cbd4129753f5732d7160596440404f/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1741793611093_Movie_Hub_Action_260x147.png" />
   </channel>
-  <channel id="a208207740dabd5e846e107b84db9123">
-    <display-name>PopCorn Central</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/a208207740dabd5e846e107b84db9123/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1778891092269_Info-HUD-channel-Identifier_260x147.png" />
-  </channel>
   <channel id="885d5897052b53709a83c4947174cd09">
     <display-name>FilmRise Black TV</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/885d5897052b53709a83c4947174cd09/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1766158148154_RokuChannel_FilmRiseBlackTV_HUD_Logo_260x147.png" />
