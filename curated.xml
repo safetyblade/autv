@@ -1010,7 +1010,7 @@
   </channel>
   <channel id="697140a85d851f5e69414688-66fd3a76216b603e031725fc">
     <display-name>Western Bound</display-name>
-    <icon src="https://provider-static.plex.tv/epg/cms/production/bf76048d-3cb0-4994-915f-e65681889de5/WesternBound_IntlEng_Plex_1500x1000_WhtLogo.png" />
+    <icon src="https://provider-static.plex.tv/epg/cms/production/c6a9af29-de3a-4b62-ae0d-29514322a6ae/WesternBound_Plex_channel_logo_light_-_Trish_Boothe.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-60d4edddb2fdec002c141135">
     <display-name>WildEarth</display-name>
@@ -1918,6 +1918,10 @@
   <channel id="c5cbd4129753f5732d7160596440404f">
     <display-name>Movie Hub Action</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/c5cbd4129753f5732d7160596440404f/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1741793611093_Movie_Hub_Action_260x147.png" />
+  </channel>
+  <channel id="a208207740dabd5e846e107b84db9123">
+    <display-name>PopCorn Central</display-name>
+    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/a208207740dabd5e846e107b84db9123/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1778891092269_Info-HUD-channel-Identifier_260x147.png" />
   </channel>
   <channel id="885d5897052b53709a83c4947174cd09">
     <display-name>FilmRise Black TV</display-name>
