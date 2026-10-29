@@ -5,21 +5,16 @@ import json
 import sys
 from pathlib import Path
 
-from check_pluto_freshness import MIN_REMAINING_SECONDS
+from check_pluto_freshness import MIN_REMAINING_SECONDS, extract_jwt
 
 
 def is_stale(url, now):
     if "service-channel-stitcher" not in url or ".pluto.tv/" not in url:
         return False
     try:
-        # Performance optimization: direct string extraction of jwt query param avoids
-        # urlsplit and parse_qs overhead (~1.9x faster per url check).
-        idx = url.find("jwt=")
-        if idx == -1:
+        jwt = extract_jwt(url)
+        if jwt is None:
             return True
-        start = idx + 4
-        end = url.find("&", start)
-        jwt = url[start:end] if end != -1 else url[start:]
         payload = jwt.split(".")[1]
         payload += "=" * (-len(payload) % 4)
         expiry = int(json.loads(base64.urlsafe_b64decode(payload))["exp"])
