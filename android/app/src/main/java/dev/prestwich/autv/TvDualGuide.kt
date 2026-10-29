@@ -232,7 +232,7 @@ internal fun TvDualGuide(
                 if (guide == null) {
                     Text(if (loadError) "The guide could not be loaded." else "Loading channels…")
                     if (loadError) Button(onClick = onRetry) { Text("Retry") }
-                } else if (channels.isEmpty()) Text(if (category == "Favourites") "No favourites yet. Long-press OK on a channel to add it." else "No channels match your search.")
+                } else if (channels.isEmpty()) Text(if (category == "Favourites") "No favourites yet. Long-press OK on a channel to add it." else "No channels match your search.", modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
                 BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
                     val rowHeight = maxHeight / 7
                     LazyColumn(state = list, modifier = Modifier.fillMaxSize().testTag("guide-list")) {

@@ -17,3 +17,7 @@
 ## 2025-05-22 - Unavailability and Playback Error Semantics in EPG Channel Rows
 **Learning:** Custom Compose channel rows setting explicit `contentDescription` on the parent row must include channel availability (`!channel.tunable`) and error state (`failed != null`) alongside `clearAndSetSemantics` so TalkBack announces stream errors or unavailability rather than omitting error context or pronouncing raw child text.
 **Action:** Always append error and availability states into `contentDescription` and use `clearAndSetSemantics` on composite list item rows.
+
+## 2025-05-23 - Live Region Semantics for Dynamic EPG Filter Empty States
+**Learning:** Dynamic list filters (such as EPG channel searches and Favourites toggles) in Compose require explicit `semantics { liveRegion = LiveRegionMode.Polite }` on empty state result texts so screen readers (TalkBack) automatically announce when zero results match the active query or filter without requiring manual focus navigation.
+**Action:** Always attach `semantics { liveRegion = LiveRegionMode.Polite }` to empty state text composables in search and filter views.

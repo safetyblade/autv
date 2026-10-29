@@ -31,9 +31,11 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.focused
+import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
@@ -376,7 +378,12 @@ internal fun AuTvScreen(
                                                 }
                                             }
                                             if (guide != null) {
-                                                if (filtered.isEmpty()) Text(if (category == "Favourites") "No favourites yet. Long-press a channel to add it to favourites." else "No channels match your search.", color = Muted, modifier = Modifier.padding(12.dp))
+                                                if (filtered.isEmpty()) {
+                                                    val emptyText = if (category == "Favourites") {
+                                                        if (isTv) "No favourites yet. Long-press OK on a channel to add it." else "No favourites yet. Long-press a channel to add it to favourites."
+                                                    } else "No channels match your search."
+                                                    Text(emptyText, color = Muted, modifier = Modifier.padding(12.dp).semantics { liveRegion = LiveRegionMode.Polite })
+                                                }
                                                 LazyColumn(state = listState, verticalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.weight(1f).testTag("guide-list")) {
                                                     items(filtered, key = { it.number }) { channel ->
                                                         val rowFocus = remember(channel.number) { FocusRequester() }
