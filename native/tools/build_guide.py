@@ -2,7 +2,6 @@
 from pathlib import Path
 import csv
 import json
-import re
 
 ROOT = Path(__file__).resolve().parents[2]
 GUIDE = ROOT / "channel_guide.csv"
@@ -57,13 +56,16 @@ def active_rows(path):
             for field in REQUIRED:
                 if not row[field]:
                     raise ValueError(f"CSV line {reader.line_num}: missing required {field}")
-            if not re.fullmatch(r"[0-9]+", row["Channel number"]):
+            # Performance optimization: str.isdigit() is faster than regex fullmatch matching
+            ch_num = row["Channel number"]
+            if not ch_num.isdigit():
                 raise ValueError(f"CSV line {reader.line_num}: invalid channel number")
-            number = int(row["Channel number"])
+            number = int(ch_num)
             if number in seen:
                 raise ValueError(f"CSV line {reader.line_num}: duplicate channel number {number}")
             seen.add(number)
-            if row["Status"].casefold() in {"active", "app test"}:
+            # Performance optimization: str.lower() avoids unicode casefolding overhead
+            if row["Status"].lower() in {"active", "app test"}:
                 rows.append(row)
     if not rows:
         raise ValueError("No Active/App Test channels; refusing to publish an empty guide")
