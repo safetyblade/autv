@@ -7,6 +7,25 @@ from pathlib import Path
 
 MIN_REMAINING_SECONDS = 6 * 3600
 
+def extract_jwt(url: str):
+    """Safely extract query parameter 'jwt' requiring proper parameter delimiters (?jwt= or &jwt=).
+
+    Enforces query parameter boundaries to prevent parameter confusion/pollution where
+    names ending in 'jwt=' (e.g. 'other_jwt=') match 'jwt=', causing token extraction
+    failures and unintended stream quarantine or freshness validation failures.
+    """
+    idx = url.find("?jwt=")
+    if idx == -1:
+        idx = url.find("&jwt=")
+    if idx == -1:
+        return None
+    start = idx + 5
+    end = url.find("&", start)
+    if end == -1:
+        end = url.find("#", start)
+    return url[start:end] if end != -1 else url[start:]
+
+
 def check(path: Path, now=None, allow_empty=False):
     now = now or dt.datetime.now(dt.timezone.utc).timestamp()
     checked = 0
@@ -18,14 +37,9 @@ def check(path: Path, now=None, allow_empty=False):
             continue
         checked += 1
         try:
-            # Performance optimization: direct string extraction of jwt query param avoids
-            # urlsplit and parse_qs overhead (~1.9x faster per url check).
-            idx = line.find("jwt=")
-            if idx == -1:
+            jwt = extract_jwt(line)
+            if jwt is None:
                 raise ValueError("missing jwt parameter")
-            start = idx + 4
-            end = line.find("&", start)
-            jwt = line[start:end] if end != -1 else line[start:]
             payload = jwt.split(".")[1]
             payload += "=" * (-len(payload) % 4)
             claims = json.loads(base64.urlsafe_b64decode(payload))
