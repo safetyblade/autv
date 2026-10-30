@@ -62,7 +62,10 @@ class TenHttpAccess internal constructor(private val registration: TenClientRegi
         val uri=URI(address)
         require(uri.port in setOf(-1,443) && uri.rawPath.startsWith("/api/"))
         val encoded=body?.toString()
-        val headers=registration.authorise(method,address,encoded).toMap()
+        val approved=registration.authorise(method,address,encoded).toMap()
+        // Registration may override the public POST header with a provider-issued scheme.
+        val defaults=TenPublicRequestContext.headers(method).filterKeys { name -> approved.keys.none { it.equals(name,true) } }
+        val headers=defaults+approved
         ProviderOriginHeaders.validateHeaders(headers)
         require(headers.keys.none { it.equals("Authorization",true) || it.equals("Cookie",true) })
         val connection=open(URL(address))

@@ -54,7 +54,7 @@ internal object ProviderMediaSourceFactory {
     }
     fun validate(request: ProviderPlaybackRequest, advanced: Boolean, now: Long = System.currentTimeMillis()) {
         require(request.mimeType in setOf(MimeTypes.APPLICATION_M3U8, MimeTypes.APPLICATION_MPD))
-        require(advanced || (request.mimeType == MimeTypes.APPLICATION_M3U8 && request.options.widevine == null &&
+        require(advanced || SevenPlaybackCapabilities.supports(request) || (request.mimeType == MimeTypes.APPLICATION_M3U8 && request.options.widevine == null &&
             request.options.imaLive == null && !request.options.hlsInterstitials)) { "Extended provider playback is disabled" }
         require(!request.options.hlsInterstitials || request.mimeType == MimeTypes.APPLICATION_M3U8)
         if (request.options.expiresAt?.let { it <= now } == true) throw ProviderException(ProviderFailure.SESSION_EXPIRED)

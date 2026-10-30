@@ -132,6 +132,7 @@ class SevenPlusAdapter(
             "deviceId" to deviceId, "accountId" to identity.account, "referenceId" to identity.reference,
             "marketId" to catalogue.market, "videoType" to "live",
         )
+        parameters.putAll(SevenPlaybackCapabilities.parameters)
         // No invented postcode, tracking identity, SDK attestation or ad-delivery override.
         val descriptor = try { step(ProviderPlaybackStage.SEVEN_DESCRIPTOR) { transport.playback(parameters, session!!.accessToken) } }
         catch (error: ProviderException) {

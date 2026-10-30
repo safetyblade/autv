@@ -21,7 +21,11 @@ internal fun validateSevenRequest(method: String, address: String, bearer: Strin
     if (playback) {
         val pairs = uri.rawQuery?.split('&')?.map { it.split('=', limit = 2) }.orEmpty()
         val keys = setOf("appId", "deviceType", "platformType", "deviceId", "accountId", "referenceId", "marketId", "videoType")
-        require(pairs.size == keys.size && pairs.all { it.size == 2 && it[0] in keys && it[1].matches(Regex("[A-Za-z0-9%+_.*-]+")) } && pairs.map { it[0] }.toSet() == keys)
+        val capabilities=SevenPlaybackCapabilities.parameters
+        val supplied=pairs.map { it[0] }.toSet()
+        require(pairs.size==supplied.size && (supplied==keys || supplied==keys+capabilities.keys))
+        require(pairs.all { it.size==2 && it[1].matches(Regex("[A-Za-z0-9%+_.*-]+")) &&
+            (it[0] in keys || capabilities[it[0]]==it[1]) })
     }
     require(auth || market || content || player || playback)
     require((bearer != null) == playback)
