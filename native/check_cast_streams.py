@@ -61,8 +61,8 @@ def probe(item):
                 return result
             variants = re.findall(r'#EXT-X-STREAM-INF:([^\n]+)\n([^#\n]+)', text)
             if variants:
-                result["advertised_codecs"] = [re.search(r'CODECS="([^"]+)"', v[0]).group(1)
-                                              for v in variants if 'CODECS="' in v[0]]
+                codecs_matches = [re.search(r'CODECS="([^"]*)"', v[0]) for v in variants]
+                result["advertised_codecs"] = [m.group(1) for m in codecs_matches if m]
                 url = urllib.parse.urljoin(url, variants[0][1].strip())
                 continue
             lines = [line.strip() for line in text.splitlines() if line.strip() and not line.startswith("#")]
