@@ -29,3 +29,7 @@
 ## 2025-05-18 - Fast Substring Guard & String Search in Stream Candidate Filtering
 **Learning:** Adding a fast substring check (`if "jmp2.uk" in line or ...`) prior to attribute extraction and URL parsing in stream candidate extraction, combined with replacing `re.search` for `tvg-chno` with `attr()`, yielded a ~35.7% execution time reduction (~1.56x speedup) by avoiding regex and URL structure parsing for non-candidate streams.
 **Action:** Always filter stream lines with fast substring membership guards before performing regex searches or full URL decomposition.
+
+## 2025-05-18 - Fast String Query Parameter Updating in Pluto Session Refresh
+**Learning:** Replacing `urlsplit`, `parse_qsl`, `dict` instantiation, `urlencode`, and `urlunsplit` operations inside Pluto playlist session update loop with direct string query slicing and parameter replacement (`_update_query_params`) yields a ~3.43x speedup (~70.8% time reduction) by eliminating URL object decomposition and dictionary allocations.
+**Action:** Prefer direct query string slicing (`str.find("?")`, `str.split("&")`) over `urlsplit`/`parse_qsl`/`urlencode` when updating specific known query parameters in bulk URL collections.
