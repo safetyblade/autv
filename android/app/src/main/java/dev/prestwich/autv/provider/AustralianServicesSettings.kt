@@ -18,8 +18,10 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -62,18 +64,29 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                         Text("Your networks. One guide.", style = MaterialTheme.typography.titleMedium)
                         Text("Choose a service to manage its connection.", color = MaterialTheme.colorScheme.onSurfaceVariant)
                         services.forEach { service ->
+                            val statusText = when {
+                                service.id == "9now" -> connectionLabel(model.providerConnection)
+                                model.providerAccounts[service.id] != null -> model.providerAccounts.getValue(service.id).let {
+                                    if (it.anonymousLiveApproved && it.connection != ProviderConnection.CONNECTED) "Live TV without account" else connectionLabel(it.connection)
+                                }
+                                else -> "Connection not configured"
+                            }
                             OutlinedCard(onClick = { selected = service.id },
                                 shape = RoundedCornerShape(18.dp),
                                 colors = CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                                modifier = Modifier.fillMaxWidth().then(if (service.id == "9now") Modifier.focusRequester(firstFocus) else Modifier).testTag("provider-${service.id}")) {
+                                modifier = Modifier.fillMaxWidth().then(if (service.id == "9now") Modifier.focusRequester(firstFocus) else Modifier)
+                                    .semantics(mergeDescendants = true) {
+                                        contentDescription = "${service.name}, ${service.description} · $statusText"
+                                    }
+                                    .testTag("provider-${service.id}")) {
                                 Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.spacedBy(14.dp)) {
                                     ServiceIcon(service)
                                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                         Text(service.name, style = MaterialTheme.typography.titleMedium)
-                                        Text(when { service.id=="9now" -> connectionLabel(model.providerConnection); model.providerAccounts[service.id]!=null -> model.providerAccounts.getValue(service.id).let { if(it.anonymousLiveApproved && it.connection!=ProviderConnection.CONNECTED) "Live TV without account" else connectionLabel(it.connection) }; else -> "Connection not configured" },
+                                        Text(statusText,
                                             style = MaterialTheme.typography.labelMedium,
-                                            color = if (model.providerUnavailableReason(service.id)==null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+                                            color = if (model.providerUnavailableReason(service.id) == null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
                                     }
                                     Text("›", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.clearAndSetSemantics {})
                                 }
@@ -114,7 +127,7 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                     onOpenWebsite={ address -> runCatching { uriHandler.openUri(address) };Unit },onCancel=disconnect)
                             }
                             status?.let { Text(it,color=MaterialTheme.colorScheme.onSurfaceVariant,modifier=Modifier.testTag("${service.id}-auth-status")) }
-                            error?.let { Text(it,color=MaterialTheme.colorScheme.error,modifier=Modifier.testTag("${service.id}-error")) }
+                            error?.let { Text(it,color=MaterialTheme.colorScheme.error,modifier=Modifier.semantics { liveRegion = LiveRegionMode.Polite }.testTag("${service.id}-error")) }
                             if(!busy && connection!=ProviderConnection.CONNECTED && account?.accountLinkingEnabled!=false) {
                                 Button(onClick=connect,modifier=Modifier.fillMaxWidth().testTag("${service.id}-connect")) { Text("Connect ${service.name}") }
                             }
