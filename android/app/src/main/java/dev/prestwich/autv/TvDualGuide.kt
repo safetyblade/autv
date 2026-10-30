@@ -293,9 +293,11 @@ internal fun TvDualGuide(
             text = { Column { Text("${selected?.numberLabel}  ${selected?.name}"); Text("${guideClock(item.start)} – ${guideClock(item.stop)}");
                 if (item.description.isNotBlank()) Text(item.description)
                 if (!Timeline.airing(item, now)) Text("This programme is not currently airing.") } },
-            confirmButton = { TextButton(onClick = { if (Timeline.airing(item, now)) tune() else details = null }, modifier = Modifier.testTag("programme-confirm")) {
+            confirmButton = { TextButton(onClick = { if (Timeline.airing(item, now)) tune() else details = null },
+                modifier = Modifier.semantics { contentDescription = if (Timeline.airing(item, now)) "Watch ${item.title} live" else "Close programme details" }.testTag("programme-confirm")) {
                 Text(if (Timeline.airing(item, now)) "Watch live" else "Close") } },
-            dismissButton = { TextButton(onClick = { details = null }) { Text("Back") } })
+            dismissButton = { TextButton(onClick = { details = null },
+                modifier = Modifier.semantics { contentDescription = "Back to programme guide" }.testTag("programme-back")) { Text("Back") } })
     }
 }
 
