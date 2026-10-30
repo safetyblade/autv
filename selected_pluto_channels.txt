@@ -144,11 +144,9 @@ Evidence of Evil
 CBS Sports HQ
 FOX Sports
 MLB
-The NBA Channel
 UEFA Champions League
 DAZN Ringside
 GolfPass
-TennisChannel 2
 Rugby Pass TV
 Rally TV
 FloHockey 24/7
@@ -171,5 +169,4 @@ XITE Gospel
 Yo! MTV
 MTV Spankin' New
 SI TV
-Willow Sports
 Big A Anime

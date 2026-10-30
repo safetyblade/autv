@@ -50,7 +50,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 225,ViX Lo Mejor de Liga MX,Sport,Football,Channel only,Roku,,Active,"Football FAST channel focused on club, league or competition programming."
 226,beIN SPORTS XTRA,Sport,Football,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 227,Rugby Pass TV,Sport,Football,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-228,The NBA Channel,Sport,Basketball,Full,Pluto,,Active,"Dedicated NBA FAST channel with highlights, archive games, original programming and basketball coverage."
+228,The NBA Channel,Sport,Basketball,Full,Xumo,,Active,"Dedicated NBA FAST channel with highlights, archive games, original programming and basketball coverage."
 229,Hoop TV,Sport,Basketball,Channel only,SoFast,,Active,"Dedicated basketball FAST channel with games, highlights, news, interviews and basketball culture programming."
 230,NFL Channel,Sport,US Major Sports,Full,Plex AU,,Active,"American football FAST channel with NFL programming, highlights or archive content."
 231,NFL Super Bowl Champions,Sport,US Major Sports,Full,Plex AU,,Active,"American football FAST channel with NFL programming, highlights or archive content."
@@ -67,7 +67,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 242,RACER International,Sport,Motorsport,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 243,Tennis TV,Sport,Racquet & Golf,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 244,Tennis+,Sport,Racquet & Golf,Full,Plex AU,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-245,TennisChannel 2,Sport,Racquet & Golf,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+245,TennisChannel 2,Sport,Racquet & Golf,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 246,GolfPass,Sport,Racquet & Golf,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 247,PickleTV,Sport,Racquet & Golf,Full,Plex AU,,Active,"Pickleball-focused sports channel featuring matches, highlights and related programming."
 248,PGA TOUR,Sport,Racquet & Golf,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
@@ -111,7 +111,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 286,ACC Digital Network,Sport,General Sports,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 287,Big 12 Studios,Sport,General Sports,Full,Xumo,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 288,FloHockey 24/7,Sport,General Sports,Full,Pluto,,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
-289,Willow Sports,Sport,General Sports,Full,Pluto,Plex AU,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
+289,Willow Sports,Sport,General Sports,Full,Xumo,Plex AU,Active,"Sports FAST channel featuring live events, archive coverage, highlights or sports programming."
 290,CombaTV,Sport,General Sports,Full,Ottera,Plex AU,Active,"CombaTV restored using direct Ottera HLS network 1153 after Plex transport failure."
 291,Cricket Gold,Sport,General Sports,Full,SOFAST AU,Plex AU,Active,"Cricket Gold direct SOFAST feed replacing failed Plex transport."
 292,FUEL TV,Sport,General Sports,Full,Samsung AU,Plex AU,Active,"FUEL TV direct Australian Amagi/Samsung feed replacing failed Plex transport."
