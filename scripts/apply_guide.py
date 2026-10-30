@@ -13,6 +13,7 @@ RE_AU_SUFFIX = re.compile(r"\s*\((?:australia|au)\)\s*")
 RE_GEO = re.compile(r"\s+geo\b")
 RE_NON_ALPHANUM = re.compile(r"[^a-z0-9]+")
 RE_SPACES = re.compile(r"\s+")
+RE_EXTINF_HEADER = re.compile(r"^(#EXTINF:[^,\s]+)")
 def parse_entries(text):
     lines = text.splitlines()
     header = next((line for line in lines if line.startswith("#EXTM3U")), "#EXTM3U")
@@ -54,6 +55,10 @@ def set_attr(extinf, key, value):
                 return f'{extinf[:start]}{safe_value}{extinf[end:]}'
             break
         pos = idx + 1
+    match = RE_EXTINF_HEADER.match(extinf)
+    if match:
+        header = match.group(1)
+        return extinf.replace(header, f'{header} {key}="{safe_value}"', 1)
     return extinf.replace("#EXTINF:-1", f'#EXTINF:-1 {key}="{safe_value}"', 1)
 
 def set_name(extinf, name):
