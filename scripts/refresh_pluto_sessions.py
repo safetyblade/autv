@@ -42,6 +42,10 @@ def get_session():
     )
     try:
         with urlopen(request, timeout=15) as response:
+            # Security: Ensure redirect target uses HTTP(S) to prevent scheme escalation or local file disclosure
+            final_scheme = urlsplit(response.geturl()).scheme
+            if final_scheme not in ("http", "https"):
+                raise RuntimeError(f"Unsupported URL scheme: {final_scheme}")
             data = json.load(response)
     except HTTPError as exc:
         raise RuntimeError(f"Pluto boot rejected request: HTTP {exc.code}") from None
