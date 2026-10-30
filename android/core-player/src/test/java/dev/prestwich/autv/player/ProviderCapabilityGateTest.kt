@@ -5,6 +5,17 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class ProviderCapabilityGateTest {
+    @Test fun sevenUsesIssuedWidevineWithoutEnablingAnUnconfiguredAdvertisingSession() {
+        val id=ProviderChannelId("seven","official-fixture")
+        val request=ProviderPlaybackRequest(id,"https://media.example/live.mpd","application/dash+xml",
+            options=ProviderMediaOptions(widevine=ProviderWidevine("https://licence.example/issued")))
+        ProviderMediaSourceFactory.validate(request,false)
+        try {
+            ProviderMediaSourceFactory.validate(ProviderPlaybackRequest(id,"https://media.example/live.mpd","application/dash+xml",
+                options=ProviderMediaOptions(imaLive=ProviderImaLive("synthetic"))),false)
+            fail("Advertising still requires its configured player path")
+        } catch(_: IllegalArgumentException) { }
+    }
     @Test fun legacyRemainsHlsOnlyAndExpiredSessionsNeverStart() {
         val id = ProviderChannelId("sample", "one")
         ProviderMediaSourceFactory.validate(ProviderPlaybackRequest(id,"https://media.invalid","application/x-mpegURL"),false)

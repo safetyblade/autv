@@ -42,7 +42,8 @@ class SevenPlaybackTest {
                 assertEquals("ref:main-live", parameters["referenceId"])
                 assertEquals("detected-market", parameters["marketId"])
                 assertEquals("fixture-device", parameters["deviceId"])
-                assertFalse(parameters.keys.any { it in setOf("pc", "ozid", "sdkverification", "deliveryId") })
+                assertFalse(parameters.keys.any { it in setOf("pc", "ozid", "sdkverification", "deliveryId", "cp.drmAuth") })
+                SevenPlaybackCapabilities.parameters.forEach { (key,value) -> assertEquals(value,parameters[key]) }
                 return descriptor()
             }
         }
@@ -145,7 +146,9 @@ class SevenPlaybackTest {
         assertEquals(original, SevenLiveSource.select(channel, response).uri)
         failWith(ProviderFailure.DRM_UNSUPPORTED) { SevenLiveSource.select(channel, descriptor().put("drm", true)) }
         sources.remove(0)
-        failWith(ProviderFailure.DRM_UNSUPPORTED) { SevenLiveSource.select(channel, response) }
+        val protected=SevenLiveSource.select(channel,response)
+        assertEquals("application/dash+xml",protected.mimeType)
+        assertEquals("https://fixture.invalid/license",protected.options.widevine!!.licenceUri)
     }
     @Test fun preservesBroadcasterHlsRegardlessOfCdnAndRequiresAdAndDrmContractsWhenDeclared() {
         val originalCdn = "https://broadcaster-cdn.invalid/channel7/master.m3u8?ads=normal&session=fixture"
@@ -161,6 +164,19 @@ class SevenPlaybackTest {
             assertEquals(ProviderPlaybackStage.SEVEN_ADS, error.stage)
         }
         failWith(ProviderFailure.REGION_DENIED) { SevenLiveSource.select(channel, JSONObject("""{"error":"location_verification_required"}""")) }
+    }
+    @Test fun issuedMediaTokenIsScopedAndUnknownDrmNeverBecomesClearPlayback() {
+        val response=descriptor()
+        val source=response.getJSONObject("media").getJSONArray("sources").getJSONObject(0)
+        source.put("type","application/dash+xml").put("encryption_type","cenc").put("key_systems",JSONObject()
+            .put("com.widevine.alpha",JSONObject().put("license_url","https://licence.example/issued"))
+            .put("authorization",JSONObject().put("token","issued-media-fixture")))
+        val request=SevenLiveSource.select(channel,response)
+        assertEquals("Bearer issued-media-fixture",request.options.widevine!!.headers["Authorization"])
+        assertEquals(setOf("https://csm-e-seven-fixture.yospace.com"),request.options.originHeaders.keys)
+        assertTrue(request.headers.isEmpty())
+        source.getJSONObject("key_systems").getJSONObject("com.widevine.alpha").put("license_url","http://unsafe.example/licence")
+        failWith(ProviderFailure.DRM_UNSUPPORTED) { SevenLiveSource.select(channel,response) }
     }
     @Test fun providerSessionFailureExpiresOnlySeven() {
         val store = Store()

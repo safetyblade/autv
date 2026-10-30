@@ -15,6 +15,15 @@ class SevenTransportPolicyTest {
         }
         try { validateSevenRequest("GET", "${SevenPlusAdapter.PLAYBACK}?$query"); fail("Missing account authorization") } catch (_: IllegalArgumentException) { }
     }
+    @Test fun codecNegotiationCannotAssertSdkVerificationOrInventAdvertisingContext() {
+        val base="appId=7plus&deviceType=androidtv&platformType=tv&deviceId=fixture&accountId=account&referenceId=ref&marketId=market&videoType=live"
+        val caps=dev.prestwich.autv.data.provider.SevenPlaybackCapabilities.parameters.entries.joinToString("&") { "${it.key}=${it.value}" }
+        validateSevenRequest("GET","${SevenPlusAdapter.PLAYBACK}?$base&$caps","fixture")
+        for(extra in listOf("sdkverification=true","deliveryId=csai","pc=3181")) {
+            try { validateSevenRequest("GET","${SevenPlusAdapter.PLAYBACK}?$base&$caps&$extra","fixture");fail() }
+            catch(_: IllegalArgumentException) { }
+        }
+    }
     @Test fun onlyReviewedApiMethodsHostsAndPathsAreAllowed() {
         validateSevenRequest("POST", "${SevenPlusAdapter.AUTH}/account/device/authorize")
         validateSevenRequest("POST", "${SevenPlusAdapter.AUTH}/connect/token")
