@@ -1679,6 +1679,18 @@
     <display-name>Love After Lockup We TV</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951479/168x168.png?type=color_onBlack" />
   </channel>
+  <channel id="99951383">
+    <display-name>The NBA Channel</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951383/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951389">
+    <display-name>TennisChannel 2</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951389/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951406">
+    <display-name>Willow Sports</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951406/168x168.png?type=color_onBlack" />
+  </channel>
   <channel id="400000294">
     <display-name>Watch AEW</display-name>
     <icon src="https://canvas-lb.tubitv.com/opts/yeAV3-c2XWfYzw==/e9cd4624-20d8-421b-b5ed-282769cf2f57/CHgQeDoFMS4xLjlAAQ==" />

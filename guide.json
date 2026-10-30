@@ -10,7 +10,7 @@
     "guide": "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
   },
   "activeCount": 639,
-  "availableCount": 462,
+  "availableCount": 465,
   "channels": [
     {
       "number": 100,
@@ -631,10 +631,10 @@
       "subgenre": "Basketball",
       "description": "Dedicated NBA FAST channel with highlights, archive games, original programming and basketball coverage.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
-      "logoUrl": null
+      "available": true,
+      "streamUrl": "https://dbrb49pjoymg4.cloudfront.net/10001/99951383/hls/playlist.m3u8?includeAssetTags=true&ads.xumo_channelId=99951383&ads.xumo_streamId=99951383&ads.channelId=99951383&ads.channelName=NBAFASTChannel&ads.caid=NBAFASTChannel&ads.csid=xumo_web_NBAFASTChannel_ssai&ads.genre=Sport,Sports,SA,SC,SE,SN&ads._fw_content_genre=Sport,Sports,SA,SC,SE,SN&ads._fw_coppa=0&ads.xumo_contentId=4185&ads.xumo_contentName=NBAFASTChannel&ads.xumo_providerId=4185&ads.xumo_providerName=NBAFASTChannel&ads.asnw=&ads.xumo_channelName=NBAFASTChannel&ads._fw_h_x_country=US&ads._fw_ifa_type=&ads._fw_did=4aeebd6b-4ddd-405f-92e5-750a2571961e&ads.amznappId=&ads.lat=&ads.lon=&ads.os=&ads.osv=&ads._fw_is_lat=0&ads._fw_us_privacy=&ads._fw_content_category=&ads._fw_content_language=en&ads._fw_content_rating=&ads._fw_deviceMake=GitHubAction&ads._fw_device_model=PythonScript&ads.xumo_platform=web&ads.site_id=&ads.appVersion=1.0.0&ads._fw_app_bundle=web.xumo.com&ads._fw_app_store_url=&ads.appName=xumo",
+      "tvgId": "99951383",
+      "logoUrl": "https://image.xumo.com/v1/channels/channel/99951383/168x168.png?type=color_onBlack"
     },
     {
       "number": 229,
@@ -835,10 +835,10 @@
       "subgenre": "Racquet & Golf",
       "description": "Sports FAST channel featuring live events, archive coverage, highlights or sports programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
-      "logoUrl": null
+      "available": true,
+      "streamUrl": "https://dbrb49pjoymg4.cloudfront.net/10001/99951389/hls/playlist.m3u8?includeAssetTags=true&ads.xumo_channelId=99951389&ads.xumo_streamId=99951389&ads.channelId=99951389&ads.channelName=SinclairTennisChannelT2&ads.caid=SinclairTennisChannelT2&ads.csid=xumo_web_SinclairTennisChannelT2_ssai&ads.genre=Sport,Sports,SA,SC,SE,SN&ads._fw_content_genre=Sport,Sports,SA,SC,SE,SN&ads._fw_coppa=0&ads.xumo_contentId=4197&ads.xumo_contentName=SinclairTennisChannelT2&ads.xumo_providerId=4197&ads.xumo_providerName=SinclairTennisChannelT2&ads.asnw=&ads.xumo_channelName=SinclairTennisChannelT2&ads._fw_h_x_country=US&ads._fw_ifa_type=&ads._fw_did=d36e70ad-308e-42ec-92ad-d4611920ecdf&ads.amznappId=&ads.lat=&ads.lon=&ads.os=&ads.osv=&ads._fw_is_lat=0&ads._fw_us_privacy=&ads._fw_content_category=&ads._fw_content_language=en&ads._fw_content_rating=&ads._fw_deviceMake=GitHubAction&ads._fw_device_model=PythonScript&ads.xumo_platform=web&ads.site_id=&ads.appVersion=1.0.0&ads._fw_app_bundle=web.xumo.com&ads._fw_app_store_url=&ads.appName=xumo",
+      "tvgId": "99951389",
+      "logoUrl": "https://image.xumo.com/v1/channels/channel/99951389/168x168.png?type=color_onBlack"
     },
     {
       "number": 246,
@@ -1363,10 +1363,10 @@
       "subgenre": "General Sports",
       "description": "Sports FAST channel featuring live events, archive coverage, highlights or sports programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
-      "logoUrl": null
+      "available": true,
+      "streamUrl": "https://dbrb49pjoymg4.cloudfront.net/10001/99951406/hls/playlist.m3u8?includeAssetTags=true&ads.xumo_channelId=99951406&ads.xumo_streamId=99951406&ads.channelId=99951406&ads.channelName=TimesInternetWillowPlus&ads.caid=TimesInternetWillowPlus&ads.csid=xumo_web_TimesInternetWillowPlus_ssai&ads.genre=Sport,Sports,SA,SC,SE,SN&ads._fw_content_genre=Sport,Sports,SA,SC,SE,SN&ads._fw_coppa=0&ads.xumo_contentId=4219&ads.xumo_contentName=TimesInternetWillowPlus&ads.xumo_providerId=4219&ads.xumo_providerName=TimesInternetWillowPlus&ads.asnw=&ads.xumo_channelName=TimesInternetWillowPlus&ads._fw_h_x_country=US&ads._fw_ifa_type=&ads._fw_did=e8d097f0-1de7-46c0-8c22-d17f8d552dbe&ads.amznappId=&ads.lat=&ads.lon=&ads.os=&ads.osv=&ads._fw_is_lat=0&ads._fw_us_privacy=&ads._fw_content_category=&ads._fw_content_language=en&ads._fw_content_rating=&ads._fw_deviceMake=GitHubAction&ads._fw_device_model=PythonScript&ads.xumo_platform=web&ads.site_id=&ads.appVersion=1.0.0&ads._fw_app_bundle=web.xumo.com&ads._fw_app_store_url=&ads.appName=xumo",
+      "tvgId": "99951406",
+      "logoUrl": "https://image.xumo.com/v1/channels/channel/99951406/168x168.png?type=color_onBlack"
     },
     {
       "number": 290,
