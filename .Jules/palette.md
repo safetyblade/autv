@@ -21,3 +21,7 @@
 ## 2025-05-23 - Content Description for Provider Settings Service Cards
 **Learning:** OutlinedCard components in settings lists that display service status omit descriptive metadata (`service.description`) from TalkBack when merged automatically; explicit `contentDescription` combining service name, description, and connection status provides full context for screen reader users browsing service options.
 **Action:** Use `semantics(mergeDescendants = true) { contentDescription = "${service.name}, ${service.description} · $statusText" }` on provider service selection cards in settings menus.
+
+## 2025-05-24 - Action Button Semantics in Modal Programme Detail Dialogs
+**Learning:** When AlertDialog modals present actions like "Back", "Close", or dynamic "Watch live", generic button labels lack context for screen reader users navigating by accessibility focus. Explicitly qualifying `contentDescription` with the programme title ("Watch $title live") or dialog destination ("Back to programme guide", "Close programme details") clarifies intent when the modal content is separate from button focus.
+**Action:** Always provide contextual `contentDescription` semantics on modal dialog confirmation and dismissal buttons.
