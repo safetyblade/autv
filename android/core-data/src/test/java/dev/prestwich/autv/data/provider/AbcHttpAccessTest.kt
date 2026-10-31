@@ -31,6 +31,15 @@ class AbcHttpAccessTest {
         access.home();assertEquals(1,calls)
         assertEquals("https://cdn.example/approved.m3u8",access.authoriseMedia("returned-main-vic","https://cdn.example/approved.m3u8",null))
     }
+    @Test fun catalogueAndProfileDenialsKeepTheirStagesWithoutInventingGeoRestrictions() {
+        val access=AbcHttpAccess(registration()) { Connection(it,status=403) }
+        for((stage,action) in listOf<Pair<ProviderPlaybackStage,()->Any>>(
+            ProviderPlaybackStage.ABC_CATALOGUE to {access.home()},ProviderPlaybackStage.ABC_ACTIVATION to {access.link("device")})) {
+            try { action();fail() } catch(error: ProviderException) {
+                assertEquals(403,error.httpStatus);assertEquals(ProviderFailure.UNAVAILABLE,error.failure);assertEquals(stage,error.stage)
+            }
+        }
+    }
     @Test fun profileKeyIsScopedToLinkUnlinkAndUidRenewalHasNoOldBearer() {
         val calls=mutableListOf<Connection>()
         val access=AbcHttpAccess(registration()) { Connection(it).also(calls::add) }
