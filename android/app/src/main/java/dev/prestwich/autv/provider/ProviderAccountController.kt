@@ -114,7 +114,10 @@ internal class ProviderAccountController(
     private fun message(failure: Exception): String = when ((failure as? ProviderException)?.failure) {
         ProviderFailure.ACTIVATION_EXPIRED -> "The activation code expired. Connect again."
         ProviderFailure.ACTIVATION_DENIED -> "$name did not approve this activation. Request a fresh code."
-        ProviderFailure.AUTH_RESPONSE_UNSUPPORTED -> "$name returned an unsupported sign-in response."
+        ProviderFailure.AUTH_RESPONSE_UNSUPPORTED -> if((failure as? ProviderException)?.stage in setOf(
+            ProviderPlaybackStage.ABC_CATALOGUE,ProviderPlaybackStage.ABC_PROGRAMME,ProviderPlaybackStage.ABC_AUTHORISATION,
+            ProviderPlaybackStage.TEN_CONFIG,ProviderPlaybackStage.TEN_CATALOGUE,ProviderPlaybackStage.TEN_DESCRIPTOR))
+            "$name returned an unsupported service response." else "$name returned an unsupported sign-in response."
         ProviderFailure.AUTH_REQUIRED, ProviderFailure.SESSION_EXPIRED -> "Connect $name in Settings to watch."
         ProviderFailure.OFFLINE -> "Cannot reach $name. Check your connection and retry."
         ProviderFailure.RETRY_LATER -> "$name is temporarily busy. Try again shortly."

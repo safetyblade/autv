@@ -58,7 +58,7 @@ internal class HttpSevenTransport(private val open: (String) -> HttpURLConnectio
             }
             val status = connection.responseCode
             val token = URI(url).path == "/connect/token"
-            if (status == 400 && bearer != null) {
+            if (status in setOf(400,403) && bearer != null) {
                 // Inspect only a bounded response in memory; retain enum-only diagnostics.
                 val rejection = try {
                     val bytes = connection.errorStream?.use { input ->
@@ -76,12 +76,13 @@ internal class HttpSevenTransport(private val open: (String) -> HttpURLConnectio
                         else -> SevenDescriptorRejection.read(bytes.toString(Charsets.UTF_8),connection.contentType)
                     }
                 } catch (_: Exception) { SevenDescriptorRejection.unavailable() }
-                throw ProviderException(ProviderFailure.UNAVAILABLE, status, ProviderPlaybackStage.SEVEN_DESCRIPTOR, rejection)
+                val failure=if(rejection.reason in setOf(SevenDescriptorRejection.Reason.LOCATION,SevenDescriptorRejection.Reason.MARKET)) ProviderFailure.REGION_DENIED else ProviderFailure.UNAVAILABLE
+                throw ProviderException(failure, status, ProviderPlaybackStage.SEVEN_DESCRIPTOR, rejection)
             }
             if (status == 429 || status in 500..599) throw ProviderException(ProviderFailure.RETRY_LATER, status)
             if (status == 401 && bearer != null) throw ProviderException(ProviderFailure.SESSION_EXPIRED, status)
             if (status == 403) throw ProviderException(
-                if (URI(url).host == "auth2.swm.digital") ProviderFailure.ACTIVATION_DENIED else ProviderFailure.REGION_DENIED, status)
+                if (URI(url).host == "auth2.swm.digital") ProviderFailure.ACTIVATION_DENIED else ProviderFailure.UNAVAILABLE, status)
             if (status !in 200..299 && !(token && status in setOf(400, 401))) throw ProviderException(ProviderFailure.UNAVAILABLE, status)
             val input = if (status >= 400) connection.errorStream else connection.inputStream
             val bytes = java.io.ByteArrayOutputStream()

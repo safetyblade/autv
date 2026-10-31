@@ -43,9 +43,9 @@ class AbcHlsAuthoriser internal constructor(private val registration: AbcHlsSign
             } finally { connection.disconnect() }
             val separator=if(URI(original).rawQuery==null) "?" else if(original.endsWith('?') || original.endsWith('&')) "" else "&"
             return original+separator+"hdnea="+URLEncoder.encode(token,"UTF-8")
-        } catch(error: ProviderException) { throw error }
-        catch(_: java.io.IOException) { throw ProviderException(ProviderFailure.OFFLINE) }
-        catch(_: Exception) { throw ProviderException(ProviderFailure.AUTH_RESPONSE_UNSUPPORTED) }
+        } catch(error: ProviderException) { throw ProviderException(error.failure,error.httpStatus,error.stage ?: ProviderPlaybackStage.ABC_AUTHORISATION) }
+        catch(_: java.io.IOException) { throw ProviderException(ProviderFailure.OFFLINE,stage=ProviderPlaybackStage.ABC_AUTHORISATION) }
+        catch(_: Exception) { throw ProviderException(ProviderFailure.AUTH_RESPONSE_UNSUPPORTED,stage=ProviderPlaybackStage.ABC_AUTHORISATION) }
     }
     override fun toString()="AbcHlsAuthoriser(redacted)"
 }

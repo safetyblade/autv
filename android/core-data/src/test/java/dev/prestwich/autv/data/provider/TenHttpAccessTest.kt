@@ -58,6 +58,28 @@ class TenHttpAccessTest {
         assertEquals("Bearer synthetic-token",requests.last().getRequestProperty("Authorization"))
         assertTrue(requests.dropLast(1).all { it.getRequestProperty("Authorization")==null })
     }
+    @Test fun issuedQueryIsPreservedAndExactMergedDescriptorUrlIsSigned() {
+        val registration=Registration();var requested:URL?=null
+        val access=TenHttpAccess(registration) { url -> requested=url;Connection(url,"{\"dai\":{\"assetKey\":\"issued-fixture\"}}",dai="issued-auth") }
+        val original="https://10.com.au/api/playback/official?session=one%2Ftwo&market=VIC&client=autv-approved-fixture"
+        access.playback(original,"account-fixture")
+        assertEquals(original,requested.toString())
+        assertEquals(original,registration.signed.single().second)
+        val appended="https://10.com.au/api/playback/official?session=one%2Ftwo&market=VIC"
+        access.playback(appended,"account-fixture")
+        assertEquals(appended+"&client=autv-approved-fixture",requested.toString())
+        assertEquals(requested.toString(),registration.signed.last().second)
+        try { access.playback("https://10.com.au/api/playback/official?client=other","account-fixture");fail() }
+        catch(error: ProviderException) { assertEquals(ProviderPlaybackStage.TEN_DESCRIPTOR,error.stage) }
+    }
+    @Test fun configurationDenialIsNotMisreportedAsGeographyOrActivationFailure() {
+        val access=TenHttpAccess(Registration()) { url -> Connection(url,"{}",403) }
+        try { access.generateCode("device");fail() }
+        catch(error: ProviderException) {
+            assertEquals(403,error.httpStatus);assertEquals(ProviderFailure.UNAVAILABLE,error.failure)
+            assertEquals(ProviderPlaybackStage.TEN_CONFIG,error.stage)
+        }
+    }
     @Test fun redirectsAndForeignConfigEndpointsCannotReceiveAuthorisation() {
         var opened=0
         val access=TenHttpAccess(Registration()) { url -> opened++;Connection(url,"{}",302) }

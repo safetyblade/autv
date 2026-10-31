@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -43,6 +44,7 @@ private val services = listOf(
 @Composable
 internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Unit) {
     val uriHandler = LocalUriHandler.current
+    val context = LocalContext.current
     var selected by rememberSaveable { mutableStateOf<String?>(model.pendingActivationProvider) }
     val firstFocus = remember { FocusRequester() }
     val scroll = rememberScrollState()

@@ -31,23 +31,23 @@ class TenHttpAccess internal constructor(private val registration: TenClientRegi
         require(registration.deviceFields.isNotEmpty() && registration.playbackParameters.isNotEmpty())
         require("deviceIdentifier" !in registration.deviceFields)
     }
-    private fun config()=send("GET",query("https://10.com.au/api/v1/config",registration.configParameters)).data
+    private fun config()=guarded(ProviderPlaybackStage.TEN_CONFIG) { send("GET",query("https://10.com.au/api/v1/config",registration.configParameters)).data }
     private fun auth(key: String)=config().getJSONObject("authConfig").getString(key)
-    override fun generateCode(deviceId: String): JSONObject = guarded {
+    override fun generateCode(deviceId: String): JSONObject = guarded(ProviderPlaybackStage.TEN_ACTIVATION) {
         val payload=JSONObject(registration.deviceFields).put("deviceIdentifier",deviceId)
         send("POST",auth("generateCode"),payload).data
     }
-    override fun validateCode(code: String, deviceId: String, expirySeconds: Long): JSONObject = guarded {
+    override fun validateCode(code: String, deviceId: String, expirySeconds: Long): JSONObject = guarded(ProviderPlaybackStage.TEN_POLL) {
         send("POST",auth("validateCode"),JSONObject().put("code",code).put("deviceIdentifier",deviceId).put("expiry",expirySeconds),pending=true).data
     }
-    override fun refresh(alternativeToken: String, refreshToken: String): JSONObject = guarded {
+    override fun refresh(alternativeToken: String, refreshToken: String): JSONObject = guarded(ProviderPlaybackStage.TEN_REFRESH) {
         send("POST",auth("refreshToken"),JSONObject().put("alternativeToken",alternativeToken).put("refreshToken",refreshToken)).data
     }
-    override fun liveChannels(region: String): JSONObject = guarded {
+    override fun liveChannels(region: String): JSONObject = guarded(ProviderPlaybackStage.TEN_CATALOGUE) {
         require(region=="VIC") // Supported regional choice; never modifies IP/location verification.
         send("GET",query(config().getString("liveTvEndpoint").trimEnd('/')+"/$region",mapOf("limit" to "4"))).data
     }
-    override fun playback(officialDescriptorUrl: String, bearer: String): TenPlaybackDescriptor = guarded {
+    override fun playback(officialDescriptorUrl: String, bearer: String): TenPlaybackDescriptor = guarded(ProviderPlaybackStage.TEN_DESCRIPTOR) {
         val response=send("GET",query(officialDescriptorUrl,registration.playbackParameters),bearer=bearer)
         TenLiveProtocol.liveRequest(response.data,response.daiAuth.orEmpty()) // Refuse missing auth/VOD/protection before playback.
         TenPlaybackDescriptor(response.data,response.daiAuth!!,mimeType=when(registration.liveFormat) {
@@ -82,7 +82,8 @@ class TenHttpAccess internal constructor(private val registration: TenClientRegi
             val status=connection.responseCode
             if(pending && status in setOf(202,204)) return Reply(JSONObject(),null)
             if(status==401) throw ProviderException(ProviderFailure.SESSION_EXPIRED,status)
-            if(status==403) throw ProviderException(ProviderFailure.REGION_DENIED,status)
+            // A bare 403 can be client, signature, entitlement or network policy; it is not proof of geography.
+            if(status==403) throw ProviderException(ProviderFailure.UNAVAILABLE,status)
             if(status==429 || status in 500..599) throw ProviderException(ProviderFailure.RETRY_LATER,status)
             if(status !in 200..299 && !(pending && status==400)) throw ProviderException(ProviderFailure.UNAVAILABLE,status)
             val stream=if(status>=400) connection.errorStream else connection.inputStream
@@ -97,16 +98,30 @@ class TenHttpAccess internal constructor(private val registration: TenClientRegi
             return Reply(JSONObject(String(bytes,Charsets.UTF_8)),connection.getHeaderField("X-DAI-AUTH"))
         } finally { connection.disconnect() }
     }
-    private inline fun <T> guarded(action: ()->T): T = try { action() }
-    catch(error: ProviderException) { throw error }
-    catch(_: java.io.IOException) { throw ProviderException(ProviderFailure.OFFLINE) }
-    catch(_: Exception) { throw ProviderException(ProviderFailure.AUTH_RESPONSE_UNSUPPORTED) }
+    private inline fun <T> guarded(stage: ProviderPlaybackStage, action: ()->T): T = try { action() }
+    catch(error: ProviderException) { throw ProviderException(error.failure,error.httpStatus,error.stage ?: stage) }
+    catch(_: java.io.IOException) { throw ProviderException(ProviderFailure.OFFLINE,stage=stage) }
+    catch(_: Exception) { throw ProviderException(ProviderFailure.AUTH_RESPONSE_UNSUPPORTED,stage=stage) }
     private fun query(address: String,values: Map<String,String>): String {
         require(values.keys.all { it.matches(Regex("[A-Za-z0-9_-]{1,64}")) })
         require(values.values.all { it.length<=4096 && it.none(Char::isISOControl) })
-        if(values.isEmpty()) return address
-        require(URI(address).rawQuery==null) // Fail closed rather than duplicate provider query fields.
-        return address+"?"+values.entries.joinToString("&") { (key,value)->"${encode(key)}=${encode(value)}" }
+        // Requests.prepare_url in the reference preserves provider-issued query/session
+        // fields. Preserve their exact bytes and sign the final URL, rather than rejecting them.
+        val uri=URI(address)
+        require(uri.rawFragment==null)
+        val existing=linkedMapOf<String,String>()
+        uri.rawQuery?.split('&')?.filter { it.isNotEmpty() }?.forEach { part ->
+            val pair=part.split('=',limit=2)
+            val key=java.net.URLDecoder.decode(pair[0],"UTF-8")
+            val value=java.net.URLDecoder.decode(pair.getOrElse(1) { "" },"UTF-8")
+            require(key !in existing);existing[key]=value
+        }
+        val additions=values.filter { (key,value) ->
+            if(existing.containsKey(key)) { require(existing[key]==value);false } else true
+        }
+        if(additions.isEmpty()) return address
+        val separator=if(uri.rawQuery==null) "?" else if(address.endsWith('?') || address.endsWith('&')) "" else "&"
+        return address+separator+additions.entries.joinToString("&") { (key,value)->"${encode(key)}=${encode(value)}" }
     }
     private fun encode(value: String)=URLEncoder.encode(value,"UTF-8")
     override fun toString()="TenHttpAccess(redacted)"

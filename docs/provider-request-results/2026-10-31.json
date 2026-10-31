@@ -1,0 +1,47 @@
+{
+  "recorded_at_utc": "2026-10-31T03:12:06.158548+00:00",
+  "network_policy": "restricted/enforced",
+  "provider_hosts_allowlisted": false,
+  "results": [
+    {
+      "provider": "seven",
+      "method": "GET",
+      "public_bootstrap_url": "https://market-cdn.swm.digital/v1/market/ip/?apikey=web",
+      "result": "HTTPS CONNECT rejected by managed workspace proxy",
+      "proxy_connect_status": 403,
+      "origin_http_status": null,
+      "provider_response_schema": null,
+      "tls_to_provider_established": false,
+      "private_credentials_sent": false
+    },
+    {
+      "provider": "abc",
+      "method": "GET",
+      "public_bootstrap_url": "https://api.iview.abc.net.au/v2/home",
+      "result": "HTTPS CONNECT rejected by managed workspace proxy",
+      "proxy_connect_status": 403,
+      "origin_http_status": null,
+      "provider_response_schema": null,
+      "tls_to_provider_established": false,
+      "private_credentials_sent": false
+    },
+    {
+      "provider": "ten",
+      "method": "GET",
+      "public_bootstrap_url": "https://10.com.au/api/v1/config",
+      "result": "HTTPS CONNECT rejected by managed workspace proxy",
+      "proxy_connect_status": 403,
+      "origin_http_status": null,
+      "provider_response_schema": null,
+      "tls_to_provider_established": false,
+      "private_credentials_sent": false
+    }
+  ],
+  "interpretation": "These are environment transport denials, not responses from Seven/ABC/Ten. No broadcaster access restriction, unsupported anonymous mode or successful playback is established by these attempts.",
+  "seven_prior_owner_result": {
+    "stage": "7-DESCRIPTOR",
+    "http_status": 400,
+    "response": "non-JSON",
+    "reproduced_here": false
+  }
+}
