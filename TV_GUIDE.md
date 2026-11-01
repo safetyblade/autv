@@ -896,12 +896,6 @@ Movie-focused FAST channel with scheduled films or genre collections.
 
 ## Horror / Thriller / Cult
 
-### 313 — FilmRise Horror
-
-Movie-focused FAST channel with scheduled films or genre collections.
-
-**Guide:** Full  
-
 ### 314 — Pluto TV Horror
 
 Movie-focused FAST channel with scheduled films or genre collections.
@@ -1565,12 +1559,6 @@ Comedy, sitcom or stand-up programming.
 **Guide:** Full  
 
 ### 614 — Tosh.0
-
-Comedy, sitcom or stand-up programming.
-
-**Guide:** Full  
-
-### 615 — The Red Green Channel
 
 Comedy, sitcom or stand-up programming.
 
