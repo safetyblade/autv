@@ -53,6 +53,22 @@ class SevenDescriptorTransportTest {
         assertEquals(SevenDescriptorRejection.Reason.MARKET,
             rejection("""{"error":"video_not_in_market"}""").sevenRejection!!.reason)
     }
+    @Test fun plainTextRejectionKeepsOnlyExactFieldNamesAndNeverPrivateValues() {
+        val body = "Missing required query parameter 'deliveryId'; invalid 'cp.drmAuth'. " +
+            "Bearer secret-fixture https://private.invalid/session?signature=private-value " +
+            "accountIdentifier notpc cp.drmAuthExtra"
+        val diagnostic = rejection(body).sevenRejection!!
+        assertEquals(SevenDescriptorRejection.Reason.NON_JSON, diagnostic.reason)
+        assertEquals(SevenDescriptorRejection.Format.TEXT, diagnostic.format)
+        assertEquals(setOf(SevenDescriptorRejection.Field.DELIVERY, SevenDescriptorRejection.Field.DRM_AUTH), diagnostic.fields)
+        assertTrue(diagnostic.summary.contains("deliveryId"))
+        assertTrue(diagnostic.summary.contains("Response format: TEXT"))
+        for (privateValue in listOf("secret", "private", "signature", "Bearer", "https://"))
+            assertFalse(diagnostic.summary.contains(privateValue))
+        assertTrue(rejection("Bad Request").sevenRejection!!.fields.isEmpty())
+        assertTrue(rejection("<html>deliveryId sdkverification</html>").sevenRejection!!.fields.isEmpty())
+        assertTrue(rejection("<?xml version=\"1.0\"?><error>pc</error>").sevenRejection!!.fields.isEmpty())
+    }
     @Test fun forbiddenHtmlIsNotEvidenceOfRegionalDenial() {
         val html=rejection("<html>private access message</html>",403)
         assertEquals(ProviderFailure.UNAVAILABLE,html.failure)
