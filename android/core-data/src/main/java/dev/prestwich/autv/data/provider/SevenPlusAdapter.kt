@@ -111,9 +111,9 @@ class SevenPlusAdapter(
         val row = step(ProviderPlaybackStage.SEVEN_CHANNEL) {
             val selected = catalogue.rows.singleOrNull { it.optString("channelId") == channel.channel }
                 ?: throw ProviderException(ProviderFailure.UNAVAILABLE)
-            // One primary-network proof. Official IDs are never invented or replaced with IPTV slugs.
-            if (selected.optString("name").trim() !in setOf("7", "Seven", "Channel 7", "7HD"))
-                throw ProviderException(ProviderFailure.PLAYBACK_UNSUPPORTED)
+            // The catalogue-issued channelId is authoritative. Seven supplies regional
+            // and companion names that need not equal the old four-name proof list.
+            // Do not reject a real provider channel just because its display name varies.
             selected
         }
         val slug = step(ProviderPlaybackStage.SEVEN_LINK) {
