@@ -1,0 +1,19 @@
+AUTV configurable startup channel — full debug APK
+Source: https://github.com/safetyblade/autv/commit/b3870924ea92e9eedcb63cd70d17d61f88d2469f
+Base: current main 2467fb31b2fe3735fbe70e0b0603796919b8d29c (includes merged PR #130)
+Build: :app:assembleFullAppDebug -PautvMediaLab=false
+SHA-256: 524a987ed75e5b1d27a6e0a4381b7d2c8e2c817c7359dc2e214c9d26e0c59772
+
+169 JVM tests passed; Android startup, provider and EPG recovery tests passed.
+
+Application: AUTV
+Package: dev.prestwich.autv
+Launcher: dev.prestwich.autv.MainActivity
+Phone and Android TV launchers: PASS
+Build: debug; not a permanent distribution update
+Signing certificate SHA-256: 422eab0bd30fd70808d6f1808b134f0ed1a9efb92e3f9d887d67c7c7e411123b
+
+<?xml version="1.0" encoding="utf-8"?>
+This artifact branch contains build outputs only. It is separate from the source PR
+and must not be merged into main. This is a test-signed APK, not a permanent
+production signing identity. Install over an existing app only if signatures match.
