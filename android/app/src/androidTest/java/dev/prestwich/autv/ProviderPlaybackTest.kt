@@ -45,6 +45,19 @@ class ProviderPlaybackTest {
         await { onMain { it.playback.selected?.providerChannel?.id == extra.id && it.playback.playing } }
     }
 
+    @Test fun connectingCastKeepsNativeProviderLocalAndNeverExportsItsStream() {
+        ready()
+        onMain { it.playback.request(TuneTarget.Number(-9001)) }
+        await { onMain { it.playback.selected?.providerChannel!=null && it.playback.player.isPlaying } }
+        onMain {
+            val item=it.playback.player.currentMediaItem
+            it.castProbe.connect(it.playback.selected!!)
+            assertTrue(it.playback.player.isPlaying)
+            assertSame(item,it.playback.player.currentMediaItem)
+            assertTrue(it.castProbe.loads.isEmpty())
+            assertTrue(it.playback.selected!!.providerChannel!=null)
+        }
+    }
     @Test fun nativeProviderUsesRetainedPlayerAndSignOutRestoresFast() {
         ready()
         val player = onMain { it.playback.player }

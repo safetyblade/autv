@@ -55,6 +55,9 @@ class CastTransferTest {
     @Test fun receiverPauseAndResumeKeepOwnership() {
         val transfer = CastTransfer().apply { connected("TV") }
         val ticket = transfer.request(1, "https://example/one")
+        assertFalse(transfer.started(ticket, "https://example/one", paused = true))
+        assertFalse(transfer.state.ownsPlayback)
+        assertTrue(transfer.started(ticket, "https://example/one"))
         assertTrue(transfer.started(ticket, "https://example/one", paused = true))
         assertEquals(CastPhase.PAUSED, transfer.state.phase)
         assertTrue(transfer.state.ownsPlayback)

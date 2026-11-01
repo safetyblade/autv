@@ -298,17 +298,19 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         val wasRemote = castPlayback.ownsPlayback
         castPlayback = state
         if (selected?.providerChannel != null && state.phase != CastPhase.DISCONNECTED) {
-            recoverProvider()
+            notice="Provider Cast is unavailable. Continuing playback on this device."
             return
         }
         if (state.ownsPlayback) {
-            guideTuneRecovery.ready(selected?.number)
+            if(state.phase in setOf(CastPhase.PLAYING,CastPhase.PAUSED) && state.channelNumber==selected?.number)
+                guideTuneRecovery.ready(selected?.number)
             player.stop() // Release local decoding/buffering only after receiver status confirms ownership.
             buffering = false
         } else if (state.phase == CastPhase.FAILED && restoreGuideTune(selected?.number)) {
             return
         } else if (state.phase == CastPhase.FAILED || (state.phase == CastPhase.DISCONNECTED && wasRemote)) {
-            selected?.let { playLocal(it, retry = true) }
+            selected?.let { playLocal(it, retry = wasRemote || player.playerError!=null) }
+            state.error?.let { notice=it }
         }
     }
     private fun publishHome() {

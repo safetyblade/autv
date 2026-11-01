@@ -62,6 +62,25 @@ class CastPlaybackTest {
         }
         compose.waitUntil(30_000) { compose.runOnUiThread { model.playing && model.player.currentMediaItem?.mediaId == "419" } }
     }
+    @Test fun failedInitialLoadKeepsTheExistingLocalMediaSession() {
+        ready()
+        compose.runOnUiThread {
+            val item=model.player.currentMediaItem
+            remote.connect(model.selected!!);remote.accept();remote.fail()
+            assertTrue(model.player.isPlaying)
+            assertSame(item,model.player.currentMediaItem)
+            assertFalse(model.castPlayback.ownsPlayback)
+        }
+    }
+    @Test fun failedCastGuidePreviewRestoresThePreviouslyWorkingChannelLocally() {
+        ready()
+        compose.runOnUiThread {
+            remote.connect(model.selected!!);remote.playing()
+            model.request(TuneTarget.Number(419),restoreOnFailure=true)
+            remote.accept();remote.fail()
+        }
+        compose.waitUntil(30000) { compose.runOnUiThread { model.playing && model.selected?.number==100 && model.player.currentMediaItem?.mediaId=="100" } }
+    }
     @Test fun failedRemoteLoadFallsBackLocallyWithoutMarkingChannelUnavailable() {
         ready()
         compose.runOnUiThread {
@@ -81,10 +100,10 @@ class CastPlaybackTest {
         compose.runOnUiThread {
             assertEquals("https://example.test/live.m3u8", CastStreamUrl.resolve("https://example.test/live.m3u8"))
             val channel = Channel(419, "Ink Master", "Game Shows", "", "", "Full", true,
-                "https://example.test/live.m3u8?ads.ifa=[IFA]&token=a%2Bb", "provider-419", "https://example.test/logo.png")
+                "https://example.test/live.m3u8?ads=normal&token=a%2Bb", "provider-419", "https://example.test/logo.png")
             val url = CastStreamUrl.resolve(channel.streamUrl!!)
             val info = CastSender.mediaInfo(channel, url, Programme("The challenge", 0, Long.MAX_VALUE), "sender:123")
-            assertEquals("https://example.test/live.m3u8?token=a%2Bb", info.contentId)
+            assertEquals("https://example.test/live.m3u8?ads=normal&token=a%2Bb", info.contentId)
             assertEquals(info.contentId, info.contentUrl)
             assertEquals("application/x-mpegURL", info.contentType)
             assertEquals(MediaInfo.STREAM_TYPE_LIVE, info.streamType)
@@ -94,6 +113,12 @@ class CastPlaybackTest {
             assertEquals(419, info.customData!!.getInt("channelNumber"))
             assertEquals("provider-419", info.customData!!.getString("channelId"))
             assertEquals("sender:123", info.customData!!.getString("autvLoadId"))
+            val dash=CastSender.mediaInfo(channel,"https://example.test/live.mpd?session=1",null)
+            assertEquals("application/dash+xml",dash.contentType)
+            val cmaf=CastSender.mediaInfo(channel,url,null,mimeType="application/x-mpegURL",live=true,fragmentedMp4=true)
+            assertEquals("fmp4",cmaf.hlsVideoSegmentFormat)
+            val mp4=CastSender.mediaInfo(channel,"https://example.test/movie.mp4",null)
+            assertEquals("video/mp4",mp4.contentType);assertEquals(MediaInfo.STREAM_TYPE_BUFFERED,mp4.streamType)
         }
     }
 }

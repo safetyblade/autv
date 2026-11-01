@@ -40,6 +40,7 @@ class DebugCastConnection(private val changed: (CastPlayback) -> Unit) : CastCon
     override fun start() = Unit
     fun connect(channel: Channel) { connected = true; transfer.connected("Fixture receiver"); changed(transfer.state); load(channel) }
     override fun load(channel: Channel, reusePlayingMedia: Boolean) {
+        if(channel.providerChannel!=null) return
         loads.add(channel); transfer.request(channel.number, channel.streamUrl!!); changed(transfer.state)
     }
     fun accept() { transfer.accepted(transfer.generation); changed(transfer.state) }
