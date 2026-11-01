@@ -211,6 +211,16 @@ def main():
     extras = []
     xml_channels = []
 
+    # Preserve the verified curated NXT stream ahead of newly discovered Pluto backups.
+    # apply_guide.py retains the first matching logical channel.
+    pinned_names = {"CW Presents WWE NXT"}
+    for name, extinf, url in parse_entries(read(CUSTOM)):
+        if name in pinned_names:
+            m3u, xml = normalise(name, extinf, url)
+            extras.append(m3u)
+            xml_channels.append(xml)
+            print(f"ADDED PINNED PRIMARY: {name}")
+
     # Health-checked rotating sources are generated fresh by the scheduled job.
     # Add them first so their exact guide names win if another provider also
     # exposes the same logical channel.
@@ -231,6 +241,8 @@ def main():
     missing_tubi = add_selected("TUBI", tubi_entries, SELECTED_TUBI, extras, xml_channels, direct_pluto)
 
     for name, extinf, url in parse_entries(read(CUSTOM)):
+        if name in pinned_names:
+            continue
         m3u, xml = normalise(name, extinf, url)
         extras.append(m3u)
         xml_channels.append(xml)
