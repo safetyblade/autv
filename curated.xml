@@ -2028,4 +2028,8 @@
   <channel id="CombaTV">
     <display-name>CombaTV</display-name>
   </channel>
+  <channel id="6683cd71a1d7ad000866ec6a">
+    <display-name>Pokémon</display-name>
+    <icon src="https://images.pluto.tv/channels/6683cd71a1d7ad000866ec6a/colorLogoPNG.png" />
+  </channel>
 </tv>

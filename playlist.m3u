@@ -845,6 +845,8 @@ https://jmp2.uk/plu-5ddd7cb2cbb9010009b4fe32.m3u8
 https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-6615522e50e81fa51eb0df62/?X-Plex-Token=xg_APBiB9yGz8HLtgv1K
 #EXTINF:-1 tvg-chno="1214" tvg-id="63f87d057533d80008ab9549" tvg-name="SpongeBob SquarePants" tvg-logo="https://images.pluto.tv/channels/63f87d057533d80008ab9549/colorLogoPNG.png" group-title="Kids & Animation",SpongeBob SquarePants
 https://jmp2.uk/plu-63f87d057533d80008ab9549.m3u8
+#EXTINF:-1 tvg-chno="1215" tvg-id="6683cd71a1d7ad000866ec6a" tvg-name="Pokémon" tvg-logo="https://images.pluto.tv/channels/6683cd71a1d7ad000866ec6a/colorLogoPNG.png" group-title="Kids & Animation",Pokémon
+https://jmp2.uk/plu-6683cd71a1d7ad000866ec6a.m3u8
 #EXTINF:-1 tvg-chno="1219" tvg-id="697140a85d851f5e69414688-639b8d803f4612cc150a5721" tvg-name="Smurf TV" tvg-logo="https://provider-static.plex.tv/epg/cms/production/d71ef498-0483-4a1b-8439-1110a998205d/smurftv_logo_dark_-_Jordan_Warkol.png" group-title="Kids & Animation",Smurf TV
 https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-639b8d803f4612cc150a5721/?X-Plex-Token=xg_APBiB9yGz8HLtgv1K
 #EXTINF:-1 tvg-chno="1220" tvg-id="697140a85d851f5e69414688-6615522e50e81fa51eb0df60" tvg-name="Sonic The Hedgehog" tvg-logo="https://provider-static.plex.tv/epg/cms/production/dd0dbbb3-6169-4a44-976e-41598a438f2b/channel_logo_1500x1000_dark.png.png" group-title="Kids & Animation",Sonic The Hedgehog

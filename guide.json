@@ -10,7 +10,7 @@
     "guide": "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
   },
   "activeCount": 639,
-  "availableCount": 465,
+  "availableCount": 466,
   "channels": [
     {
       "number": 100,
@@ -6919,10 +6919,10 @@
       "subgenre": "Kids / Family Animation",
       "description": "Kids, family and animation programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
-      "logoUrl": null
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-6683cd71a1d7ad000866ec6a.m3u8",
+      "tvgId": "6683cd71a1d7ad000866ec6a",
+      "logoUrl": "https://images.pluto.tv/channels/6683cd71a1d7ad000866ec6a/colorLogoPNG.png"
     },
     {
       "number": 1216,
