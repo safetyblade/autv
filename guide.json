@@ -9,23 +9,11 @@
     "epg": "https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz",
     "guide": "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
   },
-  "activeCount": 639,
+  "activeCount": 637,
   "availableCount": 469,
   "channels": [
     {
       "number": 100,
-      "name": "105 News24 Now",
-      "genre": "News",
-      "subgenre": "Australian / Local",
-      "description": "Rolling news, current affairs, weather or business coverage.",
-      "epg": "Full",
-      "available": true,
-      "streamUrl": "https://amg00663-skynewsau-amg00663c1-lg-au-4519.playouts.now.amagi.tv/playlist/amg00663-australiannewschannelptyltdfast-skynews-lgau/playlist.m3u8?ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.usprivacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.targetad=[TARGETAD_ALLOWED]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.dmake=[DEVICE_MAKE]",
-      "tvgId": "autv.105-news24-now",
-      "logoUrl": "https://d3bd0tgyk368z1.cloudfront.net/skynews/N24_SubBrands_NOW_Stacked_RGB_400x200.png"
-    },
-    {
-      "number": 101,
       "name": "110 LeadStory Breaking News",
       "genre": "News",
       "subgenre": "Australian / Local",
@@ -35,6 +23,18 @@
       "streamUrl": "https://amg02703-leadstory-amg02703c16-lg-au-3151.playouts.now.amagi.tv/playlist/amg02703-leadstoryfast-leadstoryaustralia-lgau/playlist.m3u8?ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.usprivacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.targetad=[TARGETAD_ALLOWED]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.dmake=[DEVICE_MAKE]",
       "tvgId": "autv.110-leadstory-breaking-news",
       "logoUrl": "https://d3bd0tgyk368z1.cloudfront.net/Images/Logo-breakingnews.png"
+    },
+    {
+      "number": 101,
+      "name": "105 News24 Now",
+      "genre": "News",
+      "subgenre": "Australian / Local",
+      "description": "Rolling news, current affairs, weather or business coverage.",
+      "epg": "Full",
+      "available": true,
+      "streamUrl": "https://amg00663-skynewsau-amg00663c1-lg-au-4519.playouts.now.amagi.tv/playlist/amg00663-australiannewschannelptyltdfast-skynews-lgau/playlist.m3u8?ads.deviceid=[DEVICE_ID]&ads.ifa=[IFA]&ads.ifatype=[IFA_TYPE]&ads.lat=[LMT]&ads.donotsell=[DNS]&ads.ua=[UA]&ads.ip=[IP]&ads.gdpr=[GDPR]&ads.gdprconsent=[GDPR_CONSENT]&ads.country=[COUNTRY]&ads.usprivacy=[US_PRIVACY]&ads.appstoreurl=[APP_STOREURL]&ads.bundleid=[APP_BUNDLE]&ads.appname=[APP_NAME]&ads.appversion=[APP_VERSION]&ads.devicetype=[DEVICE_TYPE]&ads.devicemake=[DEVICE_MAKE]&ads.devicemodel=[DEVICE_MODEL]&ads.targetad=[TARGETAD_ALLOWED]&ads.fck=[FCK]&ads.viewsize=[VIEWSIZE]&ads.givn=[NONCE]&ads.dmake=[DEVICE_MAKE]",
+      "tvgId": "autv.105-news24-now",
+      "logoUrl": "https://d3bd0tgyk368z1.cloudfront.net/skynews/N24_SubBrands_NOW_Stacked_RGB_400x200.png"
     },
     {
       "number": 102,
@@ -1597,18 +1597,6 @@
       "logoUrl": "https://image.xumo.com/v1/channels/channel/99991302/168x168.png?type=color_onBlack"
     },
     {
-      "number": 313,
-      "name": "FilmRise Horror",
-      "genre": "Movies",
-      "subgenre": "Horror / Thriller / Cult",
-      "description": "Movie-focused FAST channel with scheduled films or genre collections.",
-      "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
-      "logoUrl": null
-    },
-    {
       "number": 314,
       "name": "Pluto TV Horror",
       "genre": "Movies",
@@ -2847,18 +2835,6 @@
     {
       "number": 614,
       "name": "Tosh.0",
-      "genre": "Comedy",
-      "subgenre": "Sketch / Panel / Variety",
-      "description": "Comedy, sitcom or stand-up programming.",
-      "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
-      "logoUrl": null
-    },
-    {
-      "number": 615,
-      "name": "The Red Green Channel",
       "genre": "Comedy",
       "subgenre": "Sketch / Panel / Variety",
       "description": "Comedy, sitcom or stand-up programming.",
