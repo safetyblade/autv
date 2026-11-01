@@ -19,11 +19,15 @@ class SevenDescriptorRejection private constructor(val reason: Reason, val field
         CODECS("cp.supportedCodecs"), DRM_AUTH("cp.drmAuth")
     }
     val summary: String get() = "Descriptor rejection: ${reason.label}." +
-        if (fields.isEmpty()) " No allowlisted field hints. Response format: ${format.name}." else
-            " Response field hints (not a confirmed cause): ${fields.joinToString { it.label }}."
+        (if (fields.isEmpty()) " No allowlisted field hints." else
+            " Response field hints (not a confirmed cause): ${fields.joinToString { it.label }}.") +
+        " Response format: ${format.name}."
     override fun toString() = summary
     companion object {
         const val MAX_BYTES = 16384
+        private fun fieldHints(text: String): Set<Field> = Field.entries.filterTo(linkedSetOf()) {
+            Regex("(?<![A-Za-z0-9_.])" + Regex.escape(it.label) + "(?![A-Za-z0-9_.])").containsMatchIn(text)
+        }
         fun unavailable() = SevenDescriptorRejection(Reason.UNREADABLE, emptySet())
         fun oversized() = SevenDescriptorRejection(Reason.TOO_LARGE, emptySet())
         fun read(body: String, contentType: String? = null): SevenDescriptorRejection {
@@ -41,7 +45,11 @@ class SevenDescriptorRejection private constructor(val reason: Reason, val field
                         type in setOf("application/xml","text/xml") || trimmed.startsWith("<?xml") -> Format.XML
                         else -> Format.TEXT
                     }
-                    return SevenDescriptorRejection(Reason.NON_JSON, emptySet(),format)
+                    // The descriptor service also rejects requests as plain text. Preserve
+                    // only enum field names; never retain or display its message/values.
+                    // HTML/XML may contain scripts, forms or unrelated query strings.
+                    val hints = if (format == Format.TEXT) fieldHints(body) else emptySet()
+                    return SevenDescriptorRejection(Reason.NON_JSON, hints, format)
                 }
             }
             // The two codes are explicitly handled by packaged SlyGuy 7plus api.play.
@@ -55,9 +63,7 @@ class SevenDescriptorRejection private constructor(val reason: Reason, val field
             fun inspect(json: JSONObject) {
                 for (key in listOf("field", "path", "parameter", "param", "message", "description", "error", "errorMessage")) {
                     val text = json.opt(key) as? String ?: continue
-                    Field.entries.filterTo(hints) {
-                        Regex("(?<![A-Za-z0-9_.])" + Regex.escape(it.label) + "(?![A-Za-z0-9_.])").containsMatchIn(text)
-                    }
+                    hints.addAll(fieldHints(text))
                 }
             }
             for (record in records) {
