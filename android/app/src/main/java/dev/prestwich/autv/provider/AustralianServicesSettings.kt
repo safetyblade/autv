@@ -61,6 +61,10 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                 Column(Modifier.verticalScroll(scroll).padding(24.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)) {
                     Text("AUTV  /  SETTINGS", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
+                    if (selected == null) {
+                        dev.prestwich.autv.StartupSettings(model)
+                        HorizontalDivider()
+                    }
                     Text("Australian services", style = MaterialTheme.typography.headlineSmall)
                     if (selected == null) {
                         Text("Your networks. One guide.", style = MaterialTheme.typography.titleMedium)
