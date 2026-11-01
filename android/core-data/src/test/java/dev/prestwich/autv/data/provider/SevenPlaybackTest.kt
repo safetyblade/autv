@@ -42,8 +42,9 @@ class SevenPlaybackTest {
                 assertEquals("ref:main-live", parameters["referenceId"])
                 assertEquals("detected-market", parameters["marketId"])
                 assertEquals("fixture-device", parameters["deviceId"])
-                assertFalse(parameters.keys.any { it in setOf("pc", "ozid", "sdkverification", "deliveryId", "cp.drmAuth") })
+                assertFalse(parameters.keys.any { it in setOf("pc", "ozid", "sdkverification", "deliveryId") })
                 SevenPlaybackCapabilities.parameters.forEach { (key,value) -> assertEquals(value,parameters[key]) }
+                assertEquals("true", parameters["cp.drmAuth"])
                 return descriptor()
             }
         }
