@@ -24,7 +24,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 122,The Weather Network,News,Weather,Full,Pluto,,Active,"Rolling news, current affairs, weather or business coverage."
 123,WeatherSpy,News,Weather,Full,Plex AU,,Active,"Rolling news, current affairs, weather or business coverage."
 200,Watch AEW,Sport,Wrestling & Combat,Channel only,Tubi,Roku,Active,24/7 AEW FAST channel. Tubi remains primary; Roku carries the same feed as a tested fallback.
-201,CW Presents WWE NXT,Sport,Wrestling & Combat,Full,Curated,Roku,Active,WWE NXT FAST channel carrying current-era NXT archive programming.
+201,CW Presents WWE NXT,Sport,Wrestling & Combat,Full,Curated,Roku / Pluto US (unverified),Active,WWE NXT FAST channel carrying current-era NXT archive programming.
 202,TNA Wrestling Channel,Sport,Wrestling & Combat,Channel only,Roku,Pluto US,Active,"TNA Wrestling FAST channel using Roku as primary test source; Pluto US retained as alternate."
 204,UFC,Sport,Wrestling & Combat,Full,Plex AU,,Active,Combat-sports channel featuring UFC programming and fight content.
 205,PFL MMA,Sport,Wrestling & Combat,Full,Plex AU,,Active,"Combat-sports FAST channel featuring fights, events, highlights or archive programming."
@@ -131,7 +131,6 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 310,Movie Hub Action,Movies,Action & Martial Arts,Full,Roku,,Active,Action-focused movie FAST channel featuring action and adventure films.
 311,Pluto TV Action Movies,Movies,Action & Martial Arts,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 312,Hi-Yah!,Movies,Action & Martial Arts,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
-313,FilmRise Horror,Movies,Horror / Thriller / Cult,Full,Roku,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 314,Pluto TV Horror,Movies,Horror / Thriller / Cult,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 315,Pluto TV Thrillers,Movies,Horror / Thriller / Cult,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 316,Pluto TV Cult Films,Movies,Horror / Thriller / Cult,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
@@ -236,7 +235,6 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 612,Whose Line Is It Anyway?,Comedy,Sketch / Panel / Variety,Full,Pluto,,Active,Improvisational comedy and panel-show channel featuring Whose Line Is It Anyway?
 613,8 Out of 10 Cats (Australia),Comedy,Sketch / Panel / Variety,Full,Curated,,Active,"Comedy, sitcom or stand-up programming."
 614,Tosh.0,Comedy,Sketch / Panel / Variety,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
-615,The Red Green Channel,Comedy,Sketch / Panel / Variety,Full,Roku,,Active,"Comedy, sitcom or stand-up programming."
 616,Comedy Central Pluto TV,Comedy,Stand-up / Broad Comedy Networks,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
 617,Comedy Dynamics,Comedy,Stand-up / Broad Comedy Networks,Full,Xumo,,Active,"Comedy, sitcom or stand-up programming."
 618,Dry Bar Comedy (Australia),Comedy,Stand-up / Broad Comedy Networks,Full,Curated,,Active,"Comedy, sitcom or stand-up programming."
@@ -385,7 +383,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 816,FailArmy,Entertainment,Creator / Pop Culture / Variety,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 817,People are Awesome,Entertainment,Creator / Pop Culture / Variety,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 818,MTV Ridiculousness,Entertainment,Creator / Pop Culture / Variety,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
-819,Penn & Teller: Fool Us,Entertainment,Creator / Pop Culture / Variety,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
+819,Penn & Teller: Fool Us,Entertainment,Creator / Pop Culture / Variety,Full,Roku,Pluto US (unverified),Active,General entertainment FAST channel with mixed or broad programming.
 820,America's Got Talent,Entertainment,Creator / Pop Culture / Variety,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
 821,American Ninja Warrior,Entertainment,Creator / Pop Culture / Variety,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
 822,Fear Factor,Entertainment,Creator / Pop Culture / Variety,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
