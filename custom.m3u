@@ -227,3 +227,7 @@ https://wurltripleb.global.transmit.live/hls/6aa9c16ffbc6fbb2f59d5455/v1/eleven_
 # ---- CombaTV portable direct feed ----
 #EXTINF:-1 tvg-id="CombaTV" tvg-name="CombaTV" group-title="Sport",CombaTV
 https://stream.ads.ottera.tv/playlist.m3u8?network_id=1153
+
+# Baby Shark TV: direct public Roku/Wurl FAST HLS, replacing missing Samsung/Pluto entry.
+#EXTINF:-1 tvg-id="BabySharkTV.us" tvg-name="Baby Shark TV" group-title="Kids & Animation",Baby Shark TV
+https://newidco-babysharktv-1-us.roku.wurl.tv/playlist.m3u8
