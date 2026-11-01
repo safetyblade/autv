@@ -134,7 +134,7 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                 Button(onClick=connect,modifier=Modifier.fillMaxWidth().testTag("${service.id}-connect")) { Text("Connect ${service.name}") }
                             }
                             if(canBrowse) Button(onClick=refresh,enabled=!busy,modifier=Modifier.fillMaxWidth().testTag("${service.id}-refresh")) { Text(if(busy) "Refreshing…" else "Refresh channels") }
-                            if(busy) LinearProgressIndicator(modifier=Modifier.fillMaxWidth())
+                            if(busy) LinearProgressIndicator(modifier=Modifier.fillMaxWidth().semantics { contentDescription = "Loading ${service.name} channels" })
                             Text("Available in Australia. Native playback on this device; Cast is unavailable. Your connection is saved securely. AUTV never asks for your password.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
                             if(activation==null && (busy || connection in setOf(ProviderConnection.CONNECTED,ProviderConnection.CONNECTING))) {
                                 TextButton(onClick=disconnect,modifier=Modifier.testTag("${service.id}-disconnect")) { Text(if(connection==ProviderConnection.CONNECTED) "Sign out of ${service.name}" else "Cancel sign-in") }
@@ -142,7 +142,7 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                         }
                     }
                     HorizontalDivider(color = Color(0xFF314255))
-                    TextButton(onClick = onClose, modifier = Modifier.testTag("close-settings")) { Text("Close") }
+                    TextButton(onClick = onClose, modifier = Modifier.semantics { contentDescription = "Close settings" }.testTag("close-settings")) { Text("Close") }
                 }
             }
         }

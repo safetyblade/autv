@@ -21,3 +21,7 @@
 ## 2025-05-23 - Content Description for Provider Settings Service Cards
 **Learning:** OutlinedCard components in settings lists that display service status omit descriptive metadata (`service.description`) from TalkBack when merged automatically; explicit `contentDescription` combining service name, description, and connection status provides full context for screen reader users browsing service options.
 **Action:** Use `semantics(mergeDescendants = true) { contentDescription = "${service.name}, ${service.description} · $statusText" }` on provider service selection cards in settings menus.
+
+## 2026-10-31 - Progress Semantics and Dialog Action Labels in Settings
+**Learning:** Indeterminate LinearProgressIndicator composables displayed during background operations (such as channel refreshing) do not convey purpose to TalkBack screen readers unless given explicit `contentDescription` semantics; generic modal dismiss buttons ("Close") should clarify what surface is being dismissed ("Close settings") consistent with other modals across the app.
+**Action:** Add explicit `contentDescription` semantics describing the ongoing asynchronous task to progress indicators and provide disambiguated action descriptions on dialog dismissal buttons.
