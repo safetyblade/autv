@@ -253,6 +253,7 @@ internal fun TvDualGuide(
                                     }
                                     Column(Modifier.padding(start = 8.dp)) {
                                         Row(verticalAlignment = Alignment.CenterVertically) { Text("${channel.number}  ${channel.name}", fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false)); if (isFav) Text(" ★", color = androidx.compose.ui.graphics.Color(0xFFFFD700), style = MaterialTheme.typography.labelSmall) }
+                                        if (channel.providerChannel != null) Text("Source: ${channel.subgenre}", style = MaterialTheme.typography.labelSmall, color = GuideAccent)
                                         if (channel.number == playing?.number) Text("PLAYING", style = MaterialTheme.typography.labelSmall)
                                         if (!channel.tunable) Text("Unavailable", style = MaterialTheme.typography.labelSmall)
                                         if (failed[channel.number] != null) Text("Playback failed · OK to retry", style = MaterialTheme.typography.labelSmall)
