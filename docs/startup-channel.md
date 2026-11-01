@@ -7,8 +7,9 @@ SharedPreferences and canonical FavouriteIdentity, with a separate key for each
 mode's preferred channel. Changing channels never changes these settings.
 
 Last watched is updated only after local playback starts or Cast reports PLAYING.
-Existing numeric history remains a fallback until a successful watch saves a stable
-identity. Existing favourites membership is read without migration or modification;
+Existing numeric history is migrated against the first available catalogue, including
+an old cached guide before a refresh renumbers channels. Without a matching catalogue
+row, numeric history remains a fallback until a successful watch saves a stable identity. Existing favourites membership is read without migration or modification;
 Favourite #1 follows the guide's ascending channel-number order.
 
 Startup tries the configured candidate, Favourite #1, LeadStory Breaking News

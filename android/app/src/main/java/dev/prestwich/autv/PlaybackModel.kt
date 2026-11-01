@@ -236,6 +236,14 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         }.filter { candidate -> fastLoaded.channels.none { it.number == candidate.number } }
         val loaded = Guide(fastLoaded.activeCount + local.size, fastLoaded.availableCount + local.size,
             fastLoaded.channels + local)
+        // Migrate numeric history against the first available catalogue (including the old cache)
+        // before a fresh guide can renumber News rows. This changes identity format, not history.
+        if (!preferences.contains("last-watched-id") && preferences.contains("channel")) {
+            loaded.channels.firstOrNull { it.number == preferences.getInt("channel", -1) }
+                ?.let(FavouriteIdentity::key)?.let { identity ->
+                    preferences.edit().putString("last-watched-id", identity).apply()
+                }
+        }
         if (guide == loaded) return
         val previous = selected
         guide = loaded
