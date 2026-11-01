@@ -231,3 +231,15 @@ https://stream.ads.ottera.tv/playlist.m3u8?network_id=1153
 # Pokemon: current UK Pluto channel redirect (provider channel 6683cd71a1d7ad000866ec6a).
 #EXTINF:-1 tvg-id="6683cd71a1d7ad000866ec6a" tvg-name="Pokémon" tvg-logo="https://images.pluto.tv/channels/6683cd71a1d7ad000866ec6a/colorLogoPNG.png" group-title="Kids & Animation",Pokémon
 https://jmp2.uk/plu-6683cd71a1d7ad000866ec6a.m3u8
+
+# LEGO Kids TV: Pluto channel ID 60fb01a24795a6000762fe83; community redirect, subject to region/availability.
+#EXTINF:-1 tvg-id="60fb01a24795a6000762fe83" tvg-name="LEGO Kids TV" tvg-logo="https://images.pluto.tv/channels/60fb01a24795a6000762fe83/colorLogoPNG.png" group-title="Kids & Animation",LEGO Kids TV
+https://jmp2.uk/plu-60fb01a24795a6000762fe83.m3u8
+
+# Garfield and Friends: Pluto channel ID 60faf9ddfcc1f200070a5932; community redirect, subject to region/availability.
+#EXTINF:-1 tvg-id="60faf9ddfcc1f200070a5932" tvg-name="Garfield and Friends" tvg-logo="https://images.pluto.tv/channels/60faf9ddfcc1f200070a5932/colorLogoPNG.png" group-title="Kids & Animation",Garfield and Friends
+https://jmp2.uk/plu-60faf9ddfcc1f200070a5932.m3u8
+
+# The Smurfs: Pluto channel ID 68b5a97fc8ef6afa31138718; community redirect, subject to region/availability.
+#EXTINF:-1 tvg-id="68b5a97fc8ef6afa31138718" tvg-name="The Smurfs" tvg-logo="https://images.pluto.tv/channels/68b5a97fc8ef6afa31138718/colorLogoPNG.png" group-title="Kids & Animation",The Smurfs
+https://jmp2.uk/plu-68b5a97fc8ef6afa31138718.m3u8
