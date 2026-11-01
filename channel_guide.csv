@@ -561,7 +561,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1154,Pluto TV Britain at War,Factual,History / War,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 1200,The Wiggles,Kids & Animation,Preschool / Young Kids,Full,Plex AU,,Active,Preschool and family channel featuring The Wiggles.
 1201,Peppa Pig,Kids & Animation,Preschool / Young Kids,Full,Pluto,,Active,"Kids, family and animation programming."
-1202,Baby Shark TV,Kids & Animation,Preschool / Young Kids,Full,Pluto,,Active,"Kids, family and animation programming."
+1202,Baby Shark TV,Kids & Animation,Preschool / Young Kids,Full,Samsung AU,Pluto,Active,"Kids, family and animation programming."
 1203,Baby Einstein,Kids & Animation,Preschool / Young Kids,Full,Plex AU,,Active,"Kids, family and animation programming."
 1204,Super Simple Songs,Kids & Animation,Preschool / Young Kids,Full,Roku,,Active,"Kids, family and animation programming."
 1205,Teletubbies,Kids & Animation,Preschool / Young Kids,Full,Plex AU,,Active,Preschool channel featuring Teletubbies programming.
@@ -574,7 +574,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1212,Nick Jr. Pluto TV,Kids & Animation,Preschool / Young Kids,Full,Pluto,,Active,"Kids, family and animation programming."
 1213,Strawberry Shortcake,Kids & Animation,Preschool / Young Kids,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 1214,SpongeBob SquarePants,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,Kids animation channel featuring SpongeBob SquarePants.
-1215,Pokémon,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
+1215,Pokémon,Kids & Animation,Kids / Family Animation,Full,Samsung AU,Pluto,Active,"Kids, family and animation programming."
 1216,LEGO Kids TV,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
 1217,Garfield and Friends,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
 1218,The Smurfs,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
