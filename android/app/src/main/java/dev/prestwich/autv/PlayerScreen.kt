@@ -277,6 +277,7 @@ internal fun AuTvScreen(
                                             dev.prestwich.autv.guide.CastPhase.CONNECTED -> "Connected to ${castPlayback.receiver}"
                                             dev.prestwich.autv.guide.CastPhase.LOAD_REQUESTED -> "Sending to ${castPlayback.receiver}…"
                                             dev.prestwich.autv.guide.CastPhase.LOAD_ACCEPTED -> "Starting on ${castPlayback.receiver}…"
+                                            dev.prestwich.autv.guide.CastPhase.BUFFERING -> "Buffering on ${castPlayback.receiver}…"
                                             dev.prestwich.autv.guide.CastPhase.PLAYING -> "Playing on ${castPlayback.receiver}"
                                             dev.prestwich.autv.guide.CastPhase.PAUSED -> "Paused on ${castPlayback.receiver}"
                                             else -> "Cast failed · playing locally"

@@ -17,169 +17,219 @@ import java.util.UUID
 interface CastConnection {
     val connected: Boolean
     fun start()
-    fun load(channel: Channel, reusePlayingMedia: Boolean = false)
+    fun load(channel: Channel,reusePlayingMedia: Boolean=false)
     fun release()
 }
 
-/** One sender bound to the retained shared player. Never owns channel selection or another player. */
-class CastSender(private val context: Context, private val scope: CoroutineScope,
-    private val current: () -> Channel?, private val programme: (Channel) -> Programme?,
-    private val changed: (CastPlayback) -> Unit) : CastConnection {
-    private val transfer = CastTransfer()
-    private var manager: SessionManager? = null
-    private var client: RemoteMediaClient? = null
-    private var timeout: Job? = null
-    private val senderId = UUID.randomUUID().toString()
-    private var expectedLoadId: String? = null
-    override val connected get() = client != null
-    private val callback = object : RemoteMediaClient.Callback() {
-        override fun onStatusUpdated() = observe()
+/** Existing session discovery, with ticketed media preparation and receiver-confirmed handoff. */
+class CastSender(private val context: Context,private val scope: CoroutineScope,
+    private val current: ()->Channel?,private val programme: (Channel)->Programme?,
+    private val changed: (CastPlayback)->Unit): CastConnection {
+    private val transfer=CastTransfer()
+    private var manager: SessionManager?=null
+    private var client: RemoteMediaClient?=null
+    private var timeout: Job?=null
+    private var poll: Job?=null
+    private var preparation: Job?=null
+    private var resolver: CastMediaResolver?=null
+    private val senderId=UUID.randomUUID().toString()
+    private var expectedLoadId: String?=null
+    private var acknowledged=false
+    private var adopted=false
+    private var previousSessionId: Long?=null
+    private var ownedSessionId: Long?=null
+    override val connected get()=client!=null
+    private val callback=object: RemoteMediaClient.Callback() {
+        override fun onStatusUpdated()=observe()
         override fun onMediaError(error: MediaError) {
-            // Load results carry the request ticket. Uncorrelated errors during retuning may belong
-            // to the superseded request; do not fail the new channel from those callbacks.
-            Log.w(TAG, "Receiver error request=${error.requestId} type=${error.type} reason=${error.reason} code=${error.detailedErrorCode}")
-            // This callback has an SDK request ID, not our load generation. Confirm any
-            // failure through matching media status or the ticketed load result instead.
-            observe()
+            // SDK request IDs are not our load tickets. Fail only an explicitly echoed
+            // ticket; otherwise matching status/load results or the watchdog decide.
+            Log.w(TAG,"Receiver media error code=${error.detailedErrorCode}")
+            if(error.customData?.optString("autvLoadId")==expectedLoadId && expectedLoadId!=null)
+                fail(transfer.generation,rejection(null,error))
+            else observe()
         }
     }
-    private val sessions = object : SessionManagerListener<CastSession> {
-        override fun onSessionStarted(session: CastSession, id: String) = attach(session)
-        override fun onSessionResumed(session: CastSession, suspended: Boolean) = attach(session)
-        override fun onSessionEnded(session: CastSession, error: Int) = detach()
-        override fun onSessionSuspended(session: CastSession, reason: Int) { detach(); Log.w(TAG, "Cast suspended: $reason") }
-        override fun onSessionStartFailed(session: CastSession, error: Int) { Log.w(TAG, "Cast connection failed: $error"); detach() }
-        override fun onSessionResumeFailed(session: CastSession, error: Int) { Log.w(TAG, "Cast resume failed: $error"); detach() }
-        override fun onSessionStarting(session: CastSession) = Unit
-        override fun onSessionEnding(session: CastSession) = Unit
-        override fun onSessionResuming(session: CastSession, id: String) = Unit
+    private val sessions=object: SessionManagerListener<CastSession> {
+        override fun onSessionStarted(session: CastSession,id: String)=attach(session)
+        override fun onSessionResumed(session: CastSession,suspended: Boolean)=attach(session)
+        override fun onSessionEnded(session: CastSession,error: Int)=detach(error.takeIf { it!=0 })
+        override fun onSessionSuspended(session: CastSession,reason: Int)=detach(reason)
+        override fun onSessionStartFailed(session: CastSession,error: Int)=detach(error)
+        override fun onSessionResumeFailed(session: CastSession,error: Int)=detach(error)
+        override fun onSessionStarting(session: CastSession)=Unit
+        override fun onSessionEnding(session: CastSession)=Unit
+        override fun onSessionResuming(session: CastSession,id: String)=Unit
     }
     override fun start() {
-        if (context.resources.configuration.uiMode and Configuration.UI_MODE_TYPE_MASK == Configuration.UI_MODE_TYPE_TELEVISION) return
+        if(context.resources.configuration.uiMode and Configuration.UI_MODE_TYPE_MASK==Configuration.UI_MODE_TYPE_TELEVISION) return
         try {
-            manager = CastContext.getSharedInstance(context).sessionManager
-            manager?.addSessionManagerListener(sessions, CastSession::class.java)
+            manager=CastContext.getSharedInstance(context).sessionManager
+            manager?.addSessionManagerListener(sessions,CastSession::class.java)
             manager?.currentCastSession?.takeIf { it.isConnected }?.let(::attach)
-        } catch (error: Exception) {
-            Log.i(TAG, "Cast sender unavailable on this device: ${error.javaClass.simpleName}")
-        }
+        } catch(error: Exception) { Log.i(TAG,"Cast sender unavailable: ${error.javaClass.simpleName}") }
+    }
+    private fun cancelPending() {
+        timeout?.cancel();timeout=null;poll?.cancel();poll=null
+        resolver?.cancel();resolver=null;preparation?.cancel();preparation=null
     }
     private fun attach(session: CastSession) {
-        timeout?.cancel(); client?.unregisterCallback(callback)
-        client = session.remoteMediaClient
-        transfer.connected(session.castDevice?.friendlyName ?: "Cast receiver")
-        Log.i(TAG, "Receiver connected; selected channel=${current()?.number}")
-        emit()
-        val remote = client ?: run {
-            val ticket = transfer.request(current()?.number ?: -1, "")
-            fail(ticket, "Receiver connected without a media client. Disconnect and reconnect Cast."); return
+        cancelPending();client?.unregisterCallback(callback)
+        client=session.remoteMediaClient;expectedLoadId=null;ownedSessionId=null;acknowledged=false
+        transfer.connected(session.castDevice?.friendlyName ?: "Cast receiver");emit()
+        val remote=client ?: run {
+            fail(transfer.request(current()?.number ?: -1,""),CastDiagnostics.failure(CastLoadFailure.RECEIVER_REJECTED));return
         }
         remote.registerCallback(callback)
-        current()?.let { load(it, reusePlayingMedia = true) }
+        current()?.let { load(it,reusePlayingMedia=true) }
     }
-    override fun load(channel: Channel, reusePlayingMedia: Boolean) {
-        // Account-bound provider media is never sent to the generic receiver.
-        if (channel.providerChannel != null) return
-        val remote = client ?: return
-        timeout?.cancel()
-        val url = try { CastStreamUrl.resolve(requireNotNull(channel.streamUrl)) }
-        catch (error: Exception) {
-            val ticket = transfer.request(channel.number, "")
-            fail(ticket, "Invalid Cast stream URL; choose another channel or disconnect Cast."); return
-        }
-        val ticket = transfer.request(channel.number, url)
-        expectedLoadId = "$senderId:$ticket"
+    override fun load(channel: Channel,reusePlayingMedia: Boolean) {
+        if(channel.providerChannel!=null) return // Never export account-bound broadcaster media.
+        val remote=client ?: return
+        cancelPending();acknowledged=false;adopted=false
+        val original=try { CastStreamUrl.resolve(requireNotNull(channel.streamUrl)) }
+        catch(_: Exception) { fail(transfer.request(channel.number,""),CastDiagnostics.failure(CastLoadFailure.URL_UNAVAILABLE));return }
+        val ticket=transfer.request(channel.number,original)
+        expectedLoadId="$senderId:$ticket";previousSessionId=remote.sessionId()
         emit()
-        if (reusePlayingMedia && remote.mediaInfo?.contentId == url && (remote.isPlaying || remote.isPaused)) {
-            expectedLoadId = null // Adopt an existing matching session, including one from a previous sender process.
-            observe(); return
-        }
-        // No browser cookies, sender-only headers, proxy, or local URL are required by this load.
-        val media = mediaInfo(channel, url, programme(channel), expectedLoadId)
-        Log.i(TAG, "Load requested channel=${channel.number} host=${Uri.parse(url).host} ticket=$ticket")
-        timeout = scope.launch {
-            delay(30_000)
-            if (!transfer.state.ownsPlayback || transfer.state.phase == CastPhase.LOAD_REQUESTED || transfer.state.phase == CastPhase.LOAD_ACCEPTED)
-                fail(ticket, "No receiver playback after 30s. Check receiver internet access, stream region/CORS/codec support; retry or disconnect Cast.")
-        }
-        try {
-            remote.load(MediaLoadRequestData.Builder().setMediaInfo(media).setAutoplay(true).build()).setResultCallback { result ->
-                if (ticket != transfer.generation || remote !== client) return@setResultCallback
-                if (result.status.isSuccess) {
-                    if (transfer.accepted(ticket)) { Log.i(TAG, "Load accepted channel=${channel.number} ticket=$ticket"); emit() }
-                    observe()
-                } else {
-                    val error = result.mediaError
-                    fail(ticket, "Cast load rejected (${result.status.statusCode}): ${error?.reason ?: error?.type ?: result.status.statusMessage ?: "receiver could not load stream"}. Retry or choose another channel.")
-                }
-            }
-        } catch (error: Exception) {
-            fail(ticket, "Cast load request failed: ${error.javaClass.simpleName}. Reconnect and retry.")
-        }
-    }
-    private fun observe() {
-        val remote = client ?: return
-        val url = remote.mediaInfo?.contentId
-        if (!matchesExpectedMedia()) return
-        if (transfer.state.phase == CastPhase.FAILED) {
-            if (remote.isPlaying || remote.isPaused || remote.isBuffering) runCatching { remote.stop() }
+        if(reusePlayingMedia && remote.isPlaying && (remote.mediaInfo?.contentId==original || remote.mediaInfo?.contentUrl==original)) {
+            // A matching existing PLAYING session is actual playback, not a LOAD acknowledgement.
+            adopted=true;acknowledged=true;ownedSessionId=remote.sessionId()
+            if(transfer.started(ticket,original)) emit()
             return
         }
-        when (remote.playerState) {
+        armTimeout(ticket);startPolling(ticket,remote)
+        val probe=CastMediaResolver();resolver=probe
+        preparation=scope.launch {
+            try {
+                val source=withContext(Dispatchers.IO) { probe.resolve(original) }
+                if(ticket!=transfer.generation || remote!==client) return@launch
+                if(!transfer.prepared(ticket,source.url)) return@launch
+                val media=mediaInfo(channel,source.url,programme(channel),expectedLoadId,source.mimeType,source.live,source.fragmentedMp4)
+                val custom=JSONObject().put("autvLoadId",expectedLoadId)
+                Log.i(TAG,"Media load channel=${channel.number} mime=${source.mimeType} ticket=$ticket")
+                remote.load(MediaLoadRequestData.Builder().setMediaInfo(media).setAutoplay(true).setCustomData(custom).build())
+                    .setResultCallback { result ->
+                        if(ticket!=transfer.generation || remote!==client || transfer.state.phase==CastPhase.FAILED) return@setResultCallback
+                        if(result.status.isSuccess) {
+                            acknowledged=true
+                            if(transfer.accepted(ticket)) emit()
+                            observe()
+                            runCatching { remote.requestStatus() }
+                        } else fail(ticket,rejection(result.status.statusCode,result.mediaError))
+                    }
+            } catch(error: CancellationException) { throw error }
+            catch(error: CastMediaException) { fail(ticket,CastDiagnostics.failure(error.kind,error.status,http=error.status!=null)) }
+            catch(_: Exception) { fail(ticket,CastDiagnostics.failure(CastLoadFailure.RECEIVER_REJECTED)) }
+        }
+    }
+    private fun armTimeout(ticket: Long) {
+        if(timeout?.isActive==true) return
+        timeout=scope.launch {
+            delay(30_000)
+            fail(ticket,CastDiagnostics.failure(CastLoadFailure.TIMEOUT))
+        }
+    }
+    private fun startPolling(ticket: Long,remote: RemoteMediaClient) {
+        if(poll?.isActive==true) return
+        poll=scope.launch {
+            while(ticket==transfer.generation && remote===client && transfer.state.phase!=CastPhase.FAILED) {
+                delay(2000)
+                if(acknowledged) runCatching { remote.requestStatus().setResultCallback { if(ticket==transfer.generation && remote===client) observe() } }
+            }
+        }
+    }
+    // The public SDK exposes the protocol session ID through MediaStatus.toJson().
+    // Read only that number in memory; never log or export the status payload.
+    private fun RemoteMediaClient.sessionId(): Long? = mediaStatus?.toJson()?.optLong("mediaSessionId",0)?.takeIf { it>0 }
+    private fun matchesExpectedMedia(): Boolean {
+        val remote=client ?: return false
+        val info=remote.mediaInfo ?: return false
+        if(adopted) return (info.contentId==transfer.expectedUrl || info.contentUrl==transfer.expectedUrl) && remote.sessionId()==ownedSessionId
+        return CastStatusMatch.matches(transfer.expectedUrl,expectedLoadId,info.contentId,info.contentUrl,
+            info.customData?.optString("autvLoadId"),acknowledged,remote.sessionId(),previousSessionId)
+    }
+    private fun observe() {
+        val remote=client ?: return
+        if(!matchesExpectedMedia()) {
+            if(transfer.state.ownsPlayback) { armTimeout(transfer.generation);startPolling(transfer.generation,remote) }
+            return
+        }
+        if(transfer.state.phase==CastPhase.FAILED) {
+            if(remote.isPlaying || remote.isPaused || remote.isBuffering) runCatching { remote.stop() }
+            return
+        }
+        when(remote.playerState) {
             MediaStatus.PLAYER_STATE_PLAYING -> {
-                if (transfer.started(transfer.generation, url)) { timeout?.cancel(); Log.i(TAG, "Remote playback started channel=${transfer.state.channelNumber}"); emit() }
+                timeout?.cancel();timeout=null;poll?.cancel();poll=null
+                ownedSessionId=remote.sessionId()
+                if(transfer.started(transfer.generation,transfer.expectedUrl)) emit()
             }
             MediaStatus.PLAYER_STATE_PAUSED -> {
-                if (transfer.started(transfer.generation, url, paused = true)) { timeout?.cancel(); emit() }
+                val changed=transfer.started(transfer.generation,transfer.expectedUrl,paused=true)
+                if(transfer.confirmed) { timeout?.cancel();timeout=null;poll?.cancel();poll=null }
+                if(changed) emit()
             }
-            MediaStatus.PLAYER_STATE_IDLE -> if (remote.idleReason in listOf(MediaStatus.IDLE_REASON_ERROR, MediaStatus.IDLE_REASON_FINISHED, MediaStatus.IDLE_REASON_CANCELED)) {
-                // CANCELED is normal for an old channel during retuning; only treat it as a
-                // stop once the requested channel has actually taken ownership.
-                if (transfer.state.phase in listOf(CastPhase.LOAD_ACCEPTED, CastPhase.PLAYING, CastPhase.PAUSED))
-                    fail(transfer.generation, "Receiver stopped live playback (idle reason ${remote.idleReason}). Retry this channel or disconnect Cast for local playback.")
+            MediaStatus.PLAYER_STATE_BUFFERING -> {
+                if(transfer.buffering(transfer.generation,transfer.expectedUrl)) emit()
+                armTimeout(transfer.generation);startPolling(transfer.generation,remote)
             }
+            MediaStatus.PLAYER_STATE_IDLE -> {
+                // CANCELED before new media playback can be a superseded LOAD transition.
+                if(remote.idleReason==MediaStatus.IDLE_REASON_ERROR ||
+                    (remote.idleReason in setOf(MediaStatus.IDLE_REASON_CANCELED,MediaStatus.IDLE_REASON_FINISHED) && transfer.state.ownsPlayback))
+                    fail(transfer.generation,CastDiagnostics.failure(CastLoadFailure.REMOTE_STOPPED,remote.idleReason))
+                else { armTimeout(transfer.generation);startPolling(transfer.generation,remote) }
+            }
+            else -> { armTimeout(transfer.generation);startPolling(transfer.generation,remote) }
         }
     }
-    private fun matchesExpectedMedia(): Boolean {
-        val info = client?.mediaInfo ?: return false
-        if (info.contentId != transfer.expectedUrl) return false
-        // A new load can use the same URL as an old one. The media payload carries a unique
-        // generation so a late PLAYING/error status cannot confirm/fail the superseded tune.
-        return expectedLoadId == null || info.customData?.optString("autvLoadId") == expectedLoadId
+    private fun fail(ticket: Long,reason: String) {
+        if(!transfer.failed(ticket,reason)) return
+        cancelPending()
+        val remote=client
+        // Do not stop unrelated media selected by a different sender/receiver user.
+        if(remote!=null && (remote.mediaInfo==null || matchesExpectedMedia() || (ownedSessionId!=null && remote.sessionId()==ownedSessionId)))
+            runCatching { remote?.stop() }
+        Log.w(TAG,"Cast media failed channel=${transfer.state.channelNumber} ticket=$ticket: $reason")
+        emit()
     }
-    private fun fail(ticket: Long, reason: String) {
-        if (transfer.failed(ticket, reason)) {
-            timeout?.cancel()
-            // An old stream or late load must not keep playing while local fallback resumes.
-            runCatching { client?.stop() }
-            Log.w(TAG, "Remote playback failed channel=${transfer.state.channelNumber} ticket=$ticket: $reason")
-            emit()
+    private fun rejection(status: Int?,error: MediaError?): String {
+        val kind=when {
+            error?.reason==MediaError.ERROR_REASON_NOT_SUPPORTED -> CastLoadFailure.UNSUPPORTED_FORMAT
+            error?.reason==MediaError.ERROR_REASON_AUTHENTICATION_EXPIRED || status in setOf(CastStatusCodes.ERROR_URL_INSEURE,CastStatusCodes.ERROR_HOST_NOT_ALLOWED) -> CastLoadFailure.URL_UNAVAILABLE
+            status==CastStatusCodes.TIMEOUT -> CastLoadFailure.TIMEOUT
+            else -> CastLoadFailure.RECEIVER_REJECTED
         }
+        return CastDiagnostics.failure(kind,status,error?.detailedErrorCode,reason=error?.reason)
     }
-    private fun emit() = changed(transfer.state)
-    private fun detach() {
-        timeout?.cancel(); client?.unregisterCallback(callback); client = null
-        expectedLoadId = null; transfer.disconnected(); emit()
+    private fun emit()=changed(transfer.state)
+    private fun detach(code: Int?=null) {
+        cancelPending();client?.unregisterCallback(callback);client=null
+        expectedLoadId=null;ownedSessionId=null;acknowledged=false
+        transfer.disconnected(code?.let { "Cast disconnected (code $it). Playing on this device." });emit()
     }
     override fun release() {
-        timeout?.cancel(); client?.unregisterCallback(callback)
-        manager?.removeSessionManagerListener(sessions, CastSession::class.java)
-        client = null; manager = null
+        cancelPending();client?.unregisterCallback(callback)
+        manager?.removeSessionManagerListener(sessions,CastSession::class.java)
+        client=null;manager=null
     }
     companion object {
-        const val TAG = "AUTV.Cast"
-        internal fun mediaInfo(channel: Channel, url: String, programme: Programme?, loadId: String? = null): MediaInfo {
-            val metadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_TV_SHOW).apply {
-                putString(MediaMetadata.KEY_TITLE, "${channel.number} · ${channel.name}")
-                putString(MediaMetadata.KEY_SUBTITLE, programme?.title ?: channel.genre)
-                putString(MediaMetadata.KEY_SERIES_TITLE, channel.name)
+        const val TAG="AUTV.Cast"
+        internal fun mediaInfo(channel: Channel,url: String,programme: Programme?,loadId: String?=null,
+            mimeType: String=CastMediaResolver.fromAddress(url).mimeType,live: Boolean=mimeType in setOf("application/x-mpegURL","application/dash+xml"),fragmentedMp4: Boolean=false): MediaInfo {
+            require(channel.providerChannel==null) { "Account-bound provider media cannot be cast" }
+            val metadata=MediaMetadata(MediaMetadata.MEDIA_TYPE_TV_SHOW).apply {
+                putString(MediaMetadata.KEY_TITLE,"${channel.number} · ${channel.name}")
+                putString(MediaMetadata.KEY_SUBTITLE,programme?.title ?: channel.genre)
+                putString(MediaMetadata.KEY_SERIES_TITLE,channel.name)
                 channel.logoUrl?.takeIf { it.startsWith("https://") || it.startsWith("http://") }?.let { runCatching { addImage(WebImage(Uri.parse(it))) } }
             }
-            return MediaInfo.Builder(url).setContentUrl(url).setContentType("application/x-mpegURL")
-                .setStreamType(MediaInfo.STREAM_TYPE_LIVE).setMetadata(metadata)
-                .setCustomData(JSONObject().put("channelNumber", channel.number).put("channelId", channel.tvgId ?: channel.number.toString())
-                    .apply { if (loadId != null) put("autvLoadId", loadId) })
-                .build()
+            return MediaInfo.Builder(url).setContentUrl(url).setContentType(mimeType)
+                .apply { if(fragmentedMp4) { setHlsSegmentFormat("fmp4");setHlsVideoSegmentFormat("fmp4") } }
+                .setStreamType(if(live) MediaInfo.STREAM_TYPE_LIVE else MediaInfo.STREAM_TYPE_BUFFERED).setMetadata(metadata)
+                .setCustomData(JSONObject().put("channelNumber",channel.number).put("channelId",channel.tvgId ?: channel.number.toString())
+                    .apply { if(loadId!=null) put("autvLoadId",loadId) }).build()
         }
     }
 }

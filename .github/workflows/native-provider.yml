@@ -10,6 +10,9 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: autv-full-debug-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   full-app:
     runs-on: ubuntu-latest
@@ -26,7 +29,16 @@ jobs:
         with:
           gradle-version: '8.13'
       - name: Compile AUTV, run critical JVM regressions and assemble full app
-        run: gradle -p android -PautvMediaLab=false :core-data:testDebugUnitTest :core-guide:testDebugUnitTest :core-player:testDebugUnitTest :app:testDebugUnitTest :app:assembleFullAppDebug
+        run: gradle -p android -PautvMediaLab=false :core-data:testDebugUnitTest :core-guide:testDebugUnitTest :core-player:testDebugUnitTest :app:testDebugUnitTest :app:assembleFullAppDebug :app:assembleDebugAndroidTest
+      - name: Enable KVM for focused Cast handoff checks
+        run: sudo chmod 666 /dev/kvm
+      - name: Focused Cast and native-playback handoff regressions
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          arch: x86_64
+          disable-animations: true
+          script: gradle -p android -PautvMediaLab=false :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.CastPlaybackTest,dev.prestwich.autv.ProviderPlaybackTest
       - name: Verify packaged application identity and television launcher
         run: python3 scripts/verify-full-app-apk.py android/app/build/outputs/apk/full-app/AUTV-Full-App-Debug.apk --output AUTV-Full-App-manifest.txt
       - uses: actions/upload-artifact@v4
@@ -35,5 +47,6 @@ jobs:
           path: |
             android/app/build/outputs/apk/full-app/AUTV-Full-App-Debug.apk
             AUTV-Full-App-manifest.txt
+            android/app/build/reports/androidTests/connected/debug/**
           if-no-files-found: error
           retention-days: 30

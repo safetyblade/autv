@@ -8,17 +8,13 @@ import dev.prestwich.autv.guide.CastPlayback
 /** Uses local HLS assets and an in-memory adapter; never a Nine account or network endpoint. */
 class ProviderTestActivity : MainActivity() {
     val adapter = FixtureProviderAdapter()
+    lateinit var castProbe: DebugCastConnection; private set
     override fun createPlaybackModel(): PlaybackModel = PlaybackModel(application, {
         val fast = Channel(100, "Fixture FAST", "News", "", "", "", true,
             "asset:///pip-test.m3u8?channel=100", "fixture-fast", null)
         Guide(1, 1, listOf(fast))
-    }, { Epg(emptyMap()) }, { _ ->
-        object : CastConnection {
-            override val connected = false
-            override fun start() = Unit
-            override fun load(channel: Channel, reusePlayingMedia: Boolean) = Unit
-            override fun release() = Unit
-        }
+    }, { Epg(emptyMap()) }, { changed ->
+        DebugCastConnection(changed).also { castProbe=it }
     }, providerAdapter = adapter).also { it.player.repeatMode = androidx.media3.common.Player.REPEAT_MODE_ALL }
 }
 class FixtureProviderAdapter : ProviderAdapter {
