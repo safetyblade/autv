@@ -29,7 +29,7 @@ class CastMediaResolverTest {
         assertTrue(CastMediaResolver.describe("https://example/live","https://example/live",null,(hls+"#EXT-X-MAP:URI=\"init.mp4\"").toByteArray()).fragmentedMp4)
         assertEquals("application/dash+xml",CastMediaResolver.fromAddress("https://example/live.mpd?session=1").mimeType)
     }
-    @Test fun htmlForbiddenAndUnresolvedMacrosAreDifferentFailures() {
+    @Test fun htmlAndForbiddenResponsesFailButAcceptedMacroFieldsAreNeverStripped() {
         MockWebServer().use { server -> server.start()
             server.enqueue(MockResponse().setResponseCode(403).setBody("private body must never escape"))
             try { CastMediaResolver().resolve(server.url("/live.m3u8").toString());fail() }
@@ -37,8 +37,10 @@ class CastMediaResolverTest {
             server.enqueue(MockResponse().setHeader("Content-Type","text/html").setBody("<html>not video</html>"))
             try { CastMediaResolver().resolve(server.url("/live.m3u8").toString());fail() }
             catch(e: CastMediaException) { assertEquals(CastLoadFailure.UNSUPPORTED_FORMAT,e.kind) }
-            try { CastMediaResolver().resolve(server.url("/live.m3u8?session=%5BTOKEN%5D").toString());fail() }
-            catch(e: CastMediaException) { assertEquals(CastLoadFailure.SENDER_REQUIREMENTS,e.kind) }
+            server.enqueue(MockResponse().setHeader("Content-Type","application/x-mpegURL").setBody(hls))
+            val supplied=server.url("/live.m3u8?session=%5BTOKEN%5D&ads=normal").toString()
+            assertEquals(supplied,CastMediaResolver().resolve(supplied).url)
+            assertEquals(3,server.requestCount)
         }
     }
     @Test fun redirectLoopsDoNotHangOrRemoveQueryTokens() {

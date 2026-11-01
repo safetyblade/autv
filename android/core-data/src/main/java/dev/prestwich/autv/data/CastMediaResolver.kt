@@ -24,8 +24,7 @@ class CastMediaResolver internal constructor(private val client: OkHttpClient) {
     @Volatile private var cancelled=false
     fun cancel() { cancelled=true;active?.cancel() }
     fun resolve(raw: String): CastMediaSource {
-        val original=try { CastStreamUrl.resolve(raw) } catch(_: Exception) { throw CastMediaException(CastLoadFailure.URL_UNAVAILABLE) }
-        if(CastStreamUrl.hasUnresolvedParameters(original)) throw CastMediaException(CastLoadFailure.SENDER_REQUIREMENTS)
+        val original=try { CastStreamUrl.resolve(raw) } catch(_: Exception) { throw CastMediaException(if(CastStreamUrl.hasUnresolvedParameters(raw)) CastLoadFailure.SENDER_REQUIREMENTS else CastLoadFailure.URL_UNAVAILABLE) }
         var address=original
         val visited=mutableSetOf<String>()
         try {
@@ -43,7 +42,6 @@ class CastMediaResolver internal constructor(private val client: OkHttpClient) {
                             ?: throw CastMediaException(CastLoadFailure.URL_UNAVAILABLE,response.code)
                         val next=CastStreamUrl.resolve(target)
                         if(URI(address).scheme=="https" && URI(next).scheme!="https") throw CastMediaException(CastLoadFailure.URL_UNAVAILABLE)
-                        if(CastStreamUrl.hasUnresolvedParameters(next)) throw CastMediaException(CastLoadFailure.SENDER_REQUIREMENTS)
                         address=next
                     } else {
                         if(!response.isSuccessful) throw CastMediaException(CastLoadFailure.URL_UNAVAILABLE,response.code)

@@ -16,7 +16,8 @@ object CastStreamUrl {
         return result
     }
     fun hasUnresolvedParameters(url: String): Boolean {
-        val query=URI(url).rawQuery ?: return false
+        val query=url.substringBefore('#').substringAfter('?',"")
+        if(query.isEmpty()) return false
         return query.split('&').any { parameter ->
             val value=parameter.substringAfter('=',"")
             macro.containsMatchIn(runCatching { URLDecoder.decode(value,"UTF-8") }.getOrDefault(value))
