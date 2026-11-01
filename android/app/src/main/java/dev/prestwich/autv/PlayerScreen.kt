@@ -440,6 +440,7 @@ private fun ChannelRow(channel: Channel, selected: Boolean, failed: String?, sch
         }
         Column(Modifier.padding(start = if (compact) 8.dp else 12.dp).weight(1f)) {
             Row(verticalAlignment = Alignment.CenterVertically) { Text(channel.name, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false)); if (isFavourite) Text(" ★", color = Color(0xFFFFD700), style = MaterialTheme.typography.titleSmall) }
+            if (channel.providerChannel != null) Text("Source: ${channel.subgenre}", color = Muted, style = MaterialTheme.typography.labelSmall)
             ProgrammeInfo(schedule, now, channel.genre, compact)
             if (!known) Text("No live stream", color = Muted, style = MaterialTheme.typography.labelSmall)
             if (failed != null) Text("Could not play · Select to retry", color = Color(0xFFD8B3AD), style = MaterialTheme.typography.labelSmall)
