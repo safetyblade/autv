@@ -47,7 +47,7 @@ open class MainActivity : AppCompatActivity() {
                 playback.failed.toMap(), playback.buffering, playback.epg, playback.player,
                 onSelect = { playback.request(TuneTarget.Number(it.number)) },
                 onFullSelect = { playback.request(TuneTarget.Number(it.number), restoreOnFailure = true) },
-                onCloseGuide = { playback.guideOpen = false }, onOpenGuide = { playback.guideOpen = true },
+                onCloseGuide = { playback.guideOpen = false }, onOpenGuide = playback::openGuide,
                 onChromeVisibilityChanged = { visible -> setPlayerSystemBars(window, visible) },
                 onRetry = playback::reload, onNext = playback::next, onPrevious = playback::previous,
                 onTuneNumber = { playback.request(TuneTarget.Number(it)) }, pictureInPicture = pipUi, notice = playback.notice,

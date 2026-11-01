@@ -102,6 +102,61 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     var castPlayback by mutableStateOf(CastPlayback()); private set
     val failed = mutableStateMapOf<Int, String>()
     private val preferences = application.getSharedPreferences("playback", 0)
+    internal val startupPreferences = StartupPreferences(preferences)
+    private var startupJob: Job? = null
+    private var startupAttempt = false
+    private var startupFailed = false
+    private var startupSucceeded = false
+
+    private fun saveWatched() {
+        val channel = selected ?: return
+        val identity = FavouriteIdentity.key(channel) ?: return
+        preferences.edit().putString("last-watched-id", identity).putInt("channel", channel.number).apply()
+    }
+    fun openGuide() { cancelStartup(); guideOpen = true }
+    private fun cancelStartup() {
+        initialSelectionPending = false
+        startupJob?.cancel(); startupJob = null
+        if (startupAttempt) cancelProviderTune()
+        startupAttempt = false
+    }
+    private fun startChannel() {
+        if (startupJob != null) return
+        initialSelectionPending = false
+        startupJob = viewModelScope.launch {
+            // Give connected providers their existing discovery path before resolving saved identities.
+            delay(200) // Account discovery starts in init after the cached guide is published.
+            var discoveryWaits = 0
+            while ((providerBusy || providerAccounts.values.any { it.busy }) && discoveryWaits++ < 40) delay(200)
+            val rows = guide?.channels.orEmpty()
+            val favourites = getApplication<Application>().getSharedPreferences("favourites-v1", 0)
+                .getStringSet("channels", emptySet()).orEmpty()
+            val recent = preferences.getString("last-watched-id", null)
+            val legacy = if (recent == null && preferences.contains("channel")) preferences.getInt("channel", -1) else null
+            val candidates = StartupChannels.candidates(rows, startupPreferences.mode, startupPreferences.identity,
+                recent, legacy, favourites)
+            val deadline = android.os.SystemClock.elapsedRealtime() + 60_000
+            for (channel in candidates) {
+                if (android.os.SystemClock.elapsedRealtime() >= deadline) break
+                startupAttempt = true; startupFailed = false; startupSucceeded = false
+                guideOpen = true
+                try { tune(channel) } catch (error: Exception) {
+                    if (error is CancellationException) throw error
+                    startupFailed = true
+                }
+                val end = minOf(deadline, android.os.SystemClock.elapsedRealtime() + 8_000)
+                while (!startupFailed && !startupSucceeded && android.os.SystemClock.elapsedRealtime() < end) delay(100)
+                if (startupSucceeded && !startupFailed) {
+                    startupAttempt = false; guideOpen = false; notice = null
+                    return@launch
+                }
+                failed[channel.number] = "Startup playback unavailable"
+                cancelProviderTune(); player.stop(); player.clearMediaItems(); buffering = false
+            }
+            startupAttempt = false; selected = null; buffering = false; guideOpen = true
+            notice = "No startup channel could play. Choose a channel from the guide."
+        }
+    }
     private var pending: TuneTarget? = null
     private var hasPending = false
     private var loading = false
@@ -116,6 +171,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         override fun onPlayerError(error: PlaybackException) {
             player.currentMediaItem?.mediaId?.toIntOrNull()?.let { failed[it] = "Playback failed" }
             buffering = false
+            if (startupAttempt) { startupFailed = true; return }
             if (selected?.providerChannel != null) { providerAccounts[selected?.providerChannel?.id?.provider]?.playbackFailed(error.errorCode); recoverProvider() }
             else restoreGuideTune(player.currentMediaItem?.mediaId?.toIntOrNull())
         }
@@ -125,7 +181,13 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
                 player.currentMediaItem?.mediaId == selected?.number?.toString()) lastWorkingFast = selected
             if (state == Player.STATE_READY) player.currentMediaItem?.mediaId?.toIntOrNull()?.let { failed.remove(it); guideTuneRecovery.ready(it) }
         }
-        override fun onIsPlayingChanged(isPlaying: Boolean) { playing = isPlaying }
+        override fun onIsPlayingChanged(isPlaying: Boolean) {
+            playing = isPlaying
+            if (isPlaying && player.currentMediaItem?.mediaId == selected?.number?.toString()) {
+                saveWatched()
+                if (startupAttempt) startupSucceeded = true
+            }
+        }
     }
     init {
         player.addListener(listener)
@@ -174,6 +236,14 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         }.filter { candidate -> fastLoaded.channels.none { it.number == candidate.number } }
         val loaded = Guide(fastLoaded.activeCount + local.size, fastLoaded.availableCount + local.size,
             fastLoaded.channels + local)
+        // Migrate numeric history against the first available catalogue (including the old cache)
+        // before a fresh guide can renumber News rows. This changes identity format, not history.
+        if (!preferences.contains("last-watched-id") && preferences.contains("channel")) {
+            loaded.channels.firstOrNull { it.number == preferences.getInt("channel", -1) }
+                ?.let(FavouriteIdentity::key)?.let { identity ->
+                    preferences.edit().putString("last-watched-id", identity).apply()
+                }
+        }
         if (guide == loaded) return
         val previous = selected
         guide = loaded
@@ -182,8 +252,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
                 hasPending = false; applyRequest(pending)
             }
         } else if (previous == null && initialSelectionPending) {
-            val recent = ChannelTuning.resolve(loaded.channels, TuneTarget.Number(preferences.getInt("channel", -1)))
-            (recent ?: loaded.channels.firstOrNull { !it.streamUrl.isNullOrBlank() })?.let { tune(it) }
+            startChannel()
         } else if (previous != null) {
             val refreshed = previous.tvgId?.let { id -> loaded.channels.singleOrNull { it.tvgId == id } }
                 ?: loaded.channels.singleOrNull { it.number == previous.number && it.name == previous.name }
@@ -201,6 +270,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         publishHome()
     }
     fun request(target: TuneTarget?, restoreOnFailure: Boolean = false) {
+        cancelStartup()
         if (guide == null) { pending = target; hasPending = true; guideOpen = true }
         else applyRequest(target, restoreOnFailure)
     }
@@ -236,7 +306,6 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         initialSelectionPending = false
         val retry = failed.remove(channel.number) != null
         selected = channel
-        preferences.edit().putInt("channel", channel.number).apply()
 
         // Channel 297 is an isolated native-only resolver experiment. Keep it out
         // of Cast and out of the generic playlist path so no other channel changes.
@@ -301,6 +370,11 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
             notice="Provider Cast is unavailable. Continuing playback on this device."
             return
         }
+        if (state.phase == CastPhase.PLAYING && state.channelNumber == selected?.number) saveWatched()
+        if (startupAttempt && state.channelNumber == selected?.number) {
+            if (state.phase == CastPhase.PLAYING) startupSucceeded = true
+            if (state.phase == CastPhase.FAILED) { startupFailed = true; return }
+        }
         if (state.ownsPlayback) {
             if(state.phase in setOf(CastPhase.PLAYING,CastPhase.PAUSED) && state.channelNumber==selected?.number)
                 guideTuneRecovery.ready(selected?.number)
@@ -354,12 +428,14 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
                 failed[channel.number] = "Playback unavailable"
                 val explanation=if(id.provider=="9now") { providerError=providerMessage(error);syncProviderConnection();providerError }
                     else providerAccounts[id.provider]?.error
+                if (startupAttempt) { startupFailed = true; notice = explanation; return@launch }
                 if (selected?.providerChannel?.id==id) recoverProvider()
                 notice=explanation ?: notice
             }
         }
     }
     private fun recoverProvider() {
+        if (startupAttempt) { startupFailed = true; return }
         cancelProviderTune()
         val fallback = fastGuide?.channels?.firstOrNull { it.tvgId != null && it.tvgId == lastWorkingFast?.tvgId }
             ?: fastGuide?.channels?.firstOrNull { it.number == lastWorkingFast?.number }
