@@ -109,6 +109,20 @@ The EPG build reports:
 
 Some channels are intentionally marked **Channel only** where a useful schedule is not available.
 
+## Weekly FAST source discovery and retirement review
+
+Perform a weekly **read-only** review of legal public FAST catalogues and provider-authorised M3U/HLS sources: Plex, Pluto, Samsung TV Plus, LG Channels, Roku, Tubi, Xumo, Rakuten, DistroTV, IPTV-org and specialist distributors. Prioritise English-language wrestling and sport, classic animation, anime, comedy, cult/sci-fi, game shows and movies; exclude explicit adult feeds.
+
+Reconcile each lead against `channel_guide.csv`, provider selection files, existing curated entries, known failed streams and previously rejected channels. Record the channel, genre, provider, existing/duplicate status, catalogue evidence, stream evidence, Australian availability and confidence. Classify **Recommend / Investigate / Reject**. Distinguish an official channel listing, discovered URL, valid HLS manifest, downloaded non-empty media segment and actual Australian-device playback; none implies the next. Record geo restrictions, DRM, authentication, token expiry and advertising/session requirements.
+
+**Retirement rule:** A provider delisting is a reason to investigate or retire that *provider path*, not proof every alternative is dead. Remove a channel from the active guide only when the existing source is confirmed withdrawn/unusable or the editorial decision is to retire it; preserve its number for a replacement. Do not silently renumber other channels.
+
+**Backup rule:** Newly discovered alternates may be added to provider acquisition selections for discovery, but are not automatically trusted or promoted. Keep an established working primary first; switch only after HLS segment and device playback checks, ideally in Australia. A selection alone is not a tested fallback. In particular, #201 CW Presents WWE NXT retains its curated primary; Pluto US is discovery-only. #819 Penn & Teller retains Roku primary; Pluto US is discovery-only.
+
+**Children's-channel regression check:** Track #1214 SpongeBob SquarePants, #1215 Pokémon and #1216 LEGO Kids TV individually, including tune/start time, buffering, stalling, segment continuity, token expiry and Australian-device behaviour. #1215 was reported fixed on 1 November 2026; do not regress or change its source without evidence. Investigate the others independently before replacing them.
+
+The weekly discovery report is advisory. Do not edit the repository, import feeds, create PRs or modify live playlists *as part of the scan*. Approved follow-up maintenance is a separate change, reviewed against these rules.
+
 ## Refresh workflow
 
 Start a fresh run from:
