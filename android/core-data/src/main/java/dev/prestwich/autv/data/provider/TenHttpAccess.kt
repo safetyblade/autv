@@ -14,6 +14,7 @@ interface TenClientRegistration {
     val configParameters: Map<String,String>
     val deviceFields: Map<String,String>
     val playbackParameters: Map<String,String>
+    val authorisedChannelKeys: Set<String> get() = emptySet()
     val liveFormat: TenLiveProtocol.Format
     fun authorise(method: String, exactUrl: String, jsonBody: String?): Map<String,String>
 }

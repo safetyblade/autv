@@ -71,4 +71,46 @@ class TenAdapterTest {
         assertNull(pending.readActivation());adapter.signOut();assertNull(store.value)
         assertEquals(ProviderConnection.NOT_CONNECTED,adapter.connection)
     }
+    @Test fun authorisedCompanionFeedsUseOriginalDaiAndUnapprovedRowsCannotPlay() {
+        val base=Access()
+        val access=object : TenProviderAccess by base {
+            override fun liveChannels(region: String)=JSONObject("""{"channels":[
+                {"key":"main-vic-fixture","name":"Ten","streamUrl":"https://10.com.au/api/live/main?session=original"},
+                {"key":"companion","name":"Companion","streamUrl":"https://10.com.au/api/live/other?session=original"},
+                {"key":"not-approved","name":"Other","streamUrl":"https://10.com.au/api/live/other"}]}""")
+            override fun playback(officialDescriptorUrl: String,bearer: String): TenPlaybackDescriptor {
+                assertTrue(officialDescriptorUrl.endsWith("session=original"));assertEquals("saved",bearer)
+                return TenPlaybackDescriptor(JSONObject("""{"dai":{"assetKey":"issued-live"}}"""),"issued-dai",999999)
+            }
+        }
+        val store=Store().apply { value=ProviderSession("saved","refresh",999999) }
+        val adapter=TenAdapter(access,store,MemoryProviderActivationStore(),"device","main-vic-fixture",now={1000},
+            authorisedChannelKeys=setOf("main-vic-fixture","companion"))
+        adapter.channels().take(2).forEach { row ->
+            val media=adapter.resolve(row.id)
+            assertEquals("issued-live",media.options.imaLive!!.assetKey)
+            assertEquals("issued-dai",media.options.imaLive!!.authToken)
+        }
+        try { adapter.resolve(ProviderChannelId("ten","not-approved"));fail() }
+        catch(e: ProviderException) { assertEquals(ProviderFailure.PLAYBACK_UNSUPPORTED,e.failure) }
+    }
+    @Test fun descriptor401ExpiresAccountButMissingDaiGrantDoesNotEraseIt() {
+        val base=Access()
+        var expired=false
+        val access=object : TenProviderAccess by base {
+            override fun playback(officialDescriptorUrl: String,bearer: String): TenPlaybackDescriptor {
+                if(expired) throw ProviderException(ProviderFailure.SESSION_EXPIRED,401)
+                return TenPlaybackDescriptor(JSONObject("""{"dai":{"assetKey":"issued"}}"""),"")
+            }
+        }
+        val store=Store().apply { value=ProviderSession("saved","refresh",999999) }
+        val adapter=TenAdapter(access,store,MemoryProviderActivationStore(),"id","main-vic-fixture",now={1000})
+        val id=adapter.channels().single().id
+        try { adapter.resolve(id);fail() } catch(e: ProviderException) { assertEquals(ProviderPlaybackStage.TEN_DESCRIPTOR,e.stage) }
+        assertNotNull(store.value)
+        expired=true
+        try { adapter.resolve(id);fail() } catch(e: ProviderException) { assertEquals(401,e.httpStatus) }
+        assertNull(store.value);assertEquals(ProviderConnection.SESSION_EXPIRED,adapter.connection)
+    }
+
 }

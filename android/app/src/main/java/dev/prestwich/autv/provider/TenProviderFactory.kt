@@ -8,7 +8,7 @@ import java.util.UUID
 
 /** Access/client registration, proof channel key and optional DAI network code must be provider-approved. */
 internal fun createTenProvider(context: Context, access: TenProviderAccess, proofChannelKey: String,
-    daiNetworkCode: String? = null): TenAdapter {
+    daiNetworkCode: String? = null, authorisedChannelKeys: Set<String> = setOf(proofChannelKey)): TenAdapter {
     val store=EncryptedProviderSessionStore(context,"autv.ten.session.v1","ten-session-v1")
     val file=AtomicFile(File(context.noBackupFilesDir,"ten-device-v1"))
     val id=runCatching { file.readFully().toString(Charsets.UTF_8).also { UUID.fromString(it) } }.getOrElse {
@@ -18,10 +18,10 @@ internal fun createTenProvider(context: Context, access: TenProviderAccess, proo
             catch(error: Exception) { file.failWrite(stream);throw error }
         }
     }
-    return TenAdapter(access,store,store,id,proofChannelKey,daiNetworkCode)
+    return TenAdapter(access,store,store,id,proofChannelKey,daiNetworkCode,authorisedChannelKeys=authorisedChannelKeys)
 }
 
 /** Uses Ten's registered inputs; no public Google sample identity is supplied to a broadcaster. */
 internal fun createRegisteredTenProvider(context: Context, registration: TenClientRegistration,
     returnedProofChannelKey: String, issuedDaiNetworkCode: String? = null): TenAdapter =
-    createTenProvider(context,TenHttpAccess(registration),returnedProofChannelKey,issuedDaiNetworkCode)
+    createTenProvider(context,TenHttpAccess(registration),returnedProofChannelKey,issuedDaiNetworkCode,registration.authorisedChannelKeys + returnedProofChannelKey)
