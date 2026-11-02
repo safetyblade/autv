@@ -45,7 +45,20 @@ class SettingsScreenshotsTest {
                     ui.waitForIdle();screenshot("$name-settings")
                     ui.onNodeWithTag("provider-9now").performScrollTo().performClick()
                     ui.onNodeWithTag("9now-connect").performScrollTo().performClick()
-                    ui.waitUntil(15000) { ui.onAllNodesWithTag("activation-qr").fetchSemanticsNodes().isNotEmpty() }
+                    try {
+                        ui.waitUntil(15000) { ui.onAllNodesWithTag("activation-qr").fetchSemanticsNodes().isNotEmpty() }
+                    } catch (timeout: androidx.compose.ui.test.ComposeTimeoutException) {
+                        screenshot("$name-activation-timeout")
+                        var state = "activity unavailable"
+                        scenario.onActivity { activity ->
+                            val playback = activity.playback
+                            state = "codes=${ActivationFixture.codeRequests.get()}, " +
+                                "connection=${playback.providerConnection}, busy=${playback.providerBusy}, " +
+                                "activation=${playback.providerActivation != null}, " +
+                                "status=${playback.providerAuthStatus}, error=${playback.providerError}"
+                        }
+                        throw AssertionError("QR not visible for $name: $state", timeout)
+                    }
                     ui.onNodeWithTag("activation-qr").performScrollTo()
                     ui.waitForIdle();screenshot("$name-activation")
                     if(phase=="after") {
