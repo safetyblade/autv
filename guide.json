@@ -9,8 +9,8 @@
     "epg": "https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz",
     "guide": "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
   },
-  "activeCount": 637,
-  "availableCount": 472,
+  "activeCount": 636,
+  "availableCount": 471,
   "channels": [
     {
       "number": 100,
@@ -2230,18 +2230,6 @@
       "available": false,
       "streamUrl": null,
       "tvgId": null,
-      "logoUrl": null
-    },
-    {
-      "number": 510,
-      "name": "FBI Files",
-      "genre": "Crime",
-      "subgenre": "True Crime / Investigations",
-      "description": "Crime, investigation, court, mystery or forensic programming.",
-      "epg": "Full",
-      "available": true,
-      "streamUrl": "https://livetv-fa.tubi.video/the-fbi-files/index.m3u8",
-      "tvgId": "autv.fbi-files-tubi",
       "logoUrl": null
     },
     {
