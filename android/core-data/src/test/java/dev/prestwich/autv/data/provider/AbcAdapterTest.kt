@@ -11,7 +11,7 @@ class AbcAdapterTest {
         override fun write(session: ProviderSession) { value=session }
         override fun clear() { value=null }
     }
-    private class Access : AbcProviderAccess {
+    private open class Access : AbcProviderAccess {
         var links=0;var pending=true;var tokens=0;var denyMedia=false;var offlineToken=false
         override fun link(deviceId: String): JSONObject { links++;return JSONObject("""{"data":{"code":"TEST","deviceId":"returned-device","requestId":"private-request","expiresIn":300,"interval":3}}""") }
         override fun linkStatus(deviceId: String,requestId: String?): JSONObject {
@@ -72,4 +72,39 @@ class AbcAdapterTest {
         assertEquals(1,anonymous.channels().size);assertEquals(ProviderConnection.NOT_CONNECTED,anonymous.connection)
         assertNull(store.read())
     }
+    @Test fun allDiscoveredLiveFeedsResolveThroughTheirOwnAuthorisation() {
+        val base=Access()
+        val access=object : AbcProviderAccess by base {
+            override fun collection(id: String)=JSONObject("""{"items":[
+                {"type":"livestream","houseNumber":"VIC_FIXTURE","title":"ABC","_links":{"self":{"href":"/video/VIC_FIXTURE"}}},
+                {"type":"livestream","houseNumber":"NEWS_FIXTURE","title":"News","_links":{"self":{"href":"/video/NEWS_FIXTURE"}}}]}""")
+            override fun programme(officialUrl: String)=JSONObject().put("houseNumber",officialUrl.substringAfterLast('/'))
+                .put("_embedded",JSONObject("""{"playlist":[{"type":"livestream","streams":{"hls":{"720":"https://media.invalid/live?original=1"}}}]}"""))
+            override fun authoriseMedia(houseNumber: String,originalHls: String,accountToken: String?): String {
+                assertEquals("saved",accountToken)
+                return "$originalHls&issued=$houseNumber"
+            }
+        }
+        val store=Store().apply { value=ProviderSession("saved","",999999) }
+        val adapter=AbcAdapter(access,store,MemoryProviderActivationStore(),"device","VIC_FIXTURE",now={1000})
+        val channels=adapter.channels()
+        assertEquals(2,channels.size)
+        channels.forEach { assertTrue(adapter.resolve(it.id).uri.endsWith("issued=${it.id.channel}")) }
+        try { adapter.resolve(ProviderChannelId("abc","not-discovered"));fail() }
+        catch(e: ProviderException) { assertEquals(ProviderFailure.UNAVAILABLE,e.failure) }
+    }
+    @Test fun mediaSessionExpiryRequiresReconnectAndNeverReturnsUnsignedMedia() {
+        val base=Access()
+        val access=object : AbcProviderAccess by base {
+            override fun authoriseMedia(houseNumber: String,originalHls: String,accountToken: String?): String =
+                throw ProviderException(ProviderFailure.SESSION_EXPIRED,401)
+        }
+        val store=Store().apply { value=ProviderSession("saved","",999999) }
+        val adapter=AbcAdapter(access,store,MemoryProviderActivationStore(),"device","VIC_FIXTURE",now={1000})
+        try { adapter.resolve(adapter.channels().single().id);fail() } catch(e: ProviderException) {
+            assertEquals(ProviderPlaybackStage.ABC_AUTHORISATION,e.stage);assertEquals(401,e.httpStatus)
+        }
+        assertNull(store.value);assertEquals(ProviderConnection.SESSION_EXPIRED,adapter.connection)
+    }
+
 }
