@@ -12,7 +12,7 @@ import csv
 import re
 from pathlib import Path
 
-NUMBER = re.compile(r'(?:^|\\s)tvg-chno="([0-9]+)"')
+NUMBER = re.compile(r'(?:^|\s)tvg-chno="([0-9]+)"')
 
 def playlist_numbers(path):
     text = Path(path).read_text(encoding="utf-8-sig")
