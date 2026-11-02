@@ -37,7 +37,7 @@ object ActivationFixture {
         }
     }
 }
-class ProviderActivationTestActivity : MainActivity() {
+open class ProviderActivationTestActivity : MainActivity() {
     override fun createPlaybackModel() = PlaybackModel(application, {
         val channel = Channel(100, "Fixture FAST", "News", "", "", "", true,
             "asset:///pip-test.m3u8?channel=100", "fixture-fast", null)
