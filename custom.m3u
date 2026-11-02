@@ -243,3 +243,11 @@ https://jmp2.uk/plu-60faf9ddfcc1f200070a5932.m3u8
 # The Smurfs: Pluto channel ID 68b5a97fc8ef6afa31138718; community redirect, subject to region/availability.
 #EXTINF:-1 tvg-id="68b5a97fc8ef6afa31138718" tvg-name="The Smurfs" tvg-logo="https://images.pluto.tv/channels/68b5a97fc8ef6afa31138718/colorLogoPNG.png" group-title="Kids & Animation",The Smurfs
 https://jmp2.uk/plu-68b5a97fc8ef6afa31138718.m3u8
+
+# FBI Files: public Tubi channel HLS candidate, independent of missing Pluto catalogue.
+#EXTINF:-1 tvg-id="autv.fbi-files-tubi" tvg-name="FBI Files" group-title="Crime",FBI Files
+https://livetv-fa.tubi.video/the-fbi-files/index.m3u8
+
+# Bloodline Detectives: Wurl Samsung UK feed candidate, AU availability unverified.
+#EXTINF:-1 tvg-id="autv.bloodline-detectives-wurl" tvg-name="Bloodline Detectives" group-title="Crime",Bloodline Detectives
+https://4399c7ad.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9NZWRpY2FsRGV0ZWN0aXZlc19ITFM/playlist.m3u8
