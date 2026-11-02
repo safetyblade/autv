@@ -1703,6 +1703,10 @@
     <display-name>Court TV</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951559/168x168.png?type=color_onBlack" />
   </channel>
+  <channel id="99951490">
+    <display-name>The First 48 by A&amp;E</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951490/168x168.png?type=color_onBlack" />
+  </channel>
   <channel id="400000294">
     <display-name>Watch AEW</display-name>
     <icon src="https://canvas-lb.tubitv.com/opts/yeAV3-c2XWfYzw==/e9cd4624-20d8-421b-b5ed-282769cf2f57/CHgQeDoFMS4xLjlAAQ==" />
@@ -2043,5 +2047,11 @@
   <channel id="68b5a97fc8ef6afa31138718">
     <display-name>The Smurfs</display-name>
     <icon src="https://images.pluto.tv/channels/68b5a97fc8ef6afa31138718/colorLogoPNG.png" />
+  </channel>
+  <channel id="autv.fbi-files-tubi">
+    <display-name>FBI Files</display-name>
+  </channel>
+  <channel id="autv.bloodline-detectives-wurl">
+    <display-name>Bloodline Detectives</display-name>
   </channel>
 </tv>

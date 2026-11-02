@@ -10,7 +10,7 @@
     "guide": "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
   },
   "activeCount": 637,
-  "availableCount": 469,
+  "availableCount": 472,
   "channels": [
     {
       "number": 100,
@@ -2131,9 +2131,9 @@
       "subgenre": "True Crime / Investigations",
       "description": "Crime, investigation, court, mystery or forensic programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://4399c7ad.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9NZWRpY2FsRGV0ZWN0aXZlc19ITFM/playlist.m3u8",
+      "tvgId": "autv.bloodline-detectives-wurl",
       "logoUrl": null
     },
     {
@@ -2239,9 +2239,9 @@
       "subgenre": "True Crime / Investigations",
       "description": "Crime, investigation, court, mystery or forensic programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://livetv-fa.tubi.video/the-fbi-files/index.m3u8",
+      "tvgId": "autv.fbi-files-tubi",
       "logoUrl": null
     },
     {
@@ -2311,10 +2311,10 @@
       "subgenre": "True Crime / Investigations",
       "description": "Crime, investigation, court, mystery or forensic programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
-      "logoUrl": null
+      "available": true,
+      "streamUrl": "https://dbrb49pjoymg4.cloudfront.net/10001/99951490/hls/playlist.m3u8?includeAssetTags=true&ads.xumo_channelId=99951490&ads.xumo_streamId=99951490&ads.channelId=99951490&ads.channelName=AETheFirst48&ads.caid=AETheFirst48&ads.csid=xumo_web_AETheFirst48_ssai&ads.genre=Documentary,Crime,DO,Entertainment,GV,SM&ads._fw_content_genre=Documentary,Crime,DO,Entertainment,GV,SM&ads._fw_coppa=0&ads.xumo_contentId=4330&ads.xumo_contentName=AETheFirst48&ads.xumo_providerId=4330&ads.xumo_providerName=AETheFirst48&ads.asnw=&ads.xumo_channelName=AETheFirst48&ads._fw_h_x_country=US&ads._fw_ifa_type=&ads._fw_did=98606601-88b2-4865-bc9e-246b948cd071&ads.amznappId=&ads.lat=&ads.lon=&ads.os=&ads.osv=&ads._fw_is_lat=0&ads._fw_us_privacy=&ads._fw_content_category=&ads._fw_content_language=en&ads._fw_content_rating=&ads._fw_deviceMake=GitHubAction&ads._fw_device_model=PythonScript&ads.xumo_platform=web&ads.site_id=&ads.appVersion=1.0.0&ads._fw_app_bundle=web.xumo.com&ads._fw_app_store_url=&ads.appName=xumo",
+      "tvgId": "99951490",
+      "logoUrl": "https://image.xumo.com/v1/channels/channel/99951490/168x168.png?type=color_onBlack"
     },
     {
       "number": 517,
