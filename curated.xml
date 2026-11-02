@@ -1707,17 +1707,9 @@
     <display-name>NHL</display-name>
     <icon src="https://canvas-lb.tubitv.com/opts/8h7HYVpDz2amhw==/085bca04-c806-4a7f-bb0c-d38fe352f3e3/CHgQeDoFMS4xLjlAAQ==" />
   </channel>
-  <channel id="613763">
-    <display-name>Stadium</display-name>
-    <icon src="https://canvas-lb.tubitv.com/opts/-NtXXHY5Foetwg==/ffec7159-bf94-4c51-9544-5162e5a57b2f/CHgQeDoFMS4xLjlAAQ==" />
-  </channel>
   <channel id="400000304">
     <display-name>UEFA.tv</display-name>
     <icon src="https://canvas-lb.tubitv.com/opts/vYU_W6gGesX41A==/f137edcb-de3c-4b3c-9e41-ef2cc6f8d156/CHgQeDoFMS4xLjlAAQ==" />
-  </channel>
-  <channel id="677011">
-    <display-name>Gordon Ramsay</display-name>
-    <icon src="https://canvas-lb.tubitv.com/opts/zBCOxZ6hwxcgWg==/f7eea1c7-409e-4abc-b6f3-1228bb7135d7/CHgQeDoFMS4xLjlAAQ==" />
   </channel>
   <channel id="5ddd7cb2cbb9010009b4fe32">
     <display-name>Nick Jr Club</display-name>

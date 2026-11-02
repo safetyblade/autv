@@ -10,7 +10,7 @@
     "guide": "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
   },
   "activeCount": 637,
-  "availableCount": 469,
+  "availableCount": 467,
   "channels": [
     {
       "number": 100,
@@ -1243,10 +1243,10 @@
       "subgenre": "General Sports",
       "description": "Sports FAST channel featuring live events, archive coverage, highlights or sports programming.",
       "epg": "Full",
-      "available": true,
-      "streamUrl": "https://live-manifest.production-public.tubi.io/live/30fec756-4948-4ecb-98ae-2fda1cd0ee95/playlist.m3u8",
-      "tvgId": "613763",
-      "logoUrl": "https://canvas-lb.tubitv.com/opts/-NtXXHY5Foetwg==/ffec7159-bf94-4c51-9544-5162e5a57b2f/CHgQeDoFMS4xLjlAAQ=="
+      "available": false,
+      "streamUrl": null,
+      "tvgId": null,
+      "logoUrl": null
     },
     {
       "number": 280,
@@ -5323,10 +5323,10 @@
       "subgenre": "Food & Cooking",
       "description": "Gordon Ramsay-focused FAST channel featuring food, competition and reality programming.",
       "epg": "Full",
-      "available": true,
-      "streamUrl": "https://live-manifest.production-public.tubi.io/live/329f14a6-aa88-4a92-a7ee-6a44b8b1b96c/playlist.m3u8",
-      "tvgId": "677011",
-      "logoUrl": "https://canvas-lb.tubitv.com/opts/zBCOxZ6hwxcgWg==/f7eea1c7-409e-4abc-b6f3-1228bb7135d7/CHgQeDoFMS4xLjlAAQ=="
+      "available": false,
+      "streamUrl": null,
+      "tvgId": null,
+      "logoUrl": null
     },
     {
       "number": 1031,
