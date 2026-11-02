@@ -109,6 +109,9 @@ jobs:
       - name: Build native guide snapshot
         run: python3 native/tools/build_guide.py
 
+      - name: Verify recovered-channel retention and report remaining recovery queue
+        run: python3 scripts/monitor_channel_recovery.py
+
       - name: Publish generated files
         shell: bash
         run: |
