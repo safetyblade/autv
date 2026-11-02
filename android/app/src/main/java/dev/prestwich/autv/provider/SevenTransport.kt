@@ -20,12 +20,12 @@ internal fun validateSevenRequest(method: String, address: String, bearer: Strin
     val playback = uri.host == "videoservice.swm.digital" && uri.path == "/playback" && method == "GET"
     if (playback) {
         val pairs = uri.rawQuery?.split('&')?.map { it.split('=', limit = 2) }.orEmpty()
-        val keys = setOf("appId", "deviceType", "platformType", "deviceId", "accountId", "referenceId", "marketId", "videoType")
-        val capabilities=SevenPlaybackCapabilities.parameters
-        val supplied=pairs.map { it[0] }.toSet()
-        require(pairs.size==supplied.size && (supplied==keys || supplied==keys+capabilities.keys))
-        require(pairs.all { it.size==2 && it[1].matches(Regex("[A-Za-z0-9%+_.*-]+")) &&
-            (it[0] in keys || capabilities[it[0]]==it[1]) })
+        val issuedKeys = setOf("deviceId", "accountId", "referenceId", "marketId")
+        val fixed = SevenLiveContract.clientParameters + SevenPlaybackCapabilities.parameters
+        val supplied = pairs.map { it[0] }.toSet()
+        require(pairs.size == supplied.size && supplied == issuedKeys + fixed.keys)
+        require(pairs.all { it.size == 2 && it[1].matches(Regex("[A-Za-z0-9%+_.*-]+")) &&
+            (it[0] in issuedKeys || fixed[it[0]] == it[1]) })
     }
     require(auth || market || content || player || playback)
     require((bearer != null) == playback)
