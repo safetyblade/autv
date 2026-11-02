@@ -13,8 +13,6 @@ SOURCES = {
     "Samsung AU": "selected_channels.txt",
     "Curated": "custom.m3u",
 }
-PRIORITY = {"Comedy": 1, "Crime": 1, "Sport": 1,
-            "Entertainment": 2, "Kids & Animation": 2, "Factual": 2}
 CHANNEL = re.compile(r'(?:^|\s)tvg-chno="(\d+)"')
 
 def collect():
@@ -35,26 +33,26 @@ def collect():
         listed = name.casefold() in selections.get(provider, "")
         output.append({
             "channel_number": number, "channel_name": name,
-            "genre": r["Genre"].strip(), "priority": "P" + str(PRIORITY.get(r["Genre"].strip(), 3)),
+            "genre": r["Genre"].strip(),
             "primary_provider": provider, "alternate_provider": r["Alternate source"].strip(),
             "selected_name_present": "YES" if listed else "NO_OR_UNVERIFIED",
             "playback": "NOT_TESTED", "action": "TRACE_V1_AND_PROVIDER",
             "removal": "NOT_APPROVED",
         })
-    return sorted(output, key=lambda r:(r["priority"], int(r["channel_number"])))
+    return sorted(output, key=lambda r:int(r["channel_number"]))
 
 def main():
     rows = collect()
     path = Path("audits/missing_channels_recovery_queue.csv")
     path.parent.mkdir(parents=True, exist_ok=True)
-    keys = ["channel_number","channel_name","genre","priority","primary_provider",
+    keys = ["channel_number","channel_name","genre","primary_provider",
             "alternate_provider","selected_name_present","playback","action","removal"]
     with path.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=keys)
         writer.writeheader()
         writer.writerows(rows)
     print(f"Unpublished approved channels: {len(rows)}")
-    for key, count in sorted(Counter((r["priority"],r["primary_provider"],r["selected_name_present"]) for r in rows).items()):
+    for key, count in sorted(Counter((r["primary_provider"],r["selected_name_present"]) for r in rows).items()):
         print(*key, count, sep=" | ")
     print("No candidate has been tested; do not use this report to remove channels.")
 
