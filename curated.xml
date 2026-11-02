@@ -1695,6 +1695,14 @@
     <display-name>Willow Sports</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951406/168x168.png?type=color_onBlack" />
   </channel>
+  <channel id="99991626">
+    <display-name>Dateline 24/7</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99991626/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951559">
+    <display-name>Court TV</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951559/168x168.png?type=color_onBlack" />
+  </channel>
   <channel id="400000294">
     <display-name>Watch AEW</display-name>
     <icon src="https://canvas-lb.tubitv.com/opts/yeAV3-c2XWfYzw==/e9cd4624-20d8-421b-b5ed-282769cf2f57/CHgQeDoFMS4xLjlAAQ==" />
