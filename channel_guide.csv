@@ -181,7 +181,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 504,Crime Scene TV,Crime,True Crime / Investigations,Full,Plex AU,,Active,"Crime, investigation, court, mystery or forensic programming."
 505,Crimes That Shook Britain,Crime,True Crime / Investigations,Full,Pluto,,Active,"Crime, investigation, court, mystery or forensic programming."
 506,Criminal Confessions,Crime,True Crime / Investigations,Full,Pluto,,Active,"Crime, investigation, court, mystery or forensic programming."
-507,Dateline 24/7,Crime,True Crime / Investigations,Full,Pluto,,Active,"Crime, investigation, court, mystery or forensic programming."
+507,Dateline 24/7,Crime,True Crime / Investigations,Full,Xumo,Pluto,Active,"Crime, investigation, court, mystery or forensic programming."
 508,Deadly Women,Crime,True Crime / Investigations,Full,Pluto,,Active,"Crime, investigation, court, mystery or forensic programming."
 509,Evidence of Evil,Crime,True Crime / Investigations,Full,Pluto,,Active,"Crime, investigation, court, mystery or forensic programming."
 510,FBI Files,Crime,True Crime / Investigations,Full,Pluto,,Active,"Crime, investigation, court, mystery or forensic programming."
@@ -207,7 +207,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 530,World's Wildest Police Videos,Crime,Police / Jail / Live Enforcement,Full,Xumo,,Active,"Crime, investigation, court, mystery or forensic programming."
 531,Dog The Bounty Hunter,Crime,Police / Jail / Live Enforcement,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 532,Sheriffs: El Dorado County,Crime,Police / Jail / Live Enforcement,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-533,Court TV,Crime,Court / Legal,Full,Pluto,,Active,"Crime, investigation, court, mystery or forensic programming."
+533,Court TV,Crime,Court / Legal,Full,Xumo,Pluto,Active,"Crime, investigation, court, mystery or forensic programming."
 534,Court TV Legendary Trials,Crime,Court / Legal,Full,Roku,,Active,"Crime, investigation, court, mystery or forensic programming."
 535,Law&Crime,Crime,Court / Legal,Full,Xumo,,Active,"Crime, investigation, court, mystery or forensic programming."
 536,Paternity Court,Crime,Court / Legal,Full,Roku,,Active,Court-reality channel focused on paternity disputes and relationship cases.
