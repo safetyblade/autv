@@ -21,6 +21,9 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.text.style.TextAlign
+import dev.prestwich.autv.FocusButton
 import dev.prestwich.autv.data.provider.DeviceActivation
 import kotlinx.coroutines.delay
 
@@ -32,6 +35,7 @@ internal fun ProviderActivationScreen(
     destination: ActivationDestination,
     onOpenWebsite: (String) -> Unit,
     onCancel: () -> Unit,
+    viewportHeight: Dp = Dp.Unspecified,
 ) {
     val websiteFocus = remember { FocusRequester() }
     val cancelFocus = remember { FocusRequester() }
@@ -49,53 +53,40 @@ internal fun ProviderActivationScreen(
             Bitmap.createBitmap(pixels, matrix.width, matrix.height, Bitmap.Config.ARGB_8888).asImageBitmap()
         }
     }
-    Surface(color = MaterialTheme.colorScheme.surfaceContainer, shape = RoundedCornerShape(20.dp),
+    val qrSize = if(viewportHeight == Dp.Unspecified) 192.dp else (viewportHeight * 0.32f).coerceIn(128.dp,224.dp)
+    Surface(color = MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(20.dp),
         modifier = Modifier.fillMaxWidth().testTag("provider-activation-screen")) {
-        Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            Text("Connect $providerName", style = MaterialTheme.typography.titleLarge)
-            BoxWithConstraints(Modifier.fillMaxWidth()) {
-                val wide = maxWidth >= 520.dp
-                val qr: @Composable () -> Unit = {
-                    if (remaining > 0 && bitmap != null) {
-                        Image(bitmap, contentDescription = "Scan with your phone camera to open $providerName's official activation website. You can also use the website and code shown here.",
-                            filterQuality = FilterQuality.None,
-                            modifier = Modifier.size(224.dp).background(Color.White).testTag("activation-qr"))
-                    }
-                }
-                val instructions: @Composable () -> Unit = {
-                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Text("Scan with your phone camera", style = MaterialTheme.typography.titleMedium)
-                        Text("Or open this official website and enter the code:")
-                        Text(destination.address, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("activation-address"))
-                        if (remaining > 0) {
-                            val codeDescription = "Activation code: ${challenge.userCode.map { it.toString() }.joinToString(" ")}"
-                            val minutes = remaining / 60
-                            val seconds = remaining % 60
-                            val expiryDescription = "Expires in ${if (minutes > 0) "$minutes ${if (minutes == 1L) "minute" else "minutes"} " else ""}$seconds ${if (seconds == 1L) "second" else "seconds"}"
-                            Text(challenge.userCode, style = MaterialTheme.typography.headlineLarge,
-                                modifier = Modifier.semantics { contentDescription = codeDescription }.testTag("activation-code"))
-                            Text("Expires in ${remaining / 60}:${(remaining % 60).toString().padStart(2, '0')}",
-                                style = MaterialTheme.typography.bodySmall,
-                                modifier = Modifier.semantics { contentDescription = expiryDescription }.testTag("activation-expiry"))
-                        }
-                    }
-                }
-                if (wide) Row(horizontalArrangement = Arrangement.spacedBy(24.dp), verticalAlignment = Alignment.CenterVertically) {
-                    qr()
-                    Box(Modifier.weight(1f)) { instructions() }
-                } else Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                    qr()
-                    instructions()
-                }
+        Column(Modifier.fillMaxWidth().padding(16.dp), horizontalAlignment=Alignment.CenterHorizontally,
+            verticalArrangement=Arrangement.spacedBy(8.dp)) {
+            Text("Connect $providerName",style=MaterialTheme.typography.titleLarge,textAlign=TextAlign.Center)
+            if(remaining>0 && bitmap!=null) Image(bitmap,
+                contentDescription="Scan with your phone camera to open $providerName's official activation website. You can also use the website and code shown here.",
+                filterQuality=FilterQuality.None,
+                modifier=Modifier.size(qrSize).background(Color.White).testTag("activation-qr"))
+            Text("Scan with your phone camera",style=MaterialTheme.typography.titleMedium,textAlign=TextAlign.Center)
+            Text("Or open this official website and enter the code:",style=MaterialTheme.typography.bodySmall,textAlign=TextAlign.Center)
+            Text(destination.address,style=MaterialTheme.typography.bodyLarge,textAlign=TextAlign.Center,modifier=Modifier.testTag("activation-address"))
+            if(remaining>0) {
+                val codeDescription="Activation code: ${challenge.userCode.map {it.toString()}.joinToString(" ")}"
+                Text(challenge.userCode,style=MaterialTheme.typography.headlineLarge,textAlign=TextAlign.Center,
+                    modifier=Modifier.semantics {contentDescription=codeDescription}.testTag("activation-code"))
+                Text("Expires in ${remaining/60}:${(remaining%60).toString().padStart(2,'0')}",style=MaterialTheme.typography.bodySmall,
+                    modifier=Modifier.testTag("activation-expiry"))
             }
-            if (remaining == 0L) Text("This code has expired. Cancel and request a new code.",
-                color = MaterialTheme.colorScheme.error, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite }.testTag("activation-expired"))
-            else if (payload == null) Text("The activation address could not be verified. Cancel and try again.", color = MaterialTheme.colorScheme.error)
-            else Text("Sign in on $providerName's website. AUTV will connect automatically after approval. If using this phone, return to AUTV after submitting the code.")
-            Text("Connecting your account does not guarantee that every channel can play.", style = MaterialTheme.typography.bodySmall)
-            Button(onClick = { payload?.let(onOpenWebsite) }, enabled = remaining > 0 && payload != null,
-                modifier = Modifier.focusProperties { canFocus = true; down = cancelFocus; next = cancelFocus }.focusRequester(websiteFocus).testTag("activation-open-website")) { Text("Open official sign-in") }
-            TextButton(onClick = onCancel, modifier = Modifier.focusProperties { canFocus = true; if (remaining > 0 && payload != null) up = websiteFocus }.focusRequester(cancelFocus).testTag("activation-cancel")) { Text("Cancel sign-in") }
+            if(remaining==0L) Text("This code has expired. Cancel and request a new code.",
+                color=MaterialTheme.colorScheme.error,textAlign=TextAlign.Center,
+                modifier=Modifier.semantics {liveRegion=LiveRegionMode.Polite}.testTag("activation-expired"))
+            else if(payload==null) Text("The activation address could not be verified. Cancel and try again.",color=MaterialTheme.colorScheme.error)
+            else Text("Sign in on $providerName's website. Return to AUTV after approval.",
+                style=MaterialTheme.typography.bodySmall,textAlign=TextAlign.Center)
+            FlowRow(horizontalArrangement=Arrangement.spacedBy(12.dp,Alignment.CenterHorizontally),verticalArrangement=Arrangement.spacedBy(8.dp)) {
+                FocusButton("Open official sign-in",{payload?.let(onOpenWebsite)},
+                    Modifier.focusProperties {down=cancelFocus;next=cancelFocus}.focusRequester(websiteFocus).testTag("activation-open-website"),
+                    remaining>0 && payload!=null)
+                FocusButton("Cancel sign-in",onCancel,
+                    Modifier.focusProperties {if(remaining>0 && payload!=null) up=websiteFocus}.focusRequester(cancelFocus).testTag("activation-cancel"))
+            }
+            Text("Account linking does not verify channel playback.",style=MaterialTheme.typography.bodySmall,textAlign=TextAlign.Center)
         }
     }
 }

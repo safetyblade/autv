@@ -57,11 +57,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-private val Ink = Color(0xFF070A10)
-private val Glass = Color(0xF0181C24)
-private val WarmWhite = Color(0xFFF2EFE9)
-private val Silver = Color(0xFFCEC4B4)
-private val Muted = Color(0xFFA5A8AF)
 
 @Composable
 @OptIn(ExperimentalLayoutApi::class)
@@ -209,11 +204,7 @@ internal fun AuTvScreen(
             4 -> onOpenSettings()
         }
     }, onLong = { selected?.let(onFavourite) }, active = playbackOkActive)
-    MaterialTheme(colorScheme = darkColorScheme(primary = Silver, onPrimary = Ink, background = Ink, surface = Glass,
-        onSurface = WarmWhite, onSurfaceVariant = Muted, outline = Color(0xFF595B62),
-        primaryContainer = Color(0xFF34343B), onPrimaryContainer = WarmWhite,
-        secondary = Silver, secondaryContainer = Color(0xFF34343B), onSecondaryContainer = WarmWhite,
-        surfaceTint = Silver)) {
+    AuTvTheme {
         CompositionLocalProvider(LocalContentColor provides WarmWhite) {
             Box(Modifier.fillMaxSize().background(Color.Black).semantics { testTagsAsResourceId = true }
                 .then(if (isTv) Modifier else Modifier.pointerInput(Unit) { awaitEachGesture { awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial); wake() } })
@@ -495,7 +486,7 @@ private fun CastControl(isTv: Boolean, onInteraction: () -> Unit, compact: Boole
 }
 
 @Composable
-private fun FocusButton(label: String, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true) {
+internal fun FocusButton(label: String, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true) {
     var focused by remember { mutableStateOf(false) }
     val borderColor = if (focused) WarmWhite else if (enabled) Silver.copy(alpha = 0.4f) else Silver.copy(alpha = 0.15f)
     OutlinedButton(onClick = onClick, enabled = enabled, modifier = modifier.onFocusChanged { focused = it.isFocused }
