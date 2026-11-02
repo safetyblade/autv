@@ -2582,4 +2582,13 @@
   <channel id="autv.bloodline-detectives-wurl">
     <display-name>Bloodline Detectives</display-name>
   </channel>
+  <channel id="66f137cb483d460008ece053">
+    <display-name>Rugby Pass TV</display-name>
+  </channel>
+  <channel id="696e024a7e92438c27a425a8">
+    <display-name>Rally TV</display-name>
+  </channel>
+  <channel id="672cb91149c40600081cbee5">
+    <display-name>Whose Line Is It Anyway?</display-name>
+  </channel>
 </tv>
