@@ -11,10 +11,14 @@ import java.net.URLEncoder
  */
 class AbcClientRegistration(val productId: String, val profileApiKey: String,
     val region: String, val mainHouseNumber: String,
-    val mediaAuthoriser: (String,String,String?)->String, val accountLinkingEnabled: Boolean = true) {
+    val mediaAuthoriser: (String,String,String?)->String, val accountLinkingEnabled: Boolean = true,
+    authorisedHouseNumbers: Set<String> = setOf(mainHouseNumber)) {
+    val authorisedHouseNumbers = authorisedHouseNumbers.toSet()
     init {
         require((!accountLinkingEnabled || productId.isNotBlank()) && productId.length<=256 && productId.none(Char::isISOControl))
         require((!accountLinkingEnabled || profileApiKey.isNotBlank()) && profileApiKey.length<=4096 && profileApiKey.none(Char::isISOControl))
+        require(this.authorisedHouseNumbers.isNotEmpty() && mainHouseNumber in this.authorisedHouseNumbers)
+        require(this.authorisedHouseNumbers.all { it.matches(Regex("[A-Za-z0-9_-]{1,128}")) })
         require(region=="VIC" && mainHouseNumber.matches(Regex("[A-Za-z0-9_-]{1,128}")))
     }
     override fun toString()="AbcClientRegistration(redacted)"
@@ -53,8 +57,8 @@ class AbcHttpAccess internal constructor(private val registration: AbcClientRegi
         send("GET",officialUrl)
     }
     override fun authoriseMedia(houseNumber: String,originalHls: String,accountToken: String?): String = guarded(ProviderPlaybackStage.ABC_AUTHORISATION) {
-        // Region/main-feed identity must be supplied from approved discovery, never guessed from title.
-        if(houseNumber!=registration.mainHouseNumber) throw ProviderException(ProviderFailure.UNAVAILABLE)
+        // Only explicitly authorised, discovered feed identities may reach the signer.
+        if(houseNumber !in registration.authorisedHouseNumbers) throw ProviderException(ProviderFailure.UNAVAILABLE)
         ProviderOriginHeaders.origin(originalHls)
         registration.mediaAuthoriser(houseNumber,originalHls,accountToken).also { ProviderOriginHeaders.origin(it) }
     }

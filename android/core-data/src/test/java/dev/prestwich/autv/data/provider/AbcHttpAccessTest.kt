@@ -79,4 +79,14 @@ class AbcHttpAccessTest {
         try { access.authoriseMedia("another-region",original,null);fail() } catch(e: ProviderException) { assertEquals(ProviderFailure.UNAVAILABLE,e.failure) }
         assertFalse(registration().toString().contains("synthetic-profile-key"))
     }
+    @Test fun explicitlyRegisteredCompanionFeedsReachAuthoriserWithoutWeakeningDefaultScope() {
+        val allowed=setOf("returned-main-vic","returned-news")
+        val config=AbcClientRegistration("product","key","VIC","returned-main-vic",
+            {house,url,_->assertTrue(house in allowed);url},authorisedHouseNumbers=allowed)
+        val access=AbcHttpAccess(config) { error("No profile requests during authorisation") }
+        assertEquals("https://media.example/live",access.authoriseMedia("returned-news","https://media.example/live",null))
+        try { access.authoriseMedia("not-approved","https://media.example/live",null);fail() }
+        catch(e: ProviderException) { assertEquals(ProviderPlaybackStage.ABC_AUTHORISATION,e.stage) }
+    }
+
 }

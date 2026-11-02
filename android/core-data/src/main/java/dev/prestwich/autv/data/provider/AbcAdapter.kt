@@ -17,15 +17,15 @@ interface AbcProviderAccess {
 /** The website's anonymous-live exception is opt-in only after the native access contract is confirmed. */
 class AbcAdapter(private val access: AbcProviderAccess, private val store: ProviderSessionStore,
     private val pendingStore: ProviderActivationStore, private val deviceId: String,
-    private val proofChannelHouseNumber: String,
+    proofChannelHouseNumber: String,
     private val anonymousLiveApproved: Boolean = false, private val now: ()->Long = System::currentTimeMillis) : ProviderAdapter {
     private var session = store.read()
     override var pendingActivation = pendingStore.readActivation()?.takeIf { it.verificationUrl == ACTIVATION && it.expiresAt > now() }; private set
     override var connection = when { session != null -> ProviderConnection.CONNECTED; pendingActivation != null -> ProviderConnection.CONNECTING; else -> ProviderConnection.NOT_CONNECTED }; private set
-    init { if (pendingActivation == null) pendingStore.clearActivation() }
+    init { require(proofChannelHouseNumber.isNotBlank()); if (pendingActivation == null) pendingStore.clearActivation() }
     override fun beginSignIn(): DeviceActivation {
         pendingActivation?.takeIf { it.expiresAt > now() }?.let { return it }
-        val response = unwrap(call { access.link(deviceId) })
+        val response = unwrap(call(ProviderPlaybackStage.ABC_ACTIVATION) { access.link(deviceId) })
         val code = text(response,"code") ?: text(response,"linkCode") ?: unsupported()
         val returnedDevice = text(response,"deviceId") ?: unsupported()
         val expiry = when {
@@ -44,14 +44,17 @@ class AbcAdapter(private val access: AbcProviderAccess, private val store: Provi
     override fun pollSignIn(activation: DeviceActivation): Boolean {
         if (pendingActivation?.let { it.deviceCode != activation.deviceCode || it.userCode != activation.userCode || it.expiresAt != activation.expiresAt || it.privateContext != activation.privateContext } != false) throw ProviderException(ProviderFailure.ACTIVATION_DENIED)
         if (now() >= activation.expiresAt) terminal(ProviderFailure.ACTIVATION_EXPIRED)
-        val status = unwrap(call { access.linkStatus(activation.deviceCode,activation.privateContext["requestId"]) })
+        val status = unwrap(call(ProviderPlaybackStage.ABC_POLL) { access.linkStatus(activation.deviceCode,activation.privateContext["requestId"]) })
         when (status.optString("status").ifBlank { status.optString("state") }.lowercase()) {
             "denied", "rejected" -> terminal(ProviderFailure.ACTIVATION_DENIED)
             "expired" -> terminal(ProviderFailure.ACTIVATION_EXPIRED)
             "pending", "waiting", "unlinked", "not_linked" -> return false
         }
-        val uid = text(status,"UID") ?: text(status,"uid") ?: return false
-        saveToken(uid,call { access.accountToken(uid) },activation.deviceCode)
+        val uid = text(status,"UID") ?: text(status,"uid") ?: run {
+            if (status.length() == 0) return false // Documented HTTP 204/404 pending response.
+            throw ProviderException(ProviderFailure.AUTH_RESPONSE_UNSUPPORTED, stage = ProviderPlaybackStage.ABC_POLL)
+        }
+        saveToken(uid,call(ProviderPlaybackStage.ABC_TOKEN) { access.accountToken(uid) },activation.deviceCode)
         pendingStore.clearActivation(); pendingActivation=null
         return true
     }
@@ -75,7 +78,7 @@ class AbcAdapter(private val access: AbcProviderAccess, private val store: Provi
             store.clear();session=null;connection=ProviderConnection.SESSION_EXPIRED
             throw ProviderException(ProviderFailure.SESSION_EXPIRED)
         }
-        try { saveToken(uid,call { access.accountToken(uid) }) } catch(error: ProviderException) {
+        try { saveToken(uid,call(ProviderPlaybackStage.ABC_TOKEN) { access.accountToken(uid) }) } catch(error: ProviderException) {
             if(error.failure in setOf(ProviderFailure.AUTH_REQUIRED,ProviderFailure.SESSION_EXPIRED)) {
                 store.clear();session=null;connection=ProviderConnection.SESSION_EXPIRED
             }
@@ -85,21 +88,27 @@ class AbcAdapter(private val access: AbcProviderAccess, private val store: Provi
     }
     private fun catalogue(): List<AbcLiveProtocol.Selection> {
         token()
-        return AbcLiveProtocol.channels(call { access.collection(AbcLiveProtocol.liveCollectionId(call { access.home() })) })
+        return AbcLiveProtocol.channels(call(ProviderPlaybackStage.ABC_CATALOGUE) { access.collection(AbcLiveProtocol.liveCollectionId(access.home())) })
     }
     override fun channels() = catalogue().map { ProviderChannel(ProviderChannelId("abc",it.houseNumber),it.houseNumber,it.title) }
     override fun resolve(channel: ProviderChannelId): ProviderPlaybackRequest {
-        if(channel.provider!="abc" || channel.channel!=proofChannelHouseNumber) throw ProviderException(ProviderFailure.UNAVAILABLE)
+        if(channel.provider!="abc") throw ProviderException(ProviderFailure.UNAVAILABLE)
         val row=catalogue().singleOrNull { it.houseNumber==channel.channel } ?: throw ProviderException(ProviderFailure.UNAVAILABLE)
-        return AbcLiveProtocol.resolve(channel,row,call { access.programme(row.programmeUrl) }) { house,url -> access.authoriseMedia(house,url,token()) }
+        return AbcLiveProtocol.resolve(channel,row,call(ProviderPlaybackStage.ABC_PROGRAMME) { access.programme(row.programmeUrl) }) { house,url -> call(ProviderPlaybackStage.ABC_AUTHORISATION) { access.authoriseMedia(house,url,token()) } }
     }
     override fun signOut() {
         try { access.unlink(pendingActivation?.deviceCode ?: session?.privateContext?.get("deviceId") ?: deviceId) } catch (_: Exception) { }
         finally { pendingStore.clearActivation(); pendingActivation=null;store.clear();session=null;connection=ProviderConnection.NOT_CONNECTED }
     }
-    private inline fun <T> call(action: ()->T): T = try { action() } catch(error: ProviderException) { throw error }
-    catch(_: java.io.IOException) { throw ProviderException(ProviderFailure.OFFLINE) }
-    catch(_: Exception) { throw ProviderException(ProviderFailure.UNAVAILABLE) }
+    private inline fun <T> call(stage: ProviderPlaybackStage, action: ()->T): T = try { action() }
+    catch(error: ProviderException) {
+        if (error.failure == ProviderFailure.SESSION_EXPIRED && stage in setOf(ProviderPlaybackStage.ABC_TOKEN, ProviderPlaybackStage.ABC_AUTHORISATION)) {
+            store.clear(); session=null; connection=ProviderConnection.SESSION_EXPIRED
+        }
+        throw ProviderException(error.failure,error.httpStatus,error.stage ?: stage)
+    }
+    catch(_: java.io.IOException) { throw ProviderException(ProviderFailure.OFFLINE,stage=stage) }
+    catch(_: Exception) { throw ProviderException(ProviderFailure.UNAVAILABLE,stage=stage) }
     private fun terminal(failure: ProviderFailure): Nothing {
         pendingStore.clearActivation();pendingActivation=null;connection=if(session==null) ProviderConnection.NOT_CONNECTED else ProviderConnection.CONNECTED
         throw ProviderException(failure)
