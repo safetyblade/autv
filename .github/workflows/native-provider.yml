@@ -34,6 +34,8 @@ jobs:
         run: python3 scripts/verify-seven-baseline.py
       - name: Compile AUTV, run critical JVM regressions and assemble full app
         run: gradle -p android -PautvMediaLab=false :core-data:testDebugUnitTest :core-guide:testDebugUnitTest :core-player:testDebugUnitTest :app:testDebugUnitTest :app:assembleFullAppDebug :app:assembleDebugAndroidTest
+      - name: Verify packaged application identity and television launcher
+        run: python3 scripts/verify-full-app-apk.py android/app/build/outputs/apk/full-app/AUTV-Full-App-Debug.apk --output AUTV-Full-App-manifest.txt
       - name: Enable KVM for focused Cast handoff checks
         run: sudo chmod 666 /dev/kvm
       - name: Focused Cast and native-playback handoff regressions
@@ -43,9 +45,18 @@ jobs:
           arch: x86_64
           disable-animations: true
           script: |
-            gradle -p android -PautvMediaLab=false :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.CastPlaybackTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.SettingsScreenshotsTest -Pandroid.testInstrumentationRunnerArguments.autvScreenshotPhase=after; result=$?; adb pull /sdcard/Android/data/dev.prestwich.autv/files/settings-screenshots settings-screenshots; exit $result
-      - name: Verify packaged application identity and television launcher
-        run: python3 scripts/verify-full-app-apk.py android/app/build/outputs/apk/full-app/AUTV-Full-App-Debug.apk --output AUTV-Full-App-manifest.txt
+            gradle -p android -PautvMediaLab=false :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.CastPlaybackTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.SettingsScreenshotsTest -Pandroid.testInstrumentationRunnerArguments.autvScreenshotPhase=after
+            result=$?
+            if adb shell test -d /sdcard/Android/data/dev.prestwich.autv/files/settings-screenshots; then
+              adb pull /sdcard/Android/data/dev.prestwich.autv/files/settings-screenshots settings-screenshots || {
+                echo "Screenshot collection failed."
+                result=1
+              }
+            else
+              echo "Screenshot directory missing; inspect instrumentation failure."
+              result=1
+            fi
+            exit "$result"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

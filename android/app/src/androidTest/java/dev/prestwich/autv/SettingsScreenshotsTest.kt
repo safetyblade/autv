@@ -38,7 +38,8 @@ class SettingsScreenshotsTest {
                 shell("wm size $size");shell("wm density $density");SystemClock.sleep(1000)
                 ActivationFixture.reset()
                 val tv=name.startsWith("tv")
-                val intent=Intent(instrumentation.targetContext,ProviderScreenshotActivity::class.java).putExtra("tv",tv).putExtra("fontScale",if(name.endsWith("large-text")) 1.3f else 1f)
+                ProviderScreenshotActivity.configureForScreenshot(tv, if(name.endsWith("large-text")) 1.3f else 1f)
+                val intent=Intent(instrumentation.targetContext,ProviderScreenshotActivity::class.java)
                 ActivityScenario.launch<ProviderScreenshotActivity>(intent).use { scenario ->
                     ui.onNodeWithTag("settings-button").performClick()
                     ui.waitForIdle();screenshot("$name-settings")
@@ -65,6 +66,6 @@ class SettingsScreenshotsTest {
                     scenario.onActivity { it.playback.disconnectNineNow() }
                 }
             }
-        } finally { shell("wm size reset");shell("wm density reset");ActivationFixture.reset() }
+        } finally { shell("wm size reset");shell("wm density reset");ProviderScreenshotActivity.configureForScreenshot(false,1f);ActivationFixture.reset() }
     }
 }
