@@ -9,7 +9,7 @@ import datetime as dt
 import json
 from urllib.error import HTTPError, URLError
 from pathlib import Path
-from urllib.parse import quote, urlencode
+from urllib.parse import quote, urlencode, urlsplit
 from urllib.request import Request, urlopen
 from uuid import uuid4
 
