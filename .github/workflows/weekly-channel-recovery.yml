@@ -1,0 +1,27 @@
+name: AUTV weekly channel recovery review
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '04 21 * * 0' # Monday 08:04 AEDT / 07:04 AEST; UTC is fixed
+
+permissions:
+  contents: read
+
+jobs:
+  channel-recovery-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: Audit recovered streams and remaining recovery queue
+        run: python3 scripts/monitor_channel_recovery.py
+      - name: Inspect current source-selection coverage (read-only)
+        run: python3 scripts/report_missing_recovery.py
+      - name: Save recovery and discovery worklist
+        uses: actions/upload-artifact@v4
+        with:
+          name: autv-weekly-channel-recovery
+          path: |
+            audits/channel_recovery_current.csv
+            audits/missing_channels_recovery_queue.csv
+          retention-days: 30
