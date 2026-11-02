@@ -16,12 +16,14 @@ class SevenDescriptorTransportTest {
     }
     private val parameters = linkedMapOf("appId" to "7plus", "deviceType" to "androidtv", "platformType" to "tv",
         "deviceId" to "local-fixture", "accountId" to "account-fixture", "referenceId" to "reference-fixture",
-        "marketId" to "ip-market-fixture", "videoType" to "live").apply { putAll(SevenPlaybackCapabilities.parameters) }
+        "marketId" to "ip-market-fixture", "videoType" to "live").apply { putAll(SevenLiveContract.clientParameters); putAll(SevenPlaybackCapabilities.parameters) }
     private fun rejection(body: String,status: Int=400): ProviderException {
         val connection = Rejected(body,status)
         val transport = HttpSevenTransport { address ->
             assertTrue(address.startsWith(SevenPlusAdapter.PLAYBACK + "?"))
             assertTrue(address.contains("&cp.drmAuth=true"))
+            assertTrue(address.contains("&deliveryId=csai"))
+            assertTrue(address.contains("&advertid=null"))
             connection
         }
         try { transport.playback(parameters, "secret-fixture"); throw AssertionError("Expected descriptor rejection") }

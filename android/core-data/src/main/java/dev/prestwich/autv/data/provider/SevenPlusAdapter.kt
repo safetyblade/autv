@@ -4,7 +4,7 @@ import org.json.JSONObject
 import java.net.URI
 import java.net.URLEncoder
 
-/** Experimental account/catalogue and one original clear SSAI HLS proof; no DRM or CSAI bypass. */
+/** Account/catalogue and authorised live resolution; preserve issued media, DRM and advertising. */
 class SevenPlusAdapter(
     private val transport: SevenPlusTransport,
     private val store: ProviderSessionStore,
@@ -127,13 +127,7 @@ class SevenPlusAdapter(
             player.opt("videoUrl")
         }
         val identity = step(ProviderPlaybackStage.SEVEN_IDENTITY) { SevenPlaybackIdentity.read(video) }
-        val parameters = linkedMapOf(
-            "appId" to "7plus", "deviceType" to "androidtv", "platformType" to "tv",
-            "deviceId" to deviceId, "accountId" to identity.account, "referenceId" to identity.reference,
-            "marketId" to catalogue.market, "videoType" to "live",
-        )
-        parameters.putAll(SevenPlaybackCapabilities.parameters)
-        // No invented postcode, tracking identity, SDK attestation or ad-delivery override.
+        val parameters = SevenLiveContract.parameters(identity, catalogue.market, deviceId)
         val descriptor = try { step(ProviderPlaybackStage.SEVEN_DESCRIPTOR) { transport.playback(parameters, session!!.accessToken) } }
         catch (error: ProviderException) {
             if (error.failure == ProviderFailure.SESSION_EXPIRED) {
