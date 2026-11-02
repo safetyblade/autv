@@ -251,3 +251,17 @@ https://livetv-fa.tubi.video/the-fbi-files/index.m3u8
 # Bloodline Detectives: Wurl Samsung UK feed candidate, AU availability unverified.
 #EXTINF:-1 tvg-id="autv.bloodline-detectives-wurl" tvg-name="Bloodline Detectives" group-title="Crime",Bloodline Detectives
 https://4399c7ad.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9NZWRpY2FsRGV0ZWN0aXZlc19ITFM/playlist.m3u8
+
+# RECOVERY CANDIDATES — unverified Pluto UK community redirects. Stage only;
+# require AU device playback, authorised current provider source and rights review before merge.
+# 227 Rugby Pass TV — Pluto UK channel ID 66f137cb483d460008ece053.
+#EXTINF:-1 tvg-id="66f137cb483d460008ece053" tvg-name="Rugby Pass TV" group-title="Sport",Rugby Pass TV
+https://jmp2.uk/plu-66f137cb483d460008ece053.m3u8
+
+# 239 Rally TV — Pluto UK ID 696e024a7e92438c27a425a8; AU FAST rights unverified.
+#EXTINF:-1 tvg-id="696e024a7e92438c27a425a8" tvg-name="Rally TV" group-title="Sport",Rally TV
+https://jmp2.uk/plu-696e024a7e92438c27a425a8.m3u8
+
+# 612 Whose Line Is It Anyway? — Pluto UK ID 672cb91149c40600081cbee5.
+#EXTINF:-1 tvg-id="672cb91149c40600081cbee5" tvg-name="Whose Line Is It Anyway?" group-title="Comedy",Whose Line Is It Anyway?
+https://jmp2.uk/plu-672cb91149c40600081cbee5.m3u8
