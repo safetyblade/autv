@@ -1,0 +1,32 @@
+name: Audit 36 missing channels (read-only)
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  history:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Historical source host inventory
+        run: python3 scripts/report_36_channel_history.py
+      - name: Confirm no live media is represented as tested
+        run: |
+          python3 - <<'PY'
+          import csv
+          with open("audits/36_channel_history_review.csv", newline="") as file:
+              rows=list(csv.DictReader(file))
+          assert len(rows)==36, f"Expected 36, got {len(rows)}"
+          assert all(row["live_validation"]=="NOT_TESTED" for row in rows)
+          print("36-channel history inventory complete; device verification pending.")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: autv-missing-36-history-review
+          path: audits/36_channel_history_review.csv
+          retention-days: 14
