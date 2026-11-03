@@ -115,7 +115,12 @@ class CastPlaybackTest {
         val channel=hasContentDescription("419 Fixture Ink Master",substring=true)
         compose.onNodeWithTag("guide-list").performScrollToNode(channel)
         compose.onNode(channel).performClick()
-        compose.runOnUiThread { remote.timeout() }
+        compose.runOnUiThread {
+            assertEquals(419,model.selected?.number)
+            assertEquals(419,remote.loads.last().number)
+            model.openGuide();remote.timeout()
+        }
+        compose.onNodeWithTag("guide-panel").assertIsDisplayed()
         compose.onAllNodesWithText(CastDiagnostics.failure(CastLoadFailure.TIMEOUT)).assertCountEquals(1)
         compose.onNodeWithTag("video").assertExists()
         compose.runOnUiThread { assertFalse(model.failed.containsKey(419)) }
