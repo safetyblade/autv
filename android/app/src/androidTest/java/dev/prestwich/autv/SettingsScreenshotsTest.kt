@@ -20,7 +20,11 @@ class SettingsScreenshotsTest {
     private val instrumentation get() = InstrumentationRegistry.getInstrumentation()
     private val phase get() = InstrumentationRegistry.getArguments().getString("autvScreenshotPhase", "after")
     private fun shell(command: String): String {
-        return instrumentation.uiAutomation.executeShellCommand(command).use { descriptor ->
+        // API 29 uses Runtime.exec, not a shell: redirection/pipes need an explicit script.
+        // Base64 keeps the script a single argument without shell-quoting ambiguities.
+        val encoded=android.util.Base64.encodeToString(command.toByteArray(),android.util.Base64.NO_WRAP)
+        val script="echo\${IFS}$encoded|base64\${IFS}-d|sh"
+        return instrumentation.uiAutomation.executeShellCommand("sh -c $script").use { descriptor ->
             android.os.ParcelFileDescriptor.AutoCloseInputStream(descriptor).use { it.readBytes().toString(Charsets.UTF_8) }
         }
     }
@@ -30,6 +34,7 @@ class SettingsScreenshotsTest {
         instrumentation.uiAutomation.takeScreenshot().let { bitmap ->
             target.outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG,100,it) }; bitmap.recycle()
         }
+        if(name=="phone-activation") println("AUTV_UI_CAPTURE:"+android.util.Base64.encodeToString(target.readBytes(),android.util.Base64.NO_WRAP))
         // AGP removes the debug application after instrumentation. Export while run-as
         // still works; shell-owned Download files survive that uninstall.
         shell("mkdir -p /sdcard/Download/autv-settings-screenshots")
