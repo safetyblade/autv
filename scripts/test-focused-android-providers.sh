@@ -4,7 +4,7 @@
 set +e
 set -o pipefail
 gradle -p android -PautvMediaLab=false :app:connectedDebugAndroidTest \
-  -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.CastPlaybackTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.ProviderQrIntegrationTest,dev.prestwich.autv.ProviderQrUiTest,dev.prestwich.autv.SettingsScreenshotsTest,dev.prestwich.autv.AustralianProviderIntegrationTest,dev.prestwich.autv.provider.AustralianConfigurationIsolationTest,dev.prestwich.autv.provider.EncryptedProviderSessionStoreTest,dev.prestwich.autv.provider.ProviderUpgradeTest \
+  -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.CastPlaybackTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.ProviderQrIntegrationTest,dev.prestwich.autv.ProviderQrUiTest,dev.prestwich.autv.SettingsScreenshotsTest,dev.prestwich.autv.AustralianProviderIntegrationTest,dev.prestwich.autv.provider.AustralianConfigurationIsolationTest,dev.prestwich.autv.provider.EncryptedProviderSessionStoreTest \
   -Pandroid.testInstrumentationRunnerArguments.autvScreenshotPhase=after
 result=$?
 # Debug APK: extract app-internal screenshots without Android/data scoped-storage assumptions.
