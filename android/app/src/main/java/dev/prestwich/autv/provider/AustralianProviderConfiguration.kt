@@ -10,7 +10,9 @@ class AustralianProviderConfiguration(
     val tenDaiNetworkCode: String? = null,
     val abc: AbcClientRegistration? = null,
     val abcAnonymousLiveApproved: Boolean = false,
+    configurationFailures: Set<String> = emptySet(),
 ) {
+    val configurationFailures = configurationFailures.toSet()
     init {
         require((ten==null)==(tenProofChannelKey==null))
         require(tenProofChannelKey==null || tenProofChannelKey.isNotBlank())
@@ -20,13 +22,19 @@ class AustralianProviderConfiguration(
 }
 
 /** Production composition: concrete transports + their existing encrypted account factories. */
-internal fun configuredAustralianAdapters(context: Context, configuration: AustralianProviderConfiguration): Map<String,ProviderAdapter> = buildMap {
+internal fun configuredAustralianAdapters(context: Context, configuration: AustralianProviderConfiguration,
+    onConfigurationFailure: (String) -> Unit = {}): Map<String,ProviderAdapter> = buildMap {
     put("sbs",createSbsProvider(context))
     put("seven",createSevenProvider(context))
+    fun configured(id: String, factory: () -> ProviderAdapter) {
+        try { put(id, factory()) }
+        catch (_: Exception) { onConfigurationFailure(id) }
+        catch (_: LinkageError) { onConfigurationFailure(id) }
+    }
     configuration.ten?.let { registration ->
-        put("ten",createRegisteredTenProvider(context,registration,configuration.tenProofChannelKey!!,configuration.tenDaiNetworkCode))
+        configured("ten") { createRegisteredTenProvider(context,registration,configuration.tenProofChannelKey!!,configuration.tenDaiNetworkCode) }
     }
     configuration.abc?.let { registration ->
-        put("abc",createRegisteredAbcProvider(context,registration,configuration.abcAnonymousLiveApproved))
+        configured("abc") { createRegisteredAbcProvider(context,registration,configuration.abcAnonymousLiveApproved) }
     }
 }

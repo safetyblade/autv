@@ -38,8 +38,9 @@ class AbcAdapterTest {
         assertEquals("private-uid",store.value!!.privateContext["uid"])
         assertEquals("",store.value!!.refreshToken)
         now=40000;val id=adapter.channels().single().id
-        assertEquals(2,access.tokens)
+        assertEquals(1,access.tokens) // Public catalogue never renews the account.
         assertTrue(adapter.resolve(id).uri.endsWith("hdnea=issued-fixture"))
+        assertEquals(2,access.tokens)
         access.denyMedia=true
         try { adapter.resolve(id);fail() } catch(_: ProviderException) { }
         assertEquals(ProviderConnection.CONNECTED,adapter.connection)
@@ -56,21 +57,44 @@ class AbcAdapterTest {
         val original=ProviderSession("old-token","",100,mapOf("uid" to "private-uid"))
         val store=Store().apply { value=original }
         val adapter=AbcAdapter(access,store,MemoryProviderActivationStore(),"id","VIC_FIXTURE",now={1000})
-        try { adapter.channels();fail() } catch(error: ProviderException) { assertEquals(ProviderFailure.OFFLINE,error.failure) }
+        assertEquals(1,adapter.channels().size)
+        try { adapter.resolve(adapter.channels().single().id);fail() } catch(error: ProviderException) { assertEquals(ProviderFailure.OFFLINE,error.failure) }
         assertSame(original,store.value);assertEquals(ProviderConnection.CONNECTED,adapter.connection)
         access.offlineToken=false;assertEquals(1,adapter.channels().size)
         val invalid=Store().apply { value=ProviderSession("expired-token","",100) }
         val invalidAdapter=AbcAdapter(access,invalid,MemoryProviderActivationStore(),"id","VIC_FIXTURE",now={1000})
-        try { invalidAdapter.channels();fail() } catch(error: ProviderException) { assertEquals(ProviderFailure.SESSION_EXPIRED,error.failure) }
+        try { invalidAdapter.resolve(invalidAdapter.channels().single().id);fail() } catch(error: ProviderException) { assertEquals(ProviderFailure.SESSION_EXPIRED,error.failure) }
         assertNull(invalid.value);assertEquals(ProviderConnection.SESSION_EXPIRED,invalidAdapter.connection)
     }
     @Test fun anonymousLiveMustBeExplicitAndNeverReportsConnectedAccount() {
         val access=Access();val store=Store();val pending=MemoryProviderActivationStore()
         val linkedOnly=AbcAdapter(access,store,pending,"id","VIC_FIXTURE")
-        try { linkedOnly.channels();fail() } catch(e: ProviderException) { assertEquals(ProviderFailure.AUTH_REQUIRED,e.failure) }
+        assertEquals(1,linkedOnly.channels().size)
+        try { linkedOnly.resolve(linkedOnly.channels().single().id);fail() } catch(e: ProviderException) { assertEquals(ProviderFailure.AUTH_REQUIRED,e.failure) }
         val anonymous=AbcAdapter(access,store,pending,"id","VIC_FIXTURE",anonymousLiveApproved=true)
         assertEquals(1,anonymous.channels().size);assertEquals(ProviderConnection.NOT_CONNECTED,anonymous.connection)
         assertNull(store.read())
+    }
+    @Test fun referenceActivationAliasesPersistTheRequestedDeviceAndPrivateRequest() {
+        val base=Access()
+        val access=object : AbcProviderAccess by base {
+            override fun link(deviceId: String)=JSONObject("""{"linkCode":"ALIAS","expires":120,"requestId":"request"}""")
+            override fun linkStatus(deviceId: String,requestId: String?): JSONObject {
+                assertEquals("local-device",deviceId);assertEquals("request",requestId)
+                return JSONObject("""{"linkingStatus":"waiting"}""")
+            }
+        }
+        val adapter=AbcAdapter(access,Store(),MemoryProviderActivationStore(),"local-device","VIC_FIXTURE",now={1000})
+        val challenge=adapter.beginSignIn()
+        assertEquals(121000L,challenge.expiresAt);assertFalse(adapter.pollSignIn(challenge))
+    }
+    @Test fun catalogueKeepsOnlyConfiguredRegionalGrantsAndDoesNotTouchAccount() {
+        val base=Access()
+        val store=Store().apply { value=ProviderSession("expired","",0) }
+        val adapter=AbcAdapter(base,store,MemoryProviderActivationStore(),"device","VIC_FIXTURE",
+            authorisedHouseNumbers=setOf("OTHER_REGION"))
+        assertTrue(adapter.channels().isEmpty());assertEquals(0,base.tokens)
+        assertNotNull(store.value)
     }
     @Test fun allDiscoveredLiveFeedsResolveThroughTheirOwnAuthorisation() {
         val base=Access()

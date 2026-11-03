@@ -18,6 +18,14 @@ android {
         versionCode = providers.gradleProperty("autvVersionCode").orElse("1").get().toInt()
         versionName = providers.gradleProperty("autvVersionName").orElse("0.5.0").get()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // Class names only. Registration sources obtain private authorisation at runtime.
+        listOf("Abc", "Ten").forEach { provider ->
+            val source = providers.gradleProperty("autv${provider}RegistrationSource").orElse("").get()
+            require(source.isEmpty() || source.matches(Regex("[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)+"))) {
+                "Invalid $provider registration source class name"
+            }
+            buildConfigField("String", "${provider.uppercase()}_REGISTRATION_SOURCE", "\"$source\"")
+        }
     }
     val signingPath = providers.environmentVariable("AUTV_SIGNING_KEYSTORE_PATH").orNull
     signingConfigs {
@@ -48,7 +56,10 @@ android {
     if (mediaLab) sourceSets.getByName("debug").manifest.srcFile("src/mediaLab/AndroidManifest.xml")
     // Optional private, provider-approved registration implementation; no credentials are committed.
     providers.gradleProperty("autvProviderSources").orNull?.let { sourceSets.getByName("main").java.srcDir(it) }
-    buildFeatures { compose = true }
+    listOf("Abc", "Ten").forEach { provider ->
+        providers.gradleProperty("autv${provider}ProviderSources").orNull?.let { sourceSets.getByName("main").java.srcDir(it) }
+    }
+    buildFeatures { compose = true; buildConfig = true }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17

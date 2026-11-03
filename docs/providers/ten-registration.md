@@ -11,3 +11,9 @@ Override `AuTvApplication.australianProviders` in approved distribution sources.
 Device-code approval and token refresh persist in the existing Ten encrypted namespace and stable UUID. Fresh descriptor URLs retain original query/session bytes. Provider-returned live assetKey and X-DAI-AUTH go to the existing Media3 IMA path with the negotiated format and optional issued network code; IMA owns the ad/session lifecycle. No bare manifest fallback, public sample identity or advertisement stripping is used. Descriptor 401 expires only Ten's account; missing DAI entitlement is a descriptor failure, not proof that the account token expired.
 
 Outstanding: provider-issued registration/signing operation, live-channel grants and real device linking/playback acceptance. This environment's network policy excludes Ten API hosts; that is not a measured broadcaster denial. Automated fixtures verify the implementation, not real video/audio or commercial transitions.
+
+## Independent startup source
+
+The default `AuTvApplication` loads a public no-argument implementation of `TenRegistrationSource` when `-PautvTenRegistrationSource=your.package.TenSource` is set. Its `configuration(context)` returns `TenProviderConfiguration(registration, discoveredProofChannelKey, issuedDaiNetworkCode)`. Add approved source with `-PautvTenProviderSources=/approved/ten-source`. This works independently of the ABC source, without an application subclass; existing shared source/application overrides remain supported.
+
+Sources compose approved runtime clients, not embedded signing keys. BuildConfig contains only a class name. Missing or failed sources cannot expose Connect or suppress a valid sibling provider. Only discovered keys in the explicit grant set are published in the guide; catalogue refresh can remove a row without deleting its stored favourite identity. No first-party registration credentials have been supplied in this workspace.

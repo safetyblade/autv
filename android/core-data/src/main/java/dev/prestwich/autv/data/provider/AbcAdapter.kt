@@ -18,7 +18,9 @@ interface AbcProviderAccess {
 class AbcAdapter(private val access: AbcProviderAccess, private val store: ProviderSessionStore,
     private val pendingStore: ProviderActivationStore, private val deviceId: String,
     proofChannelHouseNumber: String,
-    private val anonymousLiveApproved: Boolean = false, private val now: ()->Long = System::currentTimeMillis) : ProviderAdapter {
+    private val anonymousLiveApproved: Boolean = false, private val now: ()->Long = System::currentTimeMillis,
+    authorisedHouseNumbers: Set<String>? = null) : ProviderAdapter {
+    private val authorisedHouseNumbers = authorisedHouseNumbers?.toSet()
     private var session = store.read()
     override var pendingActivation = pendingStore.readActivation()?.takeIf { it.verificationUrl == ACTIVATION && it.expiresAt > now() }; private set
     override var connection = when { session != null -> ProviderConnection.CONNECTED; pendingActivation != null -> ProviderConnection.CONNECTING; else -> ProviderConnection.NOT_CONNECTED }; private set
@@ -27,9 +29,13 @@ class AbcAdapter(private val access: AbcProviderAccess, private val store: Provi
         pendingActivation?.takeIf { it.expiresAt > now() }?.let { return it }
         val response = unwrap(call(ProviderPlaybackStage.ABC_ACTIVATION) { access.link(deviceId) })
         val code = text(response,"code") ?: text(response,"linkCode") ?: unsupported()
-        val returnedDevice = text(response,"deviceId") ?: unsupported()
+        val returnedDevice = text(response,"deviceId") ?: deviceId
         val expiry = when {
-            response.has("expiresIn") -> now()+response.optLong("expiresIn")*1000
+            response.has("expiresIn") || response.has("expires") -> {
+                val seconds = response.optLong(if (response.has("expiresIn")) "expiresIn" else "expires")
+                if (seconds !in 1..1800) unsupported()
+                now()+seconds*1000
+            }
             response.has("expiryAt") -> runCatching { Instant.parse(response.getString("expiryAt")).toEpochMilli() }.getOrElse { unsupported() }
             else -> unsupported()
         }
@@ -45,7 +51,7 @@ class AbcAdapter(private val access: AbcProviderAccess, private val store: Provi
         if (pendingActivation?.let { it.deviceCode != activation.deviceCode || it.userCode != activation.userCode || it.expiresAt != activation.expiresAt || it.privateContext != activation.privateContext } != false) throw ProviderException(ProviderFailure.ACTIVATION_DENIED)
         if (now() >= activation.expiresAt) terminal(ProviderFailure.ACTIVATION_EXPIRED)
         val status = unwrap(call(ProviderPlaybackStage.ABC_POLL) { access.linkStatus(activation.deviceCode,activation.privateContext["requestId"]) })
-        when (status.optString("status").ifBlank { status.optString("state") }.lowercase()) {
+        when (status.optString("status").ifBlank { status.optString("state").ifBlank { status.optString("linkingStatus") } }.lowercase()) {
             "denied", "rejected" -> terminal(ProviderFailure.ACTIVATION_DENIED)
             "expired" -> terminal(ProviderFailure.ACTIVATION_EXPIRED)
             "pending", "waiting", "unlinked", "not_linked" -> return false
@@ -87,8 +93,9 @@ class AbcAdapter(private val access: AbcProviderAccess, private val store: Provi
         return session!!.accessToken
     }
     private fun catalogue(): List<AbcLiveProtocol.Selection> {
-        token()
+        // Discovery is public. Account renewal belongs to media access, not this catalogue.
         return AbcLiveProtocol.channels(call(ProviderPlaybackStage.ABC_CATALOGUE) { access.collection(AbcLiveProtocol.liveCollectionId(access.home())) })
+            .filter { authorisedHouseNumbers == null || it.houseNumber in authorisedHouseNumbers }
     }
     override fun channels() = catalogue().map { ProviderChannel(ProviderChannelId("abc",it.houseNumber),it.houseNumber,it.title) }
     override fun resolve(channel: ProviderChannelId): ProviderPlaybackRequest {

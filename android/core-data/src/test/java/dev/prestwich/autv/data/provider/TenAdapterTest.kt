@@ -86,13 +86,30 @@ class TenAdapterTest {
         val store=Store().apply { value=ProviderSession("saved","refresh",999999) }
         val adapter=TenAdapter(access,store,MemoryProviderActivationStore(),"device","main-vic-fixture",now={1000},
             authorisedChannelKeys=setOf("main-vic-fixture","companion"))
-        adapter.channels().take(2).forEach { row ->
+        assertEquals(listOf("main-vic-fixture","companion"),adapter.channels().map { it.id.channel })
+        adapter.channels().forEach { row ->
             val media=adapter.resolve(row.id)
             assertEquals("issued-live",media.options.imaLive!!.assetKey)
             assertEquals("issued-dai",media.options.imaLive!!.authToken)
         }
         try { adapter.resolve(ProviderChannelId("ten","not-approved"));fail() }
         catch(e: ProviderException) { assertEquals(ProviderFailure.PLAYBACK_UNSUPPORTED,e.failure) }
+    }
+    @Test fun withdrawnCatalogueEntryCannotResolveOrEraseSavedSession() {
+        val base=Access();var withdrawn=false;var descriptors=0
+        val access=object : TenProviderAccess by base {
+            override fun liveChannels(region: String)=if(withdrawn) JSONObject("""{"channels":[]}""") else base.liveChannels(region)
+            override fun playback(officialDescriptorUrl: String,bearer: String): TenPlaybackDescriptor {
+                descriptors++;return base.playback(officialDescriptorUrl,bearer)
+            }
+        }
+        val store=Store().apply { value=ProviderSession("private-token","private-refresh",999999) }
+        val adapter=TenAdapter(access,store,MemoryProviderActivationStore(),"device","main-vic-fixture",now={1000})
+        val id=adapter.channels().single().id;withdrawn=true
+        assertTrue(adapter.channels().isEmpty())
+        try { adapter.resolve(id);fail() } catch(error: ProviderException) { assertEquals(ProviderFailure.UNAVAILABLE,error.failure) }
+        assertEquals(0,descriptors);assertNotNull(store.value);assertEquals(ProviderConnection.CONNECTED,adapter.connection)
+        withdrawn=false;assertEquals(id,adapter.channels().single().id)
     }
     @Test fun descriptor401ExpiresAccountButMissingDaiGrantDoesNotEraseIt() {
         val base=Access()

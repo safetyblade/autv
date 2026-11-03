@@ -79,7 +79,7 @@ class TenAdapter(private val access: TenProviderAccess, private val store: Provi
             if(keys.distinct().size!=keys.size) unsupported()
         }
     }
-    override fun channels()=catalogue().map { row ->
+    override fun channels()=catalogue().filter { text(it,"key") in authorisedChannelKeys }.map { row ->
         val key=text(row,"key")!!
         ProviderChannel(ProviderChannelId("ten",key),key,text(row,"name") ?: unsupported(),logoUrl=text(row,"logoUrl"),programmes=schedule(row))
     }

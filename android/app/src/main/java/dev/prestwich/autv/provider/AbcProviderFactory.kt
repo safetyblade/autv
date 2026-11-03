@@ -8,7 +8,7 @@ import java.util.UUID
 
 /** Only call after supplying an authorised ABC access implementation and returned proof-feed ID. */
 internal fun createAbcProvider(context: Context, access: AbcProviderAccess, proofHouseNumber: String,
-    anonymousLiveApproved: Boolean = false): AbcAdapter {
+    anonymousLiveApproved: Boolean = false, authorisedHouseNumbers: Set<String>? = null): AbcAdapter {
     val store=EncryptedProviderSessionStore(context,"autv.abc.session.v1","abc-session-v1")
     val file=AtomicFile(File(context.noBackupFilesDir,"abc-device-v1"))
     val id=runCatching { file.readFully().toString(Charsets.UTF_8).also { UUID.fromString(it) } }.getOrElse {
@@ -18,10 +18,10 @@ internal fun createAbcProvider(context: Context, access: AbcProviderAccess, proo
             catch(error: Exception) { file.failWrite(stream);throw error }
         }
     }
-    return AbcAdapter(access,store,store,id,proofHouseNumber,anonymousLiveApproved)
+    return AbcAdapter(access,store,store,id,proofHouseNumber,anonymousLiveApproved,authorisedHouseNumbers=authorisedHouseNumbers)
 }
 
 /** Enable only with ABC-issued AUTV configuration and the discovered Victorian proof identity. */
 internal fun createRegisteredAbcProvider(context: Context, registration: AbcClientRegistration,
     anonymousLiveApproved: Boolean = false): AbcAdapter =
-    createAbcProvider(context,AbcHttpAccess(registration),registration.mainHouseNumber,anonymousLiveApproved)
+    createAbcProvider(context,AbcHttpAccess(registration),registration.mainHouseNumber,anonymousLiveApproved,registration.authorisedHouseNumbers)

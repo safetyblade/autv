@@ -30,7 +30,8 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         epgCacheLoader = { EpgRepository(java.io.File(application.filesDir, "programme-guide-v1.xml.gz")).cached() })
     private val nineNow = providerAdapter ?: createNineNowProvider(application)
     private val configuration=(application as? AuTvApplication)?.australianProviders ?: AustralianProviderConfiguration()
-    private val configuredAdapters = (configuredAustralianAdapters(application,configuration) +
+    private val configurationFailures = configuration.configurationFailures.toMutableSet()
+    private val configuredAdapters = (configuredAustralianAdapters(application,configuration) { configurationFailures.add(it) } +
         (sbsAdapter?.let { mapOf("sbs" to it) } ?: emptyMap()) + providerOverrides).also {
         require(it.keys.all { key -> key in setOf("sbs","seven","ten","abc") })
         require(anonymousProviderIds.all { key -> key=="abc" })
@@ -52,6 +53,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     }
     internal fun providerUnavailableReason(id: String): String? = when {
         id=="9now" || providerAccounts.containsKey(id) -> null
+        id in configurationFailures -> "${providerName(id)} configuration could not be loaded. An approved registration source is required."
         id=="ten" -> "10 connection requires AUTV's registered client configuration in this build."
         id=="abc" -> "ABC connection requires AUTV's registered profile and media-authorisation configuration in this build."
         else -> "This service is not enabled in this build."
