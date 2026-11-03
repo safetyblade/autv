@@ -30,6 +30,10 @@ class SettingsScreenshotsTest {
         instrumentation.uiAutomation.takeScreenshot().let { bitmap ->
             target.outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG,100,it) }; bitmap.recycle()
         }
+        // AGP removes the debug application after instrumentation. Export while run-as
+        // still works; shell-owned Download files survive that uninstall.
+        shell("mkdir -p /sdcard/Download/autv-settings-screenshots")
+        shell("run-as dev.prestwich.autv cat files/settings-screenshots/$phase-$name.png > /sdcard/Download/autv-settings-screenshots/$phase-$name.png")
     }
     @Test fun phoneAndTelevisionSettingsAndActivation() {
         try {
