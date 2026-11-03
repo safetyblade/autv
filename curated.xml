@@ -784,13 +784,9 @@
     <display-name>Stingray DJAZZ</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/89dfc07c-0399-4e64-b0f5-e2617d410896/Stingray_DJazz_artwork_horizontal_Logo.png" />
   </channel>
-  <channel id="697140a85d851f5e69414688-61aa97d4113e1e5137fd5325">
-    <display-name>Stingray Greatest Hits</display-name>
-    <icon src="https://provider-static.plex.tv/epg/cms/production/40e1a688-aa45-4510-8110-53f3657e01d4/13212_SM_Plex_Logos_Greatest-Hits_1500x1000_V01-white_-_Olivia_bronfman.png" />
-  </channel>
   <channel id="697140a85d851f5e69414688-654eb862dde2222e8ba551f1">
     <display-name>Stingray Holidayscapes</display-name>
-    <icon src="https://provider-static.plex.tv/epg/cms/production/9cb4b15c-8244-4499-ae2c-9a92d4cdff6d/13895_SHS_Plex_Logos_Holidays_1500x1000_Dark-Background.png" />
+    <icon src="https://provider-static.plex.tv/epg/cms/production/eca05bbe-1f4b-4df9-b588-a6e84efe5253/15723_SHS_Holidays2026_Plex_Logos_1500x1000_V01_DarkBackground.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-61aa9e73784a2161d3caf7f9">
     <display-name>Stingray Hot Country</display-name>
@@ -2247,9 +2243,17 @@
     <display-name>NHL</display-name>
     <icon src="https://canvas-lb.tubitv.com/opts/8h7HYVpDz2amhw==/085bca04-c806-4a7f-bb0c-d38fe352f3e3/CHgQeDoFMS4xLjlAAQ==" />
   </channel>
+  <channel id="613763">
+    <display-name>Stadium</display-name>
+    <icon src="https://canvas-lb.tubitv.com/opts/-NtXXHY5Foetwg==/ffec7159-bf94-4c51-9544-5162e5a57b2f/CHgQeDoFMS4xLjlAAQ==" />
+  </channel>
   <channel id="400000304">
     <display-name>UEFA.tv</display-name>
     <icon src="https://canvas-lb.tubitv.com/opts/vYU_W6gGesX41A==/f137edcb-de3c-4b3c-9e41-ef2cc6f8d156/CHgQeDoFMS4xLjlAAQ==" />
+  </channel>
+  <channel id="677011">
+    <display-name>Gordon Ramsay</display-name>
+    <icon src="https://canvas-lb.tubitv.com/opts/zBCOxZ6hwxcgWg==/f7eea1c7-409e-4abc-b6f3-1228bb7135d7/CHgQeDoFMS4xLjlAAQ==" />
   </channel>
   <channel id="5ddd7cb2cbb9010009b4fe32">
     <display-name>Nick Jr Club</display-name>
@@ -2590,5 +2594,104 @@
   </channel>
   <channel id="672cb91149c40600081cbee5">
     <display-name>Whose Line Is It Anyway?</display-name>
+  </channel>
+  <channel id="65031534d545e9000881ed10">
+    <display-name>British Screen Classics</display-name>
+  </channel>
+  <channel id="68b5a7b69ac85c428f54c441">
+    <display-name>Curzon</display-name>
+  </channel>
+  <channel id="66ba1e23d2d50d00084a1e57">
+    <display-name>Crimes That Shook Britain</display-name>
+  </channel>
+  <channel id="5ca1df0d50be2571e393ad31">
+    <display-name>Deadly Women</display-name>
+  </channel>
+  <channel id="64c37e47dac71b000809abab">
+    <display-name>Evidence of Evil</display-name>
+  </channel>
+  <channel id="68d113f9184f1a0620c8101c">
+    <display-name>Medical Detectives</display-name>
+  </channel>
+  <channel id="6960c5a906d76f50db2816dc">
+    <display-name>Cagney &amp; Lacey</display-name>
+  </channel>
+  <channel id="68503d3bc692373f0158c43f">
+    <display-name>Hawaii Five-O</display-name>
+  </channel>
+  <channel id="66ba1e4446762a000855cd87">
+    <display-name>Girlfriends</display-name>
+  </channel>
+  <channel id="677fb0e93a225c2d0d8a45bf">
+    <display-name>Northern Exposure</display-name>
+  </channel>
+  <channel id="680bb31c56ff83bcd685d64e">
+    <display-name>Farscape</display-name>
+  </channel>
+  <channel id="66f1331f9409630008077623">
+    <display-name>Earth: Final Conflict</display-name>
+  </channel>
+  <channel id="5dbc2f98777f2e0009934ae7">
+    <display-name>Pluto TV Space</display-name>
+  </channel>
+  <channel id="677fb137a5d8215f99b9cc06">
+    <display-name>Top Chef</display-name>
+  </channel>
+  <channel id="677fb115a4af36ad50113e56">
+    <display-name>The Real Housewives</display-name>
+  </channel>
+  <channel id="65c4960d11ced7000812c433">
+    <display-name>Geordie Shore</display-name>
+  </channel>
+  <channel id="6319f06067a3ee000708af95">
+    <display-name>Haunt TV</display-name>
+  </channel>
+  <channel id="5d4ae94ef1a1bbb350ca41bb">
+    <display-name>Pluto TV Conspiracy</display-name>
+  </channel>
+  <channel id="65819fc1b9adc4000813f37d">
+    <display-name>History Hunters</display-name>
+  </channel>
+  <channel id="6319ee0cf78bb10007ee5e6b">
+    <display-name>World War TV</display-name>
+  </channel>
+  <channel id="625e8cb585ef320007806caf">
+    <display-name>Pluto TV Britain at War</display-name>
+  </channel>
+  <channel id="60faffc3fbbc120007fc4376">
+    <display-name>Baby Shark TV</display-name>
+  </channel>
+  <channel id="694178a8026be6e9d3ea7d7a">
+    <display-name>Mona The Vampire</display-name>
+  </channel>
+  <channel id="69b422590306b277746f48cb">
+    <display-name>The Raccoons</display-name>
+  </channel>
+  <channel id="5c5c2b9d8002db3c3e0b1c6d">
+    <display-name>Pluto TV Retro Toons</display-name>
+  </channel>
+  <channel id="55b179af994403942f3061d6">
+    <display-name>Newsmax2</display-name>
+  </channel>
+  <channel id="66c45afaa72e7b0008a2b153">
+    <display-name>CNNi</display-name>
+  </channel>
+  <channel id="613763">
+    <display-name>Stadium</display-name>
+  </channel>
+  <channel id="6462190b7cb4b1000862dd60">
+    <display-name>Pluto TV Alien Invasion</display-name>
+  </channel>
+  <channel id="677011">
+    <display-name>Gordon Ramsay</display-name>
+  </channel>
+  <channel id="700407">
+    <display-name>GARDEN with Monty Don</display-name>
+  </channel>
+  <channel id="650315163a0d700008bb07f8">
+    <display-name>Criminal Confessions</display-name>
+  </channel>
+  <channel id="688735087b2cf33d01a2d411">
+    <display-name>Sea Patrol</display-name>
   </channel>
 </tv>
