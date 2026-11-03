@@ -18,8 +18,10 @@ class CastMediaException(val kind: CastLoadFailure,val status: Int?=null): Excep
 /** Bounded, credential-free preflight. Receiver fetches the freshly resolved URL itself.
  * Redirect targets are refreshed on every load and are never saved in the guide/Favourites.
  */
-class CastMediaResolver internal constructor(private val client: OkHttpClient) {
-    constructor(): this(transport)
+class CastMediaResolver internal constructor(private val client: OkHttpClient,
+    private val inspectHls: Boolean = false, private val report: (String) -> Unit = {}) {
+    constructor(): this(transport, true)
+    constructor(report: (String) -> Unit): this(transport, true, report)
     @Volatile private var active: Call?=null
     @Volatile private var cancelled=false
     fun cancel() { cancelled=true;active?.cancel() }
@@ -36,6 +38,7 @@ class CastMediaResolver internal constructor(private val client: OkHttpClient) {
                 val call=client.newCall(request);active=call
                 if(cancelled) call.cancel()
                 call.execute().use { response ->
+                    report("stage=manifest redirects=$hop host=${safeHost(address)} http=${response.code}")
                     if(response.code in setOf(301,302,303,307,308)) {
                         if(hop==5) throw CastMediaException(CastLoadFailure.URL_UNAVAILABLE,response.code)
                         val target=response.header("Location")?.let { URI(address).resolve(it).toString() }
@@ -46,10 +49,11 @@ class CastMediaResolver internal constructor(private val client: OkHttpClient) {
                     } else {
                         if(!response.isSuccessful) throw CastMediaException(CastLoadFailure.URL_UNAVAILABLE,response.code)
                         val body=response.body ?: throw CastMediaException(CastLoadFailure.UNSUPPORTED_FORMAT)
-                        val buffer=ByteArray(8192)
-                        val count=body.byteStream().read(buffer)
-                        val bytes=if(count>0) buffer.copyOf(count) else byteArrayOf()
-                        return describe(original,address,response.header("Content-Type"),bytes)
+                        // A single InputStream.read can return only a partial tag/manifest.
+                        val bytes=body.byteStream().takeBytes(65_536)
+                        val source=describe(original,address,response.header("Content-Type"),bytes)
+                        report("stage=format mime=${source.mimeType} container=${if(source.fragmentedMp4) "fmp4" else "unknown"}")
+                        return if(inspectHls && source.mimeType=="application/x-mpegURL") inspect(source,bytes) else source
                     }
                 }
             }
@@ -59,6 +63,80 @@ class CastMediaResolver internal constructor(private val client: OkHttpClient) {
         finally { active=null }
         throw CastMediaException(CastLoadFailure.URL_UNAVAILABLE)
     }
+    /** Child probes are evidence only: never replace a master, choose a rendition, or
+     * reject a working source because a sender-side sample differs from receiver access. */
+    private fun inspect(source: CastMediaSource, master: ByteArray): CastMediaSource {
+        var text=String(master,Charsets.UTF_8)
+        var base=source.url
+        var fragmented=source.fragmentedMp4
+        reportManifest(text)
+        try {
+            val lines=text.lineSequence().map { it.trim() }.toList()
+            val variant=lines.indexOfFirst { it.startsWith("#EXT-X-STREAM-INF:") }
+            if(variant>=0) {
+                val child=lines.drop(variant+1).firstOrNull { it.isNotEmpty() && !it.startsWith("#") }
+                if(child!=null) {
+                    val sample=sample(URI(base).resolve(child).toString(),"variant",65_536)
+                    if(sample!=null) { base=sample.first;text=String(sample.second,Charsets.UTF_8);reportManifest(text) }
+                }
+            }
+            fragmented=fragmented || text.contains("#EXT-X-MAP:")
+            val segment=text.lineSequence().map { it.trim() }.firstOrNull { it.isNotEmpty() && !it.startsWith("#") }
+            // Do not request an entire segment. This sample does not prove receiver playback.
+            if(segment!=null && text.startsWith("#EXTM3U") && !text.contains("#EXT-X-STREAM-INF:")) {
+                val bytes=sample(URI(base).resolve(segment).toString(),"segment",1024)?.second
+                val container=when {
+                    bytes==null -> "unobserved"
+                    bytes.size>188 && bytes[0]==0x47.toByte() && bytes[188]==0x47.toByte() -> "mpegts"
+                    bytes.size>=8 && String(bytes.copyOfRange(4,8),Charsets.US_ASCII) in setOf("ftyp","styp","moof","sidx") -> "fmp4"
+                    else -> "unknown"
+                }
+                report("stage=segment container=$container")
+            }
+        } catch(_: Exception) { report("stage=child_probe result=unavailable") }
+        return CastMediaSource(source.url,source.mimeType,source.live,fragmented)
+    }
+    private fun reportManifest(text: String) {
+        // Only recognised codec prefixes and encryption labels escape untrusted manifests.
+        val codecs=Regex("CODECS=\"([^\"]+)\"").findAll(text).flatMap { it.groupValues[1].split(',').asSequence() }
+            .map { it.substringBefore('.').trim().lowercase() }.filter { it in setOf("avc1","avc3","hvc1","hev1","mp4a","ac-3","ec-3","opus","vp09","av01") }.distinct().toList()
+        val methods=Regex("METHOD=([A-Z0-9-]+)").findAll(text).map { it.groupValues[1] }
+            .map { if(it in setOf("NONE","AES-128","SAMPLE-AES","SAMPLE-AES-CTR")) it else "OTHER" }.distinct().toList()
+        report("stage=hls codecs=${codecs.joinToString(",").ifEmpty { "unknown" }} encryption=${methods.joinToString(",").ifEmpty { "none_observed" }} map=${text.contains("#EXT-X-MAP:")}")
+    }
+    private fun sample(raw: String,stage: String,limit: Int): Pair<String,ByteArray>? {
+        var address=CastStreamUrl.resolve(raw)
+        for(hop in 0..5) {
+            if(cancelled) return null
+            val call=client.newCall(Request.Builder().url(address).header("User-Agent","AUTV Cast media probe")
+                .apply { if(stage=="segment") header("Range","bytes=0-${limit-1}") }.build())
+            active=call
+            if(cancelled) call.cancel()
+            call.execute().use { response ->
+                report("stage=$stage redirects=$hop host=${safeHost(address)} http=${response.code}")
+                if(response.code in setOf(301,302,303,307,308)) {
+                    val next=CastStreamUrl.resolve(URI(address).resolve(response.header("Location") ?: return null).toString())
+                    if(URI(address).scheme=="https" && URI(next).scheme!="https") return null
+                    address=next
+                } else {
+                    if(!response.isSuccessful) return null
+                    return address to (response.body?.byteStream()?.takeBytes(limit) ?: byteArrayOf())
+                }
+            }
+        }
+        return null
+    }
+    private fun java.io.InputStream.takeBytes(limit: Int): ByteArray {
+        val output=java.io.ByteArrayOutputStream()
+        val buffer=ByteArray(4096)
+        while(output.size()<limit) {
+            val count=read(buffer,0,minOf(buffer.size,limit-output.size()))
+            if(count<0) break
+            output.write(buffer,0,count)
+        }
+        return output.toByteArray()
+    }
+    private fun safeHost(url: String): String = URI(url).host?.takeIf { it.matches(Regex("[a-zA-Z0-9.:-]+")) } ?: "unknown"
     companion object {
         private val transport=OkHttpClient.Builder().followRedirects(false).followSslRedirects(false)
             .cookieJar(CookieJar.NO_COOKIES).connectTimeout(6,TimeUnit.SECONDS).readTimeout(6,TimeUnit.SECONDS)
