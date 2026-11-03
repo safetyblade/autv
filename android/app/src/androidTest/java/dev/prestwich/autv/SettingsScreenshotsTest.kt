@@ -25,7 +25,7 @@ class SettingsScreenshotsTest {
         }
     }
     private fun screenshot(name: String) {
-        val target=File(instrumentation.targetContext.getExternalFilesDir(null),"settings-screenshots/$phase-$name.png")
+        val target=File(instrumentation.targetContext.filesDir,"settings-screenshots/$phase-$name.png")
         target.parentFile!!.mkdirs()
         instrumentation.uiAutomation.takeScreenshot().let { bitmap ->
             target.outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG,100,it) }; bitmap.recycle()
@@ -63,13 +63,15 @@ class SettingsScreenshotsTest {
                         }
                         throw AssertionError("QR not visible for $name: $state", timeout)
                     }
+                    ui.waitForIdle()
                     ui.onNodeWithTag("activation-qr").performScrollTo()
                     ui.waitForIdle();screenshot("$name-activation")
                     if(phase=="after") {
                         val qr=ui.onNodeWithTag("activation-qr").getUnclippedBoundsInRoot()
                         val viewport=ui.onNodeWithTag("provider-activation-screen").getUnclippedBoundsInRoot()
                         assertTrue("QR centred in usable viewport ($name)",abs((qr.left.value+qr.right.value-viewport.left.value-viewport.right.value)/2)<2f)
-                        ui.onNodeWithTag("activation-qr").assertIsDisplayed()
+                        try { ui.onNodeWithTag("activation-qr").assertIsDisplayed() }
+                        catch (error: AssertionError) { throw AssertionError("QR not displayed for $name: qr=$qr viewport=$viewport",error) }
                         ui.onNodeWithTag("activation-code").assertIsDisplayed()
                         val before=qr
                         ui.onNodeWithTag("activation-open-website").performScrollTo().performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.RequestFocus)
