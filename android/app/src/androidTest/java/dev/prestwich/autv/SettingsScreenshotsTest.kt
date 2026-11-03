@@ -19,9 +19,9 @@ class SettingsScreenshotsTest {
     @get:Rule val ui = createEmptyComposeRule()
     private val instrumentation get() = InstrumentationRegistry.getInstrumentation()
     private val phase get() = InstrumentationRegistry.getArguments().getString("autvScreenshotPhase", "after")
-    private fun shell(command: String) {
-        instrumentation.uiAutomation.executeShellCommand(command).use { descriptor ->
-            android.os.ParcelFileDescriptor.AutoCloseInputStream(descriptor).use { it.readBytes() }
+    private fun shell(command: String): String {
+        return instrumentation.uiAutomation.executeShellCommand(command).use { descriptor ->
+            android.os.ParcelFileDescriptor.AutoCloseInputStream(descriptor).use { it.readBytes().toString(Charsets.UTF_8) }
         }
     }
     private fun screenshot(name: String) {
@@ -33,7 +33,8 @@ class SettingsScreenshotsTest {
         // AGP removes the debug application after instrumentation. Export while run-as
         // still works; shell-owned Download files survive that uninstall.
         shell("mkdir -p /sdcard/Download/autv-settings-screenshots")
-        shell("run-as dev.prestwich.autv cat files/settings-screenshots/$phase-$name.png > /sdcard/Download/autv-settings-screenshots/$phase-$name.png")
+        val exported=shell("run-as dev.prestwich.autv cat files/settings-screenshots/$phase-$name.png > /sdcard/Download/autv-settings-screenshots/$phase-$name.png; wc -c < /sdcard/Download/autv-settings-screenshots/$phase-$name.png")
+        check((exported.trim().toLongOrNull() ?: 0)>0) { "Screenshot export failed for $name" }
     }
     @Test fun phoneAndTelevisionSettingsAndActivation() {
         try {
@@ -52,7 +53,10 @@ class SettingsScreenshotsTest {
                     // accidentally turn a layout check into an asynchronous connection test.
                     scenario.onActivity { it.playback.connectNineNow() }
                     ui.waitUntil(15_000) { ActivationFixture.codeRequests.get() > 0 }
-                    ui.onNodeWithTag("provider-9now").performScrollTo().performClick()
+                    // A window recreation may restore Settings directly to the pending provider.
+                    // Open the card only when the overview is still the active screen.
+                    if(ui.onAllNodesWithTag("provider-9now").fetchSemanticsNodes().isNotEmpty())
+                        ui.onNodeWithTag("provider-9now").performScrollTo().performClick()
                     try {
                         ui.waitUntil(15000) { ui.onAllNodesWithTag("activation-qr").fetchSemanticsNodes().isNotEmpty() }
                     } catch (timeout: androidx.compose.ui.test.ComposeTimeoutException) {
