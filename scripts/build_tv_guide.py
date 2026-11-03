@@ -16,6 +16,8 @@ import sys
 
 from docx import Document
 from docx.shared import Cm, Pt
+from docx.oxml import OxmlElement
+from docx.oxml.ns import qn
 
 ROOT = Path(__file__).resolve().parents[1]
 CSV = ROOT / "channel_guide.csv"
@@ -88,19 +90,32 @@ for item in [
 ]:
     d.add_paragraph(item, style="List Bullet")
 d.add_heading("FAST/IPTV category totals", 1)
-for name,n in Counter(cell(r,"Genre") for r in records).items():
-    d.add_paragraph(f"{name}: {n}")
+summary = d.add_table(rows=1, cols=2)
+summary.style = "Light Shading Accent 1"
+summary.rows[0].cells[0].text = "Category"
+summary.rows[0].cells[1].text = "Channels"
+for name, n in Counter(cell(r,"Genre") for r in records).items():
+    cells = summary.add_row().cells
+    cells[0].text = name
+    cells[1].text = str(n)
 d.add_heading("Full numbered FAST/IPTV channel directory",1)
 d.add_paragraph("Full = schedule expected, not always available. Channel only = reliable schedule not expected.")
 t=d.add_table(rows=1,cols=5);t.style="Light Shading Accent 1"
 for i,h in enumerate(["No.","Channel","Category","Provider","Guide"]):t.rows[0].cells[i].text=h
+header_properties = t.rows[0]._tr.get_or_add_trPr()
+repeat = OxmlElement("w:tblHeader")
+repeat.set(qn("w:val"), "true")
+header_properties.append(repeat)
 for r in records:
     cells=t.add_row().cells
     for i,key in enumerate(["Channel number","Channel name","Genre","Source","EPG"]): cells[i].text=cell(r,key)
     if len(t.rows) % 50 == 0:
         print(f"Added {len(t.rows)-1} channels")
 footer=section.footer.paragraphs[0]
-footer.text="AUTV | Generated from channel_guide.csv | Verify broadcaster channels separately"
+footer.text="AUTV | Generated from channel_guide.csv | Australian TV requires verification | Page "
+field = OxmlElement("w:fldSimple")
+field.set(qn("w:instr"), "PAGE")
+footer._p.append(field)
 OUT.parent.mkdir(parents=True,exist_ok=True)
 d.save(OUT)
 print(f"Saved {OUT} ({len(records)} FAST/IPTV, {len(australian)} Australian TV)")
