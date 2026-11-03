@@ -367,3 +367,7 @@ https://jmp2.uk/plu-69b422590306b277746f48cb.m3u8
 # Recovery 1233 — Pluto TV Retro Toons; published catalogue ID 5c5c2b9d8002db3c3e0b1c6d
 #EXTINF:-1 tvg-id="5c5c2b9d8002db3c3e0b1c6d" tvg-name="Pluto TV Retro Toons" group-title="Kids & Animation",Pluto TV Retro Toons
 https://jmp2.uk/plu-5c5c2b9d8002db3c3e0b1c6d.m3u8
+
+# Recovery 118 — Newsmax2 public Pluto US catalogue candidate; test AU playback before approval.
+#EXTINF:-1 tvg-id="55b179af994403942f3061d6" tvg-name="Newsmax2" group-title="News",Newsmax2
+https://jmp2.uk/plu-55b179af994403942f3061d6.m3u8
