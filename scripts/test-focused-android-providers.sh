@@ -4,6 +4,7 @@
 set +e
 set -o pipefail
 gradle -p android -PautvMediaLab=false :app:connectedDebugAndroidTest \
+  -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true \
   -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.CastPlaybackTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.ProviderQrIntegrationTest,dev.prestwich.autv.ProviderQrUiTest,dev.prestwich.autv.SettingsScreenshotsTest,dev.prestwich.autv.AustralianProviderIntegrationTest,dev.prestwich.autv.provider.AustralianConfigurationIsolationTest,dev.prestwich.autv.provider.EncryptedProviderSessionStoreTest \
   -Pandroid.testInstrumentationRunnerArguments.autvScreenshotPhase=after
 result=$?
