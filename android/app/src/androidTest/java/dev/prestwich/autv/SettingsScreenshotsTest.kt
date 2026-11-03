@@ -34,11 +34,13 @@ class SettingsScreenshotsTest {
     @Test fun phoneAndTelevisionSettingsAndActivation() {
         try {
             for ((name,size,density) in listOf(Triple("phone","1080x1920",420),Triple("tv-720p","1280x720",160),
-                Triple("tv-1080p","1920x1080",240),Triple("tv-4k","3840x2160",480))) {
+                Triple("tv-1080p","1920x1080",240),Triple("tv-4k","3840x2160",480),Triple("tv-720p-large-text","1280x720",160))) {
                 shell("wm size $size");shell("wm density $density");SystemClock.sleep(1000)
                 ActivationFixture.reset()
                 val tv=name.startsWith("tv")
-                val intent=Intent(instrumentation.targetContext,ProviderScreenshotActivity::class.java).putExtra("tv",tv)
+                ScreenshotDeviceConfiguration.television=tv
+                ScreenshotDeviceConfiguration.fontScale=if(name.endsWith("large-text")) 1.3f else 1f
+                val intent=Intent(instrumentation.targetContext,ProviderScreenshotActivity::class.java).putExtra("tv",tv).putExtra("fontScale",if(name.endsWith("large-text")) 1.3f else 1f)
                 ActivityScenario.launch<ProviderScreenshotActivity>(intent).use { scenario ->
                     ui.onNodeWithTag("settings-button").performClick()
                     ui.waitForIdle();screenshot("$name-settings")
@@ -54,9 +56,11 @@ class SettingsScreenshotsTest {
                         ui.onNodeWithTag("activation-qr").assertIsDisplayed()
                         ui.onNodeWithTag("activation-code").assertIsDisplayed()
                         val before=qr
-                        ui.onNodeWithTag("activation-open-website").performScrollTo().performKeyInput {
+                        ui.onNodeWithTag("activation-open-website").performScrollTo().performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.RequestFocus)
+                        ui.onNodeWithTag("activation-open-website").performKeyInput {
                             keyDown(androidx.compose.ui.input.key.Key.DirectionDown);keyUp(androidx.compose.ui.input.key.Key.DirectionDown)
                         }
+                        ui.onNodeWithTag("activation-cancel").assertIsFocused()
                         val after=ui.onNodeWithTag("activation-qr").getUnclippedBoundsInRoot()
                         assertEquals((before.left.value+before.right.value)/2,(after.left.value+after.right.value)/2,0.5f)
                     }
