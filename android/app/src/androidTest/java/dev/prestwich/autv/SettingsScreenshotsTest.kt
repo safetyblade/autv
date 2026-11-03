@@ -43,8 +43,12 @@ class SettingsScreenshotsTest {
                 ActivityScenario.launch<ProviderScreenshotActivity>(intent).use { scenario ->
                     ui.onNodeWithTag("settings-button").performClick()
                     ui.waitForIdle();screenshot("$name-settings")
+                    // Account-linking button behaviour is tested separately by ProviderQrIntegrationTest.
+                    // This screenshot harness starts an explicit in-memory challenge so resizing cannot
+                    // accidentally turn a layout check into an asynchronous connection test.
+                    scenario.onActivity { it.playback.connectNineNow() }
+                    ui.waitUntil(15_000) { ActivationFixture.codeRequests.get() > 0 }
                     ui.onNodeWithTag("provider-9now").performScrollTo().performClick()
-                    ui.onNodeWithTag("9now-connect").performScrollTo().performClick()
                     try {
                         ui.waitUntil(15000) { ui.onAllNodesWithTag("activation-qr").fetchSemanticsNodes().isNotEmpty() }
                     } catch (timeout: androidx.compose.ui.test.ComposeTimeoutException) {

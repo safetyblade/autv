@@ -44,20 +44,7 @@ jobs:
           api-level: 29
           arch: x86_64
           disable-animations: true
-          script: |
-            set +e
-            gradle -p android -PautvMediaLab=false :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.CastPlaybackTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.SettingsScreenshotsTest -Pandroid.testInstrumentationRunnerArguments.autvScreenshotPhase=after
-            result=$?
-            if adb shell test -d /sdcard/Android/data/dev.prestwich.autv/files/settings-screenshots; then
-              adb pull /sdcard/Android/data/dev.prestwich.autv/files/settings-screenshots settings-screenshots || {
-                echo "Screenshot collection failed."
-                result=1
-              }
-            else
-              echo "Screenshot directory missing; inspect instrumentation failure."
-              result=1
-            fi
-            exit "$result"
+          script: bash scripts/test-focused-android-providers.sh
       - uses: actions/upload-artifact@v4
         if: always()
         with:
