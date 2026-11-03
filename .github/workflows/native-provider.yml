@@ -60,6 +60,7 @@ jobs:
           retention-days: 30
 
   before-ui:
+    if: github.head_ref == 'fix/issue140-closeout' || github.ref == 'refs/heads/validation/issue140'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:

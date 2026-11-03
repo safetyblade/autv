@@ -2,6 +2,8 @@ package dev.prestwich.autv
 
 import android.content.Context
 import android.content.res.Configuration
+import android.content.pm.ActivityInfo
+import android.os.Bundle
 
 /** Synthetic screenshot UI only. Set the configuration before launching this debug activity. */
 class ProviderScreenshotActivity : ProviderActivationTestActivity() {
@@ -14,6 +16,11 @@ class ProviderScreenshotActivity : ProviderActivationTestActivity() {
             screenshotTv = tv
             screenshotFontScale = fontScale
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        requestedOrientation=if(screenshotTv) ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE else ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        super.onCreate(savedInstanceState)
     }
 
     override fun attachBaseContext(newBase: Context) {

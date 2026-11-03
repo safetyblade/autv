@@ -41,5 +41,5 @@ The guide can display provider-supplied `ProviderChannel.programmes` and will sh
 - Default application class `dev.prestwich.autv.AuTvApplication` must remain fail-closed for ABC and Ten.
 - Existing settings screen appearance and TV D-pad behaviour are owner-accepted; limit further changes to evidenced defects.
 - The Seven provider baseline guard and its auth/playback code are out of scope.
-- `validation/issue140` is the single integration branch for this work; no release or merge until mandatory CI and device checks pass.
+- `fix/issue140-closeout` contains the reviewed completion of this work; `validation/issue140` retains the preceding integration history. No production release until mandatory CI and device checks pass.
 - FAST-channel feed discovery/recovery belongs to a separate workstream.
