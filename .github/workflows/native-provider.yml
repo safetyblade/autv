@@ -1,6 +1,8 @@
 name: AUTV Full Application Debug
 
 on:
+  push:
+    branches: [validation/issue140]
   pull_request:
     paths:
       - 'android/**'
@@ -28,8 +30,12 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.13'
+      - name: Protect owner-verified Seven implementation
+        run: python3 scripts/verify-seven-baseline.py
       - name: Compile AUTV, run critical JVM regressions and assemble full app
         run: gradle -p android -PautvMediaLab=false :core-data:testDebugUnitTest :core-guide:testDebugUnitTest :core-player:testDebugUnitTest :app:testDebugUnitTest :app:assembleFullAppDebug :app:assembleDebugAndroidTest
+      - name: Verify packaged application identity and television launcher
+        run: python3 scripts/verify-full-app-apk.py android/app/build/outputs/apk/full-app/AUTV-Full-App-Debug.apk --output AUTV-Full-App-manifest.txt
       - name: Enable KVM for focused Cast handoff checks
         run: sudo chmod 666 /dev/kvm
       - name: Focused Cast and native-playback handoff regressions
@@ -38,10 +44,7 @@ jobs:
           api-level: 29
           arch: x86_64
           disable-animations: true
-          script: |
-            gradle -p android -PautvMediaLab=false :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.CastPlaybackTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.SettingsScreenshotsTest -Pandroid.testInstrumentationRunnerArguments.autvScreenshotPhase=before; result=$?; adb pull /sdcard/Android/data/dev.prestwich.autv/files/settings-screenshots settings-screenshots; exit $result
-      - name: Verify packaged application identity and television launcher
-        run: python3 scripts/verify-full-app-apk.py android/app/build/outputs/apk/full-app/AUTV-Full-App-Debug.apk --output AUTV-Full-App-manifest.txt
+          script: bash scripts/test-focused-android-providers.sh
       - uses: actions/upload-artifact@v4
         if: always()
         with:

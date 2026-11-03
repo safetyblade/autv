@@ -13,26 +13,21 @@ internal fun StartupSettings(model: PlaybackModel) {
     var open by remember { mutableStateOf(false) }
     val settings = model.startupPreferences
     Text("Playback", style = MaterialTheme.typography.titleLarge)
-    OutlinedButton(onClick = { open = !open }, modifier = Modifier.fillMaxWidth().testTag("startup-channel")) {
-        Text("Startup channel: ${settings.mode.label}")
-    }
+    FocusButton("Startup channel: ${settings.mode.label}", { open = !open }, Modifier.fillMaxWidth().testTag("startup-channel"))
     if (open) {
         StartupMode.entries.forEach { mode ->
-            TextButton(onClick = { settings.choose(mode) }, modifier = Modifier.fillMaxWidth().testTag("startup-${mode.name}")) {
-                Text((if (settings.mode == mode) "✓ " else "") + mode.label)
-            }
+            FocusButton((if (settings.mode == mode) "✓ " else "") + mode.label, { settings.choose(mode) }, Modifier.fillMaxWidth().testTag("startup-${mode.name}"))
         }
         if (settings.mode in setOf(StartupMode.AUSTRALIAN, StartupMode.NEWS, StartupMode.SPORTS)) {
             Text("Choose a channel", style = MaterialTheme.typography.titleMedium)
-            TextButton(onClick = { settings.chooseChannel(null) }) { Text("Automatic") }
+            FocusButton("Automatic", { settings.chooseChannel(null) })
             val rows = StartupChannels.choices(model.guide?.channels.orEmpty(), settings.mode)
             if (rows.isEmpty()) Text("No channels available. Connect Australian services or refresh the guide.")
             if (settings.identity != null && rows.none { FavouriteIdentity.key(it) == settings.identity })
                 Text("Your saved channel is currently unavailable. It will be kept for when it returns.")
             rows.forEach { channel ->
-                TextButton(onClick = { settings.chooseChannel(FavouriteIdentity.key(channel)) }, modifier = Modifier.fillMaxWidth()) {
-                    Text((if (settings.identity == FavouriteIdentity.key(channel)) "✓ " else "") + channel.name)
-                }
+                FocusButton((if (settings.identity == FavouriteIdentity.key(channel)) "✓ " else "") + channel.name,
+                    { settings.chooseChannel(FavouriteIdentity.key(channel)) }, Modifier.fillMaxWidth())
             }
         }
         Text("Unavailable channels are skipped if playback fails. You can always choose another channel from the guide.",

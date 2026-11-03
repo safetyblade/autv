@@ -1,6 +1,8 @@
 package dev.prestwich.autv.guide
 
 import dev.prestwich.autv.data.*
+import dev.prestwich.autv.data.provider.ProviderChannel
+import dev.prestwich.autv.data.provider.ProviderChannelId
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -17,6 +19,17 @@ class GuideBrowseTest {
         assertTrue(GuideBrowse.filter(channels, "News", "apprentice", epg, 150).isEmpty())
         assertTrue(GuideBrowse.filter(channels, "All", "apprentice", epg, 200).isEmpty())
         assertEquals(listOf(news, ink), GuideBrowse.filter(channels, "All", " ", epg, 150))
+    }
+
+    @Test fun nativeProviderInternalNumbersAreNotVisibleOrSearchable() {
+        val native = Channel(-9042, "Travel Australia", "Australian TV", "7plus", "", "", true,
+            null, "provider:seven:travel-australia", null,
+            ProviderChannel(ProviderChannelId("seven", "travel-australia"), "official-ref", "Travel Australia"))
+        assertEquals("", native.numberLabel)
+        assertTrue(GuideBrowse.filter(listOf(native), "All", "-9042", Epg(emptyMap()), 150).isEmpty())
+        assertEquals(listOf(native), GuideBrowse.filter(listOf(native), "All", "Travel", Epg(emptyMap()), 150))
+        assertEquals(listOf(native), GuideBrowse.filter(listOf(native), "All", " ", Epg(emptyMap()), 150))
+        assertEquals("100", news.numberLabel)
     }
 
     @Test fun openingGuideRetainsSensibleCategoryAndMakesPlayingChannelReachable() {

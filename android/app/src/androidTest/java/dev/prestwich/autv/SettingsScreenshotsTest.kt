@@ -25,7 +25,7 @@ class SettingsScreenshotsTest {
         }
     }
     private fun screenshot(name: String) {
-        val target=File(instrumentation.targetContext.getExternalFilesDir(null),"settings-screenshots/$phase-$name.png")
+        val target=File(instrumentation.targetContext.filesDir,"settings-screenshots/$phase-$name.png")
         target.parentFile!!.mkdirs()
         instrumentation.uiAutomation.takeScreenshot().let { bitmap ->
             target.outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG,100,it) }; bitmap.recycle()
@@ -34,35 +34,57 @@ class SettingsScreenshotsTest {
     @Test fun phoneAndTelevisionSettingsAndActivation() {
         try {
             for ((name,size,density) in listOf(Triple("phone","1080x1920",420),Triple("tv-720p","1280x720",160),
-                Triple("tv-1080p","1920x1080",240),Triple("tv-4k","3840x2160",480))) {
+                Triple("tv-1080p","1920x1080",240),Triple("tv-4k","3840x2160",480),Triple("tv-720p-large-text","1280x720",160))) {
                 shell("wm size $size");shell("wm density $density");SystemClock.sleep(1000)
                 ActivationFixture.reset()
                 val tv=name.startsWith("tv")
-                val intent=Intent(instrumentation.targetContext,ProviderScreenshotActivity::class.java).putExtra("tv",tv)
+                ProviderScreenshotActivity.configureForScreenshot(tv, if(name.endsWith("large-text")) 1.3f else 1f)
+                val intent=Intent(instrumentation.targetContext,ProviderScreenshotActivity::class.java)
                 ActivityScenario.launch<ProviderScreenshotActivity>(intent).use { scenario ->
                     ui.onNodeWithTag("settings-button").performClick()
                     ui.waitForIdle();screenshot("$name-settings")
+                    // Account-linking button behaviour is tested separately by ProviderQrIntegrationTest.
+                    // This screenshot harness starts an explicit in-memory challenge so resizing cannot
+                    // accidentally turn a layout check into an asynchronous connection test.
+                    scenario.onActivity { it.playback.connectNineNow() }
+                    ui.waitUntil(15_000) { ActivationFixture.codeRequests.get() > 0 }
                     ui.onNodeWithTag("provider-9now").performScrollTo().performClick()
-                    ui.onNodeWithTag("9now-connect").performScrollTo().performClick()
-                    ui.waitUntil(15000) { ui.onAllNodesWithTag("activation-qr").fetchSemanticsNodes().isNotEmpty() }
+                    try {
+                        ui.waitUntil(15000) { ui.onAllNodesWithTag("activation-qr").fetchSemanticsNodes().isNotEmpty() }
+                    } catch (timeout: androidx.compose.ui.test.ComposeTimeoutException) {
+                        screenshot("$name-activation-timeout")
+                        var state = "activity unavailable"
+                        scenario.onActivity { activity ->
+                            val playback = activity.playback
+                            state = "codes=${ActivationFixture.codeRequests.get()}, " +
+                                "connection=${playback.providerConnection}, busy=${playback.providerBusy}, " +
+                                "activation=${playback.providerActivation != null}, " +
+                                "status=${playback.providerAuthStatus}, error=${playback.providerError}"
+                        }
+                        throw AssertionError("QR not visible for $name: $state", timeout)
+                    }
+                    ui.waitForIdle()
                     ui.onNodeWithTag("activation-qr").performScrollTo()
                     ui.waitForIdle();screenshot("$name-activation")
                     if(phase=="after") {
                         val qr=ui.onNodeWithTag("activation-qr").getUnclippedBoundsInRoot()
                         val viewport=ui.onNodeWithTag("provider-activation-screen").getUnclippedBoundsInRoot()
                         assertTrue("QR centred in usable viewport ($name)",abs((qr.left.value+qr.right.value-viewport.left.value-viewport.right.value)/2)<2f)
-                        ui.onNodeWithTag("activation-qr").assertIsDisplayed()
+                        try { ui.onNodeWithTag("activation-qr").assertIsDisplayed() }
+                        catch (error: AssertionError) { throw AssertionError("QR not displayed for $name: qr=$qr viewport=$viewport",error) }
                         ui.onNodeWithTag("activation-code").assertIsDisplayed()
                         val before=qr
-                        ui.onNodeWithTag("activation-open-website").performScrollTo().performKeyInput {
+                        ui.onNodeWithTag("activation-open-website").performScrollTo().performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.RequestFocus)
+                        ui.onNodeWithTag("activation-open-website").performKeyInput {
                             keyDown(androidx.compose.ui.input.key.Key.DirectionDown);keyUp(androidx.compose.ui.input.key.Key.DirectionDown)
                         }
+                        ui.onNodeWithTag("activation-cancel").assertIsFocused()
                         val after=ui.onNodeWithTag("activation-qr").getUnclippedBoundsInRoot()
                         assertEquals((before.left.value+before.right.value)/2,(after.left.value+after.right.value)/2,0.5f)
                     }
                     scenario.onActivity { it.playback.disconnectNineNow() }
                 }
             }
-        } finally { shell("wm size reset");shell("wm density reset");ActivationFixture.reset() }
+        } finally { shell("wm size reset");shell("wm density reset");ProviderScreenshotActivity.configureForScreenshot(false,1f);ActivationFixture.reset() }
     }
 }
