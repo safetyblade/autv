@@ -10,7 +10,7 @@ object GuideBrowse {
         val search = query.trim()
         return channels.filter { channel ->
             (category == "All" || channel.genre == category) &&
-                (search.isEmpty() || channel.number.toString().contains(search) || channel.name.contains(search, ignoreCase = true) ||
+                (search.isEmpty() || channel.numberLabel.contains(search) || channel.name.contains(search, ignoreCase = true) ||
                     epg.at(channel, time).now?.title?.contains(search, ignoreCase = true) == true)
         }.sortedBy { it.number }
     }
