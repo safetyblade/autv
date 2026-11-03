@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.SystemClock
 import androidx.compose.ui.test.*
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
@@ -41,19 +42,19 @@ class SettingsScreenshotsTest {
                 ActivationFixture.reset()
                 val tv=name.startsWith("tv")
                 ProviderScreenshotActivity.television=tv
-                val intent=Intent(instrumentation.targetContext,ProviderScreenshotActivity::class.java).putExtra("tv",tv)
+                val intent=Intent(instrumentation.targetContext,ProviderScreenshotActivity::class.java)
+                    .putExtra("tv",tv).putExtra("autvOpenAustralianServices",true)
                 ActivityScenario.launch<ProviderScreenshotActivity>(intent).use { scenario ->
-                    ui.onNodeWithTag("settings-button").performClick()
                     ui.waitUntil(15000) { ui.onAllNodesWithTag("australian-services-settings").fetchSemanticsNodes().isNotEmpty() }
                     ui.waitForIdle()
                     // A restored pending activation may open its service detail. Each
                     // screenshot starts from the same all-services screen explicitly.
                     if(ui.onAllNodesWithTag("providers-back").fetchSemanticsNodes().isNotEmpty())
-                        ui.onNodeWithTag("providers-back").performScrollTo().performClick()
+                        ui.onNodeWithTag("providers-back").performScrollTo().performSemanticsAction(SemanticsActions.OnClick) { it() }
                     ui.waitUntil(15000) { ui.onAllNodesWithTag("provider-9now").fetchSemanticsNodes().isNotEmpty() }
                     ui.waitForIdle();screenshot("$name-settings")
-                    ui.onNodeWithTag("provider-9now").performScrollTo().performClick()
-                    ui.onNodeWithTag("9now-connect").performScrollTo().performClick()
+                    ui.onNodeWithTag("provider-9now").performScrollTo().performSemanticsAction(SemanticsActions.OnClick) { it() }
+                    ui.onNodeWithTag("9now-connect").performScrollTo().performSemanticsAction(SemanticsActions.OnClick) { it() }
                     ui.waitUntil(15000) { ui.onAllNodesWithTag("activation-qr").fetchSemanticsNodes().isNotEmpty() }
                     ui.onNodeWithTag("activation-qr").performScrollTo()
                     ui.waitForIdle();screenshot("$name-activation")
