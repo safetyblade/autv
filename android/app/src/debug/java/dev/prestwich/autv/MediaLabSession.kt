@@ -131,7 +131,7 @@ class MediaLabSession(app: Application) : AndroidViewModel(app) {
                     "ima-hls-original"->"c-rArva4ShKVIAkNfy6HUQ"
                     else->"XYrjlG09QTa8pxAo5Fzjww"
                 },networkCode="21775744923",apiKey=if(sample=="ima-hls") PUBLIC_GOOGLE_TEST_KEY else null)))
-            "expiry" -> ProviderPlaybackRequest(id,LOCAL,MimeTypes.APPLICATION_M3U8,options=ProviderMediaOptions(expiresAt=System.currentTimeMillis()+3000))
+            // Unverified, unofficial 10 VIC public HLS candidate for AU physical testing only. Not production or a licensed feed.\n            "ten-vic" -> ProviderPlaybackRequest(id,"https://i.mjh.nz/.r/10-vic.m3u8",MimeTypes.APPLICATION_M3U8)\n            "expiry" -> ProviderPlaybackRequest(id,LOCAL,MimeTypes.APPLICATION_M3U8,options=ProviderMediaOptions(expiresAt=System.currentTimeMillis()+3000))
             "broken-interstitial" -> ProviderPlaybackRequest(id,"asset:///broken-interstitial-test.m3u8",MimeTypes.APPLICATION_M3U8,options=ProviderMediaOptions(hlsInterstitials=true))
             "interstitial" -> ProviderPlaybackRequest(id,"asset:///interstitial-test.m3u8",MimeTypes.APPLICATION_M3U8,options=ProviderMediaOptions(hlsInterstitials=true))
             "transition" -> ProviderPlaybackRequest(id,"asset:///ssai-transition-test.m3u8",MimeTypes.APPLICATION_M3U8)
@@ -169,7 +169,7 @@ Error: ${errorCode ?: "none"}; IMA: ${imaError ?: "none"}"""
         const val LOCAL="asset:///recovery/playlist.m3u8"
         // https://developers.google.com/ad-manager/dynamic-ad-insertion/streams (full-service live samples).
         private const val PUBLIC_GOOGLE_TEST_KEY="8B1DA006064BD04C5CD474456AB8C9BDA790628E3184E95074EC65E308331EBC"
-        val SAMPLES=listOf("hls" to "HLS","dash" to "DASH","widevine" to "Widevine","ima-hls" to "Live IMA HLS",
+        val SAMPLES=listOf("ten-vic" to "10 VIC — Experimental", "hls" to "HLS","dash" to "DASH","widevine" to "Widevine","ima-hls" to "Live IMA HLS",
             "ima-dash" to "Live IMA DASH","fast" to "Local FAST fixture","expiry" to "FAST recovery (expiry)",
             "broken-interstitial" to "FAST recovery (failed ad)","transition" to "HLS discontinuities", "interstitial" to "HLS interstitial",
             "ima-hls-original" to "Live IMA HLS (original)")
