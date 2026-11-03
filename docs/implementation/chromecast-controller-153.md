@@ -57,7 +57,9 @@ No verified publicly accessible, authorised AU alternate was established.
 - Pause, mute and volume appear only for receiver-advertised media commands.
   Retry casting and Play locally are available after failure. Guide errors render
   once as a separate message, never as programme metadata or a channel-unavailable
-  flag. A retry clears the previous Cast notice.
+  flag. A retry clears the previous Cast notice. A rejected Cast load during
+  automatic startup also falls through to local recovery instead of marking the
+  locally playable channel unavailable.
 - A shared 30-second watchdog preserves the original bounded recovery behavior.
   Repeated buffering cannot extend it; superseded work and confirmed media cancel it.
 - Bounded manifest reading fixes partial InputStream reads. Public HLS diagnostics

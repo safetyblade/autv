@@ -379,7 +379,8 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         if (state.phase == CastPhase.PLAYING && state.channelNumber == selected?.number) saveWatched()
         if (startupAttempt && state.channelNumber == selected?.number) {
             if (state.phase == CastPhase.PLAYING) startupSucceeded = true
-            if (state.phase == CastPhase.FAILED) { startupFailed = true; return }
+            // Cast failure alone says nothing about local startup availability.
+            // Fall through to local recovery; only a local player error fails startup.
         }
         if (state.ownsPlayback) {
             if(state.phase in setOf(CastPhase.PLAYING,CastPhase.PAUSED) && state.channelNumber==selected?.number)
