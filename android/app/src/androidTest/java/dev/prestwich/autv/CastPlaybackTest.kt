@@ -25,10 +25,10 @@ class CastPlaybackTest {
         val player = model.player
         compose.runOnUiThread {
             remote.connect(model.selected!!)
-            assertEquals(CastPhase.LOAD_REQUESTED, model.castPlayback.phase)
+            assertEquals(CastPhase.LOADING, model.castPlayback.phase)
             assertTrue(player.isPlaying)
             remote.accept()
-            assertEquals(CastPhase.LOAD_ACCEPTED, model.castPlayback.phase)
+            assertEquals(CastPhase.LOADING, model.castPlayback.phase)
             assertTrue(player.isPlaying)
             remote.playing()
             assertFalse(player.isPlaying)
@@ -42,6 +42,8 @@ class CastPlaybackTest {
             model.guideOpen = false
         }
         compose.onNodeWithTag("cast-status").assertTextEquals("Playing on Fixture receiver")
+        compose.onNodeWithTag("cast-controller").assertExists()
+        compose.onNodeWithTag("video").assertDoesNotExist()
         compose.onNodeWithTag("ch-plus").performClick()
         compose.runOnUiThread {
             assertEquals(419, model.selected?.number)
@@ -95,6 +97,68 @@ class CastPlaybackTest {
         compose.onNodeWithTag("cast-error").assertTextContains("2100", substring = true)
         compose.runOnUiThread { model.request(TuneTarget.Number(419)); remote.playing() }
         compose.onNodeWithTag("cast-status").assertTextEquals("Playing on Fixture receiver")
+        compose.onNodeWithTag("cast-controller").assertExists()
+        compose.onNodeWithTag("video").assertDoesNotExist()
+    }
+    @Test fun controllerRequiresConfirmationAndGuideShowsOneTimeoutWithLocalRecovery() {
+        ready()
+        compose.runOnUiThread { model.guideOpen=false; remote.connect(model.selected!!);remote.accept() }
+        compose.onNodeWithTag("cast-controller").assertDoesNotExist()
+        compose.onNodeWithTag("video").assertExists()
+        compose.runOnUiThread { remote.playing() }
+        compose.onNodeWithTag("cast-controller").assertExists()
+        compose.onNodeWithTag("video").assertDoesNotExist()
+        compose.onNodeWithTag("guide-toggle").performClick()
+        compose.onNodeWithTag("guide-panel").assertIsDisplayed()
+        compose.onNodeWithTag("channel-419").performClick()
+        compose.runOnUiThread { remote.timeout() }
+        compose.onAllNodesWithText(CastDiagnostics.failure(CastLoadFailure.TIMEOUT)).assertCountEquals(1)
+        compose.onNodeWithTag("video").assertExists()
+        compose.runOnUiThread { assertFalse(model.failed.containsKey(419)) }
+    }
+    @Test fun stopControllerRestoresLocalVideoAndBackgroundDoesNotPauseReceiver() {
+        ready()
+        compose.runOnUiThread { model.guideOpen=false;remote.connect(model.selected!!);remote.playing();model.pause();model.resume() }
+        compose.onNodeWithTag("cast-controller").assertExists()
+        compose.runOnUiThread { assertFalse(model.player.isPlaying); assertTrue(model.castPlayback.ownsPlayback) }
+        compose.onNodeWithTag("stop-casting").performScrollTo().performClick()
+        compose.onNodeWithTag("cast-controller").assertDoesNotExist()
+        compose.onNodeWithTag("video").assertExists()
+        compose.waitUntil(30000) { compose.runOnUiThread { model.playing } }
+    }
+    @Test fun controllerRemainsUsableInPortraitAndLandscape() {
+        ready()
+        compose.runOnUiThread { model.guideOpen=false;remote.connect(model.selected!!);remote.playing() }
+        try {
+            for ((name,orientation) in listOf("portrait" to android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
+                    "landscape" to android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)) {
+                compose.runOnUiThread { compose.activity.requestedOrientation=orientation }
+                compose.waitForIdle()
+                compose.onNodeWithTag("cast-controller").assertExists()
+                compose.onNodeWithTag("video").assertDoesNotExist()
+                compose.onNodeWithTag("guide-toggle").performScrollTo().assertIsDisplayed()
+                val instrumentation=androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
+                val target=java.io.File(instrumentation.targetContext.getExternalFilesDir(null),"cast-screenshots/$name.png")
+                target.parentFile!!.mkdirs()
+                instrumentation.uiAutomation.takeScreenshot().let { bitmap ->
+                    target.outputStream().use { bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG,100,it) };bitmap.recycle()
+                }
+                compose.onNodeWithTag("stop-casting").performScrollTo().assertIsDisplayed()
+            }
+        } finally { compose.runOnUiThread { compose.activity.requestedOrientation=android.content.pm.ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED } }
+    }
+    @Test fun supportedRemoteControlsReflectPausedMutedAndBufferingState() {
+        ready()
+        compose.runOnUiThread { model.guideOpen=false;remote.connect(model.selected!!);remote.playing() }
+        compose.onNodeWithText("Pause").performScrollTo().performClick()
+        compose.onNodeWithTag("cast-status").assertTextEquals("Paused on Fixture receiver")
+        compose.onNodeWithText("Mute").performScrollTo().performClick()
+        compose.onNodeWithText("Unmute").assertExists()
+        compose.onNodeWithText("Play").performClick()
+        compose.runOnUiThread { remote.buffering() }
+        compose.onNodeWithTag("cast-controller").assertExists()
+        compose.onNodeWithTag("video").assertDoesNotExist()
+        compose.onNodeWithTag("cast-status").assertTextEquals("Buffering on Fixture receiver…")
     }
     @Test fun actualSdkEnvelopeUsesResolvedHlsLiveUrlAndChannelMetadata() {
         compose.runOnUiThread {

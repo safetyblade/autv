@@ -39,7 +39,7 @@ jobs:
           arch: x86_64
           disable-animations: true
           script: |
-            gradle -p android -PautvMediaLab=false :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.CastPlaybackTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.SettingsScreenshotsTest -Pandroid.testInstrumentationRunnerArguments.autvScreenshotPhase=before; result=$?; adb pull /sdcard/Android/data/dev.prestwich.autv/files/settings-screenshots settings-screenshots; exit $result
+            gradle -p android -PautvMediaLab=false :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.CastPlaybackTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.SettingsScreenshotsTest -Pandroid.testInstrumentationRunnerArguments.autvScreenshotPhase=before; result=$?; adb pull /sdcard/Android/data/dev.prestwich.autv/files/settings-screenshots settings-screenshots; adb pull /sdcard/Android/data/dev.prestwich.autv/files/cast-screenshots cast-screenshots; exit $result
       - name: Verify packaged application identity and television launcher
         run: python3 scripts/verify-full-app-apk.py android/app/build/outputs/apk/full-app/AUTV-Full-App-Debug.apk --output AUTV-Full-App-manifest.txt
       - uses: actions/upload-artifact@v4
@@ -50,6 +50,8 @@ jobs:
             android/app/build/outputs/apk/full-app/AUTV-Full-App-Debug.apk
             AUTV-Full-App-manifest.txt
             settings-screenshots/**
+            cast-screenshots/**
+            android/**/build/reports/tests/testDebugUnitTest/**
             android/app/build/reports/androidTests/connected/debug/**
           if-no-files-found: error
           retention-days: 30

@@ -51,6 +51,8 @@ import com.google.android.gms.cast.framework.CastContext
 import dev.prestwich.autv.data.*
 import dev.prestwich.autv.guide.FavouriteIdentity
 import dev.prestwich.autv.guide.GuideBrowse
+import dev.prestwich.autv.guide.CastPhase
+import dev.prestwich.autv.guide.CastPlayback
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -76,12 +78,15 @@ internal fun AuTvScreen(
     castPlayback: dev.prestwich.autv.guide.CastPlayback = dev.prestwich.autv.guide.CastPlayback(),
     favourites: Set<String> = emptySet(), onFavourite: (Channel) -> Unit = {},
     onOpenSettings: () -> Unit = {},
+    onCastPause: () -> Unit = {}, onCastMute: () -> Unit = {},
+    onCastVolume: (Float) -> Unit = {}, onStopCasting: () -> Unit = {}, onRetryCasting: () -> Unit = {},
     onPlayerViewAttached: (PlayerView?) -> Unit = {},
     onPlayerViewReleased: (PlayerView) -> Unit = {},
 ) {
     val categories = remember(guide) { listOf("All", "Favourites") + GuideBrowse.categories.drop(1) +
         if (guide?.channels?.any { it.providerChannel != null } == true) listOf("Australian TV") else emptyList() }
     val isTv = LocalConfiguration.current.uiMode and Configuration.UI_MODE_TYPE_MASK == Configuration.UI_MODE_TYPE_TELEVISION
+    val remoteController = !isTv && castPlayback.ownsPlayback
     val landscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
     val keyboardOpen = guideOpen && !isTv && WindowInsets.isImeVisible
     val keyboard = LocalSoftwareKeyboardController.current
@@ -159,19 +164,19 @@ internal fun AuTvScreen(
     }
     LaunchedEffect(Unit) { while (true) { now = System.currentTimeMillis(); delay(15_000) } }
     LaunchedEffect(windowFocused) { if (windowFocused) wake() }
-    LaunchedEffect(guideOpen, interaction, selected?.number, buffering, failed[selected?.number], castPlayback.phase) {
+    LaunchedEffect(guideOpen, interaction, selected?.number, buffering, failed[selected?.number], castPlayback.phase, remoteController) {
         chrome = true
-        if (!guideOpen) { delay(3_500); chrome = false }
+        if (!guideOpen && !remoteController) { delay(3_500); chrome = false }
     }
     LaunchedEffect(chrome, guideOpen, pictureInPicture) {
-        onChromeVisibilityChanged(!pictureInPicture && (chrome || guideOpen))
-        if (!chrome && !pictureInPicture) rootFocus.requestFocus()
+        onChromeVisibilityChanged(!pictureInPicture && (remoteController || chrome || guideOpen))
+        if (!chrome && !pictureInPicture && !remoteController) rootFocus.requestFocus()
         else if (isTv && !guideOpen && !pictureInPicture) {
             withFrameNanos { }; guideControlFocus.requestFocus()
         }
     }
     BackHandler(enabled = !pictureInPicture && (guideOpen || chrome)) {
-        if (guideOpen) { wake(); onCloseGuide() } else chrome = false
+        if (guideOpen) { wake(); onCloseGuide() } else if (!remoteController) chrome = false
     }
     LaunchedEffect(guideOpen, guide != null, pictureInPicture) {
         if (pictureInPicture || isTv) return@LaunchedEffect
@@ -260,11 +265,15 @@ internal fun AuTvScreen(
                     }
                 }
                 .focusProperties { canFocus = !guideOpen && !pictureInPicture }.focusRequester(rootFocus).focusable().testTag("app-root")) {
-                AndroidView(factory = { ctx -> PlayerView(ctx).apply {
+                if (!remoteController) AndroidView(factory = { ctx -> PlayerView(ctx).apply {
                     this.player = player; useController = false; isFocusable = false; isFocusableInTouchMode = false
                     descendantFocusability = android.view.ViewGroup.FOCUS_BLOCK_DESCENDANTS
                 } }, update = { it.player = player; onPlayerViewAttached(it) }, onRelease = { onPlayerViewReleased(it); it.player = null }, modifier = Modifier.fillMaxSize().testTag("video"))
-                if (!pictureInPicture) AnimatedVisibility(visible = chrome || guideOpen, enter = fadeIn(tween(180)), exit = fadeOut(tween(250))) {
+                if (remoteController && !pictureInPicture && !guideOpen) CastController(
+                    castPlayback, selected, epg.at(selected, now), now, playable,
+                    onPrevious, onNext, onOpenGuide, onOpenSettings, onCastPause, onCastMute,
+                    onCastVolume, onStopCasting)
+                if (!pictureInPicture) AnimatedVisibility(visible = (!remoteController && chrome) || guideOpen, enter = fadeIn(tween(180)), exit = fadeOut(tween(250))) {
                     Box(Modifier.fillMaxSize().testTag("chrome")) {
                         Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Ink.copy(alpha = 0.82f), Color.Transparent, Ink.copy(alpha = 0.92f)))))
                         Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing).padding(horizontal = if (isTv) 32.dp else 12.dp)) {
@@ -274,9 +283,8 @@ internal fun AuTvScreen(
                                     Text("AUTV", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                                     if (castPlayback.phase != dev.prestwich.autv.guide.CastPhase.DISCONNECTED) Text(
                                         when (castPlayback.phase) {
-                                            dev.prestwich.autv.guide.CastPhase.CONNECTED -> "Connected to ${castPlayback.receiver}"
-                                            dev.prestwich.autv.guide.CastPhase.LOAD_REQUESTED -> "Sending to ${castPlayback.receiver}…"
-                                            dev.prestwich.autv.guide.CastPhase.LOAD_ACCEPTED -> "Starting on ${castPlayback.receiver}…"
+                                            dev.prestwich.autv.guide.CastPhase.CONNECTING -> "Connecting to ${castPlayback.receiver}…"
+                                            dev.prestwich.autv.guide.CastPhase.LOADING -> "Loading on ${castPlayback.receiver}…"
                                             dev.prestwich.autv.guide.CastPhase.BUFFERING -> "Buffering on ${castPlayback.receiver}…"
                                             dev.prestwich.autv.guide.CastPhase.PLAYING -> "Playing on ${castPlayback.receiver}"
                                             dev.prestwich.autv.guide.CastPhase.PAUSED -> "Paused on ${castPlayback.receiver}"
@@ -319,7 +327,10 @@ internal fun AuTvScreen(
                                     Spacer(Modifier.height(12.dp))
                                     ProgrammeInfo(epg.at(selected, now), now)
                                     if (buffering) Text("Connecting…", color = Muted, style = MaterialTheme.typography.labelSmall)
-                                    castPlayback.error?.let { Text(it, color = Color(0xFFD8B3AD), style = MaterialTheme.typography.bodySmall, modifier = Modifier.testTag("cast-error")) }
+                                    castPlayback.error?.let {
+                                        Text(it, color = Color(0xFFD8B3AD), style = MaterialTheme.typography.bodySmall, modifier = Modifier.testTag("cast-error"))
+                                        Row { TextButton(onClick = onRetryCasting) { Text("Retry casting") }; TextButton(onClick = onStopCasting) { Text("Play locally") } }
+                                    }
                                     failed[selected?.number]?.let { Text("Could not play this channel. Select it in the guide to retry.", color = Color(0xFFD8B3AD), style = MaterialTheme.typography.bodySmall) }
                                 }
                                 if (guideOpen && !isTv) {
@@ -340,8 +351,13 @@ internal fun AuTvScreen(
                                                 FocusButton("Close", { wake(); onCloseGuide() }, Modifier.focusRequester(closeFocus)
                                                     .focusProperties { down = rowTarget; left = searchFocus }.semantics { contentDescription = "Close channel guide" }.testTag("close-guide"))
                                             }
-                                            notice?.let { Text(it, color = Muted, style = MaterialTheme.typography.bodySmall) }
-                                            castPlayback.error?.let { Text(it, color = Color(0xFFD8B3AD), style = MaterialTheme.typography.bodySmall) }
+                                            (castPlayback.error ?: notice)?.let {
+                                                Text(it, color = Muted, style = MaterialTheme.typography.bodySmall, modifier = Modifier.testTag("guide-notice"))
+                                            }
+                                            if (castPlayback.phase == CastPhase.FAILED) Row {
+                                                TextButton(onClick = onRetryCasting) { Text("Retry casting") }
+                                                TextButton(onClick = onStopCasting) { Text("Play locally") }
+                                            }
                                             if (compact) Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                                                 BasicTextField(value = query, onValueChange = { query = it; wake() },
                                                     singleLine = true, textStyle = MaterialTheme.typography.bodyMedium.copy(color = WarmWhite), cursorBrush = androidx.compose.ui.graphics.SolidColor(Silver),
@@ -414,6 +430,69 @@ internal fun AuTvScreen(
                     onTune = { wake(); onSelect(it) }, onFullTune = { wake(); onFullSelect(it) }, onClose = { wake(); onCloseGuide() }, onRetry = onRetry, loadError = loadError, favourites = favourites, onFavourite = onFavourite)
             }
         }
+    }
+}
+
+/** No PlayerView in this subtree: remote ownership removes the local renderer completely. */
+@Composable
+private fun CastController(state: CastPlayback, channel: Channel?, schedule: NowNext, now: Long,
+    playable: Boolean, previous: () -> Unit, next: () -> Unit, guide: () -> Unit, settings: () -> Unit,
+    pause: () -> Unit, mute: () -> Unit, volume: (Float) -> Unit, stop: () -> Unit) {
+    val status = when (state.phase) {
+        CastPhase.PLAYING -> "Playing on ${state.receiver}"
+        CastPhase.PAUSED -> "Paused on ${state.receiver}"
+        CastPhase.BUFFERING -> "Buffering on ${state.receiver}…"
+        else -> "Loading on ${state.receiver}…"
+    }
+    Column(Modifier.fillMaxSize().background(Ink).windowInsetsPadding(WindowInsets.safeDrawing)
+        .verticalScroll(rememberScrollState()).padding(16.dp).testTag("cast-controller"),
+        verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Image(painterResource(R.drawable.autv_logo), "AUTV logo", Modifier.size(36.dp))
+            Text("AUTV", Modifier.weight(1f).padding(start = 10.dp), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+            TextButton(onClick = settings, modifier = Modifier.heightIn(min = 48.dp)) { Text("Settings") }
+        }
+        Text(status, color = Silver, modifier = Modifier.testTag("cast-status"))
+        if (state.phase !in setOf(CastPhase.PLAYING, CastPhase.PAUSED)) {
+            LinearProgressIndicator(Modifier.fillMaxWidth())
+            Text("Waiting for the receiver. Playback returns here if it cannot continue.", color = Muted, style = MaterialTheme.typography.bodySmall)
+        }
+        Surface(color = Glass, shape = RoundedCornerShape(16.dp)) {
+            Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    ChannelLogo(channel, Modifier.size(56.dp))
+                    Column(Modifier.weight(1f).padding(start = 12.dp)) {
+                        Text("Channel ${channel?.numberLabel.orEmpty()} · LIVE", color = Silver, style = MaterialTheme.typography.labelLarge)
+                        Text(channel?.name.orEmpty(), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.testTag("cast-channel"))
+                    }
+                }
+                Text(schedule.now?.title ?: "Live television", style = MaterialTheme.typography.titleMedium)
+                schedule.now?.let {
+                    Text("${clock(it.start)} – ${clock(it.stop)}", color = Muted)
+                    val progress = ((now-it.start).toFloat()/(it.stop-it.start).coerceAtLeast(1)).coerceIn(0f, 1f)
+                    LinearProgressIndicator(progress = { progress }, modifier = Modifier.fillMaxWidth().testTag("programme-progress"))
+                }
+                Text(schedule.next?.let { "Next ${clock(it.start)} · ${it.title}" } ?: "Next programme unavailable", color = Muted)
+            }
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedButton(previous, Modifier.weight(1f).heightIn(min = 48.dp).semantics { contentDescription = "Previous channel" }.testTag("ch-minus"), enabled = playable) { Text("CH −") }
+            OutlinedButton(guide, Modifier.weight(1f).heightIn(min = 48.dp).semantics { contentDescription = "Open channel guide" }.testTag("guide-toggle")) { Text("Guide") }
+            OutlinedButton(next, Modifier.weight(1f).heightIn(min = 48.dp).semantics { contentDescription = "Next channel" }.testTag("ch-plus"), enabled = playable) { Text("CH +") }
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            if (state.canPause) OutlinedButton(pause, Modifier.heightIn(min = 48.dp), enabled = state.phase in setOf(CastPhase.PLAYING, CastPhase.PAUSED)) {
+                Text(if (state.phase == CastPhase.PAUSED) "Play" else "Pause")
+            }
+            if (state.canMute) OutlinedButton(mute, Modifier.heightIn(min = 48.dp)) { Text(if (state.muted) "Unmute" else "Mute") }
+        }
+        if (state.canVolume) {
+            Text("Receiver volume", color = Muted)
+            Slider(value = state.volume, onValueChange = volume,
+                modifier = Modifier.fillMaxWidth().semantics { contentDescription = "Receiver volume" })
+        }
+        OutlinedButton(stop, Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("stop-casting")) { Text("Stop casting · play locally") }
     }
 }
 
