@@ -30,6 +30,8 @@ class SettingsScreenshotsTest {
         instrumentation.uiAutomation.takeScreenshot().let { bitmap ->
             target.outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG,100,it) }; bitmap.recycle()
         }
+        shell("mkdir -p /sdcard/Download/autv-settings-screenshots")
+        shell("cp ${target.absolutePath} /sdcard/Download/autv-settings-screenshots/$phase-$name.png")
     }
     @Test fun phoneAndTelevisionSettingsAndActivation() {
         try {
@@ -38,6 +40,7 @@ class SettingsScreenshotsTest {
                 shell("wm size $size");shell("wm density $density");SystemClock.sleep(1000)
                 ActivationFixture.reset()
                 val tv=name.startsWith("tv")
+                ProviderScreenshotActivity.television=tv
                 val intent=Intent(instrumentation.targetContext,ProviderScreenshotActivity::class.java).putExtra("tv",tv)
                 ActivityScenario.launch<ProviderScreenshotActivity>(intent).use { scenario ->
                     ui.onNodeWithTag("settings-button").performClick()
@@ -63,6 +66,6 @@ class SettingsScreenshotsTest {
                     scenario.onActivity { it.playback.disconnectNineNow() }
                 }
             }
-        } finally { shell("wm size reset");shell("wm density reset");ActivationFixture.reset() }
+        } finally { shell("wm size reset");shell("wm density reset");ActivationFixture.reset();ProviderScreenshotActivity.television=false }
     }
 }

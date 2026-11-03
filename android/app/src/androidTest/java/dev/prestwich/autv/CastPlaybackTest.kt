@@ -110,6 +110,7 @@ class CastPlaybackTest {
         compose.onNodeWithTag("video").assertDoesNotExist()
         compose.onNodeWithTag("guide-toggle").performClick()
         compose.onNodeWithTag("guide-panel").assertIsDisplayed()
+        compose.onNodeWithTag("guide-list").performScrollToNode(hasTestTag("channel-419"))
         compose.onNodeWithTag("channel-419").performClick()
         compose.runOnUiThread { remote.timeout() }
         compose.onAllNodesWithText(CastDiagnostics.failure(CastLoadFailure.TIMEOUT)).assertCountEquals(1)
@@ -146,6 +147,14 @@ class CastPlaybackTest {
                 target.parentFile!!.mkdirs()
                 instrumentation.uiAutomation.takeScreenshot().let { bitmap ->
                     target.outputStream().use { bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG,100,it) };bitmap.recycle()
+                }
+                // Gradle may uninstall the test target after a run. Preserve images
+                // outside its external-files directory before that cleanup happens.
+                for (command in listOf("mkdir -p /sdcard/Download/autv-cast-screenshots",
+                        "cp ${target.absolutePath} /sdcard/Download/autv-cast-screenshots/$name.png")) {
+                    instrumentation.uiAutomation.executeShellCommand(command).use { descriptor ->
+                        android.os.ParcelFileDescriptor.AutoCloseInputStream(descriptor).use { it.readBytes() }
+                    }
                 }
                 compose.onNodeWithTag("stop-casting").performScrollTo().assertIsDisplayed()
             }
