@@ -1257,3 +1257,17 @@ https://jmp2.uk/plu-694178a8026be6e9d3ea7d7a.m3u8
 https://jmp2.uk/plu-69b422590306b277746f48cb.m3u8
 #EXTINF:-1 group-title="Kids & Animation" tvg-chno="1233" tvg-id="5c5c2b9d8002db3c3e0b1c6d" tvg-name="Pluto TV Retro Toons",Pluto TV Retro Toons
 https://jmp2.uk/plu-5c5c2b9d8002db3c3e0b1c6d.m3u8
+#EXTINF:-1 group-title="News" tvg-chno="106" tvg-id="66c45afaa72e7b0008a2b153" tvg-name="CNNi",CNNi
+https://jmp2.uk/plu-66c45afaa72e7b0008a2b153.m3u8
+#EXTINF:-1 group-title="Sport" tvg-chno="279" tvg-id="613763" tvg-name="Stadium",Stadium
+https://live-manifest.production-public.tubi.io/live/30fec756-4948-4ecb-98ae-2fda1cd0ee95/playlist.m3u8
+#EXTINF:-1 group-title="Crime" tvg-chno="506" tvg-id="650315163a0d700008bb07f8" tvg-name="Criminal Confessions",Criminal Confessions
+https://jmp2.uk/plu-650315163a0d700008bb07f8.m3u8
+#EXTINF:-1 group-title="Entertainment" tvg-chno="716" tvg-id="688735087b2cf33d01a2d411" tvg-name="Sea Patrol",Sea Patrol
+https://jmp2.uk/plu-688735087b2cf33d01a2d411.m3u8
+#EXTINF:-1 group-title="Entertainment" tvg-chno="764" tvg-id="6462190b7cb4b1000862dd60" tvg-name="Pluto TV Alien Invasion",Pluto TV Alien Invasion
+https://jmp2.uk/plu-6462190b7cb4b1000862dd60.m3u8
+#EXTINF:-1 group-title="Reality & Lifestyle" tvg-chno="1030" tvg-id="677011" tvg-name="Gordon Ramsay",Gordon Ramsay
+https://live-manifest.production-public.tubi.io/live/329f14a6-aa88-4a92-a7ee-6a44b8b1b96c/playlist.m3u8
+#EXTINF:-1 group-title="Reality & Lifestyle" tvg-chno="1045" tvg-id="700407" tvg-name="GARDEN with Monty Don",GARDEN with Monty Don
+https://live-manifest.production-public.tubi.io/live/d91152d3-557b-4e9e-a7b9-73e0246f826d/playlist.m3u8

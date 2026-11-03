@@ -10,7 +10,7 @@
     "guide": "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
   },
   "activeCount": 636,
-  "availableCount": 629,
+  "availableCount": 636,
   "channels": [
     {
       "number": 100,
@@ -91,9 +91,9 @@
       "subgenre": "International",
       "description": "Rolling news, current affairs, weather or business coverage.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-66c45afaa72e7b0008a2b153.m3u8",
+      "tvgId": "66c45afaa72e7b0008a2b153",
       "logoUrl": null
     },
     {
@@ -1243,9 +1243,9 @@
       "subgenre": "General Sports",
       "description": "Sports FAST channel featuring live events, archive coverage, highlights or sports programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://live-manifest.production-public.tubi.io/live/30fec756-4948-4ecb-98ae-2fda1cd0ee95/playlist.m3u8",
+      "tvgId": "613763",
       "logoUrl": null
     },
     {
@@ -2191,9 +2191,9 @@
       "subgenre": "True Crime / Investigations",
       "description": "Crime, investigation, court, mystery or forensic programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-650315163a0d700008bb07f8.m3u8",
+      "tvgId": "650315163a0d700008bb07f8",
       "logoUrl": null
     },
     {
@@ -3379,9 +3379,9 @@
       "subgenre": "Drama & Action Series",
       "description": "General entertainment FAST channel with mixed or broad programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-688735087b2cf33d01a2d411.m3u8",
+      "tvgId": "688735087b2cf33d01a2d411",
       "logoUrl": null
     },
     {
@@ -3955,9 +3955,9 @@
       "subgenre": "Sci-Fi / Fantasy / Cult",
       "description": "General entertainment FAST channel with mixed or broad programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-6462190b7cb4b1000862dd60.m3u8",
+      "tvgId": "6462190b7cb4b1000862dd60",
       "logoUrl": null
     },
     {
@@ -5311,9 +5311,9 @@
       "subgenre": "Food & Cooking",
       "description": "Gordon Ramsay-focused FAST channel featuring food, competition and reality programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://live-manifest.production-public.tubi.io/live/329f14a6-aa88-4a92-a7ee-6a44b8b1b96c/playlist.m3u8",
+      "tvgId": "677011",
       "logoUrl": null
     },
     {
@@ -5491,9 +5491,9 @@
       "subgenre": "Home / Property / Garden",
       "description": "Lifestyle, food, home, garden, travel or renovation programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://live-manifest.production-public.tubi.io/live/d91152d3-557b-4e9e-a7b9-73e0246f826d/playlist.m3u8",
+      "tvgId": "700407",
       "logoUrl": null
     },
     {
