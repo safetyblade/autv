@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
     paths:
+      # Any newly approved curated source must be published promptly, not await the six-hourly refresh.
+      - custom.m3u
+      - channel_guide.csv
       - scripts/restore_missing_curated.py
       - .github/workflows/publish-curated-recovery.yml
 
