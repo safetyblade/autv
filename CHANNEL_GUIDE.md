@@ -6,23 +6,23 @@ The authoritative data lives in `channel_guide.csv`. The generated playlist is r
 
 ## Current guide snapshot
 
-The current authoritative guide contains **643 active channels**.
+As of 3 November 2026, the current authoritative FAST/IPTV guide contains **636 active FAST/IPTV channels**.
 
 | Genre | Active channels |
 | --- | ---: |
 | News | 24 |
 | Sport | 95 |
-| Movies | 37 |
+| Movies | 36 |
 | Game Shows | 20 |
-| Crime | 46 |
-| Comedy | 45 |
+| Crime | 45 |
+| Comedy | 44 |
 | Entertainment | 147 |
 | Reality & Lifestyle | 91 |
 | Factual | 55 |
-| Kids & Animation | 51 |
+| Kids & Animation | 50 |
 | Music | 29 |
 
-This is the intended lineup. The generated playlist may temporarily contain fewer channels if an approved upstream feed is unavailable.
+This excludes app-native Australian TV provider channels, which must be reconciled separately. This is the intended FAST/IPTV lineup. The generated playlist may temporarily contain fewer channels if an approved upstream feed is unavailable.
 
 ## Canonical channel blocks
 

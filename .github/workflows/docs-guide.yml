@@ -1,0 +1,32 @@
+name: Build AUTV Word TV Guide
+
+on:
+  pull_request:
+    paths:
+      - "channel_guide.csv"
+      - "docs/australian_tv_channels.csv"
+      - "scripts/build_tv_guide.py"
+      - ".github/workflows/docs-guide.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-word-guide:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Word exporter
+        run: python -m pip install python-docx==1.2.0
+      - name: Generate Word guide
+        run: python scripts/build_tv_guide.py AUTV_TV_Guide.docx
+      - name: Upload review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AUTV-TV-Guide-Word
+          path: AUTV_TV_Guide.docx
+          if-no-files-found: error
