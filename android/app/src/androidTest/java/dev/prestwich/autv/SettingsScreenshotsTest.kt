@@ -10,36 +10,43 @@ import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
-import java.io.File
 import kotlin.math.abs
 
 /** Rendered Android UI with synthetic activation only; never broadcaster playback evidence. */
+@androidx.test.filters.SdkSuppress(minSdkVersion=29)
 @OptIn(ExperimentalTestApi::class)
 class SettingsScreenshotsTest {
     @get:Rule val ui = createEmptyComposeRule()
     private val instrumentation get() = InstrumentationRegistry.getInstrumentation()
     private val phase get() = InstrumentationRegistry.getArguments().getString("autvScreenshotPhase", "after")
     private fun shell(command: String): String {
-        // API 29 uses Runtime.exec, not a shell: redirection/pipes need an explicit script.
-        // Base64 keeps the script a single argument without shell-quoting ambiguities.
-        val encoded=android.util.Base64.encodeToString(command.toByteArray(),android.util.Base64.NO_WRAP)
-        val script="echo\${IFS}$encoded|base64\${IFS}-d|sh"
-        return instrumentation.uiAutomation.executeShellCommand("sh -c $script").use { descriptor ->
+        return instrumentation.uiAutomation.executeShellCommand(command).use { descriptor ->
             android.os.ParcelFileDescriptor.AutoCloseInputStream(descriptor).use { it.readBytes().toString(Charsets.UTF_8) }
         }
     }
     private fun screenshot(name: String) {
-        val target=File(instrumentation.targetContext.filesDir,"settings-screenshots/$phase-$name.png")
-        target.parentFile!!.mkdirs()
-        instrumentation.uiAutomation.takeScreenshot().let { bitmap ->
-            target.outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG,100,it) }; bitmap.recycle()
+        val resolver=instrumentation.targetContext.contentResolver
+        val values=android.content.ContentValues().apply {
+            put(android.provider.MediaStore.Images.Media.DISPLAY_NAME,"$phase-$name.png")
+            put(android.provider.MediaStore.Images.Media.MIME_TYPE,"image/png")
+            put(android.provider.MediaStore.Images.Media.RELATIVE_PATH,"Pictures/AUTV-settings-screenshots")
+            put(android.provider.MediaStore.Images.Media.IS_PENDING,1)
         }
-        if(name=="phone-activation") println("AUTV_UI_CAPTURE:"+android.util.Base64.encodeToString(target.readBytes(),android.util.Base64.NO_WRAP))
-        // AGP removes the debug application after instrumentation. Export while run-as
-        // still works; shell-owned Download files survive that uninstall.
-        shell("mkdir -p /sdcard/Download/autv-settings-screenshots")
-        val exported=shell("run-as dev.prestwich.autv cat files/settings-screenshots/$phase-$name.png > /sdcard/Download/autv-settings-screenshots/$phase-$name.png; wc -c < /sdcard/Download/autv-settings-screenshots/$phase-$name.png")
-        check((exported.trim().toLongOrNull() ?: 0)>0) { "Screenshot export failed for $name" }
+        val uri=checkNotNull(resolver.insert(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values))
+        val bitmap=instrumentation.uiAutomation.takeScreenshot()
+        try {
+            val expected=when {
+                name.startsWith("phone") -> 1080 to 1920
+                name.startsWith("tv-1080p") -> 1920 to 1080
+                name.startsWith("tv-4k") -> 3840 to 2160
+                else -> 1280 to 720
+            }
+            assertEquals("Screenshot width for $name",expected.first,bitmap.width)
+            assertEquals("Screenshot height for $name",expected.second,bitmap.height)
+            checkNotNull(resolver.openOutputStream(uri)).use { check(bitmap.compress(Bitmap.CompressFormat.PNG,100,it)) }
+            resolver.update(uri,android.content.ContentValues().apply {put(android.provider.MediaStore.Images.Media.IS_PENDING,0)},null,null)
+            checkNotNull(resolver.openInputStream(uri)).use { check(it.read()>0) {"Empty screenshot for $name"} }
+        } finally {bitmap.recycle()}
     }
     @Test fun phoneAndTelevisionSettingsAndActivation() {
         val requested=InstrumentationRegistry.getArguments().getString("autvScreenshotDevice")

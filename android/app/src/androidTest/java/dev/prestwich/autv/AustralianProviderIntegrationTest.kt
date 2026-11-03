@@ -38,7 +38,7 @@ class AustralianProviderIntegrationTest {
         ui.onNodeWithTag("activation-code").performScrollTo().assertTextEquals("TV123")
         ui.runOnIdle { ui.activity.ten.approved=true }
         ui.waitUntil(30000) { !account("ten").busy && account("ten").connection==ProviderConnection.CONNECTED }
-        ui.onNodeWithTag("close-settings").performScrollTo().performClick()
+        ui.onNodeWithTag("close-settings").performClick()
         tune("ten")
         val selected=channel("ten");val identity=FavouriteIdentity.key(selected)!!
         ui.runOnIdle {
