@@ -110,8 +110,11 @@ class CastPlaybackTest {
         compose.onNodeWithTag("video").assertDoesNotExist()
         compose.onNodeWithTag("guide-toggle").performClick()
         compose.onNodeWithTag("guide-panel").assertIsDisplayed()
-        compose.onNodeWithTag("guide-list").performScrollToNode(hasTestTag("channel-419"))
-        compose.onNodeWithTag("channel-419").performClick()
+        compose.onNodeWithTag("guide-categories").performScrollToNode(hasTestTag("category-All"))
+        compose.onNodeWithTag("category-All").performClick()
+        val channel=hasContentDescription("419 Fixture Ink Master",substring=true)
+        compose.onNodeWithTag("guide-list").performScrollToNode(channel)
+        compose.onNode(channel).performClick()
         compose.runOnUiThread { remote.timeout() }
         compose.onAllNodesWithText(CastDiagnostics.failure(CastLoadFailure.TIMEOUT)).assertCountEquals(1)
         compose.onNodeWithTag("video").assertExists()

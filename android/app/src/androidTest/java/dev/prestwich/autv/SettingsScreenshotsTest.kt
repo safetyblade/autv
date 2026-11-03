@@ -44,6 +44,11 @@ class SettingsScreenshotsTest {
                 val intent=Intent(instrumentation.targetContext,ProviderScreenshotActivity::class.java).putExtra("tv",tv)
                 ActivityScenario.launch<ProviderScreenshotActivity>(intent).use { scenario ->
                     ui.onNodeWithTag("settings-button").performClick()
+                    ui.waitForIdle()
+                    // A restored pending activation may open its service detail. Each
+                    // screenshot starts from the same all-services screen explicitly.
+                    if(ui.onAllNodesWithTag("providers-back").fetchSemanticsNodes().isNotEmpty())
+                        ui.onNodeWithTag("providers-back").performScrollTo().performClick()
                     ui.waitForIdle();screenshot("$name-settings")
                     ui.onNodeWithTag("provider-9now").performScrollTo().performClick()
                     ui.onNodeWithTag("9now-connect").performScrollTo().performClick()
