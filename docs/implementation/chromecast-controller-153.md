@@ -63,8 +63,9 @@ No verified publicly accessible, authorised AU alternate was established.
 - Bounded manifest reading fixes partial InputStream reads. Public HLS diagnostics
   sample one variant and up to 1024 bytes of one segment, follow bounded safe
   redirects and report MIME, codec families, encryption method and container.
-  Variant EXT-X-MAP can supply fMP4 hints while the receiver still gets the master
-  URL. Child probe failure is evidence only and does not reject an accepted master.
+  Child probes run after submitting LOAD so they cannot delay a working channel.
+  Master EXT-X-MAP retains the existing fMP4 hint behavior; variant observations
+  are diagnostic only. Child probe failure does not reject an accepted master.
   The app never tries to bypass encryption or export account-bound media.
 - Logcat `AUTV.Cast` uses channel/ticket, phase, redirect count/host, numeric HTTP
   and SDK results, matched status, receiver errors and elapsed time. Raw media URLs,

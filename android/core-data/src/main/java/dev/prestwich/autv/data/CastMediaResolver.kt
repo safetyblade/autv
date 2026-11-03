@@ -9,7 +9,8 @@ import java.net.URI
 import java.util.concurrent.TimeUnit
 
 /** Ephemeral public media description; never include stream/session URLs in diagnostics. */
-class CastMediaSource(val url: String,val mimeType: String,val live: Boolean,val fragmentedMp4: Boolean=false) {
+class CastMediaSource(val url: String,val mimeType: String,val live: Boolean,val fragmentedMp4: Boolean=false,
+    internal val manifest: ByteArray=byteArrayOf()) {
     override fun toString()="CastMediaSource(redacted)"
 }
 enum class CastLoadFailure { URL_UNAVAILABLE, UNSUPPORTED_FORMAT, SENDER_REQUIREMENTS, RECEIVER_REJECTED, TIMEOUT, REMOTE_STOPPED }
@@ -20,8 +21,8 @@ class CastMediaException(val kind: CastLoadFailure,val status: Int?=null): Excep
  */
 class CastMediaResolver internal constructor(private val client: OkHttpClient,
     private val inspectHls: Boolean = false, private val report: (String) -> Unit = {}) {
-    constructor(): this(transport, true)
-    constructor(report: (String) -> Unit): this(transport, true, report)
+    constructor(): this(transport)
+    constructor(report: (String) -> Unit): this(transport, false, report)
     @Volatile private var active: Call?=null
     @Volatile private var cancelled=false
     fun cancel() { cancelled=true;active?.cancel() }
@@ -51,7 +52,8 @@ class CastMediaResolver internal constructor(private val client: OkHttpClient,
                         val body=response.body ?: throw CastMediaException(CastLoadFailure.UNSUPPORTED_FORMAT)
                         // A single InputStream.read can return only a partial tag/manifest.
                         val bytes=body.byteStream().takeBytes(65_536)
-                        val source=describe(original,address,response.header("Content-Type"),bytes)
+                        val description=describe(original,address,response.header("Content-Type"),bytes)
+                        val source=CastMediaSource(description.url,description.mimeType,description.live,description.fragmentedMp4,bytes)
                         report("stage=format mime=${source.mimeType} container=${if(source.fragmentedMp4) "fmp4" else "unknown"}")
                         return if(inspectHls && source.mimeType=="application/x-mpegURL") inspect(source,bytes) else source
                     }
@@ -62,6 +64,10 @@ class CastMediaResolver internal constructor(private val client: OkHttpClient,
         catch(_: Exception) { throw CastMediaException(CastLoadFailure.URL_UNAVAILABLE) }
         finally { active=null }
         throw CastMediaException(CastLoadFailure.URL_UNAVAILABLE)
+    }
+    /** Run after submitting LOAD: slow diagnostic children must never delay receiver startup. */
+    fun diagnose(source: CastMediaSource) {
+        if(source.mimeType=="application/x-mpegURL" && !cancelled) inspect(source,source.manifest)
     }
     /** Child probes are evidence only: never replace a master, choose a rendition, or
      * reject a working source because a sender-side sample differs from receiver access. */

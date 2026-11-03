@@ -132,6 +132,9 @@ class CastSender(private val context: Context,private val scope: CoroutineScope,
                             runCatching { remote.requestStatus() }
                         } else fail(ticket,rejection(result.status.statusCode,result.mediaError))
                     }
+                // LOAD has already been sent. Variant/segment samples are supporting
+                // evidence, never an additional startup gate or an ownership signal.
+                withContext(Dispatchers.IO) { probe.diagnose(source) }
             } catch(error: CancellationException) { throw error }
             catch(error: CastMediaException) { fail(ticket,CastDiagnostics.failure(error.kind,error.status,http=error.status!=null)) }
             catch(_: Exception) { fail(ticket,CastDiagnostics.failure(CastLoadFailure.RECEIVER_REJECTED)) }
