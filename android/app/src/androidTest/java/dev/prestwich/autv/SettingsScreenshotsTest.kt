@@ -19,11 +19,10 @@ class SettingsScreenshotsTest {
     @get:Rule val ui = createEmptyComposeRule()
     private val instrumentation get() = InstrumentationRegistry.getInstrumentation()
     private val phase get() = InstrumentationRegistry.getArguments().getString("autvScreenshotPhase", "after")
-    private fun shell(command: String) {
+    private fun shell(command: String): String =
         instrumentation.uiAutomation.executeShellCommand(command).use { descriptor ->
-            android.os.ParcelFileDescriptor.AutoCloseInputStream(descriptor).use { it.readBytes() }
+            android.os.ParcelFileDescriptor.AutoCloseInputStream(descriptor).use { it.readBytes().toString(Charsets.UTF_8) }
         }
-    }
     private fun screenshot(name: String) {
         val target=File(instrumentation.targetContext.filesDir,"settings-screenshots/$phase-$name.png")
         target.parentFile!!.mkdirs()
@@ -36,6 +35,12 @@ class SettingsScreenshotsTest {
             for ((name,size,density) in listOf(Triple("phone","1080x1920",420),Triple("tv-720p","1280x720",160),
                 Triple("tv-1080p","1920x1080",240),Triple("tv-4k","3840x2160",480),Triple("tv-720p-large-text","1280x720",160))) {
                 shell("wm size $size");shell("wm density $density");SystemClock.sleep(1000)
+                // Fail before capture if Android clamps an oversized request on a small AVD.
+                val display=shell("wm size")
+                val actualSize=Regex("(?:Physical|Override) size: ([0-9]+x[0-9]+)").findAll(display).lastOrNull()?.groupValues?.get(1)
+                assertEquals("Requested screenshot dimensions were not applied: $display",size,actualSize)
+                val actualDensity=Regex("(?:Physical|Override) density: ([0-9]+)").findAll(shell("wm density")).lastOrNull()?.groupValues?.get(1)?.toInt()
+                assertEquals("Requested screenshot density was not applied",density,actualDensity)
                 ActivationFixture.reset()
                 val tv=name.startsWith("tv")
                 ProviderScreenshotActivity.configureForScreenshot(tv, if(name.endsWith("large-text")) 1.3f else 1f)

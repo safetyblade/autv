@@ -44,6 +44,8 @@ jobs:
           api-level: 29
           arch: x86_64
           disable-animations: true
+          # Android clamps wm size to twice the native display. Cover 4K without clipping.
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -skin 1920x1080
           script: bash scripts/test-focused-android-providers.sh
       - uses: actions/upload-artifact@v4
         if: always()
