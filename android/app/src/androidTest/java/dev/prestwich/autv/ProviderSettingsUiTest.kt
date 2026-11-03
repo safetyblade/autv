@@ -18,6 +18,17 @@ class ProviderSettingsUiTest {
         ui.onNodeWithTag("provider-9now").performScrollTo().performClick()
         ui.onNodeWithTag("9now-connection-state").assertExists()
     }
+    @Test fun abcAndTenFailClosedWithoutAuthorisedClientConfiguration() {
+        ui.onNodeWithTag("settings-button").performClick()
+        ui.onNodeWithTag("provider-abc").performScrollTo().performClick()
+        ui.onNodeWithTag("abc-unavailable").assertIsDisplayed()
+        ui.onNodeWithTag("abc-connect").assertDoesNotExist()
+        ui.onNodeWithTag("providers-back").performClick()
+        ui.onNodeWithTag("provider-ten").performScrollTo().performClick()
+        ui.onNodeWithTag("ten-unavailable").assertIsDisplayed()
+        ui.onNodeWithTag("ten-connect").assertDoesNotExist()
+    }
+
     @Test fun settingsSignOutRemovesPrivateChannelsWithoutRecreatingPlayer() {
         ui.waitUntil(30_000) {
             ui.activity.playback.guide?.channels?.any { it.providerChannel != null } == true
