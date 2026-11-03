@@ -1,0 +1,46 @@
+name: Repair missing curated channel publication
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      # Any newly approved curated source must be published promptly, not await the six-hourly refresh.
+      - custom.m3u
+      - channel_guide.csv
+      - scripts/restore_missing_curated.py
+      - .github/workflows/publish-curated-recovery.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-playlist
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - name: Restore missing guide-approved curated listings
+        run: python3 scripts/restore_missing_curated.py
+      - name: Build native guide with restored channel URLs
+        run: python3 native/tools/build_guide.py
+      - name: Check owner-confirmed recoveries and report gaps
+        run: python3 scripts/monitor_channel_recovery.py
+      - name: Publish only changed playlist and native guide
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- playlist.m3u guide.json; then
+            echo "No missing approved curated channels to publish."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add playlist.m3u guide.json
+          git commit -m "chore: publish guide-approved missing curated channels"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main

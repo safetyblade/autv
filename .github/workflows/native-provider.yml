@@ -1,6 +1,8 @@
 name: AUTV Full Application Debug
 
 on:
+  push:
+    branches: [validation/issue140]
   pull_request:
     paths:
       - 'android/**'
@@ -28,20 +30,23 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.13'
+      - name: Protect owner-verified Seven implementation
+        run: python3 scripts/verify-seven-baseline.py
       - name: Compile AUTV, run critical JVM regressions and assemble full app
         run: gradle -p android -PautvMediaLab=false :core-data:testDebugUnitTest :core-guide:testDebugUnitTest :core-player:testDebugUnitTest :app:testDebugUnitTest :app:assembleFullAppDebug :app:assembleDebugAndroidTest
+      - name: Verify packaged application identity and television launcher
+        run: python3 scripts/verify-full-app-apk.py android/app/build/outputs/apk/full-app/AUTV-Full-App-Debug.apk --output AUTV-Full-App-manifest.txt
       - name: Enable KVM for focused Cast handoff checks
         run: sudo chmod 666 /dev/kvm
       - name: Focused Cast and native-playback handoff regressions
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
+          # Android 10 clamps wm dimensions to 2x the physical base; Pixel C permits real 4K frames.
+          profile: pixel_c
           arch: x86_64
           disable-animations: true
-          script: |
-            gradle -p android -PautvMediaLab=false :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.CastPlaybackTest,dev.prestwich.autv.StartupPlaybackTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.SettingsScreenshotsTest -Pandroid.testInstrumentationRunnerArguments.autvScreenshotPhase=before; result=$?; adb pull /sdcard/Download/autv-settings-screenshots settings-screenshots; adb pull /sdcard/Download/autv-cast-screenshots cast-screenshots; exit $result
-      - name: Verify packaged application identity and television launcher
-        run: python3 scripts/verify-full-app-apk.py android/app/build/outputs/apk/full-app/AUTV-Full-App-Debug.apk --output AUTV-Full-App-manifest.txt
+          script: bash scripts/test-focused-android-providers.sh
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -51,7 +56,59 @@ jobs:
             AUTV-Full-App-manifest.txt
             settings-screenshots/**
             cast-screenshots/**
-            android/**/build/reports/tests/testDebugUnitTest/**
+            android-ui-reports/**
+            android/app/build/reports/androidTests/connected/debug/**
+          if-no-files-found: error
+          retention-days: 30
+
+  before-ui:
+    if: github.head_ref == 'fix/issue140-closeout' || github.ref == 'refs/heads/validation/issue140'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ORG_GRADLE_PROJECT_autvMediaLab: "false"
+      AUTV_SCREENSHOT_PHASE: before
+      AUTV_SCREENSHOT_CLASSES: dev.prestwich.autv.SettingsScreenshotsTest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+      - name: Render original UI with the repaired screenshot harness
+        shell: bash
+        run: |
+          git restore --source=ebbf7adc37ede1a718e42bc113e4d3ecdad76c6d -- \
+            android/app/src/main/java/dev/prestwich/autv/PlayerScreen.kt \
+            android/app/src/main/java/dev/prestwich/autv/StartupSettings.kt \
+            android/app/src/main/java/dev/prestwich/autv/provider/AustralianServicesSettings.kt \
+            android/app/src/main/java/dev/prestwich/autv/provider/ProviderActivationScreen.kt \
+            android/app/src/main/res/drawable-nodpi/provider_abc.png
+          rm android/app/src/main/java/dev/prestwich/autv/AuTvTheme.kt
+          gradle -p android -PautvMediaLab=false :app:assembleDebugAndroidTest
+      - name: Enable KVM
+        run: sudo chmod 666 /dev/kvm
+      - name: Capture original phone and TV Settings
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          # Android 10 clamps wm dimensions to 2x the physical base; Pixel C permits real 4K frames.
+          profile: pixel_c
+          arch: x86_64
+          disable-animations: true
+          script: bash scripts/test-focused-android-providers.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: AUTV-Settings-Before
+          path: |
+            settings-screenshots/**
+            android-ui-reports/**
             android/app/build/reports/androidTests/connected/debug/**
           if-no-files-found: error
           retention-days: 30

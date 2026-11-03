@@ -265,3 +265,138 @@ https://jmp2.uk/plu-696e024a7e92438c27a425a8.m3u8
 # 612 Whose Line Is It Anyway? — Pluto UK ID 672cb91149c40600081cbee5.
 #EXTINF:-1 tvg-id="672cb91149c40600081cbee5" tvg-name="Whose Line Is It Anyway?" group-title="Comedy",Whose Line Is It Anyway?
 https://jmp2.uk/plu-672cb91149c40600081cbee5.m3u8
+
+# RECOVERY BATCH — public Pluto UK/US catalogue IDs (iptv-org 2026-11-03).
+# Candidate only: playback, regional access, rights, and session freshness not independently verified.
+# Recovery 322 — British Screen Classics; published catalogue ID 65031534d545e9000881ed10
+#EXTINF:-1 tvg-id="65031534d545e9000881ed10" tvg-name="British Screen Classics" group-title="Movies",British Screen Classics
+https://jmp2.uk/plu-65031534d545e9000881ed10.m3u8
+
+# Recovery 324 — Curzon; published catalogue ID 68b5a7b69ac85c428f54c441
+#EXTINF:-1 tvg-id="68b5a7b69ac85c428f54c441" tvg-name="Curzon" group-title="Movies",Curzon
+https://jmp2.uk/plu-68b5a7b69ac85c428f54c441.m3u8
+
+# Recovery 505 — Crimes That Shook Britain; published catalogue ID 66ba1e23d2d50d00084a1e57
+#EXTINF:-1 tvg-id="66ba1e23d2d50d00084a1e57" tvg-name="Crimes That Shook Britain" group-title="Crime",Crimes That Shook Britain
+https://jmp2.uk/plu-66ba1e23d2d50d00084a1e57.m3u8
+
+# Recovery 508 — Deadly Women; published catalogue ID 5ca1df0d50be2571e393ad31
+#EXTINF:-1 tvg-id="5ca1df0d50be2571e393ad31" tvg-name="Deadly Women" group-title="Crime",Deadly Women
+https://jmp2.uk/plu-5ca1df0d50be2571e393ad31.m3u8
+
+# Recovery 509 — Evidence of Evil; published catalogue ID 64c37e47dac71b000809abab
+#EXTINF:-1 tvg-id="64c37e47dac71b000809abab" tvg-name="Evidence of Evil" group-title="Crime",Evidence of Evil
+https://jmp2.uk/plu-64c37e47dac71b000809abab.m3u8
+
+# Recovery 512 — Medical Detectives; published catalogue ID 68d113f9184f1a0620c8101c
+#EXTINF:-1 tvg-id="68d113f9184f1a0620c8101c" tvg-name="Medical Detectives" group-title="Crime",Medical Detectives
+https://jmp2.uk/plu-68d113f9184f1a0620c8101c.m3u8
+
+# Recovery 540 — Cagney & Lacey; published catalogue ID 6960c5a906d76f50db2816dc
+#EXTINF:-1 tvg-id="6960c5a906d76f50db2816dc" tvg-name="Cagney & Lacey" group-title="Crime",Cagney & Lacey
+https://jmp2.uk/plu-6960c5a906d76f50db2816dc.m3u8
+
+# Recovery 543 — Hawaii Five-O; published catalogue ID 68503d3bc692373f0158c43f
+#EXTINF:-1 tvg-id="68503d3bc692373f0158c43f" tvg-name="Hawaii Five-O" group-title="Crime",Hawaii Five-O
+https://jmp2.uk/plu-68503d3bc692373f0158c43f.m3u8
+
+# Recovery 606 — Girlfriends; published catalogue ID 66ba1e4446762a000855cd87
+#EXTINF:-1 tvg-id="66ba1e4446762a000855cd87" tvg-name="Girlfriends" group-title="Comedy",Girlfriends
+https://jmp2.uk/plu-66ba1e4446762a000855cd87.m3u8
+
+# Recovery 727 — Northern Exposure; published catalogue ID 677fb0e93a225c2d0d8a45bf
+#EXTINF:-1 tvg-id="677fb0e93a225c2d0d8a45bf" tvg-name="Northern Exposure" group-title="Entertainment",Northern Exposure
+https://jmp2.uk/plu-677fb0e93a225c2d0d8a45bf.m3u8
+
+# Recovery 747 — Farscape; published catalogue ID 680bb31c56ff83bcd685d64e
+#EXTINF:-1 tvg-id="680bb31c56ff83bcd685d64e" tvg-name="Farscape" group-title="Entertainment",Farscape
+https://jmp2.uk/plu-680bb31c56ff83bcd685d64e.m3u8
+
+# Recovery 756 — Earth: Final Conflict; published catalogue ID 66f1331f9409630008077623
+#EXTINF:-1 tvg-id="66f1331f9409630008077623" tvg-name="Earth: Final Conflict" group-title="Entertainment",Earth: Final Conflict
+https://jmp2.uk/plu-66f1331f9409630008077623.m3u8
+
+# Recovery 765 — Pluto TV Space; published catalogue ID 5dbc2f98777f2e0009934ae7
+#EXTINF:-1 tvg-id="5dbc2f98777f2e0009934ae7" tvg-name="Pluto TV Space" group-title="Entertainment",Pluto TV Space
+https://jmp2.uk/plu-5dbc2f98777f2e0009934ae7.m3u8
+
+# Recovery 1043 — Top Chef; published catalogue ID 677fb137a5d8215f99b9cc06
+#EXTINF:-1 tvg-id="677fb137a5d8215f99b9cc06" tvg-name="Top Chef" group-title="Reality & Lifestyle",Top Chef
+https://jmp2.uk/plu-677fb137a5d8215f99b9cc06.m3u8
+
+# Recovery 1076 — The Real Housewives; published catalogue ID 677fb115a4af36ad50113e56
+#EXTINF:-1 tvg-id="677fb115a4af36ad50113e56" tvg-name="The Real Housewives" group-title="Reality & Lifestyle",The Real Housewives
+https://jmp2.uk/plu-677fb115a4af36ad50113e56.m3u8
+
+# Recovery 1084 — Geordie Shore; published catalogue ID 65c4960d11ced7000812c433
+#EXTINF:-1 tvg-id="65c4960d11ced7000812c433" tvg-name="Geordie Shore" group-title="Reality & Lifestyle",Geordie Shore
+https://jmp2.uk/plu-65c4960d11ced7000812c433.m3u8
+
+# Recovery 1140 — Haunt TV; published catalogue ID 6319f06067a3ee000708af95
+#EXTINF:-1 tvg-id="6319f06067a3ee000708af95" tvg-name="Haunt TV" group-title="Factual",Haunt TV
+https://jmp2.uk/plu-6319f06067a3ee000708af95.m3u8
+
+# Recovery 1144 — Pluto TV Conspiracy; published catalogue ID 5d4ae94ef1a1bbb350ca41bb
+#EXTINF:-1 tvg-id="5d4ae94ef1a1bbb350ca41bb" tvg-name="Pluto TV Conspiracy" group-title="Factual",Pluto TV Conspiracy
+https://jmp2.uk/plu-5d4ae94ef1a1bbb350ca41bb.m3u8
+
+# Recovery 1151 — History Hunters; published catalogue ID 65819fc1b9adc4000813f37d
+#EXTINF:-1 tvg-id="65819fc1b9adc4000813f37d" tvg-name="History Hunters" group-title="Factual",History Hunters
+https://jmp2.uk/plu-65819fc1b9adc4000813f37d.m3u8
+
+# Recovery 1152 — World War TV; published catalogue ID 6319ee0cf78bb10007ee5e6b
+#EXTINF:-1 tvg-id="6319ee0cf78bb10007ee5e6b" tvg-name="World War TV" group-title="Factual",World War TV
+https://jmp2.uk/plu-6319ee0cf78bb10007ee5e6b.m3u8
+
+# Recovery 1154 — Pluto TV Britain at War; published catalogue ID 625e8cb585ef320007806caf
+#EXTINF:-1 tvg-id="625e8cb585ef320007806caf" tvg-name="Pluto TV Britain at War" group-title="Factual",Pluto TV Britain at War
+https://jmp2.uk/plu-625e8cb585ef320007806caf.m3u8
+
+# Recovery 1202 — Baby Shark TV; published catalogue ID 60faffc3fbbc120007fc4376
+#EXTINF:-1 tvg-id="60faffc3fbbc120007fc4376" tvg-name="Baby Shark TV" group-title="Kids & Animation",Baby Shark TV
+https://jmp2.uk/plu-60faffc3fbbc120007fc4376.m3u8
+
+# Recovery 1228 — Mona The Vampire; published catalogue ID 694178a8026be6e9d3ea7d7a
+#EXTINF:-1 tvg-id="694178a8026be6e9d3ea7d7a" tvg-name="Mona The Vampire" group-title="Kids & Animation",Mona The Vampire
+https://jmp2.uk/plu-694178a8026be6e9d3ea7d7a.m3u8
+
+# Recovery 1229 — The Raccoons; published catalogue ID 69b422590306b277746f48cb
+#EXTINF:-1 tvg-id="69b422590306b277746f48cb" tvg-name="The Raccoons" group-title="Kids & Animation",The Raccoons
+https://jmp2.uk/plu-69b422590306b277746f48cb.m3u8
+
+# Recovery 1233 — Pluto TV Retro Toons; published catalogue ID 5c5c2b9d8002db3c3e0b1c6d
+#EXTINF:-1 tvg-id="5c5c2b9d8002db3c3e0b1c6d" tvg-name="Pluto TV Retro Toons" group-title="Kids & Animation",Pluto TV Retro Toons
+https://jmp2.uk/plu-5c5c2b9d8002db3c3e0b1c6d.m3u8
+
+# Recovery 118 — Newsmax2 public Pluto US catalogue candidate; test AU playback before approval.
+#EXTINF:-1 tvg-id="55b179af994403942f3061d6" tvg-name="Newsmax2" group-title="News",Newsmax2
+https://jmp2.uk/plu-55b179af994403942f3061d6.m3u8
+
+# FINAL-SEVEN RECOVERY — candidate official catalogue source identifiers, not AU playback verified.
+# Recovery 106: Pluto UK listing, live validation/rights pending.
+#EXTINF:-1 tvg-id="66c45afaa72e7b0008a2b153" tvg-name="CNNi" group-title="News",CNNi
+https://jmp2.uk/plu-66c45afaa72e7b0008a2b153.m3u8
+
+# Recovery 279: Tubi listing, live validation/rights pending.
+#EXTINF:-1 tvg-id="613763" tvg-name="Stadium" group-title="Sport",Stadium
+https://live-manifest.production-public.tubi.io/live/30fec756-4948-4ecb-98ae-2fda1cd0ee95/playlist.m3u8
+
+# Recovery 764: Pluto UK listing, live validation/rights pending.
+#EXTINF:-1 tvg-id="6462190b7cb4b1000862dd60" tvg-name="Pluto TV Alien Invasion" group-title="Entertainment",Pluto TV Alien Invasion
+https://jmp2.uk/plu-6462190b7cb4b1000862dd60.m3u8
+
+# Recovery 1030: Tubi listing, live validation/rights pending.
+#EXTINF:-1 tvg-id="677011" tvg-name="Gordon Ramsay" group-title="Reality & Lifestyle",Gordon Ramsay
+https://live-manifest.production-public.tubi.io/live/329f14a6-aa88-4a92-a7ee-6a44b8b1b96c/playlist.m3u8
+
+# Recovery 1045: Tubi (Gardening with Monty Don) listing, live validation/rights pending.
+#EXTINF:-1 tvg-id="700407" tvg-name="GARDEN with Monty Don" group-title="Reality & Lifestyle",GARDEN with Monty Don
+https://live-manifest.production-public.tubi.io/live/d91152d3-557b-4e9e-a7b9-73e0246f826d/playlist.m3u8
+
+# Recovery 506: Pluto GB catalogue identity; manifest and AU rights pending.
+#EXTINF:-1 tvg-id="650315163a0d700008bb07f8" tvg-name="Criminal Confessions" group-title="Crime",Criminal Confessions
+https://jmp2.uk/plu-650315163a0d700008bb07f8.m3u8
+
+# Recovery 716: Pluto DE catalogue identity; regional access and media validation pending.
+#EXTINF:-1 tvg-id="688735087b2cf33d01a2d411" tvg-name="Sea Patrol" group-title="Entertainment",Sea Patrol
+https://jmp2.uk/plu-688735087b2cf33d01a2d411.m3u8
