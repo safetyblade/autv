@@ -10,7 +10,7 @@
     "guide": "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
   },
   "activeCount": 636,
-  "availableCount": 603,
+  "availableCount": 629,
   "channels": [
     {
       "number": 100,
@@ -235,9 +235,9 @@
       "subgenre": "International",
       "description": "Rolling news, current affairs, weather or business coverage.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-55b179af994403942f3061d6.m3u8",
+      "tvgId": "55b179af994403942f3061d6",
       "logoUrl": null
     },
     {
@@ -1699,9 +1699,9 @@
       "subgenre": "Classics / British / Arthouse",
       "description": "Movie-focused FAST channel with scheduled films or genre collections.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-65031534d545e9000881ed10.m3u8",
+      "tvgId": "65031534d545e9000881ed10",
       "logoUrl": null
     },
     {
@@ -1723,9 +1723,9 @@
       "subgenre": "Classics / British / Arthouse",
       "description": "Movie-focused FAST channel with scheduled films or genre collections.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-68b5a7b69ac85c428f54c441.m3u8",
+      "tvgId": "68b5a7b69ac85c428f54c441",
       "logoUrl": null
     },
     {
@@ -2179,9 +2179,9 @@
       "subgenre": "True Crime / Investigations",
       "description": "Crime, investigation, court, mystery or forensic programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-66ba1e23d2d50d00084a1e57.m3u8",
+      "tvgId": "66ba1e23d2d50d00084a1e57",
       "logoUrl": null
     },
     {
@@ -2215,9 +2215,9 @@
       "subgenre": "True Crime / Investigations",
       "description": "Crime, investigation, court, mystery or forensic programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-5ca1df0d50be2571e393ad31.m3u8",
+      "tvgId": "5ca1df0d50be2571e393ad31",
       "logoUrl": null
     },
     {
@@ -2227,9 +2227,9 @@
       "subgenre": "True Crime / Investigations",
       "description": "Crime, investigation, court, mystery or forensic programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-64c37e47dac71b000809abab.m3u8",
+      "tvgId": "64c37e47dac71b000809abab",
       "logoUrl": null
     },
     {
@@ -2251,9 +2251,9 @@
       "subgenre": "True Crime / Investigations",
       "description": "Crime, investigation, court, mystery or forensic programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-68d113f9184f1a0620c8101c.m3u8",
+      "tvgId": "68d113f9184f1a0620c8101c",
       "logoUrl": null
     },
     {
@@ -2587,9 +2587,9 @@
       "subgenre": "Crime Drama / Mystery",
       "description": "Crime, investigation, court, mystery or forensic programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-6960c5a906d76f50db2816dc.m3u8",
+      "tvgId": "6960c5a906d76f50db2816dc",
       "logoUrl": null
     },
     {
@@ -2623,9 +2623,9 @@
       "subgenre": "Crime Drama / Mystery",
       "description": "Crime, investigation, court, mystery or forensic programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-68503d3bc692373f0158c43f.m3u8",
+      "tvgId": "68503d3bc692373f0158c43f",
       "logoUrl": null
     },
     {
@@ -2731,9 +2731,9 @@
       "subgenre": "Major / Modern Sitcoms",
       "description": "Comedy, sitcom or stand-up programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-66ba1e4446762a000855cd87.m3u8",
+      "tvgId": "66ba1e4446762a000855cd87",
       "logoUrl": null
     },
     {
@@ -3511,9 +3511,9 @@
       "subgenre": "Drama & Action Series",
       "description": "Scripted drama, action or series programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-677fb0e93a225c2d0d8a45bf.m3u8",
+      "tvgId": "677fb0e93a225c2d0d8a45bf",
       "logoUrl": null
     },
     {
@@ -3751,9 +3751,9 @@
       "subgenre": "Sci-Fi / Fantasy / Cult",
       "description": "General entertainment FAST channel with mixed or broad programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-680bb31c56ff83bcd685d64e.m3u8",
+      "tvgId": "680bb31c56ff83bcd685d64e",
       "logoUrl": null
     },
     {
@@ -3859,9 +3859,9 @@
       "subgenre": "Sci-Fi / Fantasy / Cult",
       "description": "Science-fiction series channel featuring Earth: Final Conflict.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-66f1331f9409630008077623.m3u8",
+      "tvgId": "66f1331f9409630008077623",
       "logoUrl": null
     },
     {
@@ -3967,9 +3967,9 @@
       "subgenre": "Sci-Fi / Fantasy / Cult",
       "description": "General entertainment FAST channel with mixed or broad programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-5dbc2f98777f2e0009934ae7.m3u8",
+      "tvgId": "5dbc2f98777f2e0009934ae7",
       "logoUrl": null
     },
     {
@@ -5467,9 +5467,9 @@
       "subgenre": "Food & Cooking",
       "description": "Lifestyle, food, home, garden, travel or renovation programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-677fb137a5d8215f99b9cc06.m3u8",
+      "tvgId": "677fb137a5d8215f99b9cc06",
       "logoUrl": null
     },
     {
@@ -5863,9 +5863,9 @@
       "subgenre": "Reality / Relationships & Celebrity",
       "description": "General entertainment FAST channel with mixed or broad programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-677fb115a4af36ad50113e56.m3u8",
+      "tvgId": "677fb115a4af36ad50113e56",
       "logoUrl": null
     },
     {
@@ -5959,9 +5959,9 @@
       "subgenre": "Reality / Relationships & Celebrity",
       "description": "General entertainment FAST channel with mixed or broad programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-65c4960d11ced7000812c433.m3u8",
+      "tvgId": "65c4960d11ced7000812c433",
       "logoUrl": null
     },
     {
@@ -6523,9 +6523,9 @@
       "subgenre": "Paranormal / Unexplained",
       "description": "Paranormal investigation and supernatural factual programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-6319f06067a3ee000708af95.m3u8",
+      "tvgId": "6319f06067a3ee000708af95",
       "logoUrl": null
     },
     {
@@ -6571,9 +6571,9 @@
       "subgenre": "Paranormal / Unexplained",
       "description": "General entertainment FAST channel with mixed or broad programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-5d4ae94ef1a1bbb350ca41bb.m3u8",
+      "tvgId": "5d4ae94ef1a1bbb350ca41bb",
       "logoUrl": null
     },
     {
@@ -6655,9 +6655,9 @@
       "subgenre": "History / War",
       "description": "Documentary, factual, history, science or real-world programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-65819fc1b9adc4000813f37d.m3u8",
+      "tvgId": "65819fc1b9adc4000813f37d",
       "logoUrl": null
     },
     {
@@ -6667,9 +6667,9 @@
       "subgenre": "History / War",
       "description": "Military-history channel focused on major conflicts, campaigns and wartime history.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-6319ee0cf78bb10007ee5e6b.m3u8",
+      "tvgId": "6319ee0cf78bb10007ee5e6b",
       "logoUrl": null
     },
     {
@@ -6691,9 +6691,9 @@
       "subgenre": "History / War",
       "description": "General entertainment FAST channel with mixed or broad programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-625e8cb585ef320007806caf.m3u8",
+      "tvgId": "625e8cb585ef320007806caf",
       "logoUrl": null
     },
     {
@@ -6727,9 +6727,9 @@
       "subgenre": "Preschool / Young Kids",
       "description": "Kids, family and animation programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-60faffc3fbbc120007fc4376.m3u8",
+      "tvgId": "60faffc3fbbc120007fc4376",
       "logoUrl": null
     },
     {
@@ -7027,9 +7027,9 @@
       "subgenre": "Kids / Family Animation",
       "description": "Kids, family and animation programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-694178a8026be6e9d3ea7d7a.m3u8",
+      "tvgId": "694178a8026be6e9d3ea7d7a",
       "logoUrl": null
     },
     {
@@ -7039,9 +7039,9 @@
       "subgenre": "Kids / Family Animation",
       "description": "Kids, family and animation programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-69b422590306b277746f48cb.m3u8",
+      "tvgId": "69b422590306b277746f48cb",
       "logoUrl": null
     },
     {
@@ -7087,9 +7087,9 @@
       "subgenre": "Kids / Family Animation",
       "description": "Kids, family and animation programming.",
       "epg": "Full",
-      "available": false,
-      "streamUrl": null,
-      "tvgId": null,
+      "available": true,
+      "streamUrl": "https://jmp2.uk/plu-5c5c2b9d8002db3c3e0b1c6d.m3u8",
+      "tvgId": "5c5c2b9d8002db3c3e0b1c6d",
       "logoUrl": null
     },
     {

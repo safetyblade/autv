@@ -1205,3 +1205,55 @@ https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-62fbf52c1567
 https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-654eb862dde2222e8ba551f1/?X-Plex-Token=BWjw3JRzu_NL3GeZFDv2
 #EXTINF:-1 tvg-chno="1328" tvg-id="697140a85d851f5e69414688-66fd3e25216b603e031725fe" tvg-name="ZenLIFE by Stingray" tvg-logo="https://provider-static.plex.tv/epg/cms/production/6e254786-1243-462b-bf6c-75d21b68582d/10423_ZL_Plex_Launch-assets_Channel-Logo_1500x1000_V01-White_-_Sacha_Portaria.png" group-title="Music",ZenLIFE by Stingray
 https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-66fd3e25216b603e031725fe/?X-Plex-Token=BWjw3JRzu_NL3GeZFDv2
+#EXTINF:-1 group-title="News" tvg-chno="118" tvg-id="55b179af994403942f3061d6" tvg-name="Newsmax2",Newsmax2
+https://jmp2.uk/plu-55b179af994403942f3061d6.m3u8
+#EXTINF:-1 group-title="Movies" tvg-chno="322" tvg-id="65031534d545e9000881ed10" tvg-name="British Screen Classics",British Screen Classics
+https://jmp2.uk/plu-65031534d545e9000881ed10.m3u8
+#EXTINF:-1 group-title="Movies" tvg-chno="324" tvg-id="68b5a7b69ac85c428f54c441" tvg-name="Curzon",Curzon
+https://jmp2.uk/plu-68b5a7b69ac85c428f54c441.m3u8
+#EXTINF:-1 group-title="Crime" tvg-chno="505" tvg-id="66ba1e23d2d50d00084a1e57" tvg-name="Crimes That Shook Britain",Crimes That Shook Britain
+https://jmp2.uk/plu-66ba1e23d2d50d00084a1e57.m3u8
+#EXTINF:-1 group-title="Crime" tvg-chno="508" tvg-id="5ca1df0d50be2571e393ad31" tvg-name="Deadly Women",Deadly Women
+https://jmp2.uk/plu-5ca1df0d50be2571e393ad31.m3u8
+#EXTINF:-1 group-title="Crime" tvg-chno="509" tvg-id="64c37e47dac71b000809abab" tvg-name="Evidence of Evil",Evidence of Evil
+https://jmp2.uk/plu-64c37e47dac71b000809abab.m3u8
+#EXTINF:-1 group-title="Crime" tvg-chno="512" tvg-id="68d113f9184f1a0620c8101c" tvg-name="Medical Detectives",Medical Detectives
+https://jmp2.uk/plu-68d113f9184f1a0620c8101c.m3u8
+#EXTINF:-1 group-title="Crime" tvg-chno="540" tvg-id="6960c5a906d76f50db2816dc" tvg-name="Cagney & Lacey",Cagney & Lacey
+https://jmp2.uk/plu-6960c5a906d76f50db2816dc.m3u8
+#EXTINF:-1 group-title="Crime" tvg-chno="543" tvg-id="68503d3bc692373f0158c43f" tvg-name="Hawaii Five-O",Hawaii Five-O
+https://jmp2.uk/plu-68503d3bc692373f0158c43f.m3u8
+#EXTINF:-1 group-title="Comedy" tvg-chno="606" tvg-id="66ba1e4446762a000855cd87" tvg-name="Girlfriends",Girlfriends
+https://jmp2.uk/plu-66ba1e4446762a000855cd87.m3u8
+#EXTINF:-1 group-title="Entertainment" tvg-chno="727" tvg-id="677fb0e93a225c2d0d8a45bf" tvg-name="Northern Exposure",Northern Exposure
+https://jmp2.uk/plu-677fb0e93a225c2d0d8a45bf.m3u8
+#EXTINF:-1 group-title="Entertainment" tvg-chno="747" tvg-id="680bb31c56ff83bcd685d64e" tvg-name="Farscape",Farscape
+https://jmp2.uk/plu-680bb31c56ff83bcd685d64e.m3u8
+#EXTINF:-1 group-title="Entertainment" tvg-chno="756" tvg-id="66f1331f9409630008077623" tvg-name="Earth: Final Conflict",Earth: Final Conflict
+https://jmp2.uk/plu-66f1331f9409630008077623.m3u8
+#EXTINF:-1 group-title="Entertainment" tvg-chno="765" tvg-id="5dbc2f98777f2e0009934ae7" tvg-name="Pluto TV Space",Pluto TV Space
+https://jmp2.uk/plu-5dbc2f98777f2e0009934ae7.m3u8
+#EXTINF:-1 group-title="Reality & Lifestyle" tvg-chno="1043" tvg-id="677fb137a5d8215f99b9cc06" tvg-name="Top Chef",Top Chef
+https://jmp2.uk/plu-677fb137a5d8215f99b9cc06.m3u8
+#EXTINF:-1 group-title="Reality & Lifestyle" tvg-chno="1076" tvg-id="677fb115a4af36ad50113e56" tvg-name="The Real Housewives",The Real Housewives
+https://jmp2.uk/plu-677fb115a4af36ad50113e56.m3u8
+#EXTINF:-1 group-title="Reality & Lifestyle" tvg-chno="1084" tvg-id="65c4960d11ced7000812c433" tvg-name="Geordie Shore",Geordie Shore
+https://jmp2.uk/plu-65c4960d11ced7000812c433.m3u8
+#EXTINF:-1 group-title="Factual" tvg-chno="1140" tvg-id="6319f06067a3ee000708af95" tvg-name="Haunt TV",Haunt TV
+https://jmp2.uk/plu-6319f06067a3ee000708af95.m3u8
+#EXTINF:-1 group-title="Factual" tvg-chno="1144" tvg-id="5d4ae94ef1a1bbb350ca41bb" tvg-name="Pluto TV Conspiracy",Pluto TV Conspiracy
+https://jmp2.uk/plu-5d4ae94ef1a1bbb350ca41bb.m3u8
+#EXTINF:-1 group-title="Factual" tvg-chno="1151" tvg-id="65819fc1b9adc4000813f37d" tvg-name="History Hunters",History Hunters
+https://jmp2.uk/plu-65819fc1b9adc4000813f37d.m3u8
+#EXTINF:-1 group-title="Factual" tvg-chno="1152" tvg-id="6319ee0cf78bb10007ee5e6b" tvg-name="World War TV",World War TV
+https://jmp2.uk/plu-6319ee0cf78bb10007ee5e6b.m3u8
+#EXTINF:-1 group-title="Factual" tvg-chno="1154" tvg-id="625e8cb585ef320007806caf" tvg-name="Pluto TV Britain at War",Pluto TV Britain at War
+https://jmp2.uk/plu-625e8cb585ef320007806caf.m3u8
+#EXTINF:-1 group-title="Kids & Animation" tvg-chno="1202" tvg-id="60faffc3fbbc120007fc4376" tvg-name="Baby Shark TV",Baby Shark TV
+https://jmp2.uk/plu-60faffc3fbbc120007fc4376.m3u8
+#EXTINF:-1 group-title="Kids & Animation" tvg-chno="1228" tvg-id="694178a8026be6e9d3ea7d7a" tvg-name="Mona The Vampire",Mona The Vampire
+https://jmp2.uk/plu-694178a8026be6e9d3ea7d7a.m3u8
+#EXTINF:-1 group-title="Kids & Animation" tvg-chno="1229" tvg-id="69b422590306b277746f48cb" tvg-name="The Raccoons",The Raccoons
+https://jmp2.uk/plu-69b422590306b277746f48cb.m3u8
+#EXTINF:-1 group-title="Kids & Animation" tvg-chno="1233" tvg-id="5c5c2b9d8002db3c3e0b1c6d" tvg-name="Pluto TV Retro Toons",Pluto TV Retro Toons
+https://jmp2.uk/plu-5c5c2b9d8002db3c3e0b1c6d.m3u8
