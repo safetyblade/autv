@@ -71,7 +71,7 @@ internal fun TvDualGuide(
     val channels = remember(guide, category, query, favourites) {
         val rows=guide?.channels.orEmpty().filter {
             (category == "All" || if (category == "Favourites") FavouriteIdentity.contains(it, favourites) else it.genre == category) &&
-                (query.isBlank() || it.name.contains(query, true) || it.number.toString().contains(query))
+                (query.isBlank() || it.name.contains(query, true) || it.numberLabel.contains(query))
         }
         if(category=="Australian TV") AustralianChannelOrder.order(rows) else rows
     }
@@ -252,7 +252,7 @@ internal fun TvDualGuide(
                                         AsyncImage(channel.logoUrl, "${channel.name} logo", Modifier.fillMaxSize(), placeholder = painterResource(R.drawable.autv_logo), error = painterResource(R.drawable.autv_logo))
                                     }
                                     Column(Modifier.padding(start = 8.dp)) {
-                                        Row(verticalAlignment = Alignment.CenterVertically) { Text("${channel.number}  ${channel.name}", fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false)); if (isFav) Text(" ★", color = androidx.compose.ui.graphics.Color(0xFFFFD700), style = MaterialTheme.typography.labelSmall) }
+                                        Row(verticalAlignment = Alignment.CenterVertically) { Text(if (channel.numberLabel.isEmpty()) channel.name else "${channel.numberLabel}  ${channel.name}", fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false)); if (isFav) Text(" ★", color = androidx.compose.ui.graphics.Color(0xFFFFD700), style = MaterialTheme.typography.labelSmall) }
                                         if (channel.providerChannel != null) Text("Source: ${channel.subgenre}", style = MaterialTheme.typography.labelSmall, color = GuideAccent)
                                         if (channel.number == playing?.number) Text("PLAYING", style = MaterialTheme.typography.labelSmall)
                                         if (!channel.tunable) Text("Unavailable", style = MaterialTheme.typography.labelSmall)
@@ -263,7 +263,7 @@ internal fun TvDualGuide(
                                     fullNumber = channel.number; cursor = item.start; channelCell = false; zone = GuideZone.CHANNELS
                                     if (Timeline.airing(item, now)) tuneChannel(channel, onFullTune) else details = item
                                 } else Column(Modifier.weight(1f).padding(8.dp)) {
-                                    Text(current?.title ?: "Schedule unavailable", maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                    Text(current?.title ?: if (channel.providerChannel != null) "Programme details unavailable" else "Schedule unavailable", maxLines = 1, overflow = TextOverflow.Ellipsis)
                                     if (current != null) {
                                         Text("${guideClock(current.start)} – ${guideClock(current.stop)}", style = MaterialTheme.typography.labelSmall)
                                         val pct = (Timeline.fraction(now, current.start, current.stop - current.start) * 100).toInt()

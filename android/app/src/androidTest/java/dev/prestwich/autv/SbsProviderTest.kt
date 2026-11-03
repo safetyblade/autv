@@ -32,7 +32,7 @@ class SbsProviderTest {
         ui.runOnIdle { ui.activity.sbs.approved = true }
         ui.waitUntil(30000) { ui.activity.playback.sbsAccount.connection == ProviderConnection.CONNECTED && !ui.activity.playback.sbsAccount.busy }
         ui.onNodeWithTag("sbs-connection-state").performScrollTo().assertTextEquals("Connected")
-        ui.onNodeWithTag("close-settings").performScrollTo().performClick()
+        ui.onNodeWithTag("close-settings").performClick()
         val player = ui.activity.playback.player
         val sbsChannels = ui.activity.playback.guide!!.channels.filter { it.providerChannel?.id?.provider == "sbs" }
         assertEquals(2, sbsChannels.size)

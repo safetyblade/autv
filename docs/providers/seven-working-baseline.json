@@ -1,0 +1,14 @@
+{
+  "android/app/src/main/java/dev/prestwich/autv/provider/SevenTransport.kt": "f77e6b859de146540504afad9bb1dcf2e97e9c2964a50ba60a914c64471a14f8",
+  "android/app/src/test/java/dev/prestwich/autv/provider/SevenDescriptorTransportTest.kt": "ccd0d2468702284474e3ce7ce6e041ef4278f093b9d135adb17fcdaa34e2ffcf",
+  "android/app/src/test/java/dev/prestwich/autv/provider/SevenTransportPolicyTest.kt": "41a04ab8cf108208f3fa03a6ec53b9b6fe12782bd2021cabc2ffef9d37d0d785",
+  "android/core-data/src/main/java/dev/prestwich/autv/data/provider/SevenDescriptorRejection.kt": "c9b3a0a59b28711b2af3233d407307d46dccc308e04f5812abc38f5a15329b62",
+  "android/core-data/src/main/java/dev/prestwich/autv/data/provider/SevenLiveSource.kt": "9cf676f71765a8e4e1ba2e922ee4209f0bedeeaf82be217fa4b8d50dc161b703",
+  "android/core-data/src/main/java/dev/prestwich/autv/data/provider/SevenPlaybackCapabilities.kt": "9451cc1184ded322d5c42b375743e87460a758ae43ac0079a7ec9cfe91324af0",
+  "android/core-data/src/main/java/dev/prestwich/autv/data/provider/SevenPlaybackIdentity.kt": "1a9bc76df86be5cffcc28a1c24da5526f61a9e5d5cdd702576dfc5b4fc30252e",
+  "android/core-data/src/main/java/dev/prestwich/autv/data/provider/SevenPlusAdapter.kt": "65c1609d0b00239027a562dc02ed2806487b84013ffbd4ef438d77bfdd3ac9e6",
+  "android/core-data/src/main/java/dev/prestwich/autv/data/provider/SevenLiveContract.kt": "0265904fe0971df803cc82fda8a0c4ab9de8ef7a728d3413197c8d215a219bf8",
+  "android/core-data/src/test/java/dev/prestwich/autv/data/provider/SevenPlaybackIdentityTest.kt": "e32ca5a8e0a1ea3e8a11b0c789c0dae20be7a94895d636ac8f8106d477603360",
+  "android/core-data/src/test/java/dev/prestwich/autv/data/provider/SevenPlaybackTest.kt": "459eecf08af6cdf1ae1c93d31c63245d40987e7c0f8ffa50519b91246a330508",
+  "android/core-data/src/test/java/dev/prestwich/autv/data/provider/SevenPlusAdapterTest.kt": "606fc2830d60a7374e0c7a2a96d4cb3f81f9e776dfa170f5c81ea70a5a037af6"
+}

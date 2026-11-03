@@ -1,8 +1,9 @@
 package dev.prestwich.autv.provider
 
+import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,141 +13,122 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.LiveRegionMode
-import androidx.compose.ui.semantics.clearAndSetSemantics
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.liveRegion
-import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import dev.prestwich.autv.PlaybackModel
+import dev.prestwich.autv.*
 import dev.prestwich.autv.R
 import dev.prestwich.autv.data.provider.ProviderConnection
 
 private data class AustralianService(val id: String, val name: String, val description: String, @DrawableRes val icon: Int?)
 private val services = listOf(
     AustralianService("9now", "9Now", "Live channels & special events", R.drawable.provider_nine),
-    AustralianService("abc", "ABC iview", "Australia's national broadcaster", R.drawable.provider_abc),
+    AustralianService("abc", "ABC iview", "Australia's national broadcaster", null),
     AustralianService("sbs", "SBS On Demand", "Stories from around the world", R.drawable.provider_sbs),
     AustralianService("seven", "7plus", "Seven Network", R.drawable.provider_seven),
     AustralianService("ten", "10", "Network 10", R.drawable.provider_ten),
 )
 
-/** Provider credentials are entered only on the provider's supported sign-in site. */
+/** App-native full-screen navigation; account/player lifecycles remain in the retained model. */
 @Composable
 internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Unit) {
     val uriHandler = LocalUriHandler.current
-    val context = LocalContext.current
+    val tv = LocalConfiguration.current.uiMode and Configuration.UI_MODE_TYPE_MASK == Configuration.UI_MODE_TYPE_TELEVISION
     var selected by rememberSaveable { mutableStateOf<String?>(model.pendingActivationProvider) }
     val firstFocus = remember { FocusRequester() }
     val scroll = rememberScrollState()
     LaunchedEffect(selected) { scroll.scrollTo(0); withFrameNanos { }; firstFocus.requestFocus() }
-    Dialog(onDismissRequest = onClose, properties = DialogProperties(usePlatformDefaultWidth = false)) {
-        MaterialTheme(colorScheme = darkColorScheme(
-            primary = Color(0xFF82DFE8), onPrimary = Color(0xFF00363C),
-            surface = Color(0xFF111A25), surfaceContainer = Color(0xFF1A2635),
-            onSurface = Color(0xFFF1F5FA), onSurfaceVariant = Color(0xFFB1C0CF),
-        )) {
-            Surface(shape = RoundedCornerShape(28.dp), color = MaterialTheme.colorScheme.surface,
-                border = BorderStroke(1.dp, Color(0xFF314255)),
-                modifier = Modifier.widthIn(max = 860.dp).fillMaxWidth(0.94f).heightIn(max = 720.dp).testTag("australian-services-settings")) {
-                Column(Modifier.verticalScroll(scroll).padding(24.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                    Text("AUTV  /  SETTINGS", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
-                    if (selected == null) {
-                        dev.prestwich.autv.StartupSettings(model)
-                        HorizontalDivider()
+    Dialog(onDismissRequest = { if(selected!=null) selected=null else onClose() },
+        properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)) {
+        AuTvTheme {
+            Surface(color = Ink, modifier = Modifier.fillMaxSize().testTag("australian-services-settings")) {
+                Column(Modifier.windowInsetsPadding(WindowInsets.safeDrawing).padding(if(tv) 24.dp else 16.dp)
+                    .widthIn(max=1200.dp).fillMaxSize(), horizontalAlignment=Alignment.CenterHorizontally) {
+                    Row(Modifier.fillMaxWidth().padding(bottom=12.dp), verticalAlignment=Alignment.CenterVertically,
+                        horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+                        if(selected!=null) FocusButton("‹ All services", {selected=null}, Modifier.focusRequester(firstFocus)
+                            .semantics { contentDescription="Back to all services" }.testTag("providers-back"))
+                        Column(Modifier.weight(1f)) {
+                            Text("AUTV  /  SETTINGS", style=MaterialTheme.typography.labelMedium, color=Silver)
+                            Text("Australian services",style=MaterialTheme.typography.titleLarge)
+                        }
+                        FocusButton("Close",onClose,Modifier.testTag("close-settings").semantics {contentDescription="Close settings"})
                     }
-                    Text("Australian services", style = MaterialTheme.typography.headlineSmall)
-                    if (selected == null) {
-                        Text("Your networks. One guide.", style = MaterialTheme.typography.titleMedium)
-                        Text("Choose a service to manage its connection.", color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        services.forEach { service ->
-                            val statusText = when {
-                                service.id == "9now" -> connectionLabel(model.providerConnection)
-                                model.providerAccounts[service.id] != null -> model.providerAccounts.getValue(service.id).let {
-                                    if (it.anonymousLiveApproved && it.connection != ProviderConnection.CONNECTED) "Live TV without account" else connectionLabel(it.connection)
-                                }
-                                else -> "Connection not configured"
-                            }
-                            OutlinedCard(onClick = { selected = service.id },
-                                shape = RoundedCornerShape(18.dp),
-                                colors = CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                                modifier = Modifier.fillMaxWidth().then(if (service.id == "9now") Modifier.focusRequester(firstFocus) else Modifier)
-                                    .semantics(mergeDescendants = true) {
-                                        contentDescription = "${service.name}, ${service.description} · $statusText"
+                    HorizontalDivider(color=MaterialTheme.colorScheme.outline.copy(alpha=0.4f))
+                    BoxWithConstraints(Modifier.weight(1f).fillMaxWidth().padding(top=12.dp)) {
+                        val activationHeight=maxHeight
+                        if(selected==null) {
+                            val wide=maxWidth>=840.dp
+                            val providers: @Composable ()->Unit = {
+                                Column(verticalArrangement=Arrangement.spacedBy(8.dp)) {
+                                    Text("Your networks. One guide.",style=MaterialTheme.typography.titleMedium)
+                                    services.forEach { service ->
+                                        ServiceCard(service,model,{selected=service.id},
+                                            if(service.id=="9now") Modifier.focusRequester(firstFocus) else Modifier)
                                     }
-                                    .testTag("provider-${service.id}")) {
-                                Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                                    ServiceIcon(service)
-                                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                                        Text(service.name, style = MaterialTheme.typography.titleMedium)
-                                        Text(statusText,
-                                            style = MaterialTheme.typography.labelMedium,
-                                            color = if (model.providerUnavailableReason(service.id) == null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
-                                    }
-                                    Text("›", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.clearAndSetSemantics {})
                                 }
                             }
-                        }
-                    } else {
-                        val service = services.first { it.id == selected }
-                        TextButton(onClick = { selected = null }, modifier = Modifier.focusRequester(firstFocus).semantics { contentDescription = "Back to all services" }.testTag("providers-back")) { Text("‹ All services", modifier = Modifier.clearAndSetSemantics {}) }
-                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                            ServiceIcon(service)
-                            Column {
-                                Text(service.name, style = MaterialTheme.typography.headlineSmall)
-                                Text(service.description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            if(wide) Row(Modifier.fillMaxSize().verticalScroll(scroll),horizontalArrangement=Arrangement.spacedBy(24.dp)) {
+                                Column(Modifier.width(300.dp)) { StartupSettings(model) }
+                                Box(Modifier.weight(1f)) { providers() }
+                            } else Column(Modifier.fillMaxWidth().verticalScroll(scroll),verticalArrangement=Arrangement.spacedBy(12.dp)) {
+                                StartupSettings(model);HorizontalDivider();providers()
                             }
-                        }
-                        val unavailable=model.providerUnavailableReason(service.id)
-                        if (unavailable!=null) {
-                            Text("Connection not enabled",style=MaterialTheme.typography.titleMedium)
-                            Text("This service is not enabled in this build. Your saved account has not been removed.",color=MaterialTheme.colorScheme.onSurfaceVariant,modifier=Modifier.testTag("${service.id}-unavailable"))
                         } else {
+                            val service=services.first {it.id==selected}
                             val account=model.providerAccounts[service.id]
+                            val unavailable=model.providerUnavailableReason(service.id)
                             val connection=account?.connection ?: model.providerConnection
                             val activation=account?.activation ?: if(service.id=="9now") model.providerActivation else null
-                            val busy=account?.busy ?: model.providerBusy
-                            val count=account?.channels?.size ?: model.providerChannelCount
-                            val status=account?.status ?: if(service.id=="9now") model.providerAuthStatus else null
-                            val error=account?.error ?: if(service.id=="9now") model.providerError else null
-                            val canBrowse=account?.canBrowse ?: (connection==ProviderConnection.CONNECTED)
-                            val connect: ()->Unit=account?.let { it::connect } ?: model::connectNineNow
-                            val disconnect: ()->Unit=account?.let { it::disconnect } ?: model::disconnectNineNow
-                            val refresh: ()->Unit=account?.let { it::refresh } ?: model::refreshProviderChannels
-                            Text(if(account?.anonymousLiveApproved==true && connection!=ProviderConnection.CONNECTED) "Live TV available without an account" else connectionLabel(connection),
-                                color=MaterialTheme.colorScheme.primary,modifier=Modifier.testTag("${service.id}-connection-state"))
-                            Text(if(canBrowse) "$count live channels in your guide." else "Connect your ${service.name} account to add its live channels.")
-                            activation?.let { challenge ->
-                                val destination=when(service.id) { "seven"->ActivationDestination.SEVEN;"sbs"->ActivationDestination.SBS;"ten"->ActivationDestination.TEN;"abc"->ActivationDestination.ABC;else->ActivationDestination.NINE_NOW }
-                                ProviderActivationScreen(service.name,challenge,destination,
-                                    onOpenWebsite={ address -> runCatching { uriHandler.openUri(address) };Unit },onCancel=disconnect)
-                            }
-                            status?.let { Text(it,color=MaterialTheme.colorScheme.onSurfaceVariant,modifier=Modifier.testTag("${service.id}-auth-status")) }
-                            error?.let { Text(it,color=MaterialTheme.colorScheme.error,modifier=Modifier.semantics { liveRegion = LiveRegionMode.Polite }.testTag("${service.id}-error")) }
-                            if(!busy && connection!=ProviderConnection.CONNECTED && account?.accountLinkingEnabled!=false) {
-                                Button(onClick=connect,modifier=Modifier.fillMaxWidth().testTag("${service.id}-connect")) { Text("Connect ${service.name}") }
-                            }
-                            if(canBrowse) Button(onClick=refresh,enabled=!busy,modifier=Modifier.fillMaxWidth().testTag("${service.id}-refresh")) { Text(if(busy) "Refreshing…" else "Refresh channels") }
-                            if(busy) LinearProgressIndicator(modifier=Modifier.fillMaxWidth().semantics { contentDescription = "Loading ${service.name} channels" })
-                            Text("Available in Australia. Native playback on this device; Cast is unavailable. Your connection is saved securely. AUTV never asks for your password.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
-                            if(activation==null && (busy || connection in setOf(ProviderConnection.CONNECTED,ProviderConnection.CONNECTING))) {
-                                TextButton(onClick=disconnect,modifier=Modifier.testTag("${service.id}-disconnect")) { Text(if(connection==ProviderConnection.CONNECTED) "Sign out of ${service.name}" else "Cancel sign-in") }
+                            val disconnect: ()->Unit=account?.let {it::disconnect} ?: model::disconnectNineNow
+                            if(activation!=null) {
+                                val destination=when(service.id) {"seven"->ActivationDestination.SEVEN;"sbs"->ActivationDestination.SBS;"abc"->ActivationDestination.ABC;"ten"->ActivationDestination.TEN;else->ActivationDestination.NINE_NOW}
+                                Box(Modifier.fillMaxSize().verticalScroll(scroll),contentAlignment=Alignment.Center) {
+                                    ProviderActivationScreen(service.name,activation,destination,
+                                        {address->runCatching {uriHandler.openUri(address)};Unit},disconnect,viewportHeight=activationHeight)
+                                }
+                            } else Column(Modifier.widthIn(max=900.dp).fillMaxWidth().align(Alignment.TopCenter).verticalScroll(scroll),
+                                verticalArrangement=Arrangement.spacedBy(12.dp)) {
+                                Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+                                    ServiceIcon(service)
+                                    Column { Text(service.name,style=MaterialTheme.typography.headlineSmall)
+                                        Text(service.description,color=Muted,style=MaterialTheme.typography.bodyMedium) }
+                                }
+                                if(unavailable!=null) {
+                                    Text("Configuration required",style=MaterialTheme.typography.titleMedium)
+                                    Text(unavailable,color=Muted,modifier=Modifier.testTag("${service.id}-unavailable"))
+                                    Text("Your saved account has not been removed. Provider-issued access must be configured in an authorised AUTV build.",style=MaterialTheme.typography.bodySmall,color=Muted)
+                                } else {
+                                    val busy=account?.busy ?: model.providerBusy
+                                    val count=account?.channels?.size ?: model.providerChannelCount
+                                    val status=account?.status ?: if(service.id=="9now") model.providerAuthStatus else null
+                                    val error=account?.error ?: if(service.id=="9now") model.providerError else null
+                                    val canBrowse=account?.canBrowse ?: (connection==ProviderConnection.CONNECTED)
+                                    Text(serviceState(service.id,connection,account?.anonymousLiveApproved==true),color=Silver,modifier=Modifier.testTag("${service.id}-connection-state"))
+                                    Text(if(canBrowse) "$count live channels in your guide." else "Connect your ${service.name} account to add its live channels.")
+                                    if(service.id in setOf("abc","ten") && canBrowse) Text("Account linking and channel discovery do not verify media authorisation or playback. Select a channel in the guide to test it.",style=MaterialTheme.typography.bodySmall,color=Muted)
+                                    status?.let {Text(it,color=Muted,modifier=Modifier.testTag("${service.id}-auth-status"))}
+                                    error?.let {Text(it,color=MaterialTheme.colorScheme.error,modifier=Modifier.semantics {liveRegion=LiveRegionMode.Polite}.testTag("${service.id}-error"))}
+                                    if(!busy && connection!=ProviderConnection.CONNECTED && account?.accountLinkingEnabled!=false)
+                                        FocusButton("Connect ${service.name}",account?.let {it::connect} ?: model::connectNineNow,Modifier.testTag("${service.id}-connect"))
+                                    if(canBrowse) FocusButton(if(busy) "Refreshing…" else "Refresh channels",account?.let {it::refresh} ?: model::refreshProviderChannels,Modifier.testTag("${service.id}-refresh"),!busy)
+                                    if(busy) LinearProgressIndicator(Modifier.fillMaxWidth().semantics {contentDescription="Loading ${service.name} channels"})
+                                    if(busy || connection in setOf(ProviderConnection.CONNECTED,ProviderConnection.CONNECTING))
+                                        FocusButton(if(connection==ProviderConnection.CONNECTED) "Sign out of ${service.name}" else "Cancel sign-in",disconnect,Modifier.testTag("${service.id}-disconnect"))
+                                    Text("Australia only. Native playback on this device. Your connection is saved securely; sign in on the provider's website.",style=MaterialTheme.typography.bodySmall,color=Muted)
+                                }
                             }
                         }
                     }
-                    HorizontalDivider(color = Color(0xFF314255))
-                    TextButton(onClick = onClose, modifier = Modifier.semantics { contentDescription = "Close settings" }.testTag("close-settings")) { Text("Close") }
                 }
             }
         }
@@ -154,19 +136,46 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
 }
 
 @Composable
-private fun ServiceIcon(service: AustralianService) {
-    Surface(shape = RoundedCornerShape(14.dp), color = Color.White, modifier = Modifier.size(56.dp)) {
-        Box(contentAlignment = Alignment.Center) {
-            if (service.icon != null) Image(painterResource(service.icon), contentDescription = null, modifier = Modifier.fillMaxSize())
-            else Text("10", style = MaterialTheme.typography.headlineMedium, color = Color(0xFF0065AD))
+private fun ServiceCard(service: AustralianService,model: PlaybackModel,onClick: ()->Unit,modifier: Modifier) {
+    var focused by remember {mutableStateOf(false)}
+    val account=model.providerAccounts[service.id]
+    val state=when {
+        service.id=="9now" -> connectionLabel(model.providerConnection)
+        account!=null -> serviceState(service.id,account.connection,account.anonymousLiveApproved)
+        else -> "Configuration required"
+    }
+    OutlinedCard(onClick=onClick,shape=RoundedCornerShape(12.dp),
+        colors=CardDefaults.outlinedCardColors(containerColor=if(focused) Silver.copy(alpha=0.22f) else Glass),
+        modifier=modifier.fillMaxWidth().onFocusChanged {focused=it.isFocused}
+            .border(if(focused) 3.dp else 1.dp,if(focused) WarmWhite else Color.White.copy(alpha=0.1f),RoundedCornerShape(12.dp))
+            .semantics(mergeDescendants=true) {contentDescription="${service.name}, ${service.description} · $state"}.testTag("provider-${service.id}")) {
+        Row(Modifier.padding(12.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(12.dp)) {
+            ServiceIcon(service)
+            Column(Modifier.weight(1f)) {Text(service.name,style=MaterialTheme.typography.titleMedium);Text(state,style=MaterialTheme.typography.labelMedium,color=Muted)}
+            Text("›",color=Silver,modifier=Modifier.clearAndSetSemantics {})
         }
     }
 }
 
-private fun connectionLabel(connection: ProviderConnection): String = when (connection) {
-    ProviderConnection.NOT_CONNECTED -> "Not connected"
-    ProviderConnection.CONNECTING -> "Waiting for sign-in"
-    ProviderConnection.CONNECTED -> "Connected"
-    ProviderConnection.SESSION_EXPIRED -> "Reconnect to continue"
-    ProviderConnection.UNSUPPORTED -> "Unavailable in this build"
+@Composable
+private fun ServiceIcon(service: AustralianService) {
+    Surface(shape=RoundedCornerShape(12.dp),color=Color.White,modifier=Modifier.size(48.dp)) {
+        if(service.icon!=null) Image(painterResource(service.icon),contentDescription=null,modifier=Modifier.fillMaxSize())
+        else Column(horizontalAlignment=Alignment.CenterHorizontally,verticalArrangement=Arrangement.Center) {
+            Text("ABC",color=Ink,style=MaterialTheme.typography.titleSmall)
+            Text("iview",color=Ink,style=MaterialTheme.typography.labelSmall)
+        }
+    }
+}
+private fun serviceState(id: String,connection: ProviderConnection,anonymous: Boolean)=when {
+    anonymous && connection!=ProviderConnection.CONNECTED -> "Live TV without an account"
+    id in setOf("abc","ten") && connection==ProviderConnection.CONNECTED -> "Account linked · playback not verified"
+    else -> connectionLabel(connection)
+}
+private fun connectionLabel(connection: ProviderConnection): String=when(connection) {
+    ProviderConnection.NOT_CONNECTED->"Not connected"
+    ProviderConnection.CONNECTING->"Waiting for sign-in"
+    ProviderConnection.CONNECTED->"Connected"
+    ProviderConnection.SESSION_EXPIRED->"Reconnect to continue"
+    ProviderConnection.UNSUPPORTED->"Unavailable in this build"
 }
