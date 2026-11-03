@@ -55,6 +55,7 @@ jobs:
             android/app/build/outputs/apk/full-app/AUTV-Full-App-Debug.apk
             AUTV-Full-App-manifest.txt
             settings-screenshots/**
+            cast-screenshots/**
             android-ui-reports/**
             android/app/build/reports/androidTests/connected/debug/**
           if-no-files-found: error

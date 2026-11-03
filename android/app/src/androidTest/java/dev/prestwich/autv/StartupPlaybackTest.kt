@@ -7,6 +7,7 @@ import androidx.media3.common.Player
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import dev.prestwich.autv.data.*
+import dev.prestwich.autv.cast.CastConnection
 import dev.prestwich.autv.guide.*
 import org.junit.Assert.*
 import org.junit.Test
@@ -29,7 +30,8 @@ class StartupPlaybackTest {
     private fun row(number: Int, id: String, uri: String) = Channel(number,id,"News","","","",true,uri,id,null)
     private val good = row(100,"autv.110-leadstory-breaking-news","asset:///pip-test.m3u8")
     private val bad = row(101,"broken","asset:///missing-startup.m3u8")
-    private fun exercise(rows: List<Channel>, cache: GuideCache? = null, configure: () -> Unit = {}, verify: (PlaybackModel) -> Unit) {
+    private fun exercise(rows: List<Channel>, cache: GuideCache? = null, configure: () -> Unit = {},
+        sender: (((CastPlayback) -> Unit) -> CastConnection) = { DebugCastConnection(it) }, verify: (PlaybackModel) -> Unit) {
         val prefs = app.getSharedPreferences("playback",0)
         val favs = app.getSharedPreferences("favourites-v1",0)
         val savedPrefs = prefs.all
@@ -38,7 +40,7 @@ class StartupPlaybackTest {
         try {
             prefs.edit().clear().commit(); favs.edit().remove("channels").commit(); configure()
             val model = main {
-                PlaybackModel(app,{ Guide(rows.size,rows.size,rows) },{ Epg(emptyMap()) },{ DebugCastConnection(it) }, guideCache=cache)
+                PlaybackModel(app,{ Guide(rows.size,rows.size,rows) },{ Epg(emptyMap()) },sender, guideCache=cache)
                     .also { store.put("startup",it); it.player.repeatMode=Player.REPEAT_MODE_ALL }
             }
             verify(model)
@@ -54,6 +56,19 @@ class StartupPlaybackTest {
             } }
             editor.commit(); favs.edit().putStringSet("channels",savedFavourites).commit()
         }
+    }
+    @Test fun rejectedCastDuringStartupDoesNotMarkLocallyPlayableChannelUnavailable() = exercise(listOf(good), sender = { changed ->
+        object : CastConnection {
+            override val connected=true
+            override fun start() = Unit
+            override fun load(channel: Channel,reusePlayingMedia: Boolean) {
+                changed(CastPlayback(CastPhase.FAILED,channelNumber=channel.number,error="Receiver rejected startup load"))
+            }
+            override fun release() = Unit
+        }
+    }) { model ->
+        await { model.selected==good && model.player.isPlaying && !model.guideOpen }
+        main { assertFalse(model.failed.containsKey(good.number)); assertEquals(CastPhase.FAILED,model.castPlayback.phase) }
     }
     @Test fun brokenHistoryFallsThroughFavouriteAndPersistsOnlyWorkingIdentity() = exercise(listOf(good,bad), configure = {
         app.getSharedPreferences("playback",0).edit().putString("last-watched-id",FavouriteIdentity.key(bad)).commit()

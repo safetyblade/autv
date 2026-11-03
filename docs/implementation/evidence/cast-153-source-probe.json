@@ -1,0 +1,124 @@
+{
+  "utc": "2026-11-03T04:42:17.692011+00:00",
+  "results": [
+    {
+      "channel": "200",
+      "ua": "probe",
+      "hops": [
+        {
+          "host": "live-manifest.production-public.tubi.io",
+          "status": 302,
+          "type": null,
+          "proxy_denial": null
+        }
+      ],
+      "attempted_host": "tubi.apollo.adrise.io",
+      "error": "ProxyError"
+    },
+    {
+      "channel": "200",
+      "ua": "handset-like",
+      "hops": [
+        {
+          "host": "live-manifest.production-public.tubi.io",
+          "status": 302,
+          "type": null,
+          "proxy_denial": null
+        }
+      ],
+      "attempted_host": "tubi.apollo.adrise.io",
+      "error": "ProxyError"
+    },
+    {
+      "channel": "201",
+      "ua": "probe",
+      "hops": [],
+      "attempted_host": "aka-live1050.delivery.roku.com",
+      "error": "ProxyError"
+    },
+    {
+      "channel": "201",
+      "ua": "handset-like",
+      "hops": [],
+      "attempted_host": "aka-live1050.delivery.roku.com",
+      "error": "ProxyError"
+    },
+    {
+      "channel": "202",
+      "ua": "probe",
+      "hops": [
+        {
+          "host": "epg.provider.plex.tv",
+          "status": 200,
+          "type": "application/x-mpegurl; charset=utf-8",
+          "proxy_denial": null
+        }
+      ],
+      "attempted_host": "epg.provider.plex.tv",
+      "hls": true,
+      "codecs": [
+        "avc1.4d4029,mp4a.40.2",
+        "avc1.4d4029,mp4a.40.2",
+        "avc1.640029,mp4a.40.2",
+        "avc1.640029,mp4a.40.2"
+      ],
+      "fmp4": false,
+      "encryption": []
+    },
+    {
+      "channel": "202",
+      "ua": "handset-like",
+      "hops": [
+        {
+          "host": "epg.provider.plex.tv",
+          "status": 200,
+          "type": "application/x-mpegurl; charset=utf-8",
+          "proxy_denial": null
+        }
+      ],
+      "attempted_host": "epg.provider.plex.tv",
+      "hls": true,
+      "codecs": [
+        "avc1.4d4029,mp4a.40.2",
+        "avc1.4d4029,mp4a.40.2",
+        "avc1.640029,mp4a.40.2",
+        "avc1.640029,mp4a.40.2"
+      ],
+      "fmp4": false,
+      "encryption": []
+    },
+    {
+      "channel": "1215",
+      "ua": "probe",
+      "hops": [
+        {
+          "host": "jmp2.uk",
+          "status": 302,
+          "type": "text/html",
+          "proxy_denial": null
+        }
+      ],
+      "attempted_host": "ipv4.pluto.tv",
+      "error": "ProxyError"
+    },
+    {
+      "channel": "1215",
+      "ua": "handset-like",
+      "hops": [
+        {
+          "host": "jmp2.uk",
+          "status": 302,
+          "type": "text/html",
+          "proxy_denial": null
+        }
+      ],
+      "attempted_host": "ipv4.pluto.tv",
+      "error": "ProxyError"
+    },
+    {
+      "alternate": "Samsung AU",
+      "status": 404,
+      "matches": []
+    }
+  ]
+}

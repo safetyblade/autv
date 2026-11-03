@@ -18,6 +18,10 @@ interface CastConnection {
     val connected: Boolean
     fun start()
     fun load(channel: Channel,reusePlayingMedia: Boolean=false)
+    fun togglePause() = Unit
+    fun toggleMute() = Unit
+    fun setVolume(value: Float) = Unit
+    fun stopCasting() = Unit
     fun release()
 }
 
@@ -28,7 +32,7 @@ class CastSender(private val context: Context,private val scope: CoroutineScope,
     private val transfer=CastTransfer()
     private var manager: SessionManager?=null
     private var client: RemoteMediaClient?=null
-    private var timeout: Job?=null
+    private val watchdog=CastWatchdog(scope) { ticket -> fail(ticket,CastDiagnostics.failure(CastLoadFailure.TIMEOUT)) }
     private var poll: Job?=null
     private var preparation: Job?=null
     private var resolver: CastMediaResolver?=null
@@ -36,11 +40,13 @@ class CastSender(private val context: Context,private val scope: CoroutineScope,
     private var expectedLoadId: String?=null
     private var acknowledged=false
     private var adopted=false
+    private var loadStartedAt=0L
     private var previousSessionId: Long?=null
     private var ownedSessionId: Long?=null
     override val connected get()=client!=null
     private val callback=object: RemoteMediaClient.Callback() {
         override fun onStatusUpdated()=observe()
+        override fun onMetadataUpdated()=observe()
         override fun onMediaError(error: MediaError) {
             // SDK request IDs are not our load tickets. Fail only an explicitly echoed
             // ticket; otherwise matching status/load results or the watchdog decide.
@@ -57,9 +63,13 @@ class CastSender(private val context: Context,private val scope: CoroutineScope,
         override fun onSessionSuspended(session: CastSession,reason: Int)=detach(reason)
         override fun onSessionStartFailed(session: CastSession,error: Int)=detach(error)
         override fun onSessionResumeFailed(session: CastSession,error: Int)=detach(error)
-        override fun onSessionStarting(session: CastSession)=Unit
+        override fun onSessionStarting(session: CastSession) {
+            transfer.connecting(session.castDevice?.friendlyName ?: "Cast receiver");emit()
+        }
         override fun onSessionEnding(session: CastSession)=Unit
-        override fun onSessionResuming(session: CastSession,id: String)=Unit
+        override fun onSessionResuming(session: CastSession,id: String) {
+            transfer.connecting(session.castDevice?.friendlyName ?: "Cast receiver");emit()
+        }
     }
     override fun start() {
         if(context.resources.configuration.uiMode and Configuration.UI_MODE_TYPE_MASK==Configuration.UI_MODE_TYPE_TELEVISION) return
@@ -70,7 +80,7 @@ class CastSender(private val context: Context,private val scope: CoroutineScope,
         } catch(error: Exception) { Log.i(TAG,"Cast sender unavailable: ${error.javaClass.simpleName}") }
     }
     private fun cancelPending() {
-        timeout?.cancel();timeout=null;poll?.cancel();poll=null
+        watchdog.cancel();poll?.cancel();poll=null
         resolver?.cancel();resolver=null;preparation?.cancel();preparation=null
     }
     private fun attach(session: CastSession) {
@@ -90,6 +100,7 @@ class CastSender(private val context: Context,private val scope: CoroutineScope,
         val original=try { CastStreamUrl.resolve(requireNotNull(channel.streamUrl)) }
         catch(_: Exception) { fail(transfer.request(channel.number,""),CastDiagnostics.failure(CastLoadFailure.URL_UNAVAILABLE));return }
         val ticket=transfer.request(channel.number,original)
+        loadStartedAt=android.os.SystemClock.elapsedRealtime()
         expectedLoadId="$senderId:$ticket";previousSessionId=remote.sessionId()
         emit()
         if(reusePlayingMedia && remote.isPlaying && (remote.mediaInfo?.contentId==original || remote.mediaInfo?.contentUrl==original)) {
@@ -99,7 +110,9 @@ class CastSender(private val context: Context,private val scope: CoroutineScope,
             return
         }
         armTimeout(ticket);startPolling(ticket,remote)
-        val probe=CastMediaResolver();resolver=probe
+        val probe=CastMediaResolver { event ->
+            Log.i(TAG,"probe channel=${channel.number} ticket=$ticket $event")
+        };resolver=probe
         preparation=scope.launch {
             try {
                 val source=withContext(Dispatchers.IO) { probe.resolve(original) }
@@ -111,6 +124,7 @@ class CastSender(private val context: Context,private val scope: CoroutineScope,
                 remote.load(MediaLoadRequestData.Builder().setMediaInfo(media).setAutoplay(true).setCustomData(custom).build())
                     .setResultCallback { result ->
                         if(ticket!=transfer.generation || remote!==client || transfer.state.phase==CastPhase.FAILED) return@setResultCallback
+                        Log.i(TAG,"load_result channel=${channel.number} ticket=$ticket code=${result.status.statusCode} accepted=${result.status.isSuccess}")
                         if(result.status.isSuccess) {
                             acknowledged=true
                             if(transfer.accepted(ticket)) emit()
@@ -118,18 +132,15 @@ class CastSender(private val context: Context,private val scope: CoroutineScope,
                             runCatching { remote.requestStatus() }
                         } else fail(ticket,rejection(result.status.statusCode,result.mediaError))
                     }
+                // LOAD has already been sent. Variant/segment samples are supporting
+                // evidence, never an additional startup gate or an ownership signal.
+                withContext(Dispatchers.IO) { probe.diagnose(source) }
             } catch(error: CancellationException) { throw error }
             catch(error: CastMediaException) { fail(ticket,CastDiagnostics.failure(error.kind,error.status,http=error.status!=null)) }
             catch(_: Exception) { fail(ticket,CastDiagnostics.failure(CastLoadFailure.RECEIVER_REJECTED)) }
         }
     }
-    private fun armTimeout(ticket: Long) {
-        if(timeout?.isActive==true) return
-        timeout=scope.launch {
-            delay(30_000)
-            fail(ticket,CastDiagnostics.failure(CastLoadFailure.TIMEOUT))
-        }
-    }
+    private fun armTimeout(ticket: Long) = watchdog.arm(ticket)
     private fun startPolling(ticket: Long,remote: RemoteMediaClient) {
         if(poll?.isActive==true) return
         poll=scope.launch {
@@ -152,6 +163,7 @@ class CastSender(private val context: Context,private val scope: CoroutineScope,
     private fun observe() {
         val remote=client ?: return
         if(!matchesExpectedMedia()) {
+            Log.i(TAG,"receiver channel=${transfer.state.channelNumber} ticket=${transfer.generation} state=${remote.playerState} matched=false")
             if(transfer.state.ownsPlayback) { armTimeout(transfer.generation);startPolling(transfer.generation,remote) }
             return
         }
@@ -159,15 +171,21 @@ class CastSender(private val context: Context,private val scope: CoroutineScope,
             if(remote.isPlaying || remote.isPaused || remote.isBuffering) runCatching { remote.stop() }
             return
         }
+        Log.i(TAG,"receiver channel=${transfer.state.channelNumber} ticket=${transfer.generation} state=${remote.playerState} idle=${remote.idleReason} elapsedMs=${android.os.SystemClock.elapsedRealtime()-loadStartedAt}")
+        val status=remote.mediaStatus
+        if (transfer.controls(status?.isMediaCommandSupported(MediaStatus.COMMAND_PAUSE) == true,
+                status?.isMediaCommandSupported(MediaStatus.COMMAND_SET_VOLUME) == true,
+                status?.isMediaCommandSupported(MediaStatus.COMMAND_TOGGLE_MUTE) == true,
+                (status?.streamVolume ?: 0.0).toFloat(),status?.isMute == true)) emit()
         when(remote.playerState) {
             MediaStatus.PLAYER_STATE_PLAYING -> {
-                timeout?.cancel();timeout=null;poll?.cancel();poll=null
+                watchdog.cancel();poll?.cancel();poll=null
                 ownedSessionId=remote.sessionId()
                 if(transfer.started(transfer.generation,transfer.expectedUrl)) emit()
             }
             MediaStatus.PLAYER_STATE_PAUSED -> {
                 val changed=transfer.started(transfer.generation,transfer.expectedUrl,paused=true)
-                if(transfer.confirmed) { timeout?.cancel();timeout=null;poll?.cancel();poll=null }
+                if(transfer.confirmed) { watchdog.cancel();poll?.cancel();poll=null }
                 if(changed) emit()
             }
             MediaStatus.PLAYER_STATE_BUFFERING -> {
@@ -203,11 +221,31 @@ class CastSender(private val context: Context,private val scope: CoroutineScope,
         }
         return CastDiagnostics.failure(kind,status,error?.detailedErrorCode,reason=error?.reason)
     }
-    private fun emit()=changed(transfer.state)
+    private fun emit() {
+        Log.i(TAG,"state channel=${transfer.state.channelNumber} ticket=${transfer.generation} phase=${transfer.state.phase} receiver=cast elapsedMs=${if(loadStartedAt>0) android.os.SystemClock.elapsedRealtime()-loadStartedAt else 0}")
+        changed(transfer.state)
+    }
     private fun detach(code: Int?=null) {
         cancelPending();client?.unregisterCallback(callback);client=null
         expectedLoadId=null;ownedSessionId=null;acknowledged=false
         transfer.disconnected(code?.let { "Cast disconnected (code $it). Playing on this device." });emit()
+    }
+    override fun togglePause() {
+        val remote=client ?: return
+        if (!transfer.state.ownsPlayback || !transfer.state.canPause) return
+        runCatching { if(remote.isPaused) remote.play() else if(remote.isPlaying) remote.pause() }
+    }
+    override fun toggleMute() {
+        val remote=client ?: return
+        if(transfer.state.ownsPlayback && transfer.state.canMute) runCatching { remote.setStreamMute(remote.mediaStatus?.isMute != true) }
+    }
+    override fun setVolume(value: Float) {
+        if(value.isFinite() && transfer.state.ownsPlayback && transfer.state.canVolume)
+            runCatching { client?.setStreamVolume(value.coerceIn(0f,1f).toDouble()) }
+    }
+    override fun stopCasting() {
+        runCatching { manager?.endCurrentSession(true) }
+        detach()
     }
     override fun release() {
         cancelPending();client?.unregisterCallback(callback)
