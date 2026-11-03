@@ -371,3 +371,24 @@ https://jmp2.uk/plu-5c5c2b9d8002db3c3e0b1c6d.m3u8
 # Recovery 118 — Newsmax2 public Pluto US catalogue candidate; test AU playback before approval.
 #EXTINF:-1 tvg-id="55b179af994403942f3061d6" tvg-name="Newsmax2" group-title="News",Newsmax2
 https://jmp2.uk/plu-55b179af994403942f3061d6.m3u8
+
+# FINAL-SEVEN RECOVERY — candidate official catalogue source identifiers, not AU playback verified.
+# Recovery 106: Pluto UK listing, live validation/rights pending.
+#EXTINF:-1 tvg-id="66c45afaa72e7b0008a2b153" tvg-name="CNNi" group-title="News",CNNi
+https://jmp2.uk/plu-66c45afaa72e7b0008a2b153.m3u8
+
+# Recovery 279: Tubi listing, live validation/rights pending.
+#EXTINF:-1 tvg-id="613763" tvg-name="Stadium" group-title="Sport",Stadium
+https://live-manifest.production-public.tubi.io/live/30fec756-4948-4ecb-98ae-2fda1cd0ee95/playlist.m3u8
+
+# Recovery 764: Pluto UK listing, live validation/rights pending.
+#EXTINF:-1 tvg-id="6462190b7cb4b1000862dd60" tvg-name="Pluto TV Alien Invasion" group-title="Entertainment",Pluto TV Alien Invasion
+https://jmp2.uk/plu-6462190b7cb4b1000862dd60.m3u8
+
+# Recovery 1030: Tubi listing, live validation/rights pending.
+#EXTINF:-1 tvg-id="677011" tvg-name="Gordon Ramsay" group-title="Reality & Lifestyle",Gordon Ramsay
+https://live-manifest.production-public.tubi.io/live/329f14a6-aa88-4a92-a7ee-6a44b8b1b96c/playlist.m3u8
+
+# Recovery 1045: Tubi (Gardening with Monty Don) listing, live validation/rights pending.
+#EXTINF:-1 tvg-id="700407" tvg-name="GARDEN with Monty Don" group-title="Reality & Lifestyle",GARDEN with Monty Don
+https://live-manifest.production-public.tubi.io/live/d91152d3-557b-4e9e-a7b9-73e0246f826d/playlist.m3u8
