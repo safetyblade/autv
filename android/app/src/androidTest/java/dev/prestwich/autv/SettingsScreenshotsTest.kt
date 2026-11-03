@@ -42,10 +42,12 @@ class SettingsScreenshotsTest {
         check((exported.trim().toLongOrNull() ?: 0)>0) { "Screenshot export failed for $name" }
     }
     @Test fun phoneAndTelevisionSettingsAndActivation() {
+        val requested=InstrumentationRegistry.getArguments().getString("autvScreenshotDevice")
         try {
             for ((name,size,density) in listOf(Triple("phone","1080x1920",420),Triple("tv-720p","1280x720",160),
                 Triple("tv-1080p","1920x1080",240),Triple("tv-4k","3840x2160",480),Triple("tv-720p-large-text","1280x720",160))) {
-                shell("wm size $size");shell("wm density $density");SystemClock.sleep(1000)
+                if(requested!=null && requested!=name) continue
+                if(requested==null) { shell("wm size $size");shell("wm density $density");SystemClock.sleep(1000) }
                 ActivationFixture.reset()
                 val tv=name.startsWith("tv")
                 ProviderScreenshotActivity.configureForScreenshot(tv, if(name.endsWith("large-text")) 1.3f else 1f)
@@ -98,6 +100,6 @@ class SettingsScreenshotsTest {
                     scenario.onActivity { it.playback.disconnectNineNow() }
                 }
             }
-        } finally { shell("wm size reset");shell("wm density reset");ProviderScreenshotActivity.configureForScreenshot(false,1f);ActivationFixture.reset() }
+        } finally { if(requested==null) {shell("wm size reset");shell("wm density reset")};ProviderScreenshotActivity.configureForScreenshot(false,1f);ActivationFixture.reset() }
     }
 }

@@ -42,6 +42,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
+          profile: pixel_2
           arch: x86_64
           disable-animations: true
           script: bash scripts/test-focused-android-providers.sh
@@ -53,6 +54,7 @@ jobs:
             android/app/build/outputs/apk/full-app/AUTV-Full-App-Debug.apk
             AUTV-Full-App-manifest.txt
             settings-screenshots/**
+            android-ui-reports/**
             android/app/build/reports/androidTests/connected/debug/**
           if-no-files-found: error
           retention-days: 30
@@ -92,6 +94,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
+          profile: pixel_2
           arch: x86_64
           disable-animations: true
           script: bash scripts/test-focused-android-providers.sh
@@ -101,6 +104,7 @@ jobs:
           name: AUTV-Settings-Before
           path: |
             settings-screenshots/**
+            android-ui-reports/**
             android/app/build/reports/androidTests/connected/debug/**
           if-no-files-found: error
           retention-days: 30
