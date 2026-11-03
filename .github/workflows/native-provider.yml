@@ -42,7 +42,8 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          profile: pixel_2
+          # Android 10 clamps wm dimensions to 2x the physical base; Pixel C permits real 4K frames.
+          profile: pixel_c
           arch: x86_64
           disable-animations: true
           script: bash scripts/test-focused-android-providers.sh
@@ -95,7 +96,8 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          profile: pixel_2
+          # Android 10 clamps wm dimensions to 2x the physical base; Pixel C permits real 4K frames.
+          profile: pixel_c
           arch: x86_64
           disable-animations: true
           script: bash scripts/test-focused-android-providers.sh
