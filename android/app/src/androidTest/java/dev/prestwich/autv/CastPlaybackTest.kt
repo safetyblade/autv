@@ -133,6 +133,10 @@ class CastPlaybackTest {
             for ((name,orientation) in listOf("portrait" to android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
                     "landscape" to android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)) {
                 compose.runOnUiThread { compose.activity.requestedOrientation=orientation }
+                compose.waitUntil(10_000) {
+                    val expected=if(name=="portrait") android.content.res.Configuration.ORIENTATION_PORTRAIT else android.content.res.Configuration.ORIENTATION_LANDSCAPE
+                    compose.activity.resources.configuration.orientation==expected
+                }
                 compose.waitForIdle()
                 compose.onNodeWithTag("cast-controller").assertExists()
                 compose.onNodeWithTag("video").assertDoesNotExist()
