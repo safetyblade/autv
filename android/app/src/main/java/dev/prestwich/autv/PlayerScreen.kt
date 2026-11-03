@@ -175,7 +175,7 @@ internal fun AuTvScreen(
             withFrameNanos { }; guideControlFocus.requestFocus()
         }
     }
-    BackHandler(enabled = !pictureInPicture && (guideOpen || chrome)) {
+    BackHandler(enabled = !pictureInPicture && (guideOpen || (chrome && !remoteController))) {
         if (guideOpen) { wake(); onCloseGuide() } else if (!remoteController) chrome = false
     }
     LaunchedEffect(guideOpen, guide != null, pictureInPicture) {
@@ -489,7 +489,8 @@ private fun CastController(state: CastPlayback, channel: Channel?, schedule: Now
         }
         if (state.canVolume) {
             Text("Receiver volume", color = Muted)
-            Slider(value = state.volume, onValueChange = volume,
+            var draftVolume by remember(state.volume) { mutableFloatStateOf(state.volume) }
+            Slider(value = draftVolume, onValueChange = { draftVolume=it }, onValueChangeFinished = { volume(draftVolume) },
                 modifier = Modifier.fillMaxWidth().semantics { contentDescription = "Receiver volume" })
         }
         OutlinedButton(stop, Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("stop-casting")) { Text("Stop casting · play locally") }
