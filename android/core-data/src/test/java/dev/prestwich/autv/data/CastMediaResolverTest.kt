@@ -32,22 +32,60 @@ class CastMediaResolverTest {
     @Test fun htmlAndForbiddenResponsesFailButAcceptedMacroFieldsAreNeverStripped() {
         MockWebServer().use { server -> server.start()
             server.enqueue(MockResponse().setResponseCode(403).setBody("private body must never escape"))
-            try { CastMediaResolver().resolve(server.url("/live.m3u8").toString());fail() }
+            try { CastMediaResolver(OkHttpClient.Builder().followRedirects(false).build()).resolve(server.url("/live.m3u8").toString());fail() }
             catch(e: CastMediaException) { assertEquals(CastLoadFailure.URL_UNAVAILABLE,e.kind);assertEquals(403,e.status);assertFalse(e.toString().contains("private")) }
             server.enqueue(MockResponse().setHeader("Content-Type","text/html").setBody("<html>not video</html>"))
-            try { CastMediaResolver().resolve(server.url("/live.m3u8").toString());fail() }
+            try { CastMediaResolver(OkHttpClient.Builder().followRedirects(false).build()).resolve(server.url("/live.m3u8").toString());fail() }
             catch(e: CastMediaException) { assertEquals(CastLoadFailure.UNSUPPORTED_FORMAT,e.kind) }
             server.enqueue(MockResponse().setHeader("Content-Type","application/x-mpegURL").setBody(hls))
             val supplied=server.url("/live.m3u8?session=%5BTOKEN%5D&ads=normal").toString()
-            assertEquals(supplied,CastMediaResolver().resolve(supplied).url)
+            assertEquals(supplied,CastMediaResolver(OkHttpClient.Builder().followRedirects(false).build()).resolve(supplied).url)
             assertEquals(3,server.requestCount)
         }
     }
     @Test fun redirectLoopsDoNotHangOrRemoveQueryTokens() {
         MockWebServer().use { server -> server.start()
             server.enqueue(MockResponse().setResponseCode(302).setHeader("Location","/live?token=original"))
-            try { CastMediaResolver().resolve(server.url("/live?token=original").toString());fail() }
+            try { CastMediaResolver(OkHttpClient.Builder().followRedirects(false).build()).resolve(server.url("/live?token=original").toString());fail() }
             catch(e: CastMediaException) { assertEquals(CastLoadFailure.URL_UNAVAILABLE,e.kind) }
         }
     }
+    @Test fun inspectsVariantAndSegmentWithoutReplacingMasterOrLoggingSecrets() {
+        MockWebServer().use { server ->
+            server.start()
+            val master="#EXTM3U\n#EXT-X-STREAM-INF:BANDWIDTH=1000,CODECS=\"avc1.640028,mp4a.40.2\"\nvariant.m3u8?token=variant-secret\n"
+            val variant="#EXTM3U\n#EXT-X-TARGETDURATION:6\n#EXT-X-MAP:URI=\"init.mp4?token=init-secret\"\n#EXT-X-KEY:METHOD=SAMPLE-AES,URI=\"secret-key\"\n#EXTINF:6,\nsegment.m4s?token=segment-secret\n"
+            server.enqueue(MockResponse().setChunkedBody(master,7))
+            server.enqueue(MockResponse().setBody(variant))
+            server.enqueue(MockResponse().setResponseCode(206).setBody("0000styprest"))
+            val events=mutableListOf<String>()
+            val resolver=CastMediaResolver(OkHttpClient.Builder().followRedirects(false).build(),false,events::add)
+            val source=resolver.resolve(server.url("/master.m3u8?token=master-secret").toString())
+            assertEquals("Child diagnostics must not delay LOAD",1,server.requestCount)
+            resolver.diagnose(source)
+            assertEquals(server.url("/master.m3u8?token=master-secret").toString(),source.url)
+            assertFalse("Variant evidence does not mutate an already submitted LOAD",source.fragmentedMp4)
+            assertTrue(events.any { it.contains("map=true") })
+            assertTrue(events.any { it.contains("codecs=avc1,mp4a") })
+            assertTrue(events.any { it.contains("encryption=SAMPLE-AES") })
+            assertTrue(events.any { it.contains("stage=segment container=fmp4") })
+            assertFalse(events.joinToString().contains("secret"))
+            assertFalse(events.joinToString().contains("token="))
+            server.takeRequest();server.takeRequest()
+            assertEquals("bytes=0-1023",server.takeRequest().getHeader("Range"))
+        }
+    }
+    @Test fun failedChildProbeIsEvidenceAndDoesNotRejectOtherwiseAcceptedMaster() {
+        MockWebServer().use { server ->
+            server.start()
+            server.enqueue(MockResponse().setBody("#EXTM3U\n#EXT-X-STREAM-INF:BANDWIDTH=1000\nvariant.m3u8\n"))
+            server.enqueue(MockResponse().setResponseCode(403).setBody("sensitive rejection body"))
+            val events=mutableListOf<String>()
+            val url=server.url("/master.m3u8").toString()
+            assertEquals(url,CastMediaResolver(OkHttpClient.Builder().followRedirects(false).build(),true,events::add).resolve(url).url)
+            assertTrue(events.any { it.contains("stage=variant") && it.contains("http=403") })
+            assertFalse(events.joinToString().contains("sensitive"))
+        }
+    }
+
 }

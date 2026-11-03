@@ -1,8 +1,10 @@
 package dev.prestwich.autv.guide
 
-enum class CastPhase { DISCONNECTED, CONNECTED, LOAD_REQUESTED, LOAD_ACCEPTED, BUFFERING, PLAYING, PAUSED, FAILED }
+enum class CastPhase { DISCONNECTED, CONNECTING, LOADING, BUFFERING, PLAYING, PAUSED, FAILED }
 data class CastPlayback(val phase: CastPhase = CastPhase.DISCONNECTED, val receiver: String = "Cast receiver",
-    val channelNumber: Int? = null, val error: String? = null, val ownsPlayback: Boolean = false)
+    val channelNumber: Int? = null, val error: String? = null, val ownsPlayback: Boolean = false,
+    val canPause: Boolean = false, val canVolume: Boolean = false, val canMute: Boolean = false,
+    val volume: Float = 0f, val muted: Boolean = false)
 
 /** Transfer bookkeeping only. Channel selection remains owned by PlaybackModel. */
 class CastTransfer {
@@ -11,23 +13,31 @@ class CastTransfer {
     var expectedUrl: String? = null; private set
     private var confirmedGeneration: Long? = null
     val confirmed get()=confirmedGeneration==generation
-    fun connected(receiver: String) {
+    fun connecting(receiver: String) {
         generation++; expectedUrl = null
-        state = CastPlayback(CastPhase.CONNECTED, receiver)
+        state = CastPlayback(CastPhase.CONNECTING, receiver)
     }
+    fun controls(canPause: Boolean, canVolume: Boolean, canMute: Boolean, volume: Float, muted: Boolean): Boolean {
+        val next = state.copy(canPause=canPause, canVolume=canVolume, canMute=canMute,
+            volume=if(volume.isFinite()) volume.coerceIn(0f,1f) else 0f, muted=muted)
+        if (next == state) return false
+        state=next
+        return true
+    }
+    fun connected(receiver: String) = connecting(receiver)
     fun request(number: Int, url: String): Long {
         generation++; expectedUrl = url
-        state = state.copy(phase = CastPhase.LOAD_REQUESTED, channelNumber = number, error = null)
+        state = state.copy(phase = CastPhase.LOADING, channelNumber = number, error = null)
         return generation
     }
     fun prepared(ticket: Long,url: String): Boolean {
-        if(ticket!=generation || state.phase!=CastPhase.LOAD_REQUESTED) return false
+        if(ticket!=generation || state.phase!=CastPhase.LOADING) return false
         expectedUrl=url
         return true
     }
     fun accepted(ticket: Long): Boolean {
-        if (ticket != generation || state.phase != CastPhase.LOAD_REQUESTED) return false
-        state = state.copy(phase = CastPhase.LOAD_ACCEPTED)
+        if (ticket != generation || state.phase != CastPhase.LOADING) return false
+        state = state.copy(phase = CastPhase.LOADING)
         return true
     }
     fun started(ticket: Long, url: String?, paused: Boolean = false): Boolean {

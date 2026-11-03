@@ -54,6 +54,9 @@ open class MainActivity : AppCompatActivity() {
                 castPlayback = playback.castPlayback, favourites = favourites.keys,
                 onFavourite = { favouriteConfirmation(applicationContext, favourites.toggle(it)) },
                 onOpenSettings = { settingsOpen = true },
+                onCastPause = playback::toggleCastPause, onCastMute = playback::toggleCastMute,
+                onCastVolume = playback::setCastVolume, onStopCasting = playback::stopCasting,
+                onRetryCasting = playback::retryCasting,
                 onPlayerViewAttached = playback.holder::attachPlayerView,
                 onPlayerViewReleased = playback.holder::detachPlayerView)
             if (settingsOpen) dev.prestwich.autv.provider.AustralianServicesSettings(playback) { settingsOpen = false }

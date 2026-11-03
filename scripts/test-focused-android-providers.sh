@@ -1,19 +1,37 @@
 #!/usr/bin/env bash
-# Keep instrumentation mandatory while preserving screenshots on test failures.
-# This file runs in one shell; the emulator action executes separate script lines independently.
+# Set display metrics before starting instrumentation: Android caches display resources per process.
 set +e
 set -o pipefail
-gradle -p android -PautvMediaLab=false :app:connectedDebugAndroidTest \
-  -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true \
-  -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.CastPlaybackTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.ProviderQrIntegrationTest,dev.prestwich.autv.ProviderQrUiTest,dev.prestwich.autv.SettingsScreenshotsTest,dev.prestwich.autv.AustralianProviderIntegrationTest,dev.prestwich.autv.provider.AustralianConfigurationIsolationTest,dev.prestwich.autv.provider.EncryptedProviderSessionStoreTest \
-  -Pandroid.testInstrumentationRunnerArguments.autvScreenshotPhase=after
-result=$?
-# Debug APK: extract app-internal screenshots without Android/data scoped-storage assumptions.
-# run-as requires this APK to remain debuggable; the command fails closed otherwise.
-if adb exec-out run-as dev.prestwich.autv tar -C files -cf - settings-screenshots | tar -xf -; then
-  echo "Collected synthetic settings and activation screenshots."
-else
-  echo "Screenshot collection failed; see the instrumentation report." >&2
-  result=1
+result=0
+phase="${AUTV_SCREENSHOT_PHASE:-after}"
+classes="${AUTV_SCREENSHOT_CLASSES:-dev.prestwich.autv.CastPlaybackTest,dev.prestwich.autv.StartupPlaybackTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.ProviderQrIntegrationTest,dev.prestwich.autv.ProviderQrUiTest,dev.prestwich.autv.SbsProviderTest,dev.prestwich.autv.AustralianProviderIntegrationTest,dev.prestwich.autv.provider.AustralianConfigurationIsolationTest,dev.prestwich.autv.provider.EncryptedProviderSessionStoreTest}"
+mkdir -p android-ui-reports
+adb shell settings put system accelerometer_rotation 0
+adb shell settings put system user_rotation 0
+trap 'adb shell wm size reset; adb shell wm density reset' EXIT
+if [[ "$classes" != "dev.prestwich.autv.SettingsScreenshotsTest" ]]; then
+  gradle -p android -PautvMediaLab=false :app:connectedDebugAndroidTest \
+    -Pandroid.testInstrumentationRunnerArguments.class="$classes"
+  if [[ $? -ne 0 ]]; then result=1; fi
+  cp -r android/app/build/reports/androidTests/connected/debug android-ui-reports/regressions
 fi
+while read -r device size density; do
+  adb shell wm size "$size" < /dev/null
+  adb shell wm density "$density" < /dev/null
+  gradle -p android -PautvMediaLab=false :app:connectedDebugAndroidTest \
+    -Pandroid.testInstrumentationRunnerArguments.class=dev.prestwich.autv.SettingsScreenshotsTest \
+    -Pandroid.testInstrumentationRunnerArguments.autvScreenshotPhase="$phase" \
+    -Pandroid.testInstrumentationRunnerArguments.autvScreenshotDevice="$device" < /dev/null
+  if [[ $? -ne 0 ]]; then result=1; fi
+  cp -r android/app/build/reports/androidTests/connected/debug "android-ui-reports/$device"
+done <<'DEVICES'
+phone 1080x1920 420
+tv-720p 1280x720 160
+tv-1080p 1920x1080 240
+tv-4k 3840x2160 480
+tv-720p-large-text 1280x720 160
+DEVICES
+# MediaStore pictures survive AGP's test APK uninstall.
+if ! adb pull /sdcard/Pictures/AUTV-settings-screenshots settings-screenshots; then result=1; fi
+adb pull /sdcard/Download/autv-cast-screenshots cast-screenshots || true
 exit "$result"

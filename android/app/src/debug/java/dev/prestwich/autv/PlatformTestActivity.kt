@@ -44,8 +44,17 @@ class DebugCastConnection(private val changed: (CastPlayback) -> Unit) : CastCon
         loads.add(channel); transfer.request(channel.number, channel.streamUrl!!); changed(transfer.state)
     }
     fun accept() { transfer.accepted(transfer.generation); changed(transfer.state) }
-    fun playing() { transfer.started(transfer.generation, transfer.expectedUrl); changed(transfer.state) }
+    fun playing() {
+        transfer.controls(true,true,true,0.5f,false)
+        transfer.started(transfer.generation, transfer.expectedUrl); changed(transfer.state)
+    }
+    fun buffering() { transfer.buffering(transfer.generation,transfer.expectedUrl);changed(transfer.state) }
+    override fun togglePause() { transfer.started(transfer.generation,transfer.expectedUrl,transfer.state.phase!=CastPhase.PAUSED);changed(transfer.state) }
+    override fun toggleMute() { transfer.controls(true,true,true,transfer.state.volume,!transfer.state.muted);changed(transfer.state) }
+    override fun setVolume(value: Float) { transfer.controls(true,true,true,value,transfer.state.muted);changed(transfer.state) }
     fun fail() { transfer.failed(transfer.generation, "Receiver test load rejected (2100)"); changed(transfer.state) }
+    fun timeout() { transfer.failed(transfer.generation, CastDiagnostics.failure(CastLoadFailure.TIMEOUT)); changed(transfer.state) }
+    override fun stopCasting() = disconnect()
     fun disconnect() { connected = false; transfer.disconnected(); changed(transfer.state) }
     override fun release() = Unit
 }

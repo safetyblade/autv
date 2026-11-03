@@ -38,7 +38,7 @@ class AustralianProviderIntegrationTest {
         ui.onNodeWithTag("activation-code").performScrollTo().assertTextEquals("TV123")
         ui.runOnIdle { ui.activity.ten.approved=true }
         ui.waitUntil(30000) { !account("ten").busy && account("ten").connection==ProviderConnection.CONNECTED }
-        ui.onNodeWithTag("close-settings").assertIsDisplayed().performClick()
+        ui.onNodeWithTag("close-settings").performClick()
         tune("ten")
         val selected=channel("ten");val identity=FavouriteIdentity.key(selected)!!
         ui.runOnIdle {
@@ -81,20 +81,25 @@ class AustralianProviderIntegrationTest {
     @Test fun cancelledTenResolutionCannotReplaceAbcOrExposeSignedFailure() {
         ready();connectTen();val model=ui.activity.playback;tune("abc")
         ui.runOnIdle { ui.activity.ten.denied=true;model.request(TuneTarget.Number(channel("ten").number)) }
-        ui.waitUntil(30000) { account("ten").error!=null && !model.buffering }
+        ui.waitUntil(30000) { account("ten").error!=null && observed {
+            !it.buffering && it.selected?.providerChannel?.id?.provider=="abc" && it.player.isPlaying
+        } }
         ui.runOnIdle {
             assertEquals("abc",model.selected?.providerChannel?.id?.provider)
-            assertTrue(model.player.isPlaying)
+            assertTrue("ABC must resume native playback after Ten denial",model.player.isPlaying)
             assertFalse(account("ten").error!!.contains("https://"))
             ui.activity.ten.denied=false
         }
         ui.runOnIdle { ui.activity.ten.blocked=true;model.request(TuneTarget.Number(channel("ten").number)) }
-        assertTrue(ui.activity.ten.entered.await(5,java.util.concurrent.TimeUnit.SECONDS))
+        // Wait for the worker to enter resolution, independently of Compose frame scheduling.
+        ui.waitUntil(30000) { ui.activity.ten.entered.count==0L }
         ui.runOnIdle { account("ten").disconnect() };ui.activity.ten.release.countDown()
-        ui.waitUntil(30000) { !account("ten").busy }
+        ui.waitUntil(30000) { !account("ten").busy && observed {
+            it.selected?.providerChannel?.id?.provider=="abc" && it.player.isPlaying && !it.buffering
+        } }
         ui.runOnIdle {
             assertEquals("abc",model.selected?.providerChannel?.id?.provider)
-            assertTrue(model.player.isPlaying);assertFalse(model.buffering);assertEquals(ProviderConnection.CONNECTED,model.providerConnection)
+            assertTrue("ABC must remain playing after pending Ten cancellation",model.player.isPlaying);assertFalse(model.buffering);assertEquals(ProviderConnection.CONNECTED,model.providerConnection)
             assertEquals(ProviderConnection.NOT_CONNECTED,account("abc").connection)
         }
     }

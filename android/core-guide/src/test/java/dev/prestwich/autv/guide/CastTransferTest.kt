@@ -7,12 +7,12 @@ class CastTransferTest {
     @Test fun connectionAndAcceptanceAreNotPlaybackConfirmation() {
         val transfer = CastTransfer()
         transfer.connected("Living room")
-        assertEquals(CastPhase.CONNECTED, transfer.state.phase)
+        assertEquals(CastPhase.CONNECTING, transfer.state.phase)
         assertFalse(transfer.state.ownsPlayback)
         val ticket = transfer.request(419, "https://example/ink")
-        assertEquals(CastPhase.LOAD_REQUESTED, transfer.state.phase)
+        assertEquals(CastPhase.LOADING, transfer.state.phase)
         assertTrue(transfer.accepted(ticket))
-        assertEquals(CastPhase.LOAD_ACCEPTED, transfer.state.phase)
+        assertEquals(CastPhase.LOADING, transfer.state.phase)
         assertFalse(transfer.state.ownsPlayback)
         assertTrue(transfer.started(ticket, "https://example/ink"))
         assertTrue(transfer.state.ownsPlayback)
@@ -64,4 +64,29 @@ class CastTransferTest {
         transfer.started(ticket, "https://example/one")
         assertEquals(CastPhase.PLAYING, transfer.state.phase)
     }
+    @Test fun initialBufferingNeverTakesOwnershipAndFailureIsReportedOnlyOnce() {
+        val t=CastTransfer().apply { connected("TV") }
+        val ticket=t.request(1215,"https://example/pokemon")
+        t.accepted(ticket)
+        assertTrue(t.buffering(ticket,t.expectedUrl))
+        assertFalse(t.state.ownsPlayback)
+        assertFalse(t.started(ticket,t.expectedUrl,paused=true))
+        assertTrue(t.failed(ticket,CastDiagnostics.failure(dev.prestwich.autv.data.CastLoadFailure.TIMEOUT)))
+        assertFalse(t.failed(ticket,"duplicate"))
+        assertFalse(t.buffering(ticket,t.expectedUrl))
+        assertFalse(t.started(ticket,t.expectedUrl))
+        assertEquals(CastPhase.FAILED,t.state.phase)
+    }
+    @Test fun confirmedBufferingRetainsControllerUntilRecoveryAndDisconnectInvalidatesCallbacks() {
+        val t=CastTransfer().apply { connected("TV") }
+        val ticket=t.request(200,"https://example/aew")
+        t.started(ticket,t.expectedUrl)
+        t.buffering(ticket,t.expectedUrl)
+        assertTrue(t.state.ownsPlayback)
+        assertEquals(CastPhase.BUFFERING,t.state.phase)
+        t.disconnected()
+        assertFalse(t.state.ownsPlayback)
+        assertFalse(t.started(ticket,"https://example/aew"))
+    }
+
 }

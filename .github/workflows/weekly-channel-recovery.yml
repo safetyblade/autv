@@ -17,6 +17,8 @@ jobs:
         run: python3 scripts/monitor_channel_recovery.py
       - name: Inspect current source-selection coverage (read-only)
         run: python3 scripts/report_missing_recovery.py
+      - name: Report approved curated fallback coverage and provenance (read-only)
+        run: python3 scripts/report_curated_fallback_coverage.py
       - name: Save recovery and discovery worklist
         uses: actions/upload-artifact@v4
         with:
@@ -24,4 +26,5 @@ jobs:
           path: |
             audits/channel_recovery_current.csv
             audits/missing_channels_recovery_queue.csv
+            audits/curated_fallback_coverage.csv
           retention-days: 30

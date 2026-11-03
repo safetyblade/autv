@@ -363,10 +363,16 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     }
     fun next() { GuideNavigator(guide?.channels.orEmpty()).next(selected)?.let { request(TuneTarget.Number(it.number)) } }
     fun previous() { GuideNavigator(guide?.channels.orEmpty()).previous(selected)?.let { request(TuneTarget.Number(it.number)) } }
+    fun retryCasting() { selected?.takeIf { it.providerChannel == null }?.let { notice=null; castSender.load(it) } }
+    fun stopCasting() = castSender.stopCasting()
+    fun toggleCastPause() = castSender.togglePause()
+    fun toggleCastMute() = castSender.toggleMute()
+    fun setCastVolume(value: Float) = castSender.setVolume(value)
     fun resume() { foreground = true; if (!castPlayback.ownsPlayback && player.mediaItemCount > 0) player.play() }
     fun pause() { foreground = false; player.pause() } // Never pauses the receiver when the sender backgrounds.
     private fun onCastChanged(state: CastPlayback) {
         val wasRemote = castPlayback.ownsPlayback
+        if (state.phase != CastPhase.FAILED && notice == castPlayback.error) notice = null
         castPlayback = state
         if (selected?.providerChannel != null && state.phase != CastPhase.DISCONNECTED) {
             notice="Provider Cast is unavailable. Continuing playback on this device."
@@ -375,12 +381,13 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         if (state.phase == CastPhase.PLAYING && state.channelNumber == selected?.number) saveWatched()
         if (startupAttempt && state.channelNumber == selected?.number) {
             if (state.phase == CastPhase.PLAYING) startupSucceeded = true
-            if (state.phase == CastPhase.FAILED) { startupFailed = true; return }
+            // Cast failure alone says nothing about local startup availability.
+            // Fall through to local recovery; only a local player error fails startup.
         }
         if (state.ownsPlayback) {
             if(state.phase in setOf(CastPhase.PLAYING,CastPhase.PAUSED) && state.channelNumber==selected?.number)
                 guideTuneRecovery.ready(selected?.number)
-            player.stop() // Release local decoding/buffering only after receiver status confirms ownership.
+            if (!wasRemote) player.stop() // Release decoding only on confirmed handoff.
             buffering = false
         } else if (state.phase == CastPhase.FAILED && restoreGuideTune(selected?.number)) {
             return

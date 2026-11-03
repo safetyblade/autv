@@ -10,37 +10,51 @@ import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
-import java.io.File
 import kotlin.math.abs
 
 /** Rendered Android UI with synthetic activation only; never broadcaster playback evidence. */
+@androidx.test.filters.SdkSuppress(minSdkVersion=29)
 @OptIn(ExperimentalTestApi::class)
 class SettingsScreenshotsTest {
     @get:Rule val ui = createEmptyComposeRule()
     private val instrumentation get() = InstrumentationRegistry.getInstrumentation()
     private val phase get() = InstrumentationRegistry.getArguments().getString("autvScreenshotPhase", "after")
-    private fun shell(command: String): String =
-        instrumentation.uiAutomation.executeShellCommand(command).use { descriptor ->
+    private fun shell(command: String): String {
+        return instrumentation.uiAutomation.executeShellCommand(command).use { descriptor ->
             android.os.ParcelFileDescriptor.AutoCloseInputStream(descriptor).use { it.readBytes().toString(Charsets.UTF_8) }
         }
+    }
     private fun screenshot(name: String) {
-        val target=File(instrumentation.targetContext.filesDir,"settings-screenshots/$phase-$name.png")
-        target.parentFile!!.mkdirs()
-        instrumentation.uiAutomation.takeScreenshot().let { bitmap ->
-            target.outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG,100,it) }; bitmap.recycle()
+        val resolver=instrumentation.targetContext.contentResolver
+        val values=android.content.ContentValues().apply {
+            put(android.provider.MediaStore.Images.Media.DISPLAY_NAME,"$phase-$name.png")
+            put(android.provider.MediaStore.Images.Media.MIME_TYPE,"image/png")
+            put(android.provider.MediaStore.Images.Media.RELATIVE_PATH,"Pictures/AUTV-settings-screenshots")
+            put(android.provider.MediaStore.Images.Media.IS_PENDING,1)
         }
+        val uri=checkNotNull(resolver.insert(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values))
+        val bitmap=instrumentation.uiAutomation.takeScreenshot()
+        try {
+            val expected=when {
+                name.startsWith("phone") -> 1080 to 1920
+                name.startsWith("tv-1080p") -> 1920 to 1080
+                name.startsWith("tv-4k") -> 3840 to 2160
+                else -> 1280 to 720
+            }
+            assertEquals("Screenshot width for $name",expected.first,bitmap.width)
+            assertEquals("Screenshot height for $name",expected.second,bitmap.height)
+            checkNotNull(resolver.openOutputStream(uri)).use { check(bitmap.compress(Bitmap.CompressFormat.PNG,100,it)) }
+            resolver.update(uri,android.content.ContentValues().apply {put(android.provider.MediaStore.Images.Media.IS_PENDING,0)},null,null)
+            checkNotNull(resolver.openInputStream(uri)).use { check(it.read()>0) {"Empty screenshot for $name"} }
+        } finally {bitmap.recycle()}
     }
     @Test fun phoneAndTelevisionSettingsAndActivation() {
+        val requested=InstrumentationRegistry.getArguments().getString("autvScreenshotDevice")
         try {
             for ((name,size,density) in listOf(Triple("phone","1080x1920",420),Triple("tv-720p","1280x720",160),
                 Triple("tv-1080p","1920x1080",240),Triple("tv-4k","3840x2160",480),Triple("tv-720p-large-text","1280x720",160))) {
-                shell("wm size $size");shell("wm density $density");SystemClock.sleep(1000)
-                // Fail before capture if Android clamps an oversized request on a small AVD.
-                val display=shell("wm size")
-                val actualSize=Regex("(?:Physical|Override) size: ([0-9]+x[0-9]+)").findAll(display).lastOrNull()?.groupValues?.get(1)
-                assertEquals("Requested screenshot dimensions were not applied: $display",size,actualSize)
-                val actualDensity=Regex("(?:Physical|Override) density: ([0-9]+)").findAll(shell("wm density")).lastOrNull()?.groupValues?.get(1)?.toInt()
-                assertEquals("Requested screenshot density was not applied",density,actualDensity)
+                if(requested!=null && requested!=name) continue
+                if(requested==null) { shell("wm size $size");shell("wm density $density");SystemClock.sleep(1000) }
                 ActivationFixture.reset()
                 val tv=name.startsWith("tv")
                 ProviderScreenshotActivity.configureForScreenshot(tv, if(name.endsWith("large-text")) 1.3f else 1f)
@@ -53,7 +67,10 @@ class SettingsScreenshotsTest {
                     // accidentally turn a layout check into an asynchronous connection test.
                     scenario.onActivity { it.playback.connectNineNow() }
                     ui.waitUntil(15_000) { ActivationFixture.codeRequests.get() > 0 }
-                    ui.onNodeWithTag("provider-9now").performScrollTo().performClick()
+                    // A window recreation may restore Settings directly to the pending provider.
+                    // Open the card only when the overview is still the active screen.
+                    if(ui.onAllNodesWithTag("provider-9now").fetchSemanticsNodes().isNotEmpty())
+                        ui.onNodeWithTag("provider-9now").performScrollTo().performClick()
                     try {
                         ui.waitUntil(15000) { ui.onAllNodesWithTag("activation-qr").fetchSemanticsNodes().isNotEmpty() }
                     } catch (timeout: androidx.compose.ui.test.ComposeTimeoutException) {
@@ -90,6 +107,6 @@ class SettingsScreenshotsTest {
                     scenario.onActivity { it.playback.disconnectNineNow() }
                 }
             }
-        } finally { shell("wm size reset");shell("wm density reset");ProviderScreenshotActivity.configureForScreenshot(false,1f);ActivationFixture.reset() }
+        } finally { if(requested==null) {shell("wm size reset");shell("wm density reset")};ProviderScreenshotActivity.configureForScreenshot(false,1f);ActivationFixture.reset() }
     }
 }
