@@ -1,0 +1,42 @@
+name: EPG Gate 1 — real schedule coverage audit
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/audit_epg_gate1.py
+      - .github/workflows/audit-epg-gate1.yml
+  schedule:
+    - cron: '35 20 * * *' # daily UTC; reports actual UTC run time
+
+permissions:
+  contents: read
+
+jobs:
+  epg-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - name: Read actual published XMLTV and audit channel coverage
+        run: python3 scripts/audit_epg_gate1.py
+      - name: Verify all approved channels were audited
+        run: |
+          python3 - <<'PY'
+          import csv, json
+          from pathlib import Path
+          data=json.loads(Path('audits/epg_gate1_summary.json').read_text())
+          with Path('audits/epg_gate1_channel_audit.csv').open(newline='') as f:
+              rows=list(csv.DictReader(f))
+          assert len(rows)==data['active_guide_channels'], 'Gate 1 audit incomplete'
+          assert len({r['number'] for r in rows})==len(rows), 'Duplicate channel audit rows'
+          print(f"Audited {len(rows)} active channels with real published EPG.")
+          PY
+      - name: Archive per-channel evidence and summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: autv-epg-gate1-coverage
+          path: |
+            audits/epg_gate1_channel_audit.csv
+            audits/epg_gate1_summary.json
+          retention-days: 30
