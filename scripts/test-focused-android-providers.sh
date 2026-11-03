@@ -4,7 +4,7 @@ set +e
 set -o pipefail
 result=0
 phase="${AUTV_SCREENSHOT_PHASE:-after}"
-classes="${AUTV_SCREENSHOT_CLASSES:-dev.prestwich.autv.CastPlaybackTest,dev.prestwich.autv.StartupPlaybackTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.ProviderQrIntegrationTest,dev.prestwich.autv.ProviderQrUiTest,dev.prestwich.autv.SbsProviderTest,dev.prestwich.autv.AustralianProviderIntegrationTest,dev.prestwich.autv.provider.EncryptedProviderSessionStoreTest}"
+classes="${AUTV_SCREENSHOT_CLASSES:-dev.prestwich.autv.CastPlaybackTest,dev.prestwich.autv.StartupPlaybackTest,dev.prestwich.autv.ProviderPlaybackTest,dev.prestwich.autv.ProviderSettingsUiTest,dev.prestwich.autv.ProviderActivationTest,dev.prestwich.autv.ProviderQrIntegrationTest,dev.prestwich.autv.ProviderQrUiTest,dev.prestwich.autv.SbsProviderTest,dev.prestwich.autv.AustralianProviderIntegrationTest,dev.prestwich.autv.provider.AustralianConfigurationIsolationTest,dev.prestwich.autv.provider.EncryptedProviderSessionStoreTest}"
 mkdir -p android-ui-reports
 adb shell settings put system accelerometer_rotation 0
 adb shell settings put system user_rotation 0

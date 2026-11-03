@@ -24,25 +24,32 @@ class AbcClientRegistration(val productId: String, val profileApiKey: String,
     override fun toString()="AbcClientRegistration(redacted)"
 }
 /** Concrete native HTTP request construction. Media authorisation is deliberately a distinct grant. */
-class AbcHttpAccess internal constructor(private val registration: AbcClientRegistration,
+class AbcHttpAccess internal constructor(private val registration: AbcClientRegistration?,
     private val open: (URL)->HttpURLConnection): AbcProviderAccess {
     constructor(registration: AbcClientRegistration): this(registration,{ it.openConnection() as HttpURLConnection })
+    /** Public catalogue/programme metadata only; linking and signing remain unavailable. */
+    constructor(): this(null,{ it.openConnection() as HttpURLConnection })
+    private fun registered() = registration ?: throw ProviderException(ProviderFailure.UNSUPPORTED)
     override fun link(deviceId: String): JSONObject = guarded(ProviderPlaybackStage.ABC_ACTIVATION) {
+        val registration=registered()
         if (!registration.accountLinkingEnabled) throw ProviderException(ProviderFailure.UNSUPPORTED)
         send("POST","$PROFILE/ctv/link",JSONObject().put("productId",registration.productId).put("deviceId",deviceId).put("deviceName","AUTV"),profileKey=true)
     }
     override fun linkStatus(deviceId: String,requestId: String?): JSONObject = guarded(ProviderPlaybackStage.ABC_POLL) {
+        val registration=registered()
         if (!registration.accountLinkingEnabled) throw ProviderException(ProviderFailure.UNSUPPORTED)
         val values=linkedMapOf("productId" to registration.productId,"deviceId" to deviceId)
         requestId?.let { values["requestId"]=it }
         send("GET",query("$PROFILE/ctv/status",values),pending=true)
     }
     override fun accountToken(uid: String): JSONObject = guarded(ProviderPlaybackStage.ABC_TOKEN) {
+        val registration=registered()
         if (!registration.accountLinkingEnabled) throw ProviderException(ProviderFailure.UNSUPPORTED)
         // UID renewal deliberately has no old bearer/profile key or shared cookie jar.
         send("GET",query("https://api.seesaw.abc.net.au/v2/token",mapOf("UID" to uid,"source" to "iview")))
     }
     override fun unlink(deviceId: String) { guarded(ProviderPlaybackStage.ABC_SIGN_OUT) {
+        val registration=registered()
         if (!registration.accountLinkingEnabled) throw ProviderException(ProviderFailure.UNSUPPORTED)
         send("POST","$PROFILE/ctv/unlink",JSONObject().put("productId",registration.productId).put("deviceId",deviceId),profileKey=true)
     } }
@@ -57,13 +64,14 @@ class AbcHttpAccess internal constructor(private val registration: AbcClientRegi
         send("GET",officialUrl)
     }
     override fun authoriseMedia(houseNumber: String,originalHls: String,accountToken: String?): String = guarded(ProviderPlaybackStage.ABC_AUTHORISATION) {
+        val registration=registered()
         // Only explicitly authorised, discovered feed identities may reach the signer.
         if(houseNumber !in registration.authorisedHouseNumbers) throw ProviderException(ProviderFailure.UNAVAILABLE)
         ProviderOriginHeaders.origin(originalHls)
         registration.mediaAuthoriser(houseNumber,originalHls,accountToken).also { ProviderOriginHeaders.origin(it) }
     }
     private fun send(method: String,address: String,body: JSONObject?=null,profileKey: Boolean=false,pending: Boolean=false): JSONObject {
-        if (!registration.accountLinkingEnabled && (profileKey || address.startsWith(PROFILE) || address.startsWith("https://api.seesaw.abc.net.au/"))) throw ProviderException(ProviderFailure.UNSUPPORTED)
+        if (registration?.accountLinkingEnabled != true && (profileKey || address.startsWith(PROFILE) || address.startsWith("https://api.seesaw.abc.net.au/"))) throw ProviderException(ProviderFailure.UNSUPPORTED)
         val origin=ProviderOriginHeaders.origin(address)
         require(origin in setOf("https://mylogin-api.abc.net.au","https://api.seesaw.abc.net.au","https://api.iview.abc.net.au"))
         require(!profileKey || (origin=="https://mylogin-api.abc.net.au" && method=="POST"))
@@ -72,7 +80,7 @@ class AbcHttpAccess internal constructor(private val registration: AbcClientRegi
             connection.instanceFollowRedirects=false;connection.connectTimeout=10000;connection.readTimeout=15000
             connection.requestMethod=method;connection.setRequestProperty("Accept","application/json")
             connection.setRequestProperty("User-Agent","AUTV (Android)")
-            if(profileKey) connection.setRequestProperty("X-API-KEY",registration.profileApiKey)
+            if(profileKey) connection.setRequestProperty("X-API-KEY",registered().profileApiKey)
             if(body!=null) {
                 connection.doOutput=true;connection.setRequestProperty("Content-Type","application/json")
                 connection.outputStream.use { it.write(body.toString().toByteArray(Charsets.UTF_8)) }

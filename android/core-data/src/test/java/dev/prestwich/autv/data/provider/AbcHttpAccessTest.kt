@@ -20,6 +20,19 @@ class AbcHttpAccessTest {
     }
     private fun registration(authorise: (String,String,String?)->String={_,url,_->url})=
         AbcClientRegistration("autv-registered-fixture","synthetic-profile-key","VIC","returned-main-vic",authorise)
+    @Test fun publicMetadataNeedsNoRegistrationButCannotActivateOrSignMedia() {
+        val calls=mutableListOf<Connection>()
+        val access=AbcHttpAccess(null) { Connection(it).also(calls::add) }
+        access.home();access.collection("live");access.programme("https://api.iview.abc.net.au/v2/video/VIC_FIXTURE")
+        assertEquals(3,calls.size)
+        assertTrue(calls.all { it.getRequestProperty("X-API-KEY")==null && it.getRequestProperty("Authorization")==null })
+        for(action in listOf<()->Any>({access.link("device")},{access.linkStatus("device",null)},
+            {access.accountToken("uid")},{access.unlink("device")},
+            {access.authoriseMedia("VIC_FIXTURE","https://media.invalid/live.m3u8",null)})) {
+            try { action();fail() } catch(error: ProviderException) { assertEquals(ProviderFailure.UNSUPPORTED,error.failure) }
+        }
+        assertEquals(3,calls.size)
+    }
     @Test fun approvedAnonymousRegistrationDoesNotSendUnregisteredProfileRequests() {
         var calls=0
         val config=AbcClientRegistration("","","VIC","returned-main-vic",{_,url,_->url},accountLinkingEnabled=false)
