@@ -25,3 +25,7 @@
 ## 2026-10-31 - Progress Semantics and Dialog Action Labels in Settings
 **Learning:** Indeterminate LinearProgressIndicator composables displayed during background operations (such as channel refreshing) do not convey purpose to TalkBack screen readers unless given explicit `contentDescription` semantics; generic modal dismiss buttons ("Close") should clarify what surface is being dismissed ("Close settings") consistent with other modals across the app.
 **Action:** Add explicit `contentDescription` semantics describing the ongoing asynchronous task to progress indicators and provide disambiguated action descriptions on dialog dismissal buttons.
+
+## 2026-11-04 - Selection Semantics and RadioButton Roles in Settings Option Lists
+**Learning:** Single-selection option lists built with custom buttons (like `FocusButton` for startup channel modes and channels) using visual checkmarks ("✓ ") do not expose selection state to screen readers unless given explicit `Role.RadioButton` and `selected = isSelected` semantics; TalkBack announces raw checkmark symbols or skips state context entirely without these semantics.
+**Action:** Set `semantics { this.selected = isSelected; role = Role.RadioButton; contentDescription = ... }` on interactive option buttons within settings selection lists.
