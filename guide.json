@@ -9,8 +9,8 @@
     "epg": "https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz",
     "guide": "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
   },
-  "activeCount": 637,
-  "availableCount": 632,
+  "activeCount": 639,
+  "availableCount": 634,
   "channels": [
     {
       "number": 100,
@@ -4955,6 +4955,30 @@
       "streamUrl": "https://jmp2.uk/plu-636adc255bcf470007d6e0e2.m3u8",
       "tvgId": "636adc255bcf470007d6e0e2",
       "logoUrl": "https://images.pluto.tv/channels/638e10220aa6a6000726979f/colorLogoPNG.png"
+    },
+    {
+      "number": 847,
+      "name": "Comet TV",
+      "genre": "Entertainment",
+      "subgenre": "Specialty Entertainment",
+      "description": "English-language sci-fi, fantasy and cult entertainment channel. NWA Powerrr airs at scheduled times. Owner-approved AUTV trial; Australian playback, rights and guide availability require verification.",
+      "epg": "Channel only",
+      "available": true,
+      "streamUrl": "https://fast-channels.sinclairstoryline.com/COMET/index.m3u8",
+      "tvgId": "Comet.us@SD",
+      "logoUrl": null
+    },
+    {
+      "number": 848,
+      "name": "CHARGE!",
+      "genre": "Entertainment",
+      "subgenre": "Specialty Entertainment",
+      "description": "English-language action, crime and adventure entertainment channel. Owner-approved AUTV trial; Australian playback, rights and guide availability require verification.",
+      "epg": "Channel only",
+      "available": true,
+      "streamUrl": "https://fast-channels.sinclairstoryline.com/CHARGE/index.m3u8",
+      "tvgId": "Charge.us@SD",
+      "logoUrl": null
     },
     {
       "number": 1000,
