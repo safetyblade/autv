@@ -61,6 +61,9 @@ The file `audits/network10_au_fast_gap_2026-11-06.csv` compares **62 distinct ch
 
 Do not re-add the failed Nickelodeon on-air source as a FAST substitute: these are different channel/distribution contexts.
 
+**Format distinction (important):** The 10 website has a dedicated `/live/nicktoons-90s` page, supporting a distinct live channel to reconcile against AUTV #1232. The main 10 site also lists **Dallas Cowboys Cheerleaders: Making The Team** in 'Recently Added' and Jamie Oliver programmes under a themed on-demand category. Merely seeing those titles in the app does **not** prove they are independent 24-hour FAST channels. Their feed-vs-VOD status is a mandatory verification item before assigning AUTV channel numbers. Embarrassing Bodies appears both as a programming title and in a historical FAST listing. Relevant public pages: `https://10.com.au/live/nicktoons-90s` and `https://10.com.au/`.
+
+
 ### Channel discovery procedure
 1. Obtain a dated **Australian** 10 live-app catalogue/EPG inventory with stable broadcaster/Pluto channel IDs and schedules; don't use US-region Pluto IDs as if they were equivalent.
 2. Join against AUTV by **provider channel ID first**, then broadcaster-approved naming aliases, EPG and artwork. Check existing rows against actual AU streams, not name alone.
