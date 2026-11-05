@@ -79,6 +79,28 @@ result["abc_live_catalogue_public_get"] = abc_meta
 abc_link, abc_response = request("POST", "https://mylogin-api.abc.net.au/latest/ctv/link",
                                  {"productId": "autv", "deviceId": PROBE_ID, "deviceName": "AUTV"})
 result["abc_link_challenge_without_broadcaster_registration"] = {**abc_link, "challenge_issued": issued_code(abc_response)}
+if abc_link.get("status") == 200:
+    abc_payload = real_data(abc_response)
+    # Whitelisted field *presence* only; never retain values or a linking code.
+    fields = ("code", "linkCode", "expiresIn", "expires", "expiryAt", "deviceId",
+              "requestId", "qrCodeImageUrl", "linkingStatus", "interval")
+    result["abc_challenge_shape"] = {
+        "fields_present": [field for field in fields if field in abc_payload],
+        "code_characters": len(abc_payload.get("code", "")) if isinstance(abc_payload.get("code"), str) else None,
+    }
+    params = {"productId": "autv", "deviceId": abc_payload.get("deviceId") or PROBE_ID}
+    if isinstance(abc_payload.get("requestId"), str) and abc_payload.get("requestId"):
+        params["requestId"] = abc_payload["requestId"]
+    status_url = "https://mylogin-api.abc.net.au/latest/ctv/status?" + urllib.parse.urlencode(params)
+    state_response, state_raw = request("GET", status_url)
+    state_json = real_data(state_raw)
+    state_name = next((state_json.get(field) for field in ("status", "state", "linkingStatus")
+                       if isinstance(state_json.get(field), str)), "")
+    result["abc_link_status_poll_without_registration"] = {
+        **state_response, "pending_or_waiting": str(state_name).lower() in
+           ("pending", "waiting", "unlinked", "not_linked"), "has_user_identity": any(
+            key in state_json for key in ("UID", "uid")),
+    }
 
 ten_config, ten_bytes = request("GET", "https://10.com.au/api/v1/config")
 result["ten_public_config_get_without_registered_signer"] = ten_config
