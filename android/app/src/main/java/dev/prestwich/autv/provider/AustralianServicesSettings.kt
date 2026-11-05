@@ -116,6 +116,11 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                     Text("Configuration required",style=MaterialTheme.typography.titleMedium)
                                     Text(unavailable,color=Muted,modifier=Modifier.testTag("${service.id}-unavailable"))
                                     Text("Your saved account has not been removed. Provider-issued access must be configured in an authorised AUTV build.",style=MaterialTheme.typography.bodySmall,color=Muted)
+                                    if (BuildConfig.DEBUG && service.id == "ten") {
+                                        Text("Four experimental 10 linear channels are listed in Australian TV for native playback testing. This is not a linked 10 account or a verified production feed.",
+                                            style=MaterialTheme.typography.bodySmall, color=Muted,
+                                            modifier=Modifier.testTag("ten-linear-guide-trial-status"))
+                                    }
                                     if (BuildConfig.DEBUG && service.id in setOf("abc","ten")) {
                                         HorizontalDivider(color=MaterialTheme.colorScheme.outline)
                                         Text("Native connection trials",style=MaterialTheme.typography.titleMedium)
