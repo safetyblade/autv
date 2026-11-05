@@ -1,0 +1,52 @@
+name: AUTV #166 source trials (read-only)
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "scripts/probe_issue166_sources.py"
+      - ".github/workflows/issue166-source-trials.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download existing approved source catalogues
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p discovery_sources
+          download() {
+            name="$1"
+            url="$2"
+            if curl --fail --location --silent --show-error --max-time 25 "$url" -o "discovery_sources/${name}.m3u"; then
+              echo "Downloaded $name catalogue"
+            else
+              rm -f "discovery_sources/${name}.m3u"
+              echo "::warning::Unavailable $name catalogue; other sources will still be checked"
+            fi
+          }
+          download roku "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/roku_all.m3u"
+          download tubi "https://raw.githubusercontent.com/BuddyChewChew/tubi-scraper/main/tubi_playlist.m3u"
+          download xumo "https://raw.githubusercontent.com/BuddyChewChew/xumo-playlist-generator/main/playlists/xumo_playlist.m3u"
+          download plex_au "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plex_au.m3u"
+          download pluto_us "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/us_pluto.m3u"
+          download pluto_ca "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ca_pluto.m3u"
+          download pluto_uk "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/uk_pluto.m3u"
+      - name: Trial alternative candidates, preserving primary feeds
+        run: python3 scripts/probe_issue166_sources.py
+      - name: Verify published playlist has not changed
+        shell: bash
+        run: |
+          git diff --exit-code -- playlist.m3u channel_guide.csv guide.json custom.m3u
+      - name: Upload short results without signed HLS URLs
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue166-source-trials
+          path: audits/issue166_candidate_probe.json
+          retention-days: 30
