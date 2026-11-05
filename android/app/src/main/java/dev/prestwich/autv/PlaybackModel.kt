@@ -112,9 +112,12 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     private var startupFailed = false
     private var startupSucceeded = false
 
+    private fun isDebugTrial(channel: Channel?): Boolean =
+        channel?.tvgId?.startsWith("autv-debug-") == true
+
     private fun saveWatched() {
         val channel = selected ?: return
-        if (BuildConfig.DEBUG && NativeBroadcasterTrial.TEN_LINEAR_TRIALS.any { it.number == channel.number }) return // Debug previews are never watched history.
+        if (isDebugTrial(channel)) return // Temporary streams must not enter startup history.
         val identity = FavouriteIdentity.key(channel) ?: return
         preferences.edit().putString("last-watched-id", identity).putInt("channel", channel.number).apply()
     }
@@ -133,9 +136,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
             delay(200) // Account discovery starts in init after the cached guide is published.
             var discoveryWaits = 0
             while ((providerBusy || providerAccounts.values.any { it.busy }) && discoveryWaits++ < 40) delay(200)
-            val rows = guide?.channels.orEmpty().filterNot { candidate ->
-                BuildConfig.DEBUG && NativeBroadcasterTrial.TEN_LINEAR_TRIALS.any { it.number == candidate.number }
-            }
+            val rows = guide?.channels.orEmpty().filterNot(::isDebugTrial)
             val favourites = getApplication<Application>().getSharedPreferences("favourites-v1", 0)
                 .getStringSet("channels", emptySet()).orEmpty()
             val recent = preferences.getString("last-watched-id", null)
@@ -184,7 +185,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         }
         override fun onPlaybackStateChanged(state: Int) {
             buffering = state == Player.STATE_BUFFERING
-            if (state == Player.STATE_READY && (!BuildConfig.DEBUG || NativeBroadcasterTrial.TEN_LINEAR_TRIALS.none { it.number == selected?.number }) && selected?.providerChannel == null &&
+            if (state == Player.STATE_READY && !isDebugTrial(selected) && selected?.providerChannel == null &&
                 player.currentMediaItem?.mediaId == selected?.number?.toString()) lastWorkingFast = selected
             if (state == Player.STATE_READY) player.currentMediaItem?.mediaId?.toIntOrNull()?.let { failed.remove(it); guideTuneRecovery.ready(it) }
         }
@@ -241,20 +242,32 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
             Channel(providerNumber(channel), channel.name, "Australian TV", providerName(channel.id.provider), "", "", true, null,
                 channel.id.favouriteKey, channel.logoUrl, channel)
         }.filter { candidate -> fastLoaded.channels.none { it.number == candidate.number } }
-        // Owner-verified picture on 5 Nov: publish only the VIC trial in DEBUG builds.
-        // This is NOT 10 account linking or an approved distribution feed.
-        // Never introduce unverified 10 Drama/Comedy/Nickelodeon URLs as playable rows.
-        val tenLinearTrials = if (BuildConfig.DEBUG)
-            NativeBroadcasterTrial.TEN_LINEAR_TRIALS.filter { trial ->
-                fastLoaded.channels.none { it.number == trial.number }
-            }.map { trial ->
-                Channel(trial.number, trial.name, "Australian TV", "10 (experimental)",
-                    if (trial.physicallyObserved) "Picture observed; audio/rights/EPG unverified"
-                    else "Legacy source candidate; current playback and channel mapping unverified",
-                    "", true, trial.source, if (trial.number == TEN_VIC_TRIAL_NUMBER) "autv-debug-ten-vic-test" else "autv-debug-ten-${trial.number}", null)
+        // 10 VIC is owner-approved as a persistent Australian TV channel.
+        // Keep the source identity separate from Network 10 account linking.
+        val tenLinear = NativeBroadcasterTrial.TEN_LINEAR_TRIALS
+            .filter { it.number == 10 || BuildConfig.DEBUG }
+            .filter { candidate -> fastLoaded.channels.none { it.number == candidate.number } }
+            .map { trial ->
+                val permanent = trial.number == 10
+                Channel(trial.number, trial.name, "Australian TV",
+                    if (permanent) "10 — external live source" else "10 (source trial)",
+                    if (permanent) "10 VIC direct stream; third-party source availability may change"
+                    else "HLS manifest responded; physical audio/video unverified",
+                    "", true, trial.source,
+                    if (permanent) "autv.10-vic-live" else "autv-debug-ten-${trial.number}", null)
             }
+        // No-login ABC web HLS candidates are previewable only on DEBUG.
+        // A successful media trial is separate from the saved ABC account.
+        val abcDirectTrials = if (BuildConfig.DEBUG)
+            NativeBroadcasterTrial.ABC_LIVE_TRIALS
+                .filter { candidate -> fastLoaded.channels.none { it.number == candidate.number } }
+                .map { trial ->
+                    Channel(trial.number, trial.name, "Australian TV",
+                        "ABC (direct stream trial)", "ABC CDN manifest responded; playback unverified",
+                        "", true, trial.source, "autv-debug-abc-${trial.number}", null)
+                }
         else emptyList()
-        val added = local + tenLinearTrials
+        val added = local + tenLinear + abcDirectTrials
         val loaded = Guide(fastLoaded.activeCount + added.size, fastLoaded.availableCount + added.size,
             fastLoaded.channels + added)
         // Migrate numeric history against the first available catalogue (including the old cache)

@@ -37,3 +37,18 @@ The trial rows use isolated negative test numbers and identifiable labels, do no
 4. Capture exact failed source name, Media3 error code and whether manifest/key/segment requests were available. Do not print signed session URLs. A 404 or wrong-branded legacy source must be retired from the trial rather than relabelled as working.
 5. Confirm 9Now, 7plus, SBS and FAST playback and favourites unchanged.
 6. Keep this PR unmerged until physical source acceptance and production permission review. **No full 10 FAST catalogue is in scope.**
+
+
+## Updated 6 November findings and next live-player gate
+
+Maintained Melbourne `https://i.mjh.nz/au/Melbourne/raw.m3u8` was fetched successfully in GitHub Actions run **42120807622**. It lists 10, 10 Drama, 10 Comedy and Nickelodeon. Direct source checks showed:
+- 10 VIC `/.r/10-vic.m3u8`: HLS 200 via `dai.google.com`; owner physically observed picture.
+- 10 Drama: old `/10bold-vic.m3u8` 404, corrected `/.r/10bold-vic.m3u8` HLS 200 via Google DAI.
+- 10 Comedy: old `/10peach-vic.m3u8` 404, corrected `/.r/10peach-vic.m3u8` HLS 200 via Google DAI.
+- Nickelodeon: old `/10shake-vic.m3u8` 404; corrected alias reaches CloudFront but 403; removed from playable trial pending separate investigation.
+
+**User approved 10 VIC as always-on Australian TV.** The full AUTV build now inserts channel number **10** with stable `autv.10-vic-live` identity; channel is not a linked 10 subscription and its third-party public source is not evidence of official distribution permission. Two corrected source trials for Drama and Comedy are debug-only until picture, audio, programme identity and ads are tested. Do not silently re-add failed Nickelodeon.
+
+ABC public video metadata `/v2/video/LS1807V001S00` returns `requiresLogin=false`, `playable=false`, and **no** `_embedded.playlist`: the prior ABC media resolver is looking for a media contract not supplied by that endpoint. However three public HLS redirects—ABC VIC, NEWS and Kids—each return HTTP 200 HLS at ABC's Akamai media infrastructure in run **42121123028**. Separate DEBUG guide source trials have been added to establish physical Media3 playback without changing or relying on the saved ABC login. These third-party redirects are not cleared as production integration. Do not bypass stream rights, geofencing, ads or DRM.
+
+The read-only catalogue diagnostic grew beyond 256 KiB, so its response limit is now 2 MiB, matching the full application fetcher. The real `v2/home` live collection remains subject to schema checks.

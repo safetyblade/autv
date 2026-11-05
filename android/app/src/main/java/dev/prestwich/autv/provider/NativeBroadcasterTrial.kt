@@ -30,10 +30,21 @@ internal object NativeBroadcasterTrial {
     internal data class TenLinearTrial(val number: Int, val name: String, val source: String,
                                        val physicallyObserved: Boolean)
     internal val TEN_LINEAR_TRIALS = listOf(
-        TenLinearTrial(-98421, "10 VIC — Experimental", TEN_VIC_EXPERIMENTAL_HLS, true),
-        TenLinearTrial(-98422, "10 Drama — Source trial", "https://i.mjh.nz/10bold-vic.m3u8", false),
-        TenLinearTrial(-98423, "10 Comedy — Source trial", "https://i.mjh.nz/10peach-vic.m3u8", false),
-        TenLinearTrial(-98424, "Nickelodeon — Source trial", "https://i.mjh.nz/10shake-vic.m3u8", false),
+        // Always-on owner-approved channel, but external source is not a registered 10 login.
+        TenLinearTrial(10, "10 VIC", TEN_VIC_EXPERIMENTAL_HLS, true),
+        // Corrected 6 November 2026 URLs: public HLS manifests returned HTTP 200.
+        // Native video/audio and broadcaster distribution approval are not verified.
+        TenLinearTrial(-98422, "10 Drama — Source trial", "https://i.mjh.nz/.r/10bold-vic.m3u8", false),
+        TenLinearTrial(-98423, "10 Comedy — Source trial", "https://i.mjh.nz/.r/10peach-vic.m3u8", false),
+    )
+
+    // Independent ABC public-web live candidates. Never mark these official
+    // authorised AUTV media sessions: the URLs are maintained by a third party.
+    internal data class AbcLiveTrial(val number: Int, val name: String, val source: String)
+    internal val ABC_LIVE_TRIALS = listOf(
+        AbcLiveTrial(-98431, "ABC TV VIC — Direct HLS trial", "https://c.mjh.nz/abc-vic.m3u8"),
+        AbcLiveTrial(-98432, "ABC NEWS — Direct HLS trial", "https://c.mjh.nz/abc-news.m3u8"),
+        AbcLiveTrial(-98433, "ABC Kids — Direct HLS trial", "https://c.mjh.nz/abc-kids.m3u8"),
     )
 
     fun inspect(provider: String, fetch: (String) -> JSONObject = ::getJson): Result = try {

@@ -12,8 +12,8 @@ def load(url):
     assert (address.path == "/v2/home" or re.fullmatch(r"/v2/collection/[A-Za-z0-9_-]{1,128}", address.path))
     req = urllib.request.Request(url, headers={"Accept": "application/json", "User-Agent": "AUTV Android TV"})
     with urllib.request.urlopen(req, timeout=15) as result:
-        raw = result.read(256 * 1024 + 1)
-        if len(raw) > 256 * 1024: raise ValueError("Response too large")
+        raw = result.read(2 * 1024 * 1024 + 1)
+        if len(raw) > 2 * 1024 * 1024: raise ValueError("Response too large")
         return json.loads(raw)
 
 def shape(value):

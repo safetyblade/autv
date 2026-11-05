@@ -117,7 +117,7 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                     Text(unavailable,color=Muted,modifier=Modifier.testTag("${service.id}-unavailable"))
                                     Text("Your saved account has not been removed. Provider-issued access must be configured in an authorised AUTV build.",style=MaterialTheme.typography.bodySmall,color=Muted)
                                     if (BuildConfig.DEBUG && service.id == "ten") {
-                                        Text("Four experimental 10 linear channels are listed in Australian TV for native playback testing. This is not a linked 10 account or a verified production feed.",
+                                        Text("10 VIC is an always-on Australian TV channel using its independent live source. 10 Drama and 10 Comedy are source trials. Nickelodeon remains unavailable; no 10 account is linked.",
                                             style=MaterialTheme.typography.bodySmall, color=Muted,
                                             modifier=Modifier.testTag("ten-linear-guide-trial-status"))
                                     }
