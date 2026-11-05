@@ -44,6 +44,7 @@ def main():
                 if id and ("live" in title or "channels" in title):
                     try:
                         collection=load(ROOT+"/collection/"+id)
+                        print("LIVE_COLLECTION_ITEMS",json.dumps([{"type":safe(row.get("type")),"houseNumber":safe(row.get("houseNumber")),"title":safe(row.get("showTitle") or row.get("title") or row.get("displayTitle")), "self_href_kind": "relative" if str((row.get("_links") or {}).get("self",{}).get("href","")).startswith("/") else "absolute"} for row in collection.get("items",[]) if isinstance(row,dict)]))
                         print("LIVE_COLLECTION",json.dumps({"id":id,"shape":shape(collection),"embedded":shape(collection.get("_embedded")),
                             "items_first":shape(next((v for v in collection.values() if isinstance(v,list)),[]))}))
                     except Exception as error:
