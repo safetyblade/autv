@@ -400,3 +400,8 @@ https://jmp2.uk/plu-650315163a0d700008bb07f8.m3u8
 # Recovery 716: Pluto DE catalogue identity; regional access and media validation pending.
 #EXTINF:-1 tvg-id="688735087b2cf33d01a2d411" tvg-name="Sea Patrol" group-title="Entertainment",Sea Patrol
 https://jmp2.uk/plu-688735087b2cf33d01a2d411.m3u8
+
+# MUTV TRIAL ONLY: public Brightcove/Akamai candidate; verify AU playback and rights before retaining.
+# Source reference: publicly indexed MUTV playlist; not an authorised AUTV integration.
+#EXTINF:-1 tvg-id="MUTV.uk@SD" tvg-name="MUTV" group-title="Sport",MUTV
+https://bcovlive-a.akamaihd.net/r2d2c4ca5bf57456fb1d16255c1a535c8/eu-west-1/6058004203001/playlist.m3u8
