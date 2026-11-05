@@ -38,4 +38,15 @@ class NativeBroadcasterTrialTest {
         assertFalse(failed.summary.contains("secret"))
         assertTrue(failed.channels.isEmpty())
     }
+    @Test fun tenLinearTrialsAreFourDistinctDebugCandidatesNotClaimedAuthenticated() {
+        val trials = NativeBroadcasterTrial.TEN_LINEAR_TRIALS
+        assertEquals(4, trials.size)
+        assertEquals(4, trials.map { it.number }.distinct().size)
+        assertEquals(4, trials.map { it.source }.distinct().size)
+        assertEquals("10 VIC — Experimental", trials.first().name)
+        assertTrue(trials.first().physicallyObserved)
+        assertEquals(3, trials.count { !it.physicallyObserved })
+        assertTrue(trials.all { it.number < 0 && it.source.startsWith("https://i.mjh.nz/") })
+    }
+
 }
