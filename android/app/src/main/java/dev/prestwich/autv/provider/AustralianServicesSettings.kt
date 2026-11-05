@@ -1,5 +1,6 @@
 package dev.prestwich.autv.provider
 
+import android.content.Intent
 import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -18,6 +19,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -42,6 +44,7 @@ private val services = listOf(
 @Composable
 internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Unit) {
     val uriHandler = LocalUriHandler.current
+    val context = LocalContext.current
     val tv = LocalConfiguration.current.uiMode and Configuration.UI_MODE_TYPE_MASK == Configuration.UI_MODE_TYPE_TELEVISION
     var selected by rememberSaveable { mutableStateOf<String?>(model.pendingActivationProvider) }
     val firstFocus = remember { FocusRequester() }
@@ -74,6 +77,12 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                     services.forEach { service ->
                                         ServiceCard(service,model,{selected=service.id},
                                             if(service.id=="9now") Modifier.focusRequester(firstFocus) else Modifier)
+                                    }
+                                    if (BuildConfig.DEBUG) {
+                                        FocusButton("Try real ABC / 10 connection (test)", {
+                                            context.startActivity(Intent().setClassName(context,
+                                                "dev.prestwich.autv.BroadcasterLinkLabActivity"))
+                                        }, Modifier.testTag("real-broadcaster-link-lab"))
                                     }
                                 }
                             }

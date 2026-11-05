@@ -1,0 +1,44 @@
+name: AUTV ABC and Network 10 Real Link TV Lab APK
+
+on:
+  push:
+    branches:
+      - validation/actual-link-probe
+    paths:
+      - android/app/src/debug/java/dev/prestwich/autv/BroadcasterLinkLabActivity.kt
+      - android/app/src/main/java/dev/prestwich/autv/provider/AustralianServicesSettings.kt
+      - android/app/src/debug/AndroidManifest.xml
+      - .github/workflows/broadcaster-real-link-apk.yml
+
+permissions:
+  contents: read
+
+jobs:
+  real-link-lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+      - name: Protect Seven production playback
+        run: python3 scripts/verify-seven-baseline.py
+      - name: Run JVM tests and build debug AUTV with real provider link test
+        run: gradle -p android -PautvMediaLab=false :core-data:testDebugUnitTest :core-guide:testDebugUnitTest :app:testDebugUnitTest :app:assembleFullAppDebug
+      - name: Verify full application launcher and identity
+        run: python3 scripts/verify-full-app-apk.py android/app/build/outputs/apk/full-app/AUTV-Full-App-Debug.apk --output AUTV-Link-Lab-manifest.txt
+      - name: Upload actual link test APK — not approved production
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: AUTV-Real-ABC-10-Link-Test-Debug
+          path: |
+            android/app/build/outputs/apk/full-app/AUTV-Full-App-Debug.apk
+            AUTV-Link-Lab-manifest.txt
+          if-no-files-found: warn
+          retention-days: 14
