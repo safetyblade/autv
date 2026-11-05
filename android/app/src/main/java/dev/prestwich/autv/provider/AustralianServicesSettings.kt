@@ -161,6 +161,30 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                             }
                                         }
                                     }
+                                    if(service.id == "ten" && account != null) {
+                                        var accountExpanded by rememberSaveable("ten-registered") { mutableStateOf(false) }
+                                        HorizontalDivider(color=MaterialTheme.colorScheme.outline.copy(alpha=0.4f))
+                                        FocusButton(if(accountExpanded) "Hide optional 10 account options"
+                                            else "10 account options (optional)", {
+                                            accountExpanded = !accountExpanded
+                                        }, Modifier.testTag("ten-optional-account-options"))
+                                        if(accountExpanded) {
+                                            Text(if(account.connection == ProviderConnection.CONNECTED)
+                                                "10 registered account linked · not used for direct live TV"
+                                                else "10 account not linked · live TV still works",
+                                                color=Silver,style=MaterialTheme.typography.bodyMedium)
+                                            account.status?.let { Text(it,color=Muted) }
+                                            account.error?.let { Text(it,color=MaterialTheme.colorScheme.error) }
+                                            if(account.busy) LinearProgressIndicator(Modifier.fillMaxWidth())
+                                            else if(account.connection == ProviderConnection.CONNECTED) {
+                                                FocusButton("Sign out of 10",account::disconnect,
+                                                    Modifier.testTag("ten-disconnect"))
+                                            } else if(account.accountLinkingEnabled) {
+                                                FocusButton("Link 10 account",account::connect,
+                                                    Modifier.testTag("ten-connect"))
+                                            }
+                                        }
+                                    }
                                 } else if(unavailable!=null) {
                                     Text("Configuration required",style=MaterialTheme.typography.titleMedium)
                                     Text(unavailable,color=Muted,modifier=Modifier.testTag("${service.id}-unavailable"))
