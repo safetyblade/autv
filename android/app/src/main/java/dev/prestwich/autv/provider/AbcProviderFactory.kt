@@ -8,9 +8,13 @@ import java.util.UUID
 
 /** Only call after supplying an authorised ABC access implementation and returned proof-feed ID. */
 internal fun createAbcProvider(context: Context, access: AbcProviderAccess, proofHouseNumber: String,
-    anonymousLiveApproved: Boolean = false, authorisedHouseNumbers: Set<String>? = null): AbcAdapter {
-    val store=EncryptedProviderSessionStore(context,"autv.abc.session.v1","abc-session-v1")
-    val file=AtomicFile(File(context.noBackupFilesDir,"abc-device-v1"))
+    anonymousLiveApproved: Boolean = false, authorisedHouseNumbers: Set<String>? = null,
+    experimental: Boolean = false): AbcAdapter {
+    val store=if(experimental)
+        EncryptedProviderSessionStore(context,"autv.abc.experimental.session.v1","abc-experimental-session-v1")
+        else EncryptedProviderSessionStore(context,"autv.abc.session.v1","abc-session-v1")
+    val file=AtomicFile(File(context.noBackupFilesDir,
+        if(experimental) "abc-experimental-device-v1" else "abc-device-v1"))
     val id=runCatching { file.readFully().toString(Charsets.UTF_8).also { UUID.fromString(it) } }.getOrElse {
         UUID.randomUUID().toString().also { value ->
             val stream=file.startWrite()

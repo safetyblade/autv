@@ -44,6 +44,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
             },anonymousLiveApproved=id in anonymousProviderIds || (id=="abc" && configuration.abcAnonymousLiveApproved),
             accountLinkingEnabled=id!="abc" || configuration.abc?.accountLinkingEnabled!=false)
     }
+    internal val experimentalAbcLink: Boolean get() = BuildConfig.DEBUG && configuration.abc == null && providerAccounts.containsKey("abc")
     internal val sbsAccount get()=providerAccounts.getValue("sbs")
     val pendingActivationProvider: String? get()=if(providerActivation!=null || nineNow.pendingActivation!=null) "9now"
         else providerAccounts.entries.firstOrNull { it.value.activation!=null }?.key
@@ -77,6 +78,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         check(providerNumbers.edit().putInt(key, next).commit())
         return next
     }
+    private companion object { const val TEN_VIC_TRIAL_NUMBER = -98421 }
     private var fastGuide: Guide? = null
     private var lastWorkingFast: Channel? = null
     private val providerMutex = Mutex()
@@ -112,6 +114,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
 
     private fun saveWatched() {
         val channel = selected ?: return
+        if (channel.number == TEN_VIC_TRIAL_NUMBER) return // Experimental preview is never watched history.
         val identity = FavouriteIdentity.key(channel) ?: return
         preferences.edit().putString("last-watched-id", identity).putInt("channel", channel.number).apply()
     }
@@ -179,7 +182,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         }
         override fun onPlaybackStateChanged(state: Int) {
             buffering = state == Player.STATE_BUFFERING
-            if (state == Player.STATE_READY && selected?.providerChannel == null &&
+            if (state == Player.STATE_READY && selected?.number != TEN_VIC_TRIAL_NUMBER && selected?.providerChannel == null &&
                 player.currentMediaItem?.mediaId == selected?.number?.toString()) lastWorkingFast = selected
             if (state == Player.STATE_READY) player.currentMediaItem?.mediaId?.toIntOrNull()?.let { failed.remove(it); guideTuneRecovery.ready(it) }
         }
@@ -361,6 +364,34 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         holder.play(channel.streamUrl, channel.number)
         if (!foreground) player.pause()
     }
+    /** Explicit owner-triggered debug trial: live HLS within AUTV, not a linked account. */
+    internal fun playTenVicNativeTrial() {
+        if (!BuildConfig.DEBUG) return
+        if (castSender.connected) {
+            notice = "Disconnect Chromecast before testing live playback on this TV."
+            return
+        }
+        cancelStartup()
+        cancelProviderTune()
+        guideTuneRecovery.clear()
+        val trial = Channel(TEN_VIC_TRIAL_NUMBER, "10 VIC — Native playback trial",
+            "Australian TV", "10 (experimental)", "", "", true,
+            dev.prestwich.autv.provider.NativeBroadcasterTrial.TEN_VIC_EXPERIMENTAL_HLS,
+            "autv-debug-ten-vic-test", null)
+        selected = trial
+        guideOpen = false
+        notice = "Experimental 10 VIC stream. This does not link your 10 account or verify production rights."
+        failed.remove(trial.number)
+        try {
+            playLocal(trial, retry = true)
+        } catch (_: Exception) {
+            failed[trial.number] = "Playback failed"
+            buffering = false
+            guideOpen = true
+            notice = "10 VIC trial could not start. Your connected broadcasters are unaffected."
+        }
+    }
+
     fun next() { GuideNavigator(guide?.channels.orEmpty()).next(selected)?.let { request(TuneTarget.Number(it.number)) } }
     fun previous() { GuideNavigator(guide?.channels.orEmpty()).previous(selected)?.let { request(TuneTarget.Number(it.number)) } }
     fun retryCasting() { selected?.takeIf { it.providerChannel == null }?.let { notice=null; castSender.load(it) } }
