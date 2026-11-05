@@ -1823,10 +1823,6 @@
     <display-name>Unbeaten Sports</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/98cafb7f4b01848a967fda4bd2225bd7/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1783443201350_unbeaten_sports_logo_hud.png" />
   </channel>
-  <channel id="5f9c59c52f0ad475d90a33fdfd14d651">
-    <display-name>Ryz Sports Network</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/5f9c59c52f0ad475d90a33fdfd14d651/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1755024648037_Ryz_Roku_EPG_DarkBG_V3.png" />
-  </channel>
   <channel id="15cc44e50d8453e18f21ea37713319c5">
     <display-name>Electric Now</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/15cc44e50d8453e18f21ea37713319c5/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1660071204893_1605145912343_EN_Logo_WhiteonBlack_260x147.png" />
@@ -1895,10 +1891,6 @@
     <display-name>FilmRise Western</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/c5a72a598a355db4b1781ca075280773/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1673453694643_FilmRiseWestern_HUDlogo_260x147_copy.png" />
   </channel>
-  <channel id="586bd3d19f6e4b7a5cf3458722984b82">
-    <display-name>Court TV Legendary Trials</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/586bd3d19f6e4b7a5cf3458722984b82/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1753726975635_25-CTV-1681835828-Court-TV-Legendary-Trials---OTT-CTV---Legendary-Trials-Logos---Roku-Channel-Launch_CourtTVLT_Roku_HUD1.png" />
-  </channel>
   <channel id="aee4056540505e84a2196b4d2263b745">
     <display-name>TruBlu Crime Channel</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/aee4056540505e84a2196b4d2263b745/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1695170771746_Image_HUD_1_Misael_Caraballo.png" />
@@ -1955,6 +1947,10 @@
     <display-name>LOL Network</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/52c137ae3cdc50768ad7ea3cdaf0f2f4/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1779492449719_LOL-HUD_260x147White.png" />
   </channel>
+  <channel id="46967ee2691c134faa248a86293e9a0f">
+    <display-name>Sam and Colby</display-name>
+    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/46967ee2691c134faa248a86293e9a0f/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1787162091220_sam_and_colby_logo_hud.png" />
+  </channel>
   <channel id="be6338f82720cc9d9548acfa377a2aab">
     <display-name>Stokes Twins</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/be6338f82720cc9d9548acfa377a2aab/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1775670979660_StokesTwins_HUDlogo_centered_260x147.png" />
@@ -1990,14 +1986,6 @@
   <channel id="83d43dc731781826c0e004c1fa879a5f">
     <display-name>Braxton Family Values</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/83d43dc731781826c0e004c1fa879a5f/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1763398151629_WEtv_BFV_ChannelLogo_EPG_260x147_InfoHUD2_Horiz_efefef_Bill_Watts.png" />
-  </channel>
-  <channel id="d93912b4b21158fd95af2ceb8979c586">
-    <display-name>Dove</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/d93912b4b21158fd95af2ceb8979c586/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1738599967209_DoveRefresh_RokuLinear_260X147.png" />
-  </channel>
-  <channel id="5a1dec25daac971f191b10e808ec0c5d">
-    <display-name>Tastemade Home</display-name>
-    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/5a1dec25daac971f191b10e808ec0c5d/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1744402817287_260x147_TastemadeHome_LogoInfoHUD_Roku.png" />
   </channel>
   <channel id="b182852fa5860ed0017de42c7b9ce05a">
     <display-name>Nature Moments</display-name>
@@ -2689,5 +2677,8 @@
   </channel>
   <channel id="688735087b2cf33d01a2d411">
     <display-name>Sea Patrol</display-name>
+  </channel>
+  <channel id="MUTV.uk@SD">
+    <display-name>MUTV</display-name>
   </channel>
 </tv>
