@@ -239,8 +239,19 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
             Channel(providerNumber(channel), channel.name, "Australian TV", providerName(channel.id.provider), "", "", true, null,
                 channel.id.favouriteKey, channel.logoUrl, channel)
         }.filter { candidate -> fastLoaded.channels.none { it.number == candidate.number } }
-        val loaded = Guide(fastLoaded.activeCount + local.size, fastLoaded.availableCount + local.size,
-            fastLoaded.channels + local)
+        // Owner-verified picture on 5 Nov: publish only the VIC trial in DEBUG builds.
+        // This is NOT 10 account linking or an approved distribution feed.
+        // Never introduce unverified 10 Drama/Comedy/Nickelodeon URLs as playable rows.
+        val tenVicTrial = if (BuildConfig.DEBUG &&
+            fastLoaded.channels.none { it.number == TEN_VIC_TRIAL_NUMBER }) listOf(
+            Channel(TEN_VIC_TRIAL_NUMBER, "10 VIC — Experimental",
+                "Australian TV", "10 (experimental)", "Unverified source; test only",
+                "", true, NativeBroadcasterTrial.TEN_VIC_EXPERIMENTAL_HLS,
+                "autv-debug-ten-vic-test", null)
+        ) else emptyList()
+        val added = local + tenVicTrial
+        val loaded = Guide(fastLoaded.activeCount + added.size, fastLoaded.availableCount + added.size,
+            fastLoaded.channels + added)
         // Migrate numeric history against the first available catalogue (including the old cache)
         // before a fresh guide can renumber News rows. This changes identity format, not history.
         if (!preferences.contains("last-watched-id") && preferences.contains("channel")) {
