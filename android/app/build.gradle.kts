@@ -6,6 +6,10 @@ plugins {
 val mediaLab = providers.gradleProperty("autvMediaLab").orElse("false").get().also {
     require(it in setOf("true", "false")) { "autvMediaLab must be true or false" }
 } == "true"
+val isolatedTrial = providers.gradleProperty("autvIsolatedTrial").orElse("false").get().also {
+    require(it in setOf("true", "false")) { "autvIsolatedTrial must be true or false" }
+} == "true"
+require(!(mediaLab && isolatedTrial)) { "Media Lab and full-app isolated trial are mutually exclusive" }
 android {
     namespace = "dev.prestwich.autv"
     compileSdk = 36
@@ -39,6 +43,12 @@ android {
     buildTypes {
         getByName("debug") {
             if (mediaLab) applicationIdSuffix = ".medialab"
+            if (isolatedTrial) {
+                // Separate fully functional AUTV test app; never uninstall the owner's
+                // previously linked package merely to test a newly signed CI build.
+                applicationIdSuffix = ".trial"
+                manifestPlaceholders["autvAppLabel"] = "AUTV Trial"
+            }
         }
         getByName("release") {
             if (signingPath != null) signingConfig = signingConfigs.getByName("distribution")
@@ -47,7 +57,7 @@ android {
     // Fail closed: distribution builds must never silently use a new debug key or be unsigned.
     gradle.taskGraph.whenReady {
         if (allTasks.any { it.project == project && it.name == "assembleFullAppDebug" })
-            check(!mediaLab) { "Full AUTV requested with Media Lab enabled. Pass -PautvMediaLab=false." }
+            check(!mediaLab && !isolatedTrial) { "Full AUTV requires the main package, not Media Lab/isolated trial." }
         if (allTasks.any { it.project == project && it.name in setOf("assembleRelease", "packageRelease", "bundleRelease") }) {
             check(signingPath != null) { "Release signing is required. See docs/android-updates.md." }
             check(defaultConfig.versionCode!! > 1) { "Set -PautvVersionCode to a new distribution build number." }
