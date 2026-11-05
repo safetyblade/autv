@@ -31,6 +31,9 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     private val nineNow = providerAdapter ?: createNineNowProvider(application)
     private val configuration=(application as? AuTvApplication)?.australianProviders ?: AustralianProviderConfiguration()
     private val configurationFailures = configuration.configurationFailures.toMutableSet()
+    // Offline integration fixtures and future broadcaster-issued registrations retain
+    // their separate native provider QA path; default builds use six public live channels.
+    private val nativeProviderOverrides = providerOverrides.keys.intersect(setOf("abc","ten"))
     private val configuredAdapters = (configuredAustralianAdapters(application,configuration) { configurationFailures.add(it) } +
         (sbsAdapter?.let { mapOf("sbs" to it) } ?: emptyMap()) + providerOverrides).also {
         require(it.keys.all { key -> key in setOf("sbs","seven","ten","abc") })
@@ -240,7 +243,13 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         // Preserve optional registered adapters for future media authorisation, but
         // do not publish duplicate ABC/10 rows whose signed playback remains unverified.
         val local = (providerChannels + providerAccounts.values.flatMap { it.channels })
-            .filterNot { it.id.provider in setOf("abc", "ten") }
+            .filter { channel ->
+                when(channel.id.provider) {
+                    "abc" -> configuration.abc != null || "abc" in nativeProviderOverrides
+                    "ten" -> configuration.ten != null || "ten" in nativeProviderOverrides
+                    else -> true
+                }
+            }
             .map { channel ->
                 Channel(providerNumber(channel), channel.name, "Australian TV",
                     providerName(channel.id.provider), "", "", true, null,
