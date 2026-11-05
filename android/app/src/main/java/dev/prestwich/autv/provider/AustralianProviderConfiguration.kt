@@ -2,6 +2,7 @@ package dev.prestwich.autv.provider
 
 import android.content.Context
 import dev.prestwich.autv.data.provider.*
+import dev.prestwich.autv.BuildConfig
 
 /** Supplied by an approved AUTV build, never by passwords or public sample credentials. */
 class AustralianProviderConfiguration(
@@ -34,7 +35,13 @@ internal fun configuredAustralianAdapters(context: Context, configuration: Austr
     configuration.ten?.let { registration ->
         configured("ten") { createRegisteredTenProvider(context,registration,configuration.tenProofChannelKey!!,configuration.tenDaiNetworkCode) }
     }
-    configuration.abc?.let { registration ->
-        configured("abc") { createRegisteredAbcProvider(context,registration,configuration.abcAnonymousLiveApproved) }
+    val abcRegistration = configuration.abc
+    if (abcRegistration != null) {
+        configured("abc") { createRegisteredAbcProvider(context,abcRegistration,configuration.abcAnonymousLiveApproved) }
+    } else if (BuildConfig.DEBUG && "abc" !in configuration.configurationFailures) {
+        // Genuine AUTV-identified code issuance was seen on 5 November. No borrowed client key.
+        // Do not give the experimental session access to authorised distribution credentials.
+        configured("abc") { createAbcProvider(context,AbcExperimentalLinkAccess(),
+            "debug-link-only",experimental=true) }
     }
 }

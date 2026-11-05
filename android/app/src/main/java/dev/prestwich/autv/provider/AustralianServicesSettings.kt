@@ -1,5 +1,6 @@
 package dev.prestwich.autv.provider
 
+import android.content.Intent
 import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -17,6 +18,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.testTag
@@ -45,6 +47,7 @@ private val services = listOf(
 @Composable
 internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Unit) {
     val uriHandler = LocalUriHandler.current
+    val context = LocalContext.current
     val tv = LocalConfiguration.current.uiMode and Configuration.UI_MODE_TYPE_MASK == Configuration.UI_MODE_TYPE_TELEVISION
     var selected by rememberSaveable { mutableStateOf<String?>(model.pendingActivationProvider) }
     var probeBusy by remember(selected) { mutableStateOf(false) }
@@ -135,6 +138,9 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                             if (result.channels.isNotEmpty()) Text(result.channels.joinToString(" • "),style=MaterialTheme.typography.bodySmall,color=Muted)
                                         }
                                         if (service.id=="ten") {
+                                            FocusButton("Try real 10 account linking", {
+                                                context.startActivity(Intent().setClassName(context,"dev.prestwich.autv.BroadcasterLinkLabActivity"))
+                                            },Modifier.testTag("ten-real-activation"))
                                             FocusButton("Play 10 VIC native trial",{
                                                 model.playTenVicNativeTrial()
                                                 onClose()
@@ -150,6 +156,26 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                     val error=account?.error ?: if(service.id=="9now") model.providerError else null
                                     val canBrowse=account?.canBrowse ?: (connection==ProviderConnection.CONNECTED)
                                     Text(serviceState(service.id,connection,account?.anonymousLiveApproved==true),color=Silver,modifier=Modifier.testTag("${service.id}-connection-state"))
+                                    if (service.id=="abc" && model.experimentalAbcLink) {
+                                        Text("Experimental ABC account link. AUTV can request a genuine ABC code, but approval and native media authorisation must be verified on this TV.",color=Muted,style=MaterialTheme.typography.bodySmall)
+                                        if (BuildConfig.DEBUG) {
+                                            FocusButton(if(probeBusy) "Checking ABC…" else "Check ABC live catalogue",{
+                                                if(!probeBusy) {
+                                                    probeBusy=true
+                                                    probeScope.launch {
+                                                        try {
+                                                            val result=withContext(Dispatchers.IO) { NativeBroadcasterTrial.inspect("abc") }
+                                                            if(selected=="abc") probeResult=result
+                                                        } finally { if(selected=="abc") probeBusy=false }
+                                                    }
+                                                }
+                                            },Modifier.testTag("abc-native-probe"),!probeBusy)
+                                            probeResult?.let { result ->
+                                                Text("${result.stage}: ${result.summary}",modifier=Modifier.testTag("abc-native-probe-result"))
+                                                if(result.channels.isNotEmpty()) Text(result.channels.joinToString(" • "),style=MaterialTheme.typography.bodySmall,color=Muted)
+                                            }
+                                        }
+                                    }
                                     Text(if(canBrowse) "$count live channels in your guide." else "Connect your ${service.name} account to add its live channels.")
                                     if(service.id in setOf("abc","ten") && canBrowse) Text("Account linking and channel discovery do not verify media authorisation or playback. Select a channel in the guide to test it.",style=MaterialTheme.typography.bodySmall,color=Muted)
                                     status?.let {Text(it,color=Muted,modifier=Modifier.testTag("${service.id}-auth-status"))}

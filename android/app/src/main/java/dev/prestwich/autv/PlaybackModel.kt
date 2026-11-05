@@ -44,6 +44,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
             },anonymousLiveApproved=id in anonymousProviderIds || (id=="abc" && configuration.abcAnonymousLiveApproved),
             accountLinkingEnabled=id!="abc" || configuration.abc?.accountLinkingEnabled!=false)
     }
+    internal val experimentalAbcLink: Boolean get() = BuildConfig.DEBUG && configuration.abc == null && providerAccounts.containsKey("abc")
     internal val sbsAccount get()=providerAccounts.getValue("sbs")
     val pendingActivationProvider: String? get()=if(providerActivation!=null || nineNow.pendingActivation!=null) "9now"
         else providerAccounts.entries.firstOrNull { it.value.activation!=null }?.key

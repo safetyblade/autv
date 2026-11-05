@@ -21,8 +21,11 @@ class ProviderSettingsUiTest {
     @Test fun abcAndTenFailClosedWithoutAuthorisedClientConfiguration() {
         ui.onNodeWithTag("settings-button").performClick()
         ui.onNodeWithTag("provider-abc").performScrollTo().performClick()
-        ui.onNodeWithTag("abc-unavailable").assertIsDisplayed()
-        ui.onNodeWithTag("abc-connect").assertDoesNotExist()
+        // The debug build now attempts a genuine ABC device-code challenge.
+        // A code is not an approved or playable account session.
+        ui.onNodeWithTag("abc-connection-state").assertExists()
+        ui.onNodeWithTag("abc-connect").assertExists()
+        ui.onNodeWithTag("abc-unavailable").assertDoesNotExist()
         ui.onNodeWithTag("abc-native-probe").assertExists()
         ui.onNodeWithTag("providers-back").performClick()
         ui.onNodeWithTag("provider-ten").performScrollTo().performClick()
@@ -30,6 +33,7 @@ class ProviderSettingsUiTest {
         ui.onNodeWithTag("ten-connect").assertDoesNotExist()
         ui.onNodeWithTag("ten-native-probe").assertExists()
         ui.onNodeWithTag("ten-vic-native-trial").assertExists()
+        ui.onNodeWithTag("ten-real-activation").assertExists()
     }
 
     @Test fun settingsSignOutRemovesPrivateChannelsWithoutRecreatingPlayer() {
