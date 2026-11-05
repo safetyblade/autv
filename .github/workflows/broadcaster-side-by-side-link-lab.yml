@@ -1,0 +1,46 @@
+name: AUTV ABC and 10 Side-by-side Real Link Lab
+
+on:
+  push:
+    branches:
+      - validation/actual-link-probe
+    paths:
+      - .github/workflows/broadcaster-side-by-side-link-lab.yml
+      - android/app/src/debug/java/dev/prestwich/autv/BroadcasterLinkLabActivity.kt
+      - android/app/src/main/java/dev/prestwich/autv/provider/AustralianServicesSettings.kt
+      - android/app/src/debug/AndroidManifest.xml
+
+permissions:
+  contents: read
+
+jobs:
+  link-lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+      - name: Protect working 7plus provider
+        run: python3 scripts/verify-seven-baseline.py
+      - name: Build separate AUTV Media Lab test package
+        run: gradle -p android -PautvMediaLab=true :core-data:testDebugUnitTest :app:assembleDebug
+      - name: Verify APK is separate and debuggable
+        run: |
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          test -f "$APK"
+          ANALYZER="$(find "$ANDROID_HOME/cmdline-tools" -path '*/bin/apkanalyzer' | sort | tail -1)"
+          "$ANALYZER" manifest application-id "$APK" | grep -Fx dev.prestwich.autv.medialab
+      - name: Upload independent link test APK
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: AUTV-ABC-10-Real-Link-Side-by-Side
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: warn
+          retention-days: 14
