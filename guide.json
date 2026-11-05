@@ -482,6 +482,18 @@
     },
     {
       "number": 216,
+      "name": "MUTV",
+      "genre": "Sport",
+      "subgenre": "Football",
+      "description": "Manchester United club television. Brightcove/Fastly HLS tested playable in AUTV on an Australian device (6 Nov 2026); distribution authorisation and long-term source continuity not established.",
+      "epg": "Channel only",
+      "available": true,
+      "streamUrl": "https://fastly.live.brightcove.com/6374054671112/eu-west-1/6058004203001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoiYXplMnp5LmVncmVzcy55ODN1ZWIiLCJhY2NvdW50X2lkIjoiNjA1ODAwNDIwMzAwMSIsImVobiI6ImZhc3RseS5saXZlLmJyaWdodGNvdmUuY29tIiwiaXNzIjoiYmxpdmUtcGxheWJhY2stc291cmNlLWFwaSIsInN1YiI6InBhdGhtYXB0b2tlbiIsImF1ZCI6WyI2MDU4MDA0MjAzMDAxIl0sImp0aSI6IjYzNzQwNTQ2NzExMTIifQ.3FmuTna3DAmY7xlhK5fk6LMrosrtrR5VsU2QOgYO5y4/playlist-hls.m3u8",
+      "tvgId": "MUTV.uk@SD",
+      "logoUrl": null
+    },
+    {
+      "number": 217,
       "name": "FIFA+",
       "genre": "Sport",
       "subgenre": "Football",
@@ -493,7 +505,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/2c509e78-5c38-43b6-94cf-f25e1bff3765/FIFA__Logo_Rectangle_1500x1000_WHT.png"
     },
     {
-      "number": 217,
+      "number": 218,
       "name": "UEFA Champions League",
       "genre": "Sport",
       "subgenre": "Football",
@@ -505,7 +517,7 @@
       "logoUrl": "https://images.pluto.tv/channels/65ea8b928145cb0008509426/colorLogoPNG.png"
     },
     {
-      "number": 218,
+      "number": 219,
       "name": "UEFA.tv",
       "genre": "Sport",
       "subgenre": "Football",
@@ -517,7 +529,7 @@
       "logoUrl": "https://canvas-lb.tubitv.com/opts/vYU_W6gGesX41A==/f137edcb-de3c-4b3c-9e41-ef2cc6f8d156/CHgQeDoFMS4xLjlAAQ=="
     },
     {
-      "number": 219,
+      "number": 220,
       "name": "Real Madrid TV",
       "genre": "Sport",
       "subgenre": "Football",
@@ -529,8 +541,8 @@
       "logoUrl": "https://image.xumo.com/v1/channels/channel/99951381/168x168.png?type=color_onBlack"
     },
     {
-      "number": 220,
-      "name": "TOP BAR\u00c7A",
+      "number": 221,
+      "name": "TOP BARÇA",
       "genre": "Sport",
       "subgenre": "Football",
       "description": "Football FAST channel focused on club, league or competition programming.",
@@ -541,7 +553,7 @@
       "logoUrl": null
     },
     {
-      "number": 221,
+      "number": 222,
       "name": "Man City 24/7",
       "genre": "Sport",
       "subgenre": "Football",
@@ -553,7 +565,7 @@
       "logoUrl": null
     },
     {
-      "number": 222,
+      "number": 223,
       "name": "INTER 24/7",
       "genre": "Sport",
       "subgenre": "Football",
@@ -565,7 +577,7 @@
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/57fe10fd-e61b-4796-9afa-1cb853548709/channel_logo_dark.png_-_Ingrid_Barresi.png"
     },
     {
-      "number": 223,
+      "number": 224,
       "name": "FIFA+ Women",
       "genre": "Sport",
       "subgenre": "Football",
@@ -577,7 +589,7 @@
       "logoUrl": null
     },
     {
-      "number": 224,
+      "number": 225,
       "name": "GFN Football",
       "genre": "Sport",
       "subgenre": "Football",
@@ -589,7 +601,7 @@
       "logoUrl": null
     },
     {
-      "number": 225,
+      "number": 226,
       "name": "ViX Lo Mejor de Liga MX",
       "genre": "Sport",
       "subgenre": "Football",
@@ -601,7 +613,7 @@
       "logoUrl": null
     },
     {
-      "number": 226,
+      "number": 227,
       "name": "beIN SPORTS XTRA",
       "genre": "Sport",
       "subgenre": "Football",
@@ -611,18 +623,6 @@
       "streamUrl": "https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-669994d717c9985deeb74e3b/?X-Plex-Token=BoL7xSBkZjQp_ixuMmAx",
       "tvgId": "697140a85d851f5e69414688-669994d717c9985deeb74e3b",
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/f3e76404-6e3d-4bb6-946a-0171ebef788a/beIN_SPORTS_XTRA_LOGO.png"
-    },
-    {
-      "number": 227,
-      "name": "Rugby Pass TV",
-      "genre": "Sport",
-      "subgenre": "Football",
-      "description": "Sports FAST channel featuring live events, archive coverage, highlights or sports programming.",
-      "epg": "Full",
-      "available": true,
-      "streamUrl": "https://jmp2.uk/plu-66f137cb483d460008ece053.m3u8",
-      "tvgId": "66f137cb483d460008ece053",
-      "logoUrl": null
     },
     {
       "number": 228,
@@ -1442,14 +1442,14 @@
     },
     {
       "number": 296,
-      "name": "MUTV",
+      "name": "Rugby Pass TV",
       "genre": "Sport",
-      "subgenre": "Football",
-      "description": "Trial source: public MUTV Brightcove/Akamai HLS candidate. AU playback and distribution authorisation unverified; review after TV test.",
-      "epg": "Channel only",
+      "subgenre": "Niche & Competition",
+      "description": "Sports FAST channel featuring live events, archive coverage, highlights or sports programming.",
+      "epg": "Full",
       "available": true,
-      "streamUrl": "https://fastly.live.brightcove.com/6374054671112/eu-west-1/6058004203001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoiYXplMnp5LmVncmVzcy55ODN1ZWIiLCJhY2NvdW50X2lkIjoiNjA1ODAwNDIwMzAwMSIsImVobiI6ImZhc3RseS5saXZlLmJyaWdodGNvdmUuY29tIiwiaXNzIjoiYmxpdmUtcGxheWJhY2stc291cmNlLWFwaSIsInN1YiI6InBhdGhtYXB0b2tlbiIsImF1ZCI6WyI2MDU4MDA0MjAzMDAxIl0sImp0aSI6IjYzNzQwNTQ2NzExMTIifQ.3FmuTna3DAmY7xlhK5fk6LMrosrtrR5VsU2QOgYO5y4/playlist-hls.m3u8",
-      "tvgId": "MUTV.uk@SD",
+      "streamUrl": "https://jmp2.uk/plu-66f137cb483d460008ece053.m3u8",
+      "tvgId": "66f137cb483d460008ece053",
       "logoUrl": null
     },
     {
@@ -6410,7 +6410,7 @@
     },
     {
       "number": 1130,
-      "name": "I Survived\u2026",
+      "name": "I Survived…",
       "genre": "Factual",
       "subgenre": "Survival / Disaster / Real World",
       "description": "General entertainment FAST channel with mixed or broad programming.",
@@ -6890,7 +6890,7 @@
     },
     {
       "number": 1215,
-      "name": "Pok\u00e9mon",
+      "name": "Pokémon",
       "genre": "Kids & Animation",
       "subgenre": "Kids / Family Animation",
       "description": "Kids, family and animation programming.",
@@ -7370,7 +7370,7 @@
     },
     {
       "number": 1305,
-      "name": "Remember the \u201880s",
+      "name": "Remember the ‘80s",
       "genre": "Music",
       "subgenre": "Hits / Pop / Decades",
       "description": "1980s music channel featuring hits and music videos from the decade.",
