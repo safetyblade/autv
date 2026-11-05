@@ -47,4 +47,22 @@ class AbcLiveProtocolTest {
         try { AbcLiveProtocol.resolve(channel, AbcLiveProtocol.channels(collection()).single(), programme) { _, _ -> throw AssertionError() }; fail() }
         catch (_: ProviderException) { }
     }
+    @Test fun realNovember2026HomeCollectionTitleAndIdentitiesAreRecognised() {
+        // Redacted shapes and channel IDs captured from ABC's public API on 5 Nov 2026.
+        val home = JSONObject("""{"_embedded":{"collections":[
+            {"id":"959","title":"Watch ABC Live","type":"livestream"},
+            {"id":"3388","title":"Popular Drama","type":"movie"}
+        ]}}""")
+        assertEquals("959", AbcLiveProtocol.liveCollectionId(home))
+        val actual = JSONObject("""{"id":"959","items":[
+            {"type":"livestream","houseNumber":"LS1807V001S00","showTitle":"ABC TV VIC Live Stream","_links":{"self":{"href":"/video/LS1807V001S00"}}},
+            {"type":"livestream","houseNumber":"NS1413V001S00","showTitle":"ABC NEWS Live Stream","_links":{"self":{"href":"/video/NS1413V001S00"}}},
+            {"type":"livestream","houseNumber":"LS1604H001S00","showTitle":"ABC Kids Live Stream","_links":{"self":{"href":"/video/LS1604H001S00"}}}
+        ]}""")
+        val rows = AbcLiveProtocol.channels(actual)
+        assertEquals(3, rows.size)
+        assertEquals("LS1807V001S00", rows.first().houseNumber)
+        assertEquals("https://api.iview.abc.net.au/v2/video/LS1807V001S00", rows.first().programmeUrl)
+    }
+
 }
