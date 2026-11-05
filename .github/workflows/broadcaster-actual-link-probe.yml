@@ -1,0 +1,32 @@
+name: AUTV real broadcaster device-link smoke (unregistered)
+
+on:
+  push:
+    branches:
+      - validation/actual-link-probe
+    paths:
+      - scripts/probe_broadcaster_device_link.py
+      - .github/workflows/broadcaster-actual-link-probe.yml
+
+permissions:
+  contents: read
+
+jobs:
+  native-device-challenge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Request genuine broadcaster challenge without borrowing client identity
+        run: python scripts/probe_broadcaster_device_link.py
+      - name: Save redacted HTTP outcome
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: broadcaster-link-attempt-status
+          path: artifacts/broadcaster-device-link-probe.json
+          if-no-files-found: warn
+          retention-days: 7
