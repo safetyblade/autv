@@ -31,7 +31,11 @@ object StartupChannels {
             else -> choices.firstOrNull { FavouriteIdentity.key(it) == preferred } ?: choices.firstOrNull()
         }
         val leadStory = rows.firstOrNull { it.tvgId == "autv.110-leadstory-breaking-news" }
-        return (listOfNotNull(chosen, favourite, leadStory) + rows.sortedBy { it.number }).filter { it.tunable }
+        // Do not let newly published low-number Australian live streams replace
+        // the ordinary FAST fallback when there is no saved/favourite selection.
+        // Explicit Australian TV startup still chooses the Australian channel first.
+        val fallback = rows.sortedWith(compareBy<Channel> { it.genre == "Australian TV" }.thenBy { it.number })
+        return (listOfNotNull(chosen, favourite, leadStory) + fallback).filter { it.tunable }
             .distinctBy { FavouriteIdentity.key(it) ?: "number:${it.number}" }
     }
 }
