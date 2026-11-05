@@ -1,0 +1,23 @@
+name: ABC and 10 public stream diagnostics
+
+on:
+  pull_request:
+    paths:
+      - scripts/probe_abc_ten_public_sources.py
+      - .github/workflows/abc-ten-public-stream-proof.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-origin-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Probe ABC public metadata and maintained Melbourne 10 aliases
+        run: python -u scripts/probe_abc_ten_public_sources.py
