@@ -21,6 +21,21 @@ internal object NativeBroadcasterTrial {
     // It is NOT a registered Network 10 account session or an approved production channel feed.
     const val TEN_VIC_EXPERIMENTAL_HLS = "https://i.mjh.nz/.r/10-vic.m3u8"
 
+    /**
+     * Debug-only candidate linear channels, not a 10 subscription or authorised 10 API.
+     * Only the 10 VIC entry displayed video in owner's 5 November physical test.
+     * Other three old public redirect aliases have not been confirmed to match 2026
+     * broadcaster identities: never include in production builds.
+     */
+    internal data class TenLinearTrial(val number: Int, val name: String, val source: String,
+                                       val physicallyObserved: Boolean)
+    internal val TEN_LINEAR_TRIALS = listOf(
+        TenLinearTrial(-98421, "10 VIC — Experimental", TEN_VIC_EXPERIMENTAL_HLS, true),
+        TenLinearTrial(-98422, "10 Drama — Source trial", "https://i.mjh.nz/10bold-vic.m3u8", false),
+        TenLinearTrial(-98423, "10 Comedy — Source trial", "https://i.mjh.nz/10peach-vic.m3u8", false),
+        TenLinearTrial(-98424, "Nickelodeon — Source trial", "https://i.mjh.nz/10shake-vic.m3u8", false),
+    )
+
     fun inspect(provider: String, fetch: (String) -> JSONObject = ::getJson): Result = try {
         when (provider) {
             "abc" -> {
