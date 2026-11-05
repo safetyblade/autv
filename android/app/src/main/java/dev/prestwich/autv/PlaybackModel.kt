@@ -114,7 +114,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
 
     private fun saveWatched() {
         val channel = selected ?: return
-        if (channel.number == TEN_VIC_TRIAL_NUMBER) return // Experimental preview is never watched history.
+        if (BuildConfig.DEBUG && NativeBroadcasterTrial.TEN_LINEAR_TRIALS.any { it.number == channel.number }) return // Debug previews are never watched history.
         val identity = FavouriteIdentity.key(channel) ?: return
         preferences.edit().putString("last-watched-id", identity).putInt("channel", channel.number).apply()
     }
@@ -133,7 +133,9 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
             delay(200) // Account discovery starts in init after the cached guide is published.
             var discoveryWaits = 0
             while ((providerBusy || providerAccounts.values.any { it.busy }) && discoveryWaits++ < 40) delay(200)
-            val rows = guide?.channels.orEmpty()
+            val rows = guide?.channels.orEmpty().filterNot { candidate ->
+                BuildConfig.DEBUG && NativeBroadcasterTrial.TEN_LINEAR_TRIALS.any { it.number == candidate.number }
+            }
             val favourites = getApplication<Application>().getSharedPreferences("favourites-v1", 0)
                 .getStringSet("channels", emptySet()).orEmpty()
             val recent = preferences.getString("last-watched-id", null)
@@ -182,7 +184,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         }
         override fun onPlaybackStateChanged(state: Int) {
             buffering = state == Player.STATE_BUFFERING
-            if (state == Player.STATE_READY && selected?.number != TEN_VIC_TRIAL_NUMBER && selected?.providerChannel == null &&
+            if (state == Player.STATE_READY && (!BuildConfig.DEBUG || NativeBroadcasterTrial.TEN_LINEAR_TRIALS.none { it.number == selected?.number }) && selected?.providerChannel == null &&
                 player.currentMediaItem?.mediaId == selected?.number?.toString()) lastWorkingFast = selected
             if (state == Player.STATE_READY) player.currentMediaItem?.mediaId?.toIntOrNull()?.let { failed.remove(it); guideTuneRecovery.ready(it) }
         }
@@ -242,14 +244,17 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         // Owner-verified picture on 5 Nov: publish only the VIC trial in DEBUG builds.
         // This is NOT 10 account linking or an approved distribution feed.
         // Never introduce unverified 10 Drama/Comedy/Nickelodeon URLs as playable rows.
-        val tenVicTrial = if (BuildConfig.DEBUG &&
-            fastLoaded.channels.none { it.number == TEN_VIC_TRIAL_NUMBER }) listOf(
-            Channel(TEN_VIC_TRIAL_NUMBER, "10 VIC — Experimental",
-                "Australian TV", "10 (experimental)", "Unverified source; test only",
-                "", true, NativeBroadcasterTrial.TEN_VIC_EXPERIMENTAL_HLS,
-                "autv-debug-ten-vic-test", null)
-        ) else emptyList()
-        val added = local + tenVicTrial
+        val tenLinearTrials = if (BuildConfig.DEBUG)
+            NativeBroadcasterTrial.TEN_LINEAR_TRIALS.filter { trial ->
+                fastLoaded.channels.none { it.number == trial.number }
+            }.map { trial ->
+                Channel(trial.number, trial.name, "Australian TV", "10 (experimental)",
+                    if (trial.physicallyObserved) "Picture observed; audio/rights/EPG unverified"
+                    else "Legacy source candidate; current playback and channel mapping unverified",
+                    "", true, trial.source, "autv-debug-ten-${trial.number}", null)
+            }
+        else emptyList()
+        val added = local + tenLinearTrials
         val loaded = Guide(fastLoaded.activeCount + added.size, fastLoaded.availableCount + added.size,
             fastLoaded.channels + added)
         // Migrate numeric history against the first available catalogue (including the old cache)
