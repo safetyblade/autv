@@ -1267,3 +1267,5 @@ https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-654eb862dde2
 https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-66fd3e25216b603e031725fe/?X-Plex-Token=BA6Pys3aKDG4sdLGsCSx
 #EXTINF:-1 group-title="Factual" tvg-chno="1140" tvg-id="6319f06067a3ee000708af95" tvg-name="Haunt TV",Haunt TV
 https://jmp2.uk/plu-6319f06067a3ee000708af95.m3u8
+#EXTINF:-1 group-title="Sport" tvg-chno="296" tvg-id="MUTV.uk@SD" tvg-name="MUTV",MUTV
+https://bcovlive-a.akamaihd.net/r2d2c4ca5bf57456fb1d16255c1a535c8/eu-west-1/6058004203001/playlist.m3u8
