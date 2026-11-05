@@ -411,6 +411,8 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 844,Life with Derek,Entertainment,Specialty Entertainment,Full,Roku,,Active,General entertainment FAST channel with mixed or broad programming.
 845,Walker Texas Ranger,Entertainment,Specialty Entertainment,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 846,Top Gear,Entertainment,Specialty Entertainment,Full,Pluto,,Active,"Automotive entertainment series featuring cars, challenges and motoring features."
+847,Comet TV,Entertainment,Specialty Entertainment,Channel only,Curated,,Active,"English-language sci-fi, fantasy and cult entertainment channel. NWA Powerrr airs at scheduled times. Owner-approved AUTV trial; Australian playback, rights and guide availability require verification."
+848,CHARGE!,Entertainment,Specialty Entertainment,Channel only,Curated,,Active,"English-language action, crime and adventure entertainment channel. Owner-approved AUTV trial; Australian playback, rights and guide availability require verification."
 1000,Dr. Phil,Reality & Lifestyle,People / Work / Unscripted,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 1001,Nosey,Reality & Lifestyle,People / Work / Unscripted,Full,Plex AU,,Active,"Daytime talk and conflict-driven reality programming, including relationship and personal-dispute formats."
 1002,Undercover Boss,Reality & Lifestyle,People / Work / Unscripted,Full,Plex AU,,Active,Workplace reality series following senior executives working anonymously inside their own organisations.
@@ -636,5 +638,3 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1326,Stingray Naturescape,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
 1327,Stingray Holidayscapes,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
 1328,ZenLIFE by Stingray,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-847,Comet TV,Entertainment,Specialty Entertainment,Channel only,Curated,,Active,"English-language sci-fi, fantasy and cult entertainment channel. NWA Powerrr airs at scheduled times. Owner-approved AUTV trial; Australian playback, rights and guide availability require verification."
-848,CHARGE!,Entertainment,Specialty Entertainment,Channel only,Curated,,Active,"English-language action, crime and adventure entertainment channel. Owner-approved AUTV trial; Australian playback, rights and guide availability require verification."
