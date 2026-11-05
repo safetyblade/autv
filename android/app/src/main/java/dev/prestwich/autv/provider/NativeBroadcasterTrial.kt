@@ -17,36 +17,6 @@ internal object NativeBroadcasterTrial {
     private const val ABC_COLLECTION = "https://api.iview.abc.net.au/v2/collection/"
     private const val TEN_CONFIG = "https://10.com.au/api/v1/config"
 
-    // A known unofficial candidate, deliberately limited to an explicit user-initiated debug test.
-    // It is NOT a registered Network 10 account session or an approved production channel feed.
-    const val TEN_VIC_EXPERIMENTAL_HLS = "https://i.mjh.nz/.r/10-vic.m3u8"
-
-    /**
-     * Debug-only candidate linear channels, not a 10 subscription or authorised 10 API.
-     * Only the 10 VIC entry displayed video in owner's 5 November physical test.
-     * Other three old public redirect aliases have not been confirmed to match 2026
-     * broadcaster identities: never include in production builds.
-     */
-    internal data class TenLinearTrial(val number: Int, val name: String, val source: String,
-                                       val physicallyObserved: Boolean)
-    internal val TEN_LINEAR_TRIALS = listOf(
-        // Always-on owner-approved channel, but external source is not a registered 10 login.
-        TenLinearTrial(10, "10 VIC", TEN_VIC_EXPERIMENTAL_HLS, true),
-        // Corrected 6 November 2026 URLs: public HLS manifests returned HTTP 200.
-        // Native video/audio and broadcaster distribution approval are not verified.
-        TenLinearTrial(-98422, "10 Drama — Source trial", "https://i.mjh.nz/.r/10bold-vic.m3u8", false),
-        TenLinearTrial(-98423, "10 Comedy — Source trial", "https://i.mjh.nz/.r/10peach-vic.m3u8", false),
-    )
-
-    // Independent ABC public-web live candidates. Never mark these official
-    // authorised AUTV media sessions: the URLs are maintained by a third party.
-    internal data class AbcLiveTrial(val number: Int, val name: String, val source: String)
-    internal val ABC_LIVE_TRIALS = listOf(
-        AbcLiveTrial(-98431, "ABC TV VIC — Direct HLS trial", "https://c.mjh.nz/abc-vic.m3u8"),
-        AbcLiveTrial(-98432, "ABC NEWS — Direct HLS trial", "https://c.mjh.nz/abc-news.m3u8"),
-        AbcLiveTrial(-98433, "ABC Kids — Direct HLS trial", "https://c.mjh.nz/abc-kids.m3u8"),
-    )
-
     fun inspect(provider: String, fetch: (String) -> JSONObject = ::getJson): Result = try {
         when (provider) {
             "abc" -> {
