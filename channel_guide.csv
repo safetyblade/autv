@@ -118,6 +118,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 293,Pac-12 Insider,Sport,General Sports,Full,Samsung US,Plex AU,Active,"Pac-12 Insider Samsung TV Plus feed replacing failed Plex transport; channel remains active in 2026."
 294,Trace Stars,Sport,General Sports,Full,Curated,,Active,"Sports channel featuring athlete, competition and sports-entertainment programming."
 295,LacrosseTV,Sport,Niche & Competition,Channel only,Curated,,Active,"24/7 lacrosse channel with games, highlights and related programming."
+296,MUTV,Sport,Football,Channel only,Curated,,Active,"Trial source: public MUTV Brightcove/Akamai HLS candidate. AU playback and distribution authorisation unverified; review after TV test."
 300,MGM Presents,Movies,Major / Broad Movies,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 301,Paramount Movie Channel,Movies,Major / Broad Movies,Full,Pluto,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 302,Universal Movies,Movies,Major / Broad Movies,Full,Xumo,,Active,Movie-focused FAST channel with scheduled films or genre collections.
