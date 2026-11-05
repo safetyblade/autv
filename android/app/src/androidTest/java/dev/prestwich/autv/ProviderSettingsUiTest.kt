@@ -23,10 +23,13 @@ class ProviderSettingsUiTest {
         ui.onNodeWithTag("provider-abc").performScrollTo().performClick()
         ui.onNodeWithTag("abc-unavailable").assertIsDisplayed()
         ui.onNodeWithTag("abc-connect").assertDoesNotExist()
+        ui.onNodeWithTag("abc-native-probe").assertExists()
         ui.onNodeWithTag("providers-back").performClick()
         ui.onNodeWithTag("provider-ten").performScrollTo().performClick()
         ui.onNodeWithTag("ten-unavailable").assertIsDisplayed()
         ui.onNodeWithTag("ten-connect").assertDoesNotExist()
+        ui.onNodeWithTag("ten-native-probe").assertExists()
+        ui.onNodeWithTag("ten-vic-native-trial").assertExists()
     }
 
     @Test fun settingsSignOutRemovesPrivateChannelsWithoutRecreatingPlayer() {
