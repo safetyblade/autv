@@ -97,7 +97,7 @@ class AbcAdapter(private val access: AbcProviderAccess, private val store: Provi
         return AbcLiveProtocol.channels(call(ProviderPlaybackStage.ABC_CATALOGUE) { access.collection(AbcLiveProtocol.liveCollectionId(access.home())) })
             .filter { authorisedHouseNumbers == null || it.houseNumber in authorisedHouseNumbers }
     }
-    override fun channels() = catalogue().map { ProviderChannel(ProviderChannelId("abc",it.houseNumber),it.houseNumber,it.title) }
+    override fun channels() = catalogue().map { ProviderChannel(ProviderChannelId("abc",it.houseNumber),it.houseNumber,it.title.removeSuffix(" Live Stream")) }
     override fun resolve(channel: ProviderChannelId): ProviderPlaybackRequest {
         if(channel.provider!="abc") throw ProviderException(ProviderFailure.UNAVAILABLE)
         val row=catalogue().singleOrNull { it.houseNumber==channel.channel } ?: throw ProviderException(ProviderFailure.UNAVAILABLE)
