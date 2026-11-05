@@ -39,6 +39,7 @@ def abc():
     except ValueError:return
     def shape(o):
         return {"keys":sorted(o.keys())} if isinstance(o,dict) else {"type":type(o).__name__}
+    print("ABC_VIDEO_DETAIL",json.dumps({"links":sorted((obj.get("_links") or {}).keys()), "channel_shape":shape(obj.get("channel")), "requires_login":obj.get("requiresLogin"), "playable":obj.get("playable"), "type":obj.get("type")}))
     print("ABC_VIDEO_SCHEMA",json.dumps({"top":shape(obj),"embedded":shape(obj.get("_embedded")),
         "playlist":shape((obj.get("_embedded") or {}).get("playlist"))}))
     layers=[obj,obj.get("_embedded") or {}]
@@ -56,6 +57,16 @@ def abc():
                     "has_query":bool(parsed.query),"looks_manifest":parsed.path.endswith(".m3u8")}))
         if any(k in layer for k in ("drm","key_systems","licenseUrl","adConfig","adTagUrl")):
             print("ABC_PROTECTION_FIELDS",json.dumps(sorted(set(layer)&{"drm","key_systems","licenseUrl","adConfig","adTagUrl"})))
+
+def abc_public_hls_candidates():
+    for name,url in (
+        ("ABC TV VIC public relay","https://c.mjh.nz/abc-vic.m3u8"),
+        ("ABC NEWS public relay","https://c.mjh.nz/abc-news.m3u8"),
+        ("ABC Kids public relay","https://c.mjh.nz/abc-kids.m3u8"),
+    ):
+        status,raw=fetch(url,max_bytes=400)
+        print("ABC_PUBLIC_HLS",json.dumps({"name":name,"status":status,
+            "is_hls":raw.lstrip().startswith(b"#EXTM3U")},sort_keys=True))
 
 def regional():
     for source in REGIONAL:
@@ -85,4 +96,4 @@ def aliases():
             "body_is_html":raw.lstrip().startswith(b"<!DOCTYPE") or raw.lstrip().startswith(b"<html")},sort_keys=True))
 
 if __name__=="__main__":
-    abc();regional();aliases()
+    abc();abc_public_hls_candidates();regional();aliases()
