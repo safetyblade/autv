@@ -238,36 +238,27 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     private fun applyGuide(fastLoaded: Guide) {
         fastGuide = fastLoaded
         // Native-only rows are added after public-cache validation, never persisted in it.
-        val local = (providerChannels + providerAccounts.values.flatMap { it.channels }).map { channel ->
-            Channel(providerNumber(channel), channel.name, "Australian TV", providerName(channel.id.provider), "", "", true, null,
-                channel.id.favouriteKey, channel.logoUrl, channel)
-        }.filter { candidate -> fastLoaded.channels.none { it.number == candidate.number } }
-        // 10 VIC is owner-approved as a persistent Australian TV channel.
-        // Keep the source identity separate from Network 10 account linking.
-        val tenLinear = NativeBroadcasterTrial.TEN_LINEAR_TRIALS
-            .filter { it.number == 10 || BuildConfig.DEBUG }
-            .filter { candidate -> fastLoaded.channels.none { it.number == candidate.number } }
-            .map { trial ->
-                val permanent = trial.number == 10
-                Channel(trial.number, trial.name, "Australian TV",
-                    if (permanent) "10 — external live source" else "10 (source trial)",
-                    if (permanent) "10 VIC direct stream; third-party source availability may change"
-                    else "HLS manifest responded; physical audio/video unverified",
-                    "", true, trial.source,
-                    if (permanent) "autv.10-vic-live" else "autv-debug-ten-${trial.number}", null)
+        // Preserve optional registered adapters for future media authorisation, but
+        // do not publish duplicate ABC/10 rows whose signed playback remains unverified.
+        val local = (providerChannels + providerAccounts.values.flatMap { it.channels })
+            .filterNot { it.id.provider in setOf("abc", "ten") }
+            .map { channel ->
+                Channel(providerNumber(channel), channel.name, "Australian TV",
+                    providerName(channel.id.provider), "", "", true, null,
+                    channel.id.favouriteKey, channel.logoUrl, channel)
+            }.filter { candidate -> fastLoaded.channels.none { it.number == candidate.number } }
+
+        // Six owner-approved live streams are normal Australian TV channels in both
+        // debug and release builds, independent of broadcaster account sessions.
+        // They do not imply rights to redistribute a third-party maintained source.
+        val directLive = AustralianLiveChannels.approved
+            .filter { item -> fastLoaded.channels.none { it.number == item.number } }
+            .map { item ->
+                Channel(item.number, item.name, "Australian TV", item.provider,
+                    "Live television · no sign-in required", "", true, item.url,
+                    item.tvgId, null)
             }
-        // No-login ABC web HLS candidates are previewable only on DEBUG.
-        // A successful media trial is separate from the saved ABC account.
-        val abcDirectTrials = if (BuildConfig.DEBUG)
-            NativeBroadcasterTrial.ABC_LIVE_TRIALS
-                .filter { candidate -> fastLoaded.channels.none { it.number == candidate.number } }
-                .map { trial ->
-                    Channel(trial.number, trial.name, "Australian TV",
-                        "ABC (direct stream trial)", "ABC CDN manifest responded; playback unverified",
-                        "", true, trial.source, "autv-debug-abc-${trial.number}", null)
-                }
-        else emptyList()
-        val added = local + tenLinear + abcDirectTrials
+        val added = local + directLive
         val loaded = Guide(fastLoaded.activeCount + added.size, fastLoaded.availableCount + added.size,
             fastLoaded.channels + added)
         // Migrate numeric history against the first available catalogue (including the old cache)
