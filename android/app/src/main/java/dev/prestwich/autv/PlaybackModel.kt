@@ -251,7 +251,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
                 Channel(trial.number, trial.name, "Australian TV", "10 (experimental)",
                     if (trial.physicallyObserved) "Picture observed; audio/rights/EPG unverified"
                     else "Legacy source candidate; current playback and channel mapping unverified",
-                    "", true, trial.source, "autv-debug-ten-${trial.number}", null)
+                    "", true, trial.source, if (trial.number == TEN_VIC_TRIAL_NUMBER) "autv-debug-ten-vic-test" else "autv-debug-ten-${trial.number}", null)
             }
         else emptyList()
         val added = local + tenLinearTrials
@@ -390,7 +390,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         cancelStartup()
         cancelProviderTune()
         guideTuneRecovery.clear()
-        val trial = Channel(TEN_VIC_TRIAL_NUMBER, "10 VIC — Native playback trial",
+        val trial = Channel(TEN_VIC_TRIAL_NUMBER, "10 VIC — Experimental",
             "Australian TV", "10 (experimental)", "", "", true,
             dev.prestwich.autv.provider.NativeBroadcasterTrial.TEN_VIC_EXPERIMENTAL_HLS,
             "autv-debug-ten-vic-test", null)
