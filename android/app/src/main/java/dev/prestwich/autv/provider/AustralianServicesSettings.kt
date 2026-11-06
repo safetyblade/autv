@@ -87,10 +87,10 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                 }
                             }
                             if(wide) Row(Modifier.fillMaxSize().verticalScroll(scroll),horizontalArrangement=Arrangement.spacedBy(24.dp)) {
-                                Column(Modifier.width(300.dp)) { StartupSettings(model) }
+                                Column(Modifier.width(300.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) { StartupSettings(model); HorizontalDivider(); ChannelRefreshSettings(model) }
                                 Box(Modifier.weight(1f)) { providers() }
                             } else Column(Modifier.fillMaxWidth().verticalScroll(scroll),verticalArrangement=Arrangement.spacedBy(12.dp)) {
-                                StartupSettings(model);HorizontalDivider();providers()
+                                StartupSettings(model);HorizontalDivider();ChannelRefreshSettings(model);HorizontalDivider();providers()
                             }
                         } else {
                             val service=services.first {it.id==selected}

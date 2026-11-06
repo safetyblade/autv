@@ -9,7 +9,7 @@ AUTV is a remote-first Android TV / Google TV application that brings a curated 
 3. Navigate with the remote direction keys; press **OK** to tune and **Back** to exit or return to the guide.
 4. Browse **Favourites**, **Australian TV**, or the genre-based numbered channel guide. Long-press **OK** on a supported channel to toggle favourite status.
 5. Use **Settings** to choose a starting channel where supported and to connect Australian broadcaster accounts. Follow the on-screen activation or QR instructions when displayed.
-6. Following a playlist update, refresh the guide in the app.
+6. After a playlist update, open **Settings → Refresh channels and TV guide** in a build supporting this control; Australian broadcasters retain their own refresh options.
 
 For troubleshooting, provider setup and the **complete current numbered FAST/IPTV directory**, see [TV Guide](TV_GUIDE.md).
 
@@ -24,7 +24,7 @@ The broadcaster area is distinct from the repository's FAST/IPTV channel CSV. Ac
 - [Published playlist](playlist.m3u)
 - [Combined EPG](epg.xml.gz)
 
-The guide source records **636 active FAST/IPTV channels as of 3 November 2026**; the generated playlist can differ when sources are temporarily unavailable. Native Australian TV channels must be reconciled separately.
+The guide source records **639 active FAST/IPTV channels as of 6 November 2026**; the generated playlist can differ when sources are temporarily unavailable. Native Australian TV channels must be reconciled separately.
 
 ## Project maintenance
 
