@@ -109,6 +109,9 @@ jobs:
       - name: Audit legacy and Pluto stream reachability (advisory)
         run: python3 scripts/audit_legacy_streams.py
 
+      - name: Validate controlled EPG mappings
+        run: python3 -m unittest discover -s tests -p "test_epg_crosswalk.py" -v
+
       - name: Build combined EPG
         run: python3 scripts/build_epg.py
 
@@ -124,15 +127,17 @@ jobs:
           set -euo pipefail
           rm -f base_upstream.m3u secondary_upstream.m3u lg_upstream.m3u pluto_us_upstream.m3u pluto_ca_upstream.m3u pluto_gb_upstream.m3u roku_upstream.m3u epg_plex_*.xml.gz epg_pluto_*.xml.gz epg_roku_*.xml.gz xumo_upstream.m3u epg_xumo.xml.gz tubi_upstream.m3u epg_tubi.xml epg_samsung_all.xml.gz dynamic_sources.m3u pluto_degraded.marker
 
-          if git diff --quiet -- playlist.m3u curated.xml epg.xml.gz guide.json; then
+          # Stage first: match trace is a newly generated file on the first run.
+          # A worktree-only diff does not detect untracked provenance outputs.
+          git add playlist.m3u curated.xml epg.xml.gz guide.json audits/epg_gate1_match_trace.csv
+          if git diff --cached --quiet; then
             echo "No generated file changes."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add playlist.m3u curated.xml epg.xml.gz guide.json
-          git commit -m "chore: refresh playlist"
+          git commit -m "chore: refresh playlist and EPG provenance"
 
           # Avoid a late push failure if main moved while the refresh was running.
           git fetch origin main

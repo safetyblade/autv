@@ -1,10 +1,23 @@
 name: EPG Gate 1 — real schedule coverage audit
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - scripts/build_epg.py
+      - scripts/epg_crosswalk.py
+      - scripts/epg_gate1_priority.py
+      - scripts/audit_epg_gate1.py
+      - epg_channel_crosswalk.csv
+      - tests/test_epg_crosswalk.py
+      - tests/test_epg_gate1_priority.py
+      - .github/workflows/audit-epg-gate1.yml
   push:
     branches: [main]
     paths:
       - scripts/audit_epg_gate1.py
+      - scripts/epg_gate1_priority.py
+      - scripts/epg_crosswalk.py
+      - epg_channel_crosswalk.csv
       - .github/workflows/audit-epg-gate1.yml
   schedule:
     - cron: '35 20 * * *' # daily UTC; reports actual UTC run time
@@ -18,8 +31,12 @@ jobs:
     timeout-minutes: 8
     steps:
       - uses: actions/checkout@v5
+      - name: Validate EPG Gate 1 mapping and exception-priority rules
+        run: python3 -m unittest discover -s tests -p 'test_epg_*py' -v
       - name: Read actual published XMLTV and audit channel coverage
         run: python3 scripts/audit_epg_gate1.py
+      - name: Produce prioritised EPG recovery worklist
+        run: python3 scripts/epg_gate1_priority.py
       - name: Verify all approved channels were audited
         run: |
           python3 - <<'PY'
@@ -39,4 +56,5 @@ jobs:
           path: |
             audits/epg_gate1_channel_audit.csv
             audits/epg_gate1_summary.json
+            audits/epg_gate1_recovery_queue.csv
           retention-days: 30

@@ -1,4 +1,8 @@
 import copy
+try:
+    from scripts.epg_crosswalk import load_crosswalk
+except ModuleNotFoundError:  # direct `python scripts/build_epg.py` execution
+    from epg_crosswalk import load_crosswalk
 from functools import cache
 from pathlib import Path
 import csv
@@ -10,6 +14,8 @@ import xml.etree.ElementTree as ET
 PLAYLIST = Path("playlist.m3u")
 GUIDE = Path("channel_guide.csv")
 OUTPUT = Path("epg.xml.gz")
+CROSSWALK = Path("epg_channel_crosswalk.csv")
+TRACE = Path("audits/epg_gate1_match_trace.csv")
 
 EPG_SOURCES = [
     Path("epg_plex_au.xml.gz"),
@@ -110,6 +116,7 @@ def add_android_category(programme, category):
 
 playlist = playlist_channels()
 playlist_names = {cid: name for cid, name in playlist}
+reviewed = load_crosswalk(CROSSWALK, set(playlist_names), EPG_SOURCES)
 guide_genre_by_name = guide_genres()
 
 # Performance optimization: pre-compute playlist IDs and canonical channel names
@@ -120,7 +127,8 @@ playlist_canonical_names = {canonical(name) for _, name in playlist if canonical
 source_channels = {}
 source_names = {}
 programmes_by_id = {}
-relevant_cids = set(playlist_cids)
+relevant_cids = set(playlist_cids) | {rule.source_id for rule in reviewed.values()}
+source_origins = {}
 
 for source in EPG_SOURCES:
     if not source.exists():
@@ -134,6 +142,7 @@ for source in EPG_SOURCES:
                     # Performance optimization: copy.deepcopy avoids expensive byte serialization/deserialization
                     cloned = copy.deepcopy(elem)
                     source_channels[cid] = cloned
+                    source_origins[cid] = source.name
                     names = [
                         (node.text or "").strip()
                         for node in cloned.findall("display-name")
@@ -163,14 +172,25 @@ root = ET.Element("tv", {"generator-info-name": "autv"})
 covered = set()
 fallback_matches = {}
 missing = []
+match_trace = []
 
 for target_id, target_name in playlist:
     guide_genre = guide_genre_by_name.get(canonical(target_name), "")
     android_category = ANDROID_GENRE.get(guide_genre, "Entertainment")
 
+    rule = reviewed.get(target_id)
+    method = "exact_id"
     source_id = target_id if target_id in source_channels else None
-
-    if source_id is None:
+    if rule is not None:
+        # Crosswalk is authoritative only after both channel ID and provider origin
+        # are verified. Failure must not silently fall back to a different channel.
+        source_id = rule.source_id
+        if source_id not in source_channels or source_origins.get(source_id) != rule.source_file:
+            raise ValueError(f"Reviewed EPG mapping unresolved or wrong provider: {target_id} -> {source_id} [{rule.source_file}]")
+        if not programmes_by_id.get(source_id):
+            raise ValueError(f"Reviewed EPG mapping has no programmes: {target_id} -> {source_id}")
+        method = "approved_crosswalk"
+    elif source_id is None:
         candidates = [
             cid for cid in source_names.get(canonical(target_name), set())
             if programmes_by_id.get(cid)
@@ -178,7 +198,18 @@ for target_id, target_name in playlist:
         if len(candidates) == 1:
             source_id = candidates[0]
             fallback_matches[target_id] = source_id
+            method = "unique_name"
+        elif len(candidates)>1:
+            method = "ambiguous_name"
+        else:
+            method = "missing_source"
 
+    match_trace.append({
+        "target_tvg_id":target_id, "channel_name":target_name,
+        "source_tvg_id":source_id or "", "source_file":source_origins.get(source_id,""),
+        "method":method, "programme_events":len(programmes_by_id.get(source_id, [])) if source_id else 0,
+        "approved_by":rule.approved_by if rule else "",
+    })
     if source_id is None:
         missing.append((target_id, target_name))
         continue
@@ -196,6 +227,16 @@ for target_id, target_name in playlist:
 
     covered.add(target_id)
 
+# Publishing/audit evidence is generated for every refresh, never used as a
+# substitute for TV playback or on-air accuracy.
+TRACE.parent.mkdir(parents=True, exist_ok=True)
+with TRACE.open("w", newline="", encoding="utf-8") as handle:
+    writer = csv.DictWriter(handle, fieldnames=[
+        "target_tvg_id","channel_name","source_tvg_id","source_file",
+        "method","programme_events","approved_by"])
+    writer.writeheader()
+    writer.writerows(match_trace)
+
 xml_bytes = ET.tostring(root, encoding="utf-8", xml_declaration=True)
 with gzip.open(OUTPUT, "wb", compresslevel=9) as handle:
     handle.write(xml_bytes)
@@ -210,6 +251,8 @@ print(f"Playlist channels: {len(playlist)}")
 print(f"EPG exact-ID matches: {len(covered) - len(fallback_matches)}")
 print(f"EPG name-fallback matches: {len(fallback_matches)}")
 print(f"EPG missing: {len(missing)}")
+print(f"EPG reviewed crosswalks: {sum(item['method']=='approved_crosswalk' for item in match_trace)}")
+print(f"EPG match trace: {TRACE}")
 if fallback_matches:
     print("Fallback matches:")
     for target_id, source_id in sorted(fallback_matches.items()):
