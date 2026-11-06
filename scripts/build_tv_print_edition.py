@@ -12,6 +12,8 @@ from datetime import datetime
 from math import ceil
 from pathlib import Path
 from zoneinfo import ZoneInfo
+from io import BytesIO
+from PIL import Image, ImageDraw
 
 from docx import Document
 from docx.enum.section import WD_ORIENT
@@ -291,6 +293,14 @@ def write_word(pages):
     for i,p in enumerate(pages):
         if i:d.add_page_break()
         if p["kind"]=="cover":
+            # Editable cover uses the exact screen/play geometry of drawable/app_icon.xml.
+            im=Image.new("RGB",(216,216),"#070A10")
+            brush=ImageDraw.Draw(im)
+            brush.rectangle((40,60,176,156),fill="#CEC4B4")
+            brush.rectangle((56,76,160,140),fill="#070A10")
+            brush.polygon([(92,84),(130,108),(92,132)],fill="#CEC4B4")
+            buff=BytesIO();im.save(buff,format="PNG");buff.seek(0)
+            d.add_picture(buff,width=Cm(3.2))
             d.add_heading("AUTV",0);d.add_heading("THE TV GUIDE",1)
             d.add_heading("YOUR COMPLETE CHANNEL DIRECTORY",2)
             d.add_heading("THE WORLD OF TV, ALL IN ONE PLACE",1)
