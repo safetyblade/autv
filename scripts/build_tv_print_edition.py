@@ -209,7 +209,7 @@ def directory(c,pno,page,published):
     label(c,f"CHANNEL DIRECTORY  •  {page['part']} OF {page['parts']}",20,PAGE_H-88,8,"Helvetica",MUTED)
     rows=page["rows"]
     y=PAGE_H-111
-    step=19.0
+    step=17.5  # 24 entries fit above the 41pt footer and print-safe margin
     for i,row in enumerate(rows):
         number=int(row["Channel number"])
         rect(c,20,y-12,PAGE_W-40,step,LIGHT if i%2==0 else Color(1,1,1),0)
@@ -290,6 +290,12 @@ def write_word(pages):
     sec.top_margin=Cm(1.1);sec.bottom_margin=Cm(1.1)
     sec.left_margin=Cm(1.05);sec.right_margin=Cm(1.05)
     normal=d.styles["Normal"];normal.font.name="Aptos";normal.font.size=Pt(9)
+    normal.font.color.rgb=RGBColor.from_string("070A10")
+    for style_name,pt in [("Title",27),("Heading 1",16),("Heading 2",10)]:
+        style=d.styles[style_name]
+        style.font.name="Aptos Display"
+        style.font.size=Pt(pt)
+        style.font.color.rgb=RGBColor.from_string("070A10")
     for i,p in enumerate(pages):
         if i:d.add_page_break()
         if p["kind"]=="cover":
@@ -305,10 +311,11 @@ def write_word(pages):
             d.add_heading("YOUR COMPLETE CHANNEL DIRECTORY",2)
             d.add_heading("THE WORLD OF TV, ALL IN ONE PLACE",1)
             d.add_paragraph("Live sport, classic television, movies, comedy and more.")
-            for name,path in SOURCES.items():
-                if path.is_file():
-                    d.add_picture(str(path),width=Cm(1.1))
-            d.add_paragraph("ABC iview")
+            strip=d.add_table(rows=1,cols=5)
+            for ix,(name,path) in enumerate([*SOURCES.items(),("ABC",None)]):
+                para=strip.cell(0,ix).paragraphs[0]
+                if path and path.is_file():para.add_run().add_picture(str(path),width=Cm(1.0))
+                else:para.add_run("ABC").bold=True
             d.add_paragraph(ISSUE_DATE)
         elif p["kind"]=="directory":
             d.add_heading(p["label"],1)
