@@ -73,6 +73,22 @@ class DualGuideInteractionTest {
         key(KeyEvent.KEYCODE_DPAD_CENTER)
         assertEquals(listOf(203), tuned)
     }
+    @Test fun dedicatedTvGuideKeyOpensFullEpgWithoutChangingNormalGuideButton() {
+        launch()
+        key(KeyEvent.KEYCODE_BACK)
+        compose.onNodeWithTag("guide-panel").assertDoesNotExist()
+        key(KeyEvent.KEYCODE_GUIDE)
+        compose.onNodeWithTag("full-epg").assertExists()
+        assertTrue(tuned.isEmpty())
+        key(KeyEvent.KEYCODE_BACK)
+        compose.onNodeWithTag("guide-panel").assertExists()
+        key(KeyEvent.KEYCODE_BACK)
+        compose.onNodeWithTag("full-epg").assertDoesNotExist()
+        compose.onNodeWithTag("guide-toggle").performClick()
+        compose.onNodeWithTag("guide-panel").assertExists()
+        compose.onNodeWithTag("full-epg").assertDoesNotExist()
+        assertTrue(tuned.isEmpty())
+    }
     @Test fun futureDetailsCannotTuneAndBackRestoresQuickSelection() {
         launch(); key(KeyEvent.KEYCODE_GUIDE)
         compose.onNodeWithTag("full-epg").assertExists()
