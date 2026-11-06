@@ -121,11 +121,11 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                     Text("${liveChannels.size} live channels · No sign-in required",
                                         color=Silver, style=MaterialTheme.typography.bodyLarge,
                                         modifier=Modifier.testTag("${service.id}-live-channel-count"))
-                                    Text("Included in your Australian TV guide:",
+                                    Text("Included in your Free-To-Air TV guide:",
                                         style=MaterialTheme.typography.bodyMedium, color=Muted)
                                     Text(liveChannels.joinToString("  ·  ") { it.name },
                                         style=MaterialTheme.typography.bodyMedium)
-                                    FocusButton("Open Australian TV guide", {
+                                    FocusButton("Open Free-To-Air TV guide", {
                                         model.openGuide()
                                         onClose()
                                     }, Modifier.testTag("${service.id}-open-guide"))
