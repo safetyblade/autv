@@ -217,7 +217,7 @@ p = doc.add_paragraph()
 p.add_run("Settings  →  Refresh channels and TV guide").bold = True
 doc.add_paragraph("Refresh the app’s channel list and programme information without restarting. Australian broadcasters may have their own account-specific refresh in Settings.")
 doc.add_paragraph("PUBLISHED means a stream entry is in the generated AUTV playlist. LISTED means a configured channel currently lacks a published entry. Neither label guarantees that a channel plays in Australia.")
-doc.add_paragraph("Print: A4 landscape, actual size, duplex if available. Each sheet is arranged as two readable panels; choose the printer/PDF driver's booklet-imposition option for folded signatures. Do not also apply Word's two-pages-per-sheet setting.")
+doc.add_paragraph("Print: A4 landscape at actual size. Duplex printing is supported for a landscape bound/stapled booklet. The paired A5-style panels are in reading order; folding pages into signatures requires separate page imposition, not the printer's automatic booklet option.")
 heading("Contents", f"{len(records)} CHANNELS  •  {len(genre_order)} CATEGORIES")
 summary = doc.add_table(rows=0, cols=2)
 summary.autofit=False
