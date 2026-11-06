@@ -31,7 +31,7 @@ android {
             buildConfigField("String", "${provider.uppercase()}_REGISTRATION_SOURCE", "\"$source\"")
         }
     }
-    val signingPath = providers.environmentVariable("AUTV_SIGNING_KEYSTORE_PATH").orNull?.takeIf { it.isNotBlank() }
+    val signingPath = providers.environmentVariable("AUTV_SIGNING_KEYSTORE_PATH").orNull?.takeIf { it.isNotBlank() }?.takeIf { it.isNotBlank() }
     signingConfigs {
         if (signingPath != null) create("distribution") {
             storeFile = file(signingPath)
