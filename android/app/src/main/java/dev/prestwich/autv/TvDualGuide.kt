@@ -256,7 +256,7 @@ internal fun TvDualGuide(
                                         if (channel.providerChannel != null) Text("Source: ${channel.subgenre}", style = MaterialTheme.typography.labelSmall, color = GuideAccent)
                                         if (channel.number == playing?.number) Text("PLAYING", style = MaterialTheme.typography.labelSmall)
                                         if (!channel.tunable) Text("Unavailable", style = MaterialTheme.typography.labelSmall)
-                                        if (failed[channel.number] != null) Text("Playback failed · OK to retry", style = MaterialTheme.typography.labelSmall)
+                                        failed[channel.number]?.let { Text(if (channel.number == 228) "$it · OK to retry" else "Playback failed · OK to retry", style = MaterialTheme.typography.labelSmall) }
                                     }
                                 }
                                 if (full) TimelineRow(epg.schedule(channel), window, now, if (focused && !channelCell) programme else null, Modifier.weight(1f).fillMaxHeight().testTag("programme-row-${channel.number}")) { item ->
