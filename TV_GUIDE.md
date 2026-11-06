@@ -1,6 +1,6 @@
 # AUTV — TV guide and channel directory
 
-**Catalogue snapshot:** 3 November 2026 · **FAST/IPTV master guide:** 636 active channels · **Source:** [channel_guide.csv](channel_guide.csv)
+**Catalogue snapshot:** 6 November 2026 · **FAST/IPTV master guide:** 639 active channels · **Source:** [channel_guide.csv](channel_guide.csv)
 
 This guide covers the numbered FAST/IPTV lineup controlled by the repository. **Australian TV broadcaster channels are managed separately by the Android app** and must not be counted as part of this CSV unless separately reconciled. The list is a catalogue of configured channels, **not a guarantee of live playback** at this moment.
 
@@ -11,7 +11,7 @@ This guide covers the numbered FAST/IPTV lineup controlled by the repository. **
 3. Browse the guide by category and channel number. Use the guide to tune without leaving the application.
 4. In the guide, **long-press OK** on a supported channel to add/remove it from **Favourites**. Set a preferred starting channel in **Settings** where the current build offers this option.
 5. Open **Australian TV** for broadcaster channels. Link supported accounts in Settings; follow the TV activation instructions/QR code shown on the actual device where offered.
-6. Following a published lineup update, use the app's playlist/guide refresh option, then retest any previously unavailable channel.
+6. In a build containing the refresh control, open **Settings → Refresh channels and TV guide** to fetch current numbered channels and programme data without restarting. Older APKs require an update.
 
 ### Australian TV — connection guide
 
@@ -24,24 +24,24 @@ If a provider says **Configuration required**, it is not connected; a local rest
 - **No live stream:** refresh the guide once and retry. Some listed services can be temporarily unavailable; a visible channel is not proof its stream is playable.
 - **No programme information:** the channel may have no reliable electronic programme guide (EPG). See the *Guide* column below.
 - **Provider sign-in/configuration:** re-open the app's provider Settings and follow the current on-screen flow; report persistent authorisation/configuration states separately.
-- **Guide appears outdated:** refresh from the published playlist. Verify the channel number and name before reporting a mismatch.
+- **Guide appears outdated:** open **Settings → Refresh channels and TV guide** in the updated app. Verify the channel number and name before reporting a mismatch.
 
 ## Catalogue summary
 
 | Category | Configured active channels |
 | --- | ---: |
 | News | 24 |
-| Sport | 95 |
+| Sport | 96 |
 | Movies | 36 |
 | Game Shows | 20 |
 | Crime | 45 |
 | Comedy | 44 |
-| Entertainment | 147 |
+| Entertainment | 149 |
 | Reality & Lifestyle | 91 |
 | Factual | 55 |
 | Kids & Animation | 50 |
 | Music | 29 |
-| **FAST/IPTV total** | **636** |
+| **FAST/IPTV total** | **639** |
 
 The current list is generated from the authoritative CSV. The published M3U may contain fewer channels due to source availability or refresh output. Australian TV native-provider channels are **not included** in this count.
 
@@ -88,18 +88,18 @@ The current list is generated from the authoritative CSV. The published M3U may 
 | 213 | XFC TV | Sport | Plex AU | Full | General entertainment FAST channel with mixed or broad programming. |
 | 214 | Fight Network | Sport | Plex AU | Full | General entertainment FAST channel with mixed or broad programming. |
 | 215 | Lucha Plus | Sport | Plex AU | Full | General entertainment FAST channel with mixed or broad programming. |
-| 216 | FIFA+ | Sport | Plex AU | Full | General entertainment FAST channel with mixed or broad programming. |
-| 217 | UEFA Champions League | Sport | Pluto | Full | Football FAST channel featuring UEFA competitions, highlights or archive programming. |
-| 218 | UEFA.tv | Sport | Tubi | Full | Football FAST channel featuring UEFA competitions, highlights or archive programming. |
-| 219 | Real Madrid TV | Sport | Xumo | Full | Sports FAST channel featuring live events, archive coverage, highlights or sports programming. |
-| 220 | TOP BARÇA | Sport | LG AU | Channel only | Football FAST channel focused on club, league or competition programming. |
-| 221 | Man City 24/7 | Sport | LG GB | Channel only | Football FAST channel focused on club, league or competition programming. |
-| 222 | INTER 24/7 | Sport | Plex AU | Full | General entertainment FAST channel with mixed or broad programming. |
-| 223 | FIFA+ Women | Sport | Samsung GB | Channel only | Football FAST channel featuring league, club, tournament or archive programming. |
-| 224 | GFN Football | Sport | Samsung GB | Channel only | Football FAST channel featuring league, club, tournament or archive programming. |
-| 225 | ViX Lo Mejor de Liga MX | Sport | Roku | Channel only | Football FAST channel focused on club, league or competition programming. |
-| 226 | beIN SPORTS XTRA | Sport | Plex AU | Full | Sports FAST channel featuring live events, archive coverage, highlights or sports programming. |
-| 227 | Rugby Pass TV | Sport | Pluto | Full | Sports FAST channel featuring live events, archive coverage, highlights or sports programming. |
+| 216 | MUTV | Sport | Curated | Channel only | Manchester United club television. Brightcove/Fastly HLS tested playable in AUTV on an Australian device (6 Nov 2026); distribution authorisation and long-term source continuity not established. |
+| 217 | FIFA+ | Sport | Plex AU | Full | General entertainment FAST channel with mixed or broad programming. |
+| 218 | UEFA Champions League | Sport | Pluto | Full | Football FAST channel featuring UEFA competitions, highlights or archive programming. |
+| 219 | UEFA.tv | Sport | Tubi | Full | Football FAST channel featuring UEFA competitions, highlights or archive programming. |
+| 220 | Real Madrid TV | Sport | Xumo | Full | Sports FAST channel featuring live events, archive coverage, highlights or sports programming. |
+| 221 | TOP BARÇA | Sport | LG AU | Channel only | Football FAST channel focused on club, league or competition programming. |
+| 222 | Man City 24/7 | Sport | LG GB | Channel only | Football FAST channel focused on club, league or competition programming. |
+| 223 | INTER 24/7 | Sport | Plex AU | Full | General entertainment FAST channel with mixed or broad programming. |
+| 224 | FIFA+ Women | Sport | Samsung GB | Channel only | Football FAST channel featuring league, club, tournament or archive programming. |
+| 225 | GFN Football | Sport | Samsung GB | Channel only | Football FAST channel featuring league, club, tournament or archive programming. |
+| 226 | ViX Lo Mejor de Liga MX | Sport | Roku | Channel only | Football FAST channel focused on club, league or competition programming. |
+| 227 | beIN SPORTS XTRA | Sport | Plex AU | Full | Sports FAST channel featuring live events, archive coverage, highlights or sports programming. |
 | 228 | The NBA Channel | Sport | Xumo | Full | Dedicated NBA FAST channel with highlights, archive games, original programming and basketball coverage. |
 | 229 | Hoop TV | Sport | SoFast | Channel only | Dedicated basketball FAST channel with games, highlights, news, interviews and basketball culture programming. |
 | 230 | NFL Channel | Sport | Plex AU | Full | American football FAST channel with NFL programming, highlights or archive content. |
@@ -168,6 +168,7 @@ The current list is generated from the authoritative CSV. The published M3U may 
 | 293 | Pac-12 Insider | Sport | Samsung US | Full | Pac-12 Insider Samsung TV Plus feed replacing failed Plex transport; channel remains active in 2026. |
 | 294 | Trace Stars | Sport | Curated | Full | Sports channel featuring athlete, competition and sports-entertainment programming. |
 | 295 | LacrosseTV | Sport | Curated | Channel only | 24/7 lacrosse channel with games, highlights and related programming. |
+| 296 | Rugby Pass TV | Sport | Pluto | Full | Sports FAST channel featuring live events, archive coverage, highlights or sports programming. |
 | 300 | MGM Presents | Movies | Xumo | Full | Movie-focused FAST channel with scheduled films or genre collections. |
 | 301 | Paramount Movie Channel | Movies | Pluto | Full | Movie-focused FAST channel with scheduled films or genre collections. |
 | 302 | Universal Movies | Movies | Xumo | Full | Movie-focused FAST channel with scheduled films or genre collections. |
@@ -460,6 +461,8 @@ The current list is generated from the authoritative CSV. The published M3U may 
 | 844 | Life with Derek | Entertainment | Roku | Full | General entertainment FAST channel with mixed or broad programming. |
 | 845 | Walker Texas Ranger | Entertainment | Pluto | Full | General entertainment FAST channel with mixed or broad programming. |
 | 846 | Top Gear | Entertainment | Pluto | Full | Automotive entertainment series featuring cars, challenges and motoring features. |
+| 847 | Comet TV | Entertainment | Curated | Channel only | English-language sci-fi, fantasy and cult entertainment channel. NWA Powerrr airs at scheduled times. Owner-approved AUTV trial; Australian playback, rights and guide availability require verification. |
+| 848 | CHARGE! | Entertainment | Curated | Channel only | English-language action, crime and adventure entertainment channel. Owner-approved AUTV trial; Australian playback, rights and guide availability require verification. |
 | 1000 | Dr. Phil | Reality & Lifestyle | Plex AU | Full | General entertainment FAST channel with mixed or broad programming. |
 | 1001 | Nosey | Reality & Lifestyle | Plex AU | Full | Daytime talk and conflict-driven reality programming, including relationship and personal-dispute formats. |
 | 1002 | Undercover Boss | Reality & Lifestyle | Plex AU | Full | Workplace reality series following senior executives working anonymously inside their own organisations. |
