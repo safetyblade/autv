@@ -7,6 +7,9 @@ on:
       - tests/test_epg_source_research.py
       - scripts/triage_epg_candidate_identity.py
       - tests/test_epg_candidate_identity_safety.py
+      - scripts/epg_crosswalk.py
+      - epg_crosswalk_holds.csv
+      - tests/test_epg_crosswalk.py
       - .github/workflows/epg-source-discovery.yml
 permissions:
   contents: read
@@ -20,6 +23,7 @@ jobs:
         run: |
           python3 -m unittest discover -s tests -p test_epg_source_research.py -v
           python3 -m unittest discover -s tests -p test_epg_candidate_identity_safety.py -v
+          python3 -m unittest discover -s tests -p test_epg_crosswalk.py -v
       - name: Audit published guide and build missing-EPG queue
         run: |
           python3 scripts/audit_epg_gate1.py
