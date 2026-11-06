@@ -110,18 +110,20 @@ def icon(c, x, y, size):
     c.drawPath(p,fill=1,stroke=0)
 
 def provider_row(c, x, y, w=74, h=59):
+    """Balanced cover icon bar with five equal centre-aligned slots."""
     rect(c,x,y,w,h,GLASS,7)
-    # Real icon files carried by AUTV; ABC is a plain text panel until an approved asset exists.
-    slots=[("9Now",0),("7plus",1),("10",2),("SBS",3),("ABC",4)]
-    imgw=35
-    for name, idx in slots:
-        xx=x+9+idx*(w-18)/5
+    slots=["9Now","7plus","10","SBS","ABC"]
+    slot=(w-24)/5
+    for idx,name in enumerate(slots):
+        cx=x+12+(idx+.5)*slot
         file=SOURCES.get(name)
         if file and file.is_file():
-            c.drawImage(str(file),xx,y+20,width=28,height=28,mask="auto",preserveAspectRatio=True,anchor="c")
+            c.drawImage(str(file),cx-15,y+23,width=30,height=30,mask="auto",
+                        preserveAspectRatio=True,anchor="c")
         else:
-            label(c,"ABC",xx+1,y+27,8.4,"Helvetica-Bold",WARM)
-    label(c,"AUSTRALIAN TV",x+8,y+7,7,"Helvetica-Bold",SILVER)
+            c.setFillColor(WARM);c.setFont("Helvetica-Bold",8.5)
+            c.drawCentredString(cx,y+32,"ABC")
+    label(c,"AUSTRALIAN TV",x+12,y+9,7,"Helvetica-Bold",SILVER)
 
 def top_header(c, pno, title, kind):
     rect(c,0,PAGE_H-36,PAGE_W,36,INK)
@@ -137,30 +139,31 @@ def dark_page(c):
 def cover(c, row_count, published_count):
     dark_page(c)
     rect(c,0,PAGE_H-11,PAGE_W,11,SILVER)
-    icon(c,28,PAGE_H-144,92)
-    label(c,"AUTV",141,PAGE_H-83,39,"Helvetica-Bold",WARM)
-    label(c,"THE TV GUIDE",30,PAGE_H-192,28,"Helvetica-Bold",SILVER)
-    label(c,"YOUR COMPLETE CHANNEL DIRECTORY",31,PAGE_H-217,9,"Helvetica-Bold",WARM)
-    c.setStrokeColor(SILVER);c.setLineWidth(1);c.line(30,PAGE_H-238,PAGE_W-30,PAGE_H-238)
-    lines=["THE WORLD OF TV,","ALL IN ONE PLACE"]
-    for k,line in enumerate(lines):
-        label(c,line,30,PAGE_H-280-27*k,19.7,"Helvetica-Bold",WARM)
-    label(c,"Live sport, classic television,",30,PAGE_H-353,11,"Helvetica",SILVER)
-    label(c,"movies, comedy and more.",30,PAGE_H-371,11,"Helvetica",SILVER)
-    provider_row(c,30,PAGE_H-458,PAGE_W-60,65)
-    label(c,f"{row_count} CHANNELS  •  {published_count} STREAM ENTRIES",31,66,8.2,"Helvetica-Bold",WARM)
-    label(c,"PRINT EDITION  /  "+ISSUE_DATE.upper(),31,46,8,"Helvetica",SILVER)
+    icon(c,26,PAGE_H-130,72)
+    label(c,"AUTV",112,PAGE_H-105,41,"Helvetica-Bold",WARM)
+    label(c,"THE TV GUIDE",30,PAGE_H-179,27,"Helvetica-Bold",SILVER)
+    label(c,"YOUR COMPLETE CHANNEL DIRECTORY",30,PAGE_H-207,9,"Helvetica-Bold",WARM)
+    c.setStrokeColor(SILVER);c.setLineWidth(1)
+    c.line(30,PAGE_H-231,PAGE_W-30,PAGE_H-231)
+    label(c,"THE WORLD OF TV,",30,PAGE_H-272,19.7,"Helvetica-Bold",WARM)
+    label(c,"ALL IN ONE PLACE",30,PAGE_H-300,19.7,"Helvetica-Bold",WARM)
+    label(c,"Live sport, classic television,",30,PAGE_H-341,11,"Helvetica",SILVER)
+    label(c,"movies, comedy and more.",30,PAGE_H-359,11,"Helvetica",SILVER)
+    provider_row(c,30,PAGE_H-450,PAGE_W-60,64)
+    label(c,"PICK A CHANNEL. SETTLE IN. ENJOY THE SHOW.",30,108,8.3,"Helvetica-Bold",WARM)
+    label(c,f"{row_count} CHANNELS",30,67,12,"Helvetica-Bold",WARM)
+    label(c,"PRINT EDITION  /  "+ISSUE_DATE.upper(),30,46,8,"Helvetica",SILVER)
 
 def intro(c, pno, count):
     top_header(c,pno,"Start here","intro")
     label(c,"WELCOME TO AUTV",22,PAGE_H-76,22,"Helvetica-Bold",INK)
-    label(c,"A familiar TV guide for your Android TV.",22,PAGE_H-97,10,"Helvetica",MUTED)
+    label(c,"Put the kettle on. The good stuff starts here.",22,PAGE_H-97,10,"Helvetica",MUTED)
     items=[
-      ("01","OPEN THE GUIDE","Use the remote arrows. Press OK to tune."),
-      ("02","SAVE A FAVOURITE","Long-press OK on a channel to save it."),
-      ("03","REFRESH CHANNELS","Settings → Refresh channels and TV guide."),
-      ("04","AUSTRALIAN TV","Link supported providers in Settings."),
-      ("05","CHOOSE A STARTING CHANNEL","Set your preferred startup channel in Settings."),
+      ("01","FIND YOUR NEXT FAVOURITE","Use the arrows to browse. Press OK to tune."),
+      ("02","KEEP THE GOOD ONES","Long-press OK to add a channel to Favourites."),
+      ("03","SEE WHAT’S NEW","In Settings, refresh channels and TV guide."),
+      ("04","YOUR LOCAL NETWORKS","Find Australian broadcasters in Settings."),
+      ("05","START WITH YOUR FAVOURITE","Choose a startup channel in Settings."),
     ]
     y=PAGE_H-143
     for n,head,desc in items:
@@ -169,12 +172,12 @@ def intro(c, pno, count):
         label(c,head,75,y-9,10.5,"Helvetica-Bold",INK)
         label(c,text_fit(desc,PAGE_W-100,size=9),75,y-28,9,"Helvetica",MUTED)
         y-=72
-    label(c,f"THIS EDITION: {count} CONFIGURED CHANNELS",22,68,9,"Helvetica-Bold",INK)
-    label(c,"Channel availability may change between editions.",22,51,8,"Helvetica",MUTED)
+    label(c,f"INSIDE THIS EDITION: {count} CHANNELS",22,68,9,"Helvetica-Bold",INK)
+    label(c,"Your line-up, all laid out from A to TV.",22,51,8,"Helvetica",MUTED)
 
 def contents(c,pno,grouped,pages):
     top_header(c,pno,"Contents","contents")
-    label(c,"WHAT'S INSIDE",22,PAGE_H-80,22,"Helvetica-Bold",INK)
+    label(c,"THE LINE-UP",22,PAGE_H-80,22,"Helvetica-Bold",INK)
     y=PAGE_H-118
     for name,rows in grouped:
         pos=next(i+1 for i,p in enumerate(pages) if p["kind"]=="directory" and p["label"]==name)
@@ -183,12 +186,12 @@ def contents(c,pno,grouped,pages):
         label(c,f"{len(rows)} channels",31,y-10,7.4,"Helvetica",MUTED)
         c.setFont("Helvetica-Bold",10);c.setFillColor(INK);c.drawRightString(PAGE_W-32,y,str(pos))
         y-=35
-    label(c,"PAGE NUMBERS REFER TO THE READING EDITION.",22,49,7.6,"Helvetica",MUTED)
+    label(c,"FLIP TO YOUR FAVOURITE SECTION.",22,49,7.6,"Helvetica",MUTED)
 
 def providers(c,pno):
     top_header(c,pno,"Australian TV","providers")
-    label(c,"YOUR NETWORKS",22,PAGE_H-82,22,"Helvetica-Bold",INK)
-    label(c,"Free-to-air services within the AUTV app",22,PAGE_H-104,9.7,"Helvetica",MUTED)
+    label(c,"THE HOME TEAM",22,PAGE_H-82,22,"Helvetica-Bold",INK)
+    label(c,"The familiar faces of Australian television",22,PAGE_H-104,9.7,"Helvetica",MUTED)
     items=[("9Now","Nine Network"),("7plus","Seven Network"),("10","Network 10"),("SBS","SBS On Demand"),("ABC","ABC iview")]
     y=PAGE_H-155
     for name,desc in items:
@@ -216,17 +219,15 @@ def directory(c,pno,page,published):
         label(c,str(number),26,y-4,9.3,"Helvetica-Bold",INK)
         name=text_fit(row["Channel name"],PAGE_W-125,size=9.3)
         label(c,name,74,y-4,9.3,"Helvetica",INK)
-        if number not in published:
-            c.setFillColor(MUTED);c.setFont("Helvetica-Bold",6.1)
-            c.drawRightString(PAGE_W-25,y-3,"LISTED")
+        # The household guide is a directory, not a stream-status report.
         y-=step
-    label(c,"Numbers follow AUTV's channel directory.",20,41,7.8,"Helvetica",MUTED)
-    label(c,"Listed does not guarantee live playback in Australia.",20,31,7.3,"Helvetica",MUTED)
+    label(c,"Find it by number. Make it a favourite.",20,41,7.8,"Helvetica",MUTED)
+    label(c,"Your next great watch might be one channel away.",20,31,7.3,"Helvetica",MUTED)
 
 def notes(c,pno):
     top_header(c,pno,"Notes","notes")
-    label(c,"YOUR TV NOTES",22,PAGE_H-83,21,"Helvetica-Bold",INK)
-    label(c,"Favourites, programmes and channels to revisit",22,PAGE_H-104,9,"Helvetica",MUTED)
+    label(c,"DON’T FORGET TO WATCH",22,PAGE_H-83,21,"Helvetica-Bold",INK)
+    label(c,"Shows to try, channels to remember, favourites to keep",22,PAGE_H-104,9,"Helvetica",MUTED)
     c.setStrokeColor(LINE)
     for i in range(17):
         y=PAGE_H-142-i*25
@@ -237,8 +238,8 @@ def back(c,count):
     rect(c,0,0,PAGE_W,12,SILVER)
     icon(c,30,PAGE_H-166,102)
     label(c,"AUTV",155,PAGE_H-100,39,"Helvetica-Bold",WARM)
-    label(c,"YOUR TV. YOUR GUIDE.",30,PAGE_H-215,20,"Helvetica-Bold",SILVER)
-    label(c,"Refresh your channels in Settings.",30,PAGE_H-248,10.5,"Helvetica",WARM)
+    label(c,"SEE YOU AFTER THE BREAK.",30,PAGE_H-215,20,"Helvetica-Bold",SILVER)
+    label(c,"There is always something worth watching.",30,PAGE_H-248,10.5,"Helvetica",WARM)
     c.setStrokeColor(SILVER);c.line(30,90,PAGE_W-30,90)
     label(c,f"{count} CHANNELS  /  {ISSUE_DATE.upper()}",30,67,9,"Helvetica-Bold",WARM)
     label(c,"AUTV  •  ANDROID TV",30,47,8.5,"Helvetica",SILVER)
