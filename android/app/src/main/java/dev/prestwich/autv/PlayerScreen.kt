@@ -515,7 +515,7 @@ private fun ChannelRow(channel: Channel, selected: Boolean, failed: String?, sch
             if (channel.providerChannel != null) Text("Source: ${channel.subgenre}", color = Muted, style = MaterialTheme.typography.labelSmall)
             ProgrammeInfo(schedule, now, if (channel.providerChannel != null) "Programme details unavailable" else channel.genre, compact)
             if (!known) Text("No live stream", color = Muted, style = MaterialTheme.typography.labelSmall)
-            if (failed != null) Text("Could not play · Select to retry", color = Color(0xFFD8B3AD), style = MaterialTheme.typography.labelSmall)
+            if (failed != null) Text(if (channel.number == 228) "$failed · Select to retry" else "Could not play · Select to retry", color = Color(0xFFD8B3AD), style = MaterialTheme.typography.labelSmall)
         }
     }
 }
