@@ -401,7 +401,15 @@ https://jmp2.uk/plu-650315163a0d700008bb07f8.m3u8
 #EXTINF:-1 tvg-id="688735087b2cf33d01a2d411" tvg-name="Sea Patrol" group-title="Entertainment",Sea Patrol
 https://jmp2.uk/plu-688735087b2cf33d01a2d411.m3u8
 
-# MUTV TRIAL ONLY: alternative Brightcove/Fastly candidate after Akamai failed on owner TV; verify AU playback and rights before retaining.
-# Source reference: publicly indexed MUTV playlist; not an authorised AUTV integration.
+# MUTV PLAYBACK APPROVED 2026-11-06: Brightcove/Fastly candidate played on Australian AUTV device; independently verify distribution authorisation and long-term continuity.
+# Source reference: publicly indexed MUTV playlist; owner playback approval is not provider redistribution authorisation.
 #EXTINF:-1 tvg-id="MUTV.uk@SD" tvg-name="MUTV" group-title="Sport",MUTV
 https://fastly.live.brightcove.com/6374054671112/eu-west-1/6058004203001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoiYXplMnp5LmVncmVzcy55ODN1ZWIiLCJhY2NvdW50X2lkIjoiNjA1ODAwNDIwMzAwMSIsImVobiI6ImZhc3RseS5saXZlLmJyaWdodGNvdmUuY29tIiwiaXNzIjoiYmxpdmUtcGxheWJhY2stc291cmNlLWFwaSIsInN1YiI6InBhdGhtYXB0b2tlbiIsImF1ZCI6WyI2MDU4MDA0MjAzMDAxIl0sImp0aSI6IjYzNzQwNTQ2NzExMTIifQ.3FmuTna3DAmY7xlhK5fk6LMrosrtrR5VsU2QOgYO5y4/playlist-hls.m3u8
+
+# Owner-approved Australian AUTV test channels — Comet TV and CHARGE!, 6 Nov 2026.
+# Technical HLS segments passed via GitHub Actions; AU playback, rights, EPG and advert continuity unverified.
+# These are independent general-entertainment trial channels, not substitutions for NWA or other wrestling streams.
+#EXTINF:-1 tvg-id="Comet.us@SD" tvg-name="Comet TV" group-title="Entertainment",Comet TV
+https://fast-channels.sinclairstoryline.com/COMET/index.m3u8
+#EXTINF:-1 tvg-id="Charge.us@SD" tvg-name="CHARGE!" group-title="Entertainment",CHARGE!
+https://fast-channels.sinclairstoryline.com/CHARGE/index.m3u8

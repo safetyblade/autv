@@ -1,0 +1,24 @@
+AUTV print edition / 06 November 2026
+A5 pages: 36
+A4 landscape sheets: 9
+Print A4 landscape / two-sided / FLIP SHORT EDGE / actual size.
+Do NOT enable printer Booklet or 2 pages per sheet: PDF is already imposed.
+Fold all sheets together at their centre and staple through the spine.
+Sheet 1 front: 36 | 1
+Sheet 1 back: 2 | 35
+Sheet 2 front: 34 | 3
+Sheet 2 back: 4 | 33
+Sheet 3 front: 32 | 5
+Sheet 3 back: 6 | 31
+Sheet 4 front: 30 | 7
+Sheet 4 back: 8 | 29
+Sheet 5 front: 28 | 9
+Sheet 5 back: 10 | 27
+Sheet 6 front: 26 | 11
+Sheet 6 back: 12 | 25
+Sheet 7 front: 24 | 13
+Sheet 7 back: 14 | 23
+Sheet 8 front: 22 | 15
+Sheet 8 back: 16 | 21
+Sheet 9 front: 20 | 17
+Sheet 9 back: 18 | 19

@@ -1,24 +1,16 @@
-# ABC authorised distribution setup
+# ABC iview — optional account integration
 
-The standard application has no ABC registration. It must show **Configuration required**, not Connected. Previous merged work (#83/#89/#95/#117) implemented linking, UID renewal and the HLS authorisation transport; no owner account or signing access was supplied. Issue #140 expands the adapter beyond its single proof feed, without removing grant checks.
+**Current viewing path:** AUTV provides **ABC TV VIC (#2), ABC NEWS (#20) and ABC Kids (#22)** in Australian TV without a sign-in. These three external HLS sources passed Australian physical playback on 6 November 2026. Their sources are listed in `AustralianLiveChannels.kt`. This viewing path does not depend on ABC's device-code session.
 
-An authorised operator supplies an `AuTvApplication` subclass overriding `australianProviders` with an `AustralianProviderConfiguration(abc = AbcClientRegistration(...))`. Build with `-PautvProviderSources=/path/to/approved/sources -PautvApplicationClass=your.package.App -PautvMediaLab=false :app:assembleFullAppDebug`.
+**Preserve optional ABC linking:** The app retains ABC's supported real device-code request, polling and stored session through `AbcExperimentalLinkAccess` and the registered provider integration. In Settings the link is an optional, secondary feature; a successful account code must not imply that additional ABC media is authorised. Do not remove the code or wipe session storage during ordinary guide changes.
 
-Required provider inputs:
+## Registered-client integration (future)
 
-- ABC-issued AUTV `productId` and `profileApiKey` for `/latest/ctv/link` and `/ctv/unlink`, with the supported profile/UID contract. AUTV does not invent a profile or import another application's registration.
-- Approved media authorisation, for example `AbcHlsAuthoriser(AbcHlsSigningRegistration(approvedDeviceType, approvedSigner))`. The signer must authorise the exact `/auth/hls/sign` path; do not embed a borrowed HMAC key. Account linking alone is not a media grant.
-- The currently supported `region = "VIC"`, a discovered `mainHouseNumber`, and the explicit set `authorisedHouseNumbers` for all approved live feeds. Defaults retain the previous single-feed grant. Discovery alone never extends the grant.
-- Anonymous live is opt-in only with ABC approval: disable `accountLinkingEnabled` and enable `abcAnonymousLiveApproved`. This never reports an account connection.
+An ABC-approved implementation of `AbcRegistrationSource` may provide `AbcProviderConfiguration(AbcClientRegistration(...))`. Example build configuration: `-PautvAbcProviderSources=/approved/abc-source -PautvAbcRegistrationSource=approved.package.AbcSource`.
 
-Catalogue discovery does not require an account token and does not renew or expire the saved account. The configured adapter filters discovered house numbers to the approved regional grant set before exposing guide rows. Media resolution still requires an account unless anonymous live is explicitly approved.
+- ABC-issued `productId`, `profileApiKey` and device-account contract are required for formally registered activation.
+- Media resolution is **separate** from a linked account; it needs an approved signing/authorisation operation for the exact HLS request and a specific broadcaster channel grant. The existing experimental media adapter does not supply an authorised live-stream URL.
+- Honour Australian region, licence, ad, DRM, source expiry and broadcaster requirements. Do not import another app's credentials, reverse engineer client secrets or advertise unauthorised native playback.
+- Catalogue discovery can be public even when programme metadata has no playable HLS URL. Do not treat a parsed programme response as a media grant.
 
-The adapter revalidates the current live catalogue before each tune, obtains fresh programme metadata and authorises the exact original HLS URL. Expired authorisation clears only ABC's session; transient failures retain the UID/session for retry. The existing provider-specific encrypted store and stable device UUID persist across restart.
-
-Live acceptance remains pending provider configuration, account linking on a device and Australian network access. This execution environment excludes the ABC API hosts from its network allowlist. That restriction is not a measured broadcaster rejection. Synthetic tests prove control flow, not a working ABC account, manifest, video or audio.
-
-## Independent startup source
-
-The default `AuTvApplication` can now load a public no-argument implementation of `AbcRegistrationSource` directly. Its `configuration(context)` returns `AbcProviderConfiguration(registration, anonymousLiveApproved)`. Use `-PautvAbcProviderSources=/approved/abc-source -PautvAbcRegistrationSource=your.package.AbcSource`. No application subclass is required. The existing shared `autvProviderSources` and application override remain supported.
-
-The source is distribution-owned code, not a credential file. It must perform local composition only and use approved runtime signing/registration operations. Do not place a profile key or HMAC secret in source, Gradle properties, generated BuildConfig or the APK. A missing source keeps Connect hidden; a failed source reports a configuration failure and cannot suppress Network 10, SBS or Seven construction. See `docs/implementation/issue140-native-integration.md` for the exact authorisation boundary and validation status.
+The original native adapter and authorisation-boundary code remains in the repository. Its historical experiments are retrievable from issues #140 and #157 and Git history, not treated as current setup instructions.

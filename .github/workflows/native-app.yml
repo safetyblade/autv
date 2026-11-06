@@ -50,16 +50,32 @@ jobs:
           gradle -p android :app:testDebugUnitTest :core-data:testDebugUnitTest :core-guide:testDebugUnitTest :app:assembleRelease
           -PautvVersionCode=$((1000 + ${{ github.run_number }}))
           -PautvVersionName=0.5.${{ github.run_number }}
-      - name: Verify APK signature
+      - name: Verify main-package APK, certificate and version
         shell: bash
         run: |
-          apksigner_path=$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -n 1)
-          "$apksigner_path" verify --verbose android/app/build/outputs/apk/release/app-release.apk
-      - name: Upload installable update
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/release/app-release.apk
+          SIGN=$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -n 1)
+          AAPT=$(find "$ANDROID_HOME/build-tools" -name aapt -type f | sort -V | tail -n 1)
+          "$SIGN" verify --verbose --print-certs "$APK" > signed-apk-certificate.txt
+          "$AAPT" dump badging "$APK" > signed-apk-manifest.txt
+          grep -q "package: name='dev.prestwich.autv'" signed-apk-manifest.txt
+          test -s signed-apk-certificate.txt
+          mkdir -p signed-distribution
+          cp "$APK" signed-distribution/AUTV-Signed-Update.apk
+          cp signed-apk-certificate.txt signed-apk-manifest.txt signed-distribution/
+          {
+            echo "Commit: $GITHUB_SHA"
+            echo "Build versionCode: $((1000 + ${{ github.run_number }}))"
+            echo 'Package: dev.prestwich.autv'
+            echo 'Update only if certificate matches installed package and versionCode is higher.'
+            sha256sum "$APK"
+          } > signed-distribution/README.txt
+      - name: Upload signed update candidate
         uses: actions/upload-artifact@v4
         with:
-          name: autv-update-${{ github.run_number }}
-          path: android/app/build/outputs/apk/release/app-release.apk
+          name: AUTV-Signed-Update-${{ github.run_number }}
+          path: signed-distribution/
           if-no-files-found: error
           retention-days: 90
       - name: Remove temporary signing material

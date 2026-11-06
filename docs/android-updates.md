@@ -1,46 +1,32 @@
-# Android updates that preserve accounts
+# AUTV Android builds, updates and account retention
 
-Use the manual **Native app** workflow for distributed builds. It signs the release
-APK with one permanent key, retains `dev.prestwich.autv`, and assigns versionCode
-1000 + that workflow's run number. Re-running a job reproduces its version; start a
-new workflow run for a newer version. Do not replace this workflow with another
-counter without preserving the highest distributed versionCode.
+**Only two downloadable application types should be offered.**
 
-## One-time setup
+| Build | Package | Purpose | Account data | Update policy |
+| --- | --- | --- | --- | --- |
+| **AUTV signed update** | `dev.prestwich.autv` | Main application | Existing app data | Updates only when signed with the *same permanent key* and higher versionCode |
+| **AUTV Trial** | `dev.prestwich.autv.trial` | Full app QA on TV/phone | Separate private app data | Only updates an existing Trial with the same signing certificate; ordinary GitHub runner debug keys are not stable |
 
-On a trusted machine with JDK keytool, Python 3 and GitHub CLI authenticated with
-repository Actions-secret and Actions-variable management permission:
+The old `AUTV-Full-App-Debug.apk` artifacts are QA builds, **not guaranteed over-install updates**. They must not be offered as a production release.
+
+## Permanent signing — one-time owner setup
+
+On a trusted computer with authenticated GitHub CLI, JDK keytool and repository Actions-secret administration permission:
 
 ```sh
 bash scripts/setup-android-signing.sh
 ```
 
-The script creates the distribution identity outside the repository, uploads three
-Actions secrets and a public certificate SHA-256 repository variable through GitHub CLI, and preserves the same key on subsequent runs.
-The generated password protects AUTV's signing key; it is not an account password.
-Keep an encrypted private backup of the entire printed signing directory. Never
-commit, share in chat, attach to a PR, or delete/regenerate that identity. Missing
-signing secrets make distribution fail, rather than creating a different identity.
-Each build also checks its signing certificate against AUTV_SIGNING_CERT_SHA256.
-The setup script refuses to overwrite an already pinned identity with a different
-local backup. Re-run setup with the original backup to add the certificate pin if
-you configured signing before this check was introduced.
-The connected GitHub tools cannot set these secrets; setup must run with an
-appropriately authorized GitHub CLI session. No permanent signing key is created
-in public CI or included in its APK artifacts.
+The script stores the permanent key *outside* the repository and writes Actions secrets `AUTV_SIGNING_KEYSTORE_BASE64`, `AUTV_SIGNING_STORE_PASSWORD`, `AUTV_SIGNING_KEY_PASSWORD`, and the public pin `AUTV_SIGNING_CERT_SHA256`. Retain an encrypted private backup; do not upload the keystore/password to this chat, a PR or the repo. Never regenerate an established key. The GitHub connector cannot provision these secrets.
 
-## Installation
+The **Native app** workflow produces signed `app-release.apk` only after verifying this identity and the monotonic versionCode. A missing or mismatched signing identity must **fail the workflow** rather than producing a disposable key under the main package.
 
-Download the newest Native app artifact, extract app-release.apk and open it on the
-device. Android should offer **Update**, retaining favourites, app preferences and
-Keystore-encrypted 9Now session tokens. No silent updater or public release is added.
+## Installing without losing sessions
 
-Earlier PR/debug APKs used disposable CI keys. Moving from one of those builds to
-the permanent distribution identity may require one last uninstall/install and
-9Now activation. This cannot be repaired by exporting credentials. After that,
-install newer signed APKs over the existing app; do not uninstall first.
+- Confirm the installed Android package, signing certificate and versionCode before claiming an in-place update.
+- Android refuses replacement by an APK signed with a different certificate. No ZIP rename, `adb install -r`, or account QR re-link changes that rule.
+- An installed older debug build with a disposable signature may need a one-time data-clearing uninstall when migrating to the permanent signing identity. That loses encrypted provider sessions and favourites/app preferences unless separately recoverable. **Do not uninstall automatically.**
+- Until a permanent compatible build is verified, use the separate **AUTV Trial** APK for test feedback. It cannot read account data from main AUTV.
+- Test updates on a device with matched signing by installing two successive signed runs; confirm 9Now, SBS, 7plus and optional ABC sessions and Favourites are retained.
 
-Native provider prototype workflow artifacts remain development/test builds and
-must not be used as the ongoing distribution channel. Clear storage, uninstall or
-a factory reset erases credentials. Nine can revoke a session independently of
-AUTV updates. Tokens remain excluded from Android backup.
+Use [the Android QA workflow](../.github/workflows/native-provider.yml) for regression evidence, not as the download channel. Full app builder source is `android/app/build.gradle.kts`.

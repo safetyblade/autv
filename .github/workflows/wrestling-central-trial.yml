@@ -1,0 +1,42 @@
+name: AUTV Wrestling Central dedicated trial
+
+on:
+  pull_request:
+    paths:
+      - "scripts/probe_wrestling_central.py"
+      - ".github/workflows/wrestling-central-trial.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  roku-identity-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch published Roku and partner listings
+        shell: bash
+        run: |
+          mkdir -p discovery_sources
+          download() {
+            curl --fail --silent --show-error --location --max-time 25 "$2" --output "discovery_sources/$1.m3u" ||
+              { rm -f "discovery_sources/$1.m3u"; echo "::warning::Source $1 unavailable"; }
+          }
+          download roku https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/roku_all.m3u
+          download tubi https://raw.githubusercontent.com/BuddyChewChew/tubi-scraper/main/tubi_playlist.m3u
+          download xumo https://raw.githubusercontent.com/BuddyChewChew/xumo-playlist-generator/main/playlists/xumo_playlist.m3u
+          download plex_au https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plex_au.m3u
+          download pluto_us https://raw.githubusercontent.com/iptv-org/iptv/master/streams/us_pluto.m3u
+          download pluto_ca https://raw.githubusercontent.com/iptv-org/iptv/master/streams/ca_pluto.m3u
+          download pluto_uk https://raw.githubusercontent.com/iptv-org/iptv/master/streams/uk_pluto.m3u
+      - name: Check official Roku identity and publicly published HLS
+        run: python3 scripts/probe_wrestling_central.py
+      - name: Confirm nothing changed in production catalogues
+        run: git diff --exit-code -- channel_guide.csv playlist.m3u guide.json custom.m3u
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wrestling-central-trial
+          path: audits/issue166_wrestling_central_probe.json
+          retention-days: 30

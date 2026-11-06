@@ -1,33 +1,38 @@
-# AUTV — Australian television, one guide
+# AUTV — Australian television in one guide
 
-AUTV is a remote-first Android TV / Google TV application that brings a curated FAST/IPTV channel lineup and supported Australian broadcaster channels into a familiar TV guide.
+AUTV brings approved free live television, Australian broadcaster services and a curated FAST/IPTV guide into one Android TV application.
 
-## Install and use
+## Install and update
 
-1. Obtain the **latest verified APK** from the project's approved build/release distribution. Do not install an old build based solely on a version in a historical note.
-2. Install and open AUTV on an Android TV or Google TV device.
-3. Navigate with the remote direction keys; press **OK** to tune and **Back** to exit or return to the guide.
-4. Browse **Favourites**, **Australian TV**, or the genre-based numbered channel guide. Long-press **OK** on a supported channel to toggle favourite status.
-5. Use **Settings** to choose a starting channel where supported and to connect Australian broadcaster accounts. Follow the on-screen activation or QR instructions when displayed.
-6. Following a playlist update, refresh the guide in the app.
+The **AUTV signed update** and **AUTV Trial** are different builds. Use the signed update for the existing AUTV application only if Android accepts the matching signing certificate and a newer version; the trial is a separate installation and has separate account data. Never uninstall to work around a signing mismatch without accepting the loss of stored accounts. See [Android updates](docs/android-updates.md).
 
-For troubleshooting, provider setup and the **complete current numbered FAST/IPTV directory**, see [TV Guide](TV_GUIDE.md).
+## Watch TV
 
-### Australian TV
+1. Open the guide and choose **Australian TV** for the six tested no-login channels below, or select a FAST/IPTV channel by number and genre.
+2. Use the directional remote keys, **OK** to play and **Back** to return. Long-press **OK** to add or remove a favourite.
+3. In Settings, select your startup channel. **7plus, 9Now and SBS** can offer account linking through their supported activation screens.
+4. ABC and Network 10's six approved free live channels do **not** require a login. ABC's separate device-code linking remains optional for potential future features.
+5. Refresh the guide after an approved source update; a listed channel can still become temporarily unavailable.
 
-The broadcaster area is distinct from the repository's FAST/IPTV channel CSV. Account linking and video playback depend on the installed build and provider authorisation. Some providers may show **Configuration required** or other incomplete states. Consult the on-device Settings screen instead of assuming a service is available.
+### Australian TV — six tested streams
 
-### Channel guide and playlist
+| Number | Channel | Account |
+| ---: | --- | --- |
+| 2 | ABC TV VIC | Not required |
+| 10 | 10 VIC | Not required |
+| 11 | 10 Drama | Not required |
+| 12 | 10 Comedy | Not required |
+| 20 | ABC NEWS | Not required |
+| 22 | ABC Kids | Not required |
 
-- [Numbered channel directory and household guide](TV_GUIDE.md)
-- [Guide source data](channel_guide.csv)
-- [Published playlist](playlist.m3u)
-- [Combined EPG](epg.xml.gz)
+The six were physically played on the owner's Australian device on **6 November 2026**. Sources currently depend on external redirect infrastructure; successful playback does not imply a broadcaster redistribution licence, permanent availability or verified EPG.
 
-The guide source records **636 active FAST/IPTV channels as of 3 November 2026**; the generated playlist can differ when sources are temporarily unavailable. Native Australian TV channels must be reconciled separately.
+## Directory and support
 
-## Project maintenance
+- [Numbered TV guide](TV_GUIDE.md) — the currently configured FAST/IPTV directory plus the six Australian live channels
+- [Channel source of truth](channel_guide.csv) — channel numbers and editorial status
+- [Current published playlist](playlist.m3u) and [EPG](epg.xml.gz)
+- [Maintenance](docs/MAINTENANCE.md) — internal operational procedures
+- [Source discovery](docs/SOURCE_DISCOVERY.md) — evolving candidate evidence, never a permanent block on future sources
 
-The repository also contains playlist and EPG generation automation. Engineering/source management procedures are **not** household setup instructions. Keep those in [Maintenance notes](docs/MAINTENANCE.md) and current workflows, not in this README.
-
-**Documentation ownership:** Mara Collins · **Engineering verification:** Elliot Mercer · **Product acceptance:** Helena. See [documentation issue #151](https://github.com/safetyblade/autv/issues/151).
+**Snapshot 6 November 2026:** 639 active curated FAST/IPTV entries in CSV and 634 published playlist entries. These are configured/listed counts, not a claim that every source currently plays.

@@ -1,0 +1,30 @@
+name: AUTV NWA Comet CHARGE source trial
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "scripts/probe_nwa_comet_charge.py"
+      - ".github/workflows/nwa-comet-charge-trial.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  trial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check published Comet and CHARGE HLS segments
+        run: python3 scripts/probe_nwa_comet_charge.py
+      - name: Ensure no changes to production channel sources
+        run: git diff --exit-code -- channel_guide.csv playlist.m3u guide.json custom.m3u
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nwa-comet-charge-source-trial
+          path: audits/issue166_nwa_comet_charge_probe.json
+          retention-days: 30
