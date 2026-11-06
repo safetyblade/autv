@@ -4,13 +4,29 @@ on:
   pull_request:
     paths:
       - "channel_guide.csv"
+      - "TV_GUIDE.md"
       - "docs/australian_tv_channels.csv"
       - "scripts/build_tv_guide.py"
+      - "scripts/build_tv_guide_markdown.py"
+      - "android/app/src/main/java/dev/prestwich/autv/provider/AustralianLiveChannels.kt"
+      - "android/app/src/main/java/dev/prestwich/autv/provider/AustralianLiveChannels.kt"
+      - ".github/workflows/docs-guide.yml"
+  push:
+    branches: [main]
+    paths:
+      - "channel_guide.csv"
+      - "docs/australian_tv_channels.csv"
+      - "scripts/build_tv_guide.py"
+      - "scripts/build_tv_guide_markdown.py"
       - ".github/workflows/docs-guide.yml"
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: docs-guide-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   build-word-guide:
@@ -22,11 +38,29 @@ jobs:
           python-version: "3.12"
       - name: Install Word exporter
         run: python -m pip install python-docx==1.2.0
-      - name: Generate Word guide
-        run: python scripts/build_tv_guide.py AUTV_TV_Guide.docx
-      - name: Upload review artifact
+      - name: Regenerate numbered Markdown directory
+        run: python scripts/build_tv_guide_markdown.py
+      - name: Build permanent Word directory
+        run: python scripts/build_tv_guide.py docs/AUTV_TV_Guide.docx
+      - name: Upload current Word directory
         uses: actions/upload-artifact@v4
         with:
           name: AUTV-TV-Guide-Word
-          path: AUTV_TV_Guide.docx
+          path: docs/AUTV_TV_Guide.docx
           if-no-files-found: error
+      - name: Publish current guides to main
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add TV_GUIDE.md docs/AUTV_TV_Guide.docx
+          if git diff --cached --quiet; then
+            echo "Both guide outputs are already current."
+            exit 0
+          fi
+          git commit -m "docs: publish regenerated current channel and Word guides"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
