@@ -1,5 +1,8 @@
 import copy
-from scripts.epg_crosswalk import load_crosswalk
+try:
+    from scripts.epg_crosswalk import load_crosswalk
+except ModuleNotFoundError:  # direct `python scripts/build_epg.py` execution
+    from epg_crosswalk import load_crosswalk
 from functools import cache
 from pathlib import Path
 import csv
