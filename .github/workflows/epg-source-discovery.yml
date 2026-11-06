@@ -5,6 +5,11 @@ on:
     paths:
       - scripts/research_epg_sources.py
       - tests/test_epg_source_research.py
+      - scripts/triage_epg_candidate_identity.py
+      - tests/test_epg_candidate_identity_safety.py
+      - scripts/epg_crosswalk.py
+      - epg_crosswalk_holds.csv
+      - tests/test_epg_crosswalk.py
       - .github/workflows/epg-source-discovery.yml
 permissions:
   contents: read
@@ -15,7 +20,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Test source evidence and conservative matching
-        run: python3 -m unittest discover -s tests -p test_epg_source_research.py -v
+        run: |
+          python3 -m unittest discover -s tests -p test_epg_source_research.py -v
+          python3 -m unittest discover -s tests -p test_epg_candidate_identity_safety.py -v
+          python3 -m unittest discover -s tests -p test_epg_crosswalk.py -v
       - name: Audit published guide and build missing-EPG queue
         run: |
           python3 scripts/audit_epg_gate1.py
@@ -43,6 +51,8 @@ jobs:
           fetch_epg epg_samsung_all.xml.gz "https://i.mjh.nz/SamsungTVPlus/all.xml.gz"
       - name: Inspect source IDs and actual current/upcoming schedules
         run: python3 scripts/research_epg_sources.py
+      - name: Check candidates against published stream identity clues
+        run: python3 scripts/triage_epg_candidate_identity.py
       - name: Preserve the reviewed candidate evidence (never a deployed EPG)
         uses: actions/upload-artifact@v4
         with:
@@ -53,3 +63,4 @@ jobs:
             audits/epg_gate1_recovery_queue.csv
             audits/epg_source_candidate_review.csv
             audits/epg_source_candidate_summary.json
+            audits/epg_candidate_identity_triage.csv

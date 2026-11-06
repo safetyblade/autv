@@ -18,6 +18,20 @@ class EpgCrosswalk:
 
 def load_crosswalk(path: Path, targets: set[str], sources: list[Path]) -> dict[str, EpgCrosswalk]:
     allowed_sources = {p.name for p in sources}
+    holds_path = path.parent / "epg_crosswalk_holds.csv"
+    holds = {}
+    if holds_path.exists():
+        with holds_path.open(newline="", encoding="utf-8-sig") as stream:
+            reader = csv.DictReader(stream)
+            if tuple(reader.fieldnames or ()) != ("target_tvg_id", "reason", "reference"):
+                raise ValueError("Malformed EPG hold registry header")
+            for row in reader:
+                key = (row.get("target_tvg_id") or "").strip()
+                reason = (row.get("reason") or "").strip()
+                reference = (row.get("reference") or "").strip()
+                if not key or not reason or not reference or key in holds:
+                    raise ValueError("Invalid or duplicate held EPG channel identity")
+                holds[key] = reason
     output: dict[str, EpgCrosswalk] = {}
     if not path.exists():
         raise ValueError(f"EPG crosswalk missing: {path}")
@@ -32,6 +46,8 @@ def load_crosswalk(path: Path, targets: set[str], sources: list[Path]) -> dict[s
             if not all(values.values()):
                 raise ValueError(f"Incomplete EPG mapping at line {line_number}")
             target = values["target_tvg_id"]
+            if target in holds:
+                raise ValueError(f"EPG mapping blocked by unresolved identity hold: {target}: {holds[target]}")
             if target not in targets:
                 raise ValueError(f"Unpublished/unrecognised EPG target: {target}")
             if values["source_file"] not in allowed_sources:
