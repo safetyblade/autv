@@ -42,6 +42,19 @@ class TestEpgCrosswalk(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"Duplicate"):
             self.check(record*2)
 
+    def test_explicit_identity_hold_blocks_approval(self):
+        with TemporaryDirectory() as directory:
+            folder=Path(directory)
+            (folder/"epg_channel_crosswalk.csv").write_text(
+                HEADER+"MUTV.uk@SD,src,epg_plex_au.xml.gz,Mara,Confirmed same service and territory\n",
+                encoding="utf-8")
+            (folder/"epg_crosswalk_holds.csv").write_text(
+                "target_tvg_id,reason,reference\n"
+                "MUTV.uk@SD,Conflicting stream identity pending physical confirmation,https://example.invalid/issue\n",
+                encoding="utf-8")
+            with self.assertRaisesRegex(ValueError,"identity hold"):
+                load_crosswalk(folder/"epg_channel_crosswalk.csv",{"MUTV.uk@SD"},SOURCES)
+
     def test_bad_header_rejected(self):
         with TemporaryDirectory() as directory:
             p=Path(directory)/"bad.csv"
