@@ -230,6 +230,20 @@ def main():
         xml_channels.append(xml)
         print(f"ADDED DYNAMIC: {name}")
 
+    # Source-only NBA #228 recovery: prefer an actual current Tubi catalogue
+    # entry over Xumo. Existing Xumo selection remains a fallback if Tubi
+    # drops its listing; apply_guide.py retains the first matching channel.
+    if "The NBA Channel" in wanted(SELECTED_TUBI):
+        nba_tubi = next((entry for entry in tubi_entries
+                         if entry[0].casefold() == "the nba channel"), None)
+        if nba_tubi:
+            m3u, xml = normalise(*nba_tubi)
+            extras.append(m3u)
+            xml_channels.append(xml)
+            print("PREFERRED TUBI: The NBA Channel (Xumo retained as fallback)")
+        else:
+            print("NBA TUBI NOT FOUND: retaining existing Xumo selection")
+
     # Custom entries are authoritative overrides. apply_guide.py keeps the first
     # matching logical channel name, so add custom before provider selections.
     missing_plex = add_selected("PLEX", plex_entries, SELECTED_PLEX, extras, xml_channels, direct_pluto)
