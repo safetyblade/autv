@@ -37,6 +37,12 @@ class GuideBrowseTest {
         assertEquals("Game Shows", GuideBrowse.categoryForPlaying("Game Shows", ink))
         assertEquals("Game Shows", GuideBrowse.categoryForPlaying("News", ink))
         assertEquals("All", GuideBrowse.categoryForPlaying("News", ink.copy(genre = "Unknown")))
+        // Direct ABC/10 public streams must be browsable without an account adapter.
+        val live = Channel(2, "ABC TV VIC", "Australian TV", "ABC iview", "", "", true,
+            "https://example.com/abc-vic.m3u8", "autv.abc-tv-vic", null)
+        assertEquals("Australian TV", GuideBrowse.categoryForPlaying("News", live))
+        assertEquals("Australian TV", GuideBrowse.categoryForPlaying("Australian TV", live))
+        assertEquals(listOf(live), GuideBrowse.filter(listOf(news, live), "Australian TV", "", epg, 150))
         assertEquals(12, GuideBrowse.categories.size)
         assertEquals("Kids & Animation", GuideBrowse.categories[10])
     }

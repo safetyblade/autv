@@ -9,6 +9,7 @@ them. Supply an approved export at docs/australian_tv_channels.csv with columns
 number,name,provider,guide,status to include those listings. No source URLs.
 """
 import csv
+import re
 from collections import Counter
 from datetime import datetime
 from zoneinfo import ZoneInfo
@@ -41,6 +42,17 @@ if AUS.exists():
         australian = list(csv.DictReader(file))
     australian = [r for r in australian if cell(r,"status").casefold() == "active"]
     australian.sort(key=lambda r: int(cell(r,"number")) if cell(r,"number").isdigit() else 99999)
+else:
+    # Use the same app-side source of truth as the Android guide and Markdown
+    # directory. Do not maintain a second handwritten six-channel CSV.
+    approved = (ROOT / "android/app/src/main/java/dev/prestwich/autv/provider/AustralianLiveChannels.kt").read_text(encoding="utf-8")
+    pattern = re.compile(r'LiveChannel\(\s*(\d+)\s*,\s*"([^"]+)"\s*,\s*"([^"]+)"\s*,\s*"([^"]+)"', re.S)
+    australian = [{"number":number,"name":name,"provider":provider,
+                   "guide":"Live","status":"Active"}
+                  for number,name,_identity,provider in pattern.findall(approved)]
+    if not australian:
+        raise ValueError("Approved Australian live channels were not found in app source")
+    australian.sort(key=lambda r: int(r["number"]))
 
 d = Document()
 section = d.sections[0]
@@ -69,7 +81,7 @@ d.add_heading("Australian TV", 1)
 d.add_paragraph(
     "Australian broadcasters use separate app integrations rather than the FAST/IPTV CSV. "
     "Provider login and playback depend on the installed build and provider authorisation. "
-    "ABC iview and Network 10 may require configuration; check Settings for current status."
+    "ABC TV VIC, ABC NEWS, ABC Kids, 10 VIC, 10 Drama and 10 Comedy play without signing in. 7plus, 9Now and SBS have separate account-linking where supported."
 )
 if australian:
     t=d.add_table(rows=1, cols=4);t.style="Light Shading Accent 1"
@@ -86,7 +98,7 @@ d.add_heading("Troubleshooting", 1)
 for item in [
     "No live stream: refresh once and retry. A catalogue listing does not prove the stream is currently available.",
     "No programme information: some channels intentionally have channel-only guide coverage.",
-    "Configuration required: review that broadcaster's status in Settings. Unsupported provisioning cannot be fixed by repeatedly signing in.",
+    "Provider sign-in: use Settings for accounts that require it; ABC and 10 direct live channels do not need sign-in.",
     "Outdated channels: in the updated AUTV app, open Settings and select Refresh channels and TV guide.",
 ]:
     d.add_paragraph(item, style="List Bullet")
@@ -113,7 +125,7 @@ for r in records:
     if len(t.rows) % 50 == 0:
         print(f"Added {len(t.rows)-1} channels")
 footer=section.footer.paragraphs[0]
-footer.text="AUTV | Generated from channel_guide.csv | Australian TV requires verification | Page "
+footer.text="AUTV | Generated from curated CSV and approved live-channel code | Page "
 field = OxmlElement("w:fldSimple")
 field.set(qn("w:instr"), "PAGE")
 footer._p.append(field)

@@ -1,19 +1,16 @@
-# Network 10 authorised distribution setup
+# Network 10 — optional registered integration
 
-The standard build does not contain Ten's registered client configuration. It must show **Configuration required**. Existing merged #84/#90/#94/#117/#119 provide config, device-code/renewal, regional catalogue, descriptor and Media3 IMA wiring; they do not establish broadcaster entitlement.
+**Current viewing path:** AUTV offers **10 VIC (#10), 10 Drama (#11) and 10 Comedy (#12)** as tested direct HLS channels under Australian TV, **without signing into Network 10**. They are external maintained sources; physical playback approval is not a broadcaster distribution licence.
 
-An approved operator implements `TenClientRegistration` with Ten-issued `allowedOrigins`, `configParameters`, `deviceFields`, `playbackParameters`, negotiated `liveFormat` and `authorise(method, exactUrl, jsonBody)`. GET request authorisation (`X-N10-SIG` in the reference) requires AUTV-approved signing access; never copy an embedded private key or claim another registered application's identity. The public POST timestamp header is already implemented and does not grant GET access.
+The native Network 10 registered-client adapter remains in code, but there is **no working 10 account activation link in the normal Settings flow**. The earlier test request to `https://10.com.au/api/v1/config` returned HTTP 404, and that obsolete endpoint must not be represented as a valid sign-in option. Do not conflate a no-login FAST/DAI manifest with a logged-in provider session.
 
-Set `authorisedChannelKeys` to the approved live catalogue `row.key` values, then supply `AustralianProviderConfiguration(ten = registration, tenProofChannelKey = discoveredMainKey, tenDaiNetworkCode = issuedNetworkCode)`. The original main-key input is retained for source compatibility; approved companion keys now resolve too. Unapproved or no-longer-discovered identities never reach playback. The currently supported catalogue region is VIC; provider IP/location restrictions remain in force.
+## Registered-client integration (future)
 
-Override `AuTvApplication.australianProviders` in approved distribution sources. Build with `-PautvProviderSources=/path/to/approved/sources -PautvApplicationClass=your.package.App -PautvMediaLab=false :app:assembleFullAppDebug`. Keep signing credentials behind the approved signing operation; do not commit secrets.
+An approved `TenRegistrationSource` can supply `TenProviderConfiguration(registration,proofChannelKey,daiNetworkCode)`. Example: `-PautvTenProviderSources=/approved/ten-source -PautvTenRegistrationSource=approved.package.TenSource`.
 
-Device-code approval and token refresh persist in the existing Ten encrypted namespace and stable UUID. Fresh descriptor URLs retain original query/session bytes. Provider-returned live assetKey and X-DAI-AUTH go to the existing Media3 IMA path with the negotiated format and optional issued network code; IMA owns the ad/session lifecycle. No bare manifest fallback, public sample identity or advertisement stripping is used. Descriptor 401 expires only Ten's account; missing DAI entitlement is a descriptor failure, not proof that the account token expired.
+- Obtain current broadcaster-authorised API origins, device-code and session parameters, request-signing service and explicit grant list for VIC channels.
+- Use existing descriptor resolution and Media3 IMA ad insertion where applicable. Preserve signed query/session material, advertising and publisher restrictions; do not manufacture authoriser headers.
+- Treat free-to-air linear channels and Australia-specific Pluto-powered FAST channels as **distinct source/rights products**. A consumer 10 login does not automatically authorise AUTV to extract all 10 app's private FAST playback endpoints.
+- Use [source discovery](../SOURCE_DISCOVERY.md) and issue #172 for future free-channel research; a missing international Pluto ID never proves a programme is unavailable on 10 Australia.
 
-Outstanding: provider-issued registration/signing operation, live-channel grants and real device linking/playback acceptance. This environment's network policy excludes Ten API hosts; that is not a measured broadcaster denial. Automated fixtures verify the implementation, not real video/audio or commercial transitions.
-
-## Independent startup source
-
-The default `AuTvApplication` loads a public no-argument implementation of `TenRegistrationSource` when `-PautvTenRegistrationSource=your.package.TenSource` is set. Its `configuration(context)` returns `TenProviderConfiguration(registration, discoveredProofChannelKey, issuedDaiNetworkCode)`. Add approved source with `-PautvTenProviderSources=/approved/ten-source`. This works independently of the ABC source, without an application subclass; existing shared source/application overrides remain supported.
-
-Sources compose approved runtime clients, not embedded signing keys. BuildConfig contains only a class name. Missing or failed sources cannot expose Connect or suppress a valid sibling provider. Only discovered keys in the explicit grant set are published in the guide; catalogue refresh can remove a row without deleting its stored favourite identity. No first-party registration credentials have been supplied in this workspace.
+Retain the existing registered-client transport for a future authorised implementation; do not add a fake Connect button.

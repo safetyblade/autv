@@ -11,6 +11,7 @@ on:
       - "scripts/build_tv_guide.py"
       - "scripts/build_tv_booklet.py"
       - "scripts/build_tv_guide_markdown.py"
+      - "android/app/src/main/java/dev/prestwich/autv/provider/AustralianLiveChannels.kt"
       - ".github/workflows/docs-guide.yml"
   push:
     branches: [main]
@@ -22,6 +23,7 @@ on:
       - "scripts/build_tv_guide.py"
       - "scripts/build_tv_booklet.py"
       - "scripts/build_tv_guide_markdown.py"
+      - "android/app/src/main/java/dev/prestwich/autv/provider/AustralianLiveChannels.kt"
       - ".github/workflows/docs-guide.yml"
   workflow_dispatch:
 

@@ -24,22 +24,24 @@ class ProviderSettingsUiTest {
         ui.onNodeWithTag("provider-9now").performScrollTo().performClick()
         ui.onNodeWithTag("9now-connection-state").assertExists()
     }
-    @Test fun abcAndTenFailClosedWithoutAuthorisedClientConfiguration() {
+    @Test fun abcAndTenShowAvailableLiveTvWithoutRequiringSignIn() {
         ui.onNodeWithTag("settings-button").performClick()
         ui.onNodeWithTag("provider-abc").performScrollTo().performClick()
-        // The debug build now attempts a genuine ABC device-code challenge.
-        // A code is not an approved or playable account session.
-        ui.onNodeWithTag("abc-connection-state").assertExists()
-        ui.onNodeWithTag("abc-connect").assertExists()
+        ui.onNodeWithTag("abc-connection-state").assertTextEquals("Live TV available")
+        ui.onNodeWithTag("abc-live-channel-count").assertTextContains("3 live channels")
         ui.onNodeWithTag("abc-unavailable").assertDoesNotExist()
-        ui.onNodeWithTag("abc-native-probe").assertExists()
+        ui.onNodeWithTag("abc-connect").assertDoesNotExist()
+        ui.onNodeWithTag("abc-optional-account-options").performScrollTo().performClick()
+        // Optional device-code support remains available for future iview features.
+        ui.onNodeWithTag("abc-connect").assertExists()
         ui.onNodeWithTag("providers-back").performClick()
         ui.onNodeWithTag("provider-ten").performScrollTo().performClick()
-        ui.onNodeWithTag("ten-unavailable").assertIsDisplayed()
+        ui.onNodeWithTag("ten-connection-state").assertTextEquals("Live TV available")
+        ui.onNodeWithTag("ten-live-channel-count").assertTextContains("3 live channels")
+        ui.onNodeWithTag("ten-unavailable").assertDoesNotExist()
         ui.onNodeWithTag("ten-connect").assertDoesNotExist()
-        ui.onNodeWithTag("ten-native-probe").assertExists()
-        ui.onNodeWithTag("ten-vic-native-trial").assertExists()
-        ui.onNodeWithTag("ten-real-activation").assertExists()
+        ui.onNodeWithTag("ten-real-activation").assertDoesNotExist()
+        ui.onNodeWithTag("ten-open-guide").assertExists()
     }
 
     @Test fun settingsSignOutRemovesPrivateChannelsWithoutRecreatingPlayer() {

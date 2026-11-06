@@ -31,6 +31,9 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     private val nineNow = providerAdapter ?: createNineNowProvider(application)
     private val configuration=(application as? AuTvApplication)?.australianProviders ?: AustralianProviderConfiguration()
     private val configurationFailures = configuration.configurationFailures.toMutableSet()
+    // Offline integration fixtures and future broadcaster-issued registrations retain
+    // their separate native provider QA path; default builds use six public live channels.
+    private val nativeProviderOverrides = providerOverrides.keys.intersect(setOf("abc","ten"))
     private val configuredAdapters = (configuredAustralianAdapters(application,configuration) { configurationFailures.add(it) } +
         (sbsAdapter?.let { mapOf("sbs" to it) } ?: emptyMap()) + providerOverrides).also {
         require(it.keys.all { key -> key in setOf("sbs","seven","ten","abc") })
@@ -78,7 +81,6 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         check(providerNumbers.edit().putInt(key, next).commit())
         return next
     }
-    private companion object { const val TEN_VIC_TRIAL_NUMBER = -98421 }
     private var fastGuide: Guide? = null
     private var lastWorkingFast: Channel? = null
     private val providerMutex = Mutex()
@@ -114,9 +116,12 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     private var startupFailed = false
     private var startupSucceeded = false
 
+    private fun isDebugTrial(channel: Channel?): Boolean =
+        channel?.tvgId?.startsWith("autv-debug-") == true
+
     private fun saveWatched() {
         val channel = selected ?: return
-        if (channel.number == TEN_VIC_TRIAL_NUMBER) return // Experimental preview is never watched history.
+        if (isDebugTrial(channel)) return // Temporary streams must not enter startup history.
         val identity = FavouriteIdentity.key(channel) ?: return
         preferences.edit().putString("last-watched-id", identity).putInt("channel", channel.number).apply()
     }
@@ -135,7 +140,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
             delay(200) // Account discovery starts in init after the cached guide is published.
             var discoveryWaits = 0
             while ((providerBusy || providerAccounts.values.any { it.busy }) && discoveryWaits++ < 40) delay(200)
-            val rows = guide?.channels.orEmpty()
+            val rows = guide?.channels.orEmpty().filterNot(::isDebugTrial)
             val favourites = getApplication<Application>().getSharedPreferences("favourites-v1", 0)
                 .getStringSet("channels", emptySet()).orEmpty()
             val recent = preferences.getString("last-watched-id", null)
@@ -184,7 +189,7 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         }
         override fun onPlaybackStateChanged(state: Int) {
             buffering = state == Player.STATE_BUFFERING
-            if (state == Player.STATE_READY && selected?.number != TEN_VIC_TRIAL_NUMBER && selected?.providerChannel == null &&
+            if (state == Player.STATE_READY && !isDebugTrial(selected) && selected?.providerChannel == null &&
                 player.currentMediaItem?.mediaId == selected?.number?.toString()) lastWorkingFast = selected
             if (state == Player.STATE_READY) player.currentMediaItem?.mediaId?.toIntOrNull()?.let { failed.remove(it); guideTuneRecovery.ready(it) }
         }
@@ -293,12 +298,35 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     private fun applyGuide(fastLoaded: Guide) {
         fastGuide = fastLoaded
         // Native-only rows are added after public-cache validation, never persisted in it.
-        val local = (providerChannels + providerAccounts.values.flatMap { it.channels }).map { channel ->
-            Channel(providerNumber(channel), channel.name, "Australian TV", providerName(channel.id.provider), "", "", true, null,
-                channel.id.favouriteKey, channel.logoUrl, channel)
-        }.filter { candidate -> fastLoaded.channels.none { it.number == candidate.number } }
-        val loaded = Guide(fastLoaded.activeCount + local.size, fastLoaded.availableCount + local.size,
-            fastLoaded.channels + local)
+        // Preserve optional registered adapters for future media authorisation, but
+        // do not publish duplicate ABC/10 rows whose signed playback remains unverified.
+        val local = (providerChannels + providerAccounts.values.flatMap { it.channels })
+            .filter { channel ->
+                when(channel.id.provider) {
+                    "abc" -> configuration.abc != null || "abc" in nativeProviderOverrides
+                    "ten" -> configuration.ten != null || "ten" in nativeProviderOverrides
+                    else -> true
+                }
+            }
+            .map { channel ->
+                Channel(providerNumber(channel), channel.name, "Australian TV",
+                    providerName(channel.id.provider), "", "", true, null,
+                    channel.id.favouriteKey, channel.logoUrl, channel)
+            }.filter { candidate -> fastLoaded.channels.none { it.number == candidate.number } }
+
+        // Six owner-approved live streams are normal Australian TV channels in both
+        // debug and release builds, independent of broadcaster account sessions.
+        // They do not imply rights to redistribute a third-party maintained source.
+        val directLive = AustralianLiveChannels.approved
+            .filter { item -> fastLoaded.channels.none { it.number == item.number } }
+            .map { item ->
+                Channel(item.number, item.name, "Australian TV", item.provider,
+                    "Live television · no sign-in required", "", true, item.url,
+                    item.tvgId, null)
+            }
+        val added = local + directLive
+        val loaded = Guide(fastLoaded.activeCount + added.size, fastLoaded.availableCount + added.size,
+            fastLoaded.channels + added)
         // Migrate numeric history against the first available catalogue (including the old cache)
         // before a fresh guide can renumber News rows. This changes identity format, not history.
         if (!preferences.contains("last-watched-id") && preferences.contains("channel")) {
@@ -422,34 +450,6 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         holder.play(channel.streamUrl, channel.number)
         if (!foreground) player.pause()
     }
-    /** Explicit owner-triggered debug trial: live HLS within AUTV, not a linked account. */
-    internal fun playTenVicNativeTrial() {
-        if (!BuildConfig.DEBUG) return
-        if (castSender.connected) {
-            notice = "Disconnect Chromecast before testing live playback on this TV."
-            return
-        }
-        cancelStartup()
-        cancelProviderTune()
-        guideTuneRecovery.clear()
-        val trial = Channel(TEN_VIC_TRIAL_NUMBER, "10 VIC — Native playback trial",
-            "Australian TV", "10 (experimental)", "", "", true,
-            dev.prestwich.autv.provider.NativeBroadcasterTrial.TEN_VIC_EXPERIMENTAL_HLS,
-            "autv-debug-ten-vic-test", null)
-        selected = trial
-        guideOpen = false
-        notice = "Experimental 10 VIC stream. This does not link your 10 account or verify production rights."
-        failed.remove(trial.number)
-        try {
-            playLocal(trial, retry = true)
-        } catch (_: Exception) {
-            failed[trial.number] = "Playback failed"
-            buffering = false
-            guideOpen = true
-            notice = "10 VIC trial could not start. Your connected broadcasters are unaffected."
-        }
-    }
-
     fun next() { GuideNavigator(guide?.channels.orEmpty()).next(selected)?.let { request(TuneTarget.Number(it.number)) } }
     fun previous() { GuideNavigator(guide?.channels.orEmpty()).previous(selected)?.let { request(TuneTarget.Number(it.number)) } }
     fun retryCasting() { selected?.takeIf { it.providerChannel == null }?.let { notice=null; castSender.load(it) } }

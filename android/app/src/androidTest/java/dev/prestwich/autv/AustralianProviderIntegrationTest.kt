@@ -32,6 +32,10 @@ class AustralianProviderIntegrationTest {
         ready();val model=ui.activity.playback;val player=model.player
         ui.onNodeWithTag("settings-button").performClick()
         ui.onNodeWithTag("provider-ten").performScrollTo().performClick()
+        // Direct 10 live channels remain usable without an account. Registered
+        // provider integration tests reach their optional connection controls.
+        ui.onNodeWithTag("ten-live-channel-count").assertTextContains("3 live channels")
+        ui.onNodeWithTag("ten-optional-account-options").performScrollTo().performClick()
         ui.onNodeWithTag("ten-connect").performScrollTo().performClick()
         ui.waitUntil(10000) { account("ten").activation!=null }
         ui.onNodeWithTag("activation-address").performScrollTo().assertTextEquals("https://10.com.au/activate")

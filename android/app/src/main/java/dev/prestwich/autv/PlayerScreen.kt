@@ -79,7 +79,8 @@ internal fun AuTvScreen(
     onPlayerViewReleased: (PlayerView) -> Unit = {},
 ) {
     val categories = remember(guide) { listOf("All", "Favourites") + GuideBrowse.categories.drop(1) +
-        if (guide?.channels?.any { it.providerChannel != null } == true) listOf("Australian TV") else emptyList() }
+        if (guide?.channels?.any { it.providerChannel != null || it.genre == "Australian TV" } == true)
+            listOf("Australian TV") else emptyList() }
     val isTv = LocalConfiguration.current.uiMode and Configuration.UI_MODE_TYPE_MASK == Configuration.UI_MODE_TYPE_TELEVISION
     val remoteController = !isTv && castPlayback.ownsPlayback
     val landscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE

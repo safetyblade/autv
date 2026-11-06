@@ -1,48 +1,28 @@
-# Australian provider application integration
+# AUTV — current Australian TV integration contract
 
-The production `PlaybackModel` composes the existing Nine adapter with SBS and any approved Ten/ABC registration. `ProviderAccountController` owns each additional account's challenge, polling, catalogue and sign-out. Resolving, catalogue refresh and sign-out serialize per provider; cancelling one tune cannot replace another provider's playback. The unchanged player receives the original `ProviderPlaybackRequest`, including its IMA/DRM options. Private channel IDs, stored channel numbers and Favourites remain separate from public FAST data. Native programme schedules now reach `EpgRepository` without borrowing similarly named public channels.
+Updated 6 November 2026. **Do not use historical integration notes as hard blocks on future source discovery.**
 
-## Registered builds
+## Live channels available without an account
 
-`AustralianProviderConfiguration` is exposed by `AuTvApplication.australianProviders`. An approved build can subclass `AuTvApplication` and override that property. Supply the subclass source directory using `-PautvProviderSources=/private/approved-source` and its class name using `-PautvApplicationClass=your.package.RegisteredApplication`. Keep registrations and authorisation material out of the public repository and build logs. This is a composition hook for the existing concrete HTTP transports, not a substitute transport or a user-password setting.
+`android/app/src/main/java/dev/prestwich/autv/provider/AustralianLiveChannels.kt` supplies exactly six owner-tested live channel IDs and externally maintained HLS links:
 
-Ten requires its AUTV-approved `TenClientRegistration`: API origins, configuration/device/playback fields, live format and request-authorisation implementation. `tenProofChannelKey` must be a returned Victorian main-channel key; any DAI network code must be provider-issued. The transport obtains device endpoints and catalogue from provider configuration, refreshes the encrypted account session and resolves a fresh descriptor with its returned `X-DAI-AUTH`. No borrowed app signing key, client registration or Google test asset is supplied. Without these inputs the default app explains the missing registration and offers no misleading Connect action.
+- ABC TV VIC #2, ABC NEWS #20, ABC Kids #22
+- 10 VIC #10, 10 Drama #11, 10 Comedy #12
 
-ABC requires an AUTV-approved `AbcClientRegistration`, a returned Victorian main house number and the approved media-authorisation implementation. Profile linking additionally requires ABC's `productId` and profile API key. Explicitly approved anonymous live mode uses `accountLinkingEnabled=false` plus `abcAnonymousLiveApproved=true`; no profile request is sent and the UI does not claim an account is connected. Anonymous metadata alone does not grant stream authorisation. The default app has no such grant and exposes no fake account connection.
+`PlaybackModel.applyGuide` adds these as normal `Australian TV` entries with stable favourite identities. They appear in both trial and signed production builds, not as numbered negative debug fixtures. The still-unverified registered ABC/10 adapters must not publish duplicate unplayable listings. Streams are independent of logged-in account state. Source use and distribution permissions remain separate from picture/audio test approval.
 
-SBS reuses the existing successful adapter, original stream resolution and encrypted store aliases. Nine's adapter, account aliases and FAST refresh are unchanged. Seven now reuses its existing account/catalogue/Channel 7 resolver and encrypted aliases. The last owner result remains `7-DESCRIPTOR (HTTP 400)` with a non-JSON response; the full app retains this safe diagnosis and adds response-format classification. No successful descriptor or real Channel 7 playback is claimed. No hard-coded postcode, tracking identity or false SDK verification is copied from upstream.
+## Linked broadcaster accounts
 
-## Full AUTV build and delivery
+9Now, SBS and 7plus retain their existing device-code sign-in, secure session refresh and playback where supported. ABC's code linking is preserved as an **optional future account feature**; Settings explains that it is not required for the three approved ABC live channels and does not yet unlock native media authorisation. Network 10's registered login route is not configured or advertised as working.
 
-The normal owner build is the real television application, **AUTV**, package `dev.prestwich.autv`, launcher `MainActivity`:
+`AuTvApplication.australianProviders` and `AustralianProviderConfiguration` are retained for optional approved ABC/10 adapters. Do not move provider credentials, private signing keys or user sessions into BuildConfig, source manifests, GitHub issues or app resources.
 
-```
-gradle -p android -PautvMediaLab=false :app:assembleFullAppDebug
-python3 scripts/verify-full-app-apk.py android/app/build/outputs/apk/full-app/AUTV-Full-App-Debug.apk
-```
+## Transport, guide and regression rules
 
-The explicit full-app task rejects Lab configuration. The packaged manifest check verifies the actual application name, ID and phone/TV launcher; it also records the public signing certificate fingerprint. The **AUTV Full Application Debug** workflow publishes artifact **AUTV-Full-App-Debug**, containing **AUTV-Full-App-Debug.apk**. Normal debug builds no longer advertise the QA activity as a launcher. Public Media Lab sample workflows run only when explicitly dispatched; their source and capabilities are retained.
+- A resolved HLS/DASH manifest is **not** a playback result. Verify media segments, actual TV video/audio, Australian region, permitted distribution and ads, especially Google DAI/IMA continuity.
+- A guide name match is an inventory match only; EPG and supplier identity can differ.
+- Keep TV guide/favourites numbers stable and avoid breaking 7plus/9Now/SBS, Chromecast, local playback and startup selection when adding channels.
+- The authoritative channel list is the app-side `AustralianLiveChannels.kt` for six free live services and the curated `channel_guide.csv` for FAST/IPTV. The other registered accounts have separate live catalogues.
+- Current build path and signing rules: [Android updates](../android-updates.md).
 
-This is a normal Android debug-signed APK, independent of permanent release-signing setup. It can update an existing installation only when its signing certificate and version are compatible. Do not uninstall an existing AUTV merely to overcome a signature mismatch: that can remove encrypted broadcaster sessions. Use the original signing identity or a separate test device/emulator. No private permanent signing key is generated or uploaded by this change.
-
-ABC and Ten settings accurately show unavailable status until approved configuration is supplied. Technical registration requirements above belong outside the ordinary viewing workflow. Their existing transports, session renewal, catalogue, native resolver and IMA handoff are wired to the real app; this does not establish real broadcaster playback. Seven uses the restored native guide/resolver path and preserves precise failed-stage/HTTP diagnostics without stopping other channels.
-
-Australian TV display and CH navigation order groups ABC, SBS, Seven, Nine and Ten, with known companion names before thematic channels. It changes no persisted channel numbers or provider IDs. Favourites membership/storage and their existing display ordering are untouched; native and similarly named FAST identities remain distinct.
-
-## Native broadcaster sprint — concrete access inputs
-
-Seven's descriptor GET now declares actual AVC/CMAF/cenc/Widevine capabilities using the four `cp.*` fields in packaged SlyGuy 7plus 0.5.8 `api.play`. The source selector consumes original HLS or DASH and provider-issued `key_systems.com.widevine.alpha.license_url` plus its media authorisation token. Tokens are scoped to the selected media/licence origins. Unknown DRM/standalone ad contracts remain failures; no ad-free substitute or false `sdkverification` claim is added. The previous HTTP-400/non-JSON cause is **not established**: four omitted capability fields are a confirmed request difference, not a captured validation error. Account/reference, current IP market and device identity remain unchanged. Live descriptor/video/audio acceptance still needs the authenticated Australian device; this executor has no owner session and its enforced policy excludes Seven API hosts.
-
-ABC's public/source-derived parts are catalogue discovery, returned house numbers, Victorian selection and the `/auth/hls/sign` request construction. `AbcHlsAuthoriser` now implements the actual native signing-request and `hdnea` response transport. Supply it as `AbcClientRegistration(..., mediaAuthoriser=AbcHlsAuthoriser(signingRegistration))`; the existing factory/controller/guide/player then use it. The **bounded external input** is `AbcHlsSigningRegistration`: ABC-approved AUTV `deviceType` and a signer for the exact `ts/hn/d` path (the reference uses HMAC-SHA256). No upstream embedded key or `android-tablet` identity is supplied. Profile linking separately needs ABC's productId/profile API key; approved anonymous mode does not need those profile credentials. Neither a house number nor `VIC` is a private credential. Failed signing/authorisation never returns unsigned media.
-
-Ten POST's `X-Network-Ten-Auth` is Base64 of a UTC `yyyyMMddHHmmss` timestamp, now implemented in `TenPublicRequestContext`; it is **not** an external secret. Provider-approved header overrides take precedence. GET `X-N10-SIG` is a separate HMAC-SHA256 signature of `timestamp:exactUrl` and still needs AUTV-authorised signing access. The actual Android model/version, API origins, VIC selection, returned main channel key and codec preference are ordinary configuration/metadata, not credentials. Supported client/platform values must belong to AUTV's approved client context, not a copied LG/NVIDIA registration. `dai.assetKey` and `X-DAI-AUTH` come from the fresh authorised descriptor, not from an out-of-band invented Google asset. The existing concrete transport and Media3 IMA handoff remain connected.
-
-References are implementation code, not grants: SlyGuy `slyguy.7plus` 0.5.8 (package blob `6f58375d1a9f7845add32b208f64f3085b8a7c98`), its shared `process_brightcove`; existing ABC iView+ `get_auth` / `_resolve_stream`; SlyGuy 10play `_request`, `generate_x_n10_sig`, `generate_network_ten_auth`. Private upstream key values are not copied. No Media Lab samples are rerun for this sprint.
-
-## Real-service continuation
-
-Real public-bootstrap requests were attempted for Seven market detection, ABC live-catalogue home and Ten configuration. All three failed at the managed workspace proxy's HTTPS CONNECT with **403 Forbidden**, before TLS or HTTP to the broadcaster. See `docs/provider-request-results/2026-10-31.json`. No provider HTTP status/schema was obtained. This proves an environment restriction, **not** a broadcaster refusal or proof that anonymous access is unsupported. The network-host request is pending; Seven's last real owner descriptor failure (400/non-JSON) has not been reproduced here.
-
-Production corrections: Ten's descriptor/config query composition now preserves provider-issued raw query bytes, adds only missing registration fields, rejects conflicting/duplicate fields, and signs the exact final URL (matching the reference's `requests.Request(...).prepare()` behaviour). Existing session/ad query fields are not discarded or re-encoded. ABC and Ten now retain their actual activation/config/catalogue/authorisation/descriptor failure stage through the existing exception/UI path. A bare 403 is no longer labelled a regional refusal; Seven requires a recognised provider `video_not_in_market` or `location_verification_required` response for that conclusion. Settings offer **Copy error details** with only provider name, connection state, channel count and already sanitised stage/status/error labels; no tokens, codes, account IDs, bodies or signed URLs are exported.
-
-This continuation is not real-broadcaster playback acceptance. ABC anonymous availability and Ten unsigned/bootstrap behaviour remain untested while the origin is unreachable. The existing configured routes still require the authorised client/signer inputs described above; those code requirements are distinct from a measured provider rejection. No credentials or geographic workaround is fabricated to force a test through.
+Known open work: issue #164 permanent signing; issue #157 registered provider authorisation; issue #172 10 AU FAST catalogue/source and free BINGE alternatives. Earlier issue #140 is historical engineering context, not a negative decision about new sources.

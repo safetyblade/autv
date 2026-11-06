@@ -52,4 +52,17 @@ class StartupChannelsTest {
         assertTrue(StartupChannels.candidates(listOf(lead.copy(streamUrl=null)),StartupMode.LAST_WATCHED,
             null,null,null,emptySet()).isEmpty())
     }
+    @Test fun directAustralianTvIsAvailableByChoiceButDoesNotHijackDefaultStartup() {
+        val abc = row(2, "autv.abc-tv-vic", "Australian TV")
+        val ten = row(10, "autv.10-vic-live", "Australian TV")
+        val fast = row(100, "fixture-fast", "News")
+        val rows = listOf(abc, ten, fast)
+        assertEquals(fast, StartupChannels.candidates(rows, StartupMode.LAST_WATCHED,
+            null, null, null, emptySet()).first())
+        assertEquals(abc, StartupChannels.candidates(rows, StartupMode.AUSTRALIAN,
+            null, null, null, emptySet()).first())
+        assertEquals(ten, StartupChannels.candidates(rows, StartupMode.FAVOURITE,
+            null, null, null, setOf(key(ten))).first())
+    }
+
 }

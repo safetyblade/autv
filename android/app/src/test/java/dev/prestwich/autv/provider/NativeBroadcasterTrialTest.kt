@@ -38,4 +38,5 @@ class NativeBroadcasterTrialTest {
         assertFalse(failed.summary.contains("secret"))
         assertTrue(failed.channels.isEmpty())
     }
+
 }

@@ -6,7 +6,7 @@ The authoritative data lives in `channel_guide.csv`. The generated playlist is r
 
 ## Current guide snapshot
 
-As of 6 November 2026, the current authoritative FAST/IPTV guide contains **639 active FAST/IPTV channels**.
+As of 6 November 2026, `channel_guide.csv` contains **639 active FAST/IPTV channels**; regenerate this snapshot after editorial changes.
 
 | Genre | Active channels |
 | --- | ---: |

@@ -105,6 +105,16 @@ if AU_CSV.exists():
     with AU_CSV.open(encoding="utf-8-sig", newline="") as handle:
         native = [r for r in csv.DictReader(handle) if r.get("status", "").strip().lower() == "active"]
     native.sort(key=lambda row: int(row["number"]) if row.get("number","").isdigit() else 999999)
+else:
+    # The Android app owns the approved no-login channel list.
+    # Do not invent a second static list that becomes stale after discovery.
+    source = (ROOT / "android/app/src/main/java/dev/prestwich/autv/provider/AustralianLiveChannels.kt").read_text(encoding="utf-8")
+    pattern = re.compile(r'LiveChannel\(\s*(\d+)\s*,\s*"([^"]+)"\s*,\s*"([^"]+)"\s*,\s*"([^"]+)"', re.S)
+    native = [{"number":number,"name":name,"provider":provider,"status":"Active","guide":"Live"}
+              for number,name,_identity,provider in pattern.findall(source)]
+    if not native:
+        raise ValueError("Approved Australian live channels absent from Android source")
+    native.sort(key=lambda row: int(row["number"]))
 
 date = datetime.now(ZoneInfo("Australia/Melbourne")).strftime("%d %B %Y")
 doc = Document()
@@ -227,7 +237,7 @@ for name in genre_order:
     shade(cells[1],PALE)
     write_line(cells[0],name,dark=False)
     write_line(cells[1],f"{counts[name]} channels",dark=False)
-doc.add_paragraph("Australian broadcasters are discovered in the app, separately from this FAST/IPTV list. Their dynamic channel numbers are omitted until a verified export is supplied.")
+doc.add_paragraph("The six tested ABC and Network 10 channels below are app-managed and not included in the curated FAST/IPTV total. 7plus, 9Now and SBS have independent account links where supported.")
 doc.add_page_break()
 
 for genre in genre_order:
@@ -241,12 +251,12 @@ for genre in genre_order:
         doc.add_page_break()
 
 if native:
-    heading("Australian TV",f"{len(native)} VERIFIED NATIVE CHANNEL ENTRIES")
+    heading("Australian TV",f"{len(native)} APPROVED FREE LIVE CHANNELS")
     for row in native:
         doc.add_paragraph(f'{row.get("number","")}   {row.get("name","")}   /   {row.get("provider","")}')
 else:
     heading("Australian TV", "NATIVE BROADCASTERS ARE MANAGED BY THE APPLICATION")
-    doc.add_paragraph("ABC, 7plus, 9Now, Network 10 and SBS channels depend on linked sessions and the installed AUTV build. No unverified native channel numbers have been invented.")
+    doc.add_paragraph("Use the Android app's approved channel list and provider Settings. A source listing does not verify rights or playback.")
 
 doc.add_paragraph("Source: channel_guide.csv and playlist.m3u in safetyblade/autv. This directory is a snapshot. No channel listing certifies Australian rights, device playback, ad continuity or programme schedule.")
 OUT.parent.mkdir(parents=True,exist_ok=True)
