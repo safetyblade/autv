@@ -1,0 +1,28 @@
+name: AUTV Support — NBA Channel #228 source health
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - scripts/probe_nba_228.py
+      - tests/test_nba_228_probe.py
+      - .github/workflows/nba-228-source-health.yml
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - name: Test NBA HLS health classifier
+        run: python3 -m unittest discover -s tests -p test_nba_228_probe.py -v
+      - name: Probe current published NBA stream and upstream source
+        run: python3 scripts/probe_nba_228.py
+      - name: Retain read-only diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: autv-nba-channel-228-source-health
+          retention-days: 14
+          if-no-files-found: warn
+          path: audits/nba_channel_228_diagnostic.json
