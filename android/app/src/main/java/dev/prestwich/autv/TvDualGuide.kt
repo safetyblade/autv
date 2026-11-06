@@ -46,7 +46,7 @@ internal fun TvDualGuide(
     favourites: Set<String> = emptySet(), onFavourite: (Channel) -> Unit = {},
 ) {
     val categories = remember(guide) { listOf("All", "Favourites") + GuideBrowse.categories.drop(1) +
-        if (guide?.channels?.any { it.providerChannel != null } == true) listOf("Australian TV") else emptyList() }
+        if (guide?.channels?.any { it.providerChannel != null || it.genre == "Australian TV" } == true) listOf("Australian TV") else emptyList() }
     var channelCell by remember { mutableStateOf(false) }
     var full by rememberSaveable { mutableStateOf(false) }
     var quickCategory by rememberSaveable { mutableStateOf("All") }
@@ -220,7 +220,7 @@ internal fun TvDualGuide(
                 }
                 LazyRow(state = categoryList, horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(vertical = 6.dp).testTag("guide-categories")) {
                     items(categories) { value ->
-                        GuideAction(value, zone == GuideZone.CATEGORIES && value == category, "category-$value", value == category) { chooseCategory(value) }
+                        GuideAction(if (value == "Australian TV") "Free-To-Air TV" else value, zone == GuideZone.CATEGORIES && value == category, "category-$value", value == category) { chooseCategory(value) }
                     }
                 }
                 if (full) {
