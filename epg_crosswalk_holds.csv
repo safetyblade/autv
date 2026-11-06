@@ -1,0 +1,2 @@
+target_tvg_id,reason,reference
+"autv.bloodline-detectives-wurl","Published stream identity encodes Samsung-gb_MedicalDetectives_HLS, which conflicts with the Bloodline Detectives channel title","https://github.com/safetyblade/autv/issues/186"
