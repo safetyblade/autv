@@ -8,13 +8,15 @@ GUIDE = Path("channel_guide.csv")
 PLAYLIST = Path("playlist.m3u")
 RECOVERY = Path("audits/36_channel_outcome_2026-11-03.csv")
 OUTPUT = Path("audits/channel_recovery_current.csv")
-CONFIRMED = {"227": "Rugby Pass TV", "239": "Rally TV", "612": "Whose Line Is It Anyway?"}
+CONFIRMED = {"Rugby Pass TV", "Rally TV", "Whose Line Is It Anyway?"}
 RE_CHNO = re.compile(r'(?:^|\s)tvg-chno="(\d+)"')
 
 def main():
     with GUIDE.open(encoding="utf-8-sig",newline="") as f:
         approved = {r["Channel number"].strip(): r for r in csv.DictReader(f)
                     if r["Status"].strip().casefold() == "active"}
+    # Historical recovery rows retain old numbers; the current guide controls numbering.
+    approved_by_name = {r["Channel name"].strip().casefold(): number for number, r in approved.items()}
     published = {}
     lines = PLAYLIST.read_text(encoding="utf-8-sig").splitlines()
     for i, line in enumerate(lines):
@@ -28,9 +30,10 @@ def main():
                   "owner_playback","next_action","removal"]
         writer = csv.DictWriter(f,fieldnames=fields); writer.writeheader()
         for row in original:
-            number = row["channel_number"]
-            found = number in published
-            confirmed = number in CONFIRMED
+            name = row["channel_name"].strip()
+            number = approved_by_name.get(name.casefold(), row["channel_number"])
+            found = number in published and published[number].casefold() == name.casefold()
+            confirmed = name in CONFIRMED
             writer.writerow({
                 "channel_number":number, "channel_name":row["channel_name"],
                 "assigned_source":row["assigned_source"],
@@ -40,12 +43,15 @@ def main():
                                "VERIFY_DEVICE_PLAYBACK" if found else
                                "RESEARCH_AUTHORISED_SOURCE_AND_VALIDATE"),
                 "removal":"NOT_APPROVED"})
-    absent = [n for n in CONFIRMED if n not in published]
-    changed = [n for n,name in CONFIRMED.items()
-               if n in published and name.casefold() != published[n].casefold()]
+    absent = [name for name in sorted(CONFIRMED)
+              if approved_by_name.get(name.casefold()) not in published]
+    changed = [name for name in sorted(CONFIRMED)
+               if (number := approved_by_name.get(name.casefold())) in published
+               and name.casefold() != published[number].casefold()]
     print(f"Published approved: {sum(n in published for n in approved)}/{len(approved)}")
-    print(f"Original 36 restored in playlist: {sum(r['channel_number'] in published for r in original)}/36")
-    print(f"Still unpublished: {sum(r['channel_number'] not in published for r in original)}/36")
+    restored = sum(published.get(approved_by_name.get(r["channel_name"].strip().casefold(), r["channel_number"]), "").casefold() == r["channel_name"].strip().casefold() for r in original)
+    print(f"Original 36 restored in playlist: {restored}/36")
+    print(f"Still unpublished: {len(original) - restored}/36")
     print(f"Owner-confirmed source regressions: missing={absent}, mismatched={changed}")
     if absent or changed:
         raise SystemExit("Owner-confirmed recovery channels regressed")
