@@ -44,6 +44,7 @@ internal fun TvDualGuide(
     failed: Map<Int, String>, onTune: (Channel) -> Unit, onClose: () -> Unit,
     onRetry: () -> Unit, loadError: Boolean, onFullTune: (Channel) -> Unit = onTune,
     favourites: Set<String> = emptySet(), onFavourite: (Channel) -> Unit = {},
+    initialFullEpg: Boolean = false,
 ) {
     val categories = remember(guide) { listOf("All", "Favourites") + GuideBrowse.categories.drop(1) +
         if (guide?.channels?.any { it.providerChannel != null || it.genre == "Australian TV" } == true) listOf("Australian TV") else emptyList() }
@@ -126,10 +127,14 @@ internal fun TvDualGuide(
         active = open && !search && details == null && androidx.compose.ui.platform.LocalWindowInfo.current.isWindowFocused)
     LaunchedEffect(open, guide != null) {
         if (open) {
-            full = false; details = null; search = false; quickQuery = ""; zone = GuideZone.CHANNELS
+            full = initialFullEpg; details = null; search = false; quickQuery = ""; zone = GuideZone.CHANNELS
             quickCategory = if (quickNumber == null) playing?.genre?.takeIf { it in categories } ?: "All"
                 else GuideBrowse.categoryForPlaying(quickCategory, playing)
             quickNumber = playing?.number ?: guide?.channels?.firstOrNull()?.number
+            if (initialFullEpg) {
+                fullCategory = quickCategory; fullQuery = ""; fullNumber = quickNumber
+                cursor = now; window = Timeline.windowStart(now)
+            }
             withFrameNanos { }
             remoteFocus.requestFocus()
         }
@@ -249,7 +254,7 @@ internal fun TvDualGuide(
                                     .testTag("channel-cell-${channel.number}")
                                     .combinedClickable(onLongClick = { onFavourite(channel) }, onClick = { selectNumber(channel.number); zone = GuideZone.CHANNELS; tuneChannel(channel, if (full) onFullTune else onTune) }).padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
                                     Box(Modifier.size(36.dp), contentAlignment = Alignment.Center) {
-                                        AsyncImage(channel.logoUrl, "${channel.name} logo", Modifier.fillMaxSize(), placeholder = painterResource(R.drawable.autv_logo), error = painterResource(R.drawable.autv_logo))
+                                        ChannelLogo(channel, Modifier.fillMaxSize())
                                     }
                                     Column(Modifier.padding(start = 8.dp)) {
                                         Row(verticalAlignment = Alignment.CenterVertically) { Text(if (channel.numberLabel.isEmpty()) channel.name else "${channel.numberLabel}  ${channel.name}", fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false)); if (isFav) Text(" ★", color = androidx.compose.ui.graphics.Color(0xFFFFD700), style = MaterialTheme.typography.labelSmall) }

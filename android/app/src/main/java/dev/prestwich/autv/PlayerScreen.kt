@@ -114,6 +114,10 @@ internal fun AuTvScreen(
     var pressedControl by remember { mutableIntStateOf(0) }
     var okWakesOnly by remember { mutableStateOf(false) }
     var digits by remember { mutableStateOf("") }
+    // The remote GUIDE key opens the optional full timeline; existing Guide controls remain quick.
+    var launchFullEpg by remember { mutableStateOf(false) }
+    fun openQuickGuide() { launchFullEpg = false; onOpenGuide() }
+    LaunchedEffect(guideOpen) { if (!guideOpen) launchFullEpg = false }
     LaunchedEffect(digits) {
         if (digits.isNotEmpty()) { delay(1_500); digits.toIntOrNull()?.let(onTuneNumber); digits = "" }
     }
@@ -205,7 +209,7 @@ internal fun AuTvScreen(
     val playbackOk = rememberRemoteOk(onShort = {
         if (!okWakesOnly) when (pressedControl) {
             1 -> if (playable) onPrevious()
-            2 -> onOpenGuide()
+            2 -> openQuickGuide()
             3 -> if (playable) onNext()
             4 -> onOpenSettings()
         }
@@ -242,7 +246,18 @@ internal fun AuTvScreen(
                             else -> when (event.nativeKeyEvent.keyCode) {
                             KeyEvent.KEYCODE_CHANNEL_UP -> { onNext(); true }
                             KeyEvent.KEYCODE_CHANNEL_DOWN -> { onPrevious(); true }
-                            KeyEvent.KEYCODE_GUIDE, KeyEvent.KEYCODE_MENU -> { if (guideOpen && isTv) return@onPreviewKeyEvent false; if (guideOpen) onCloseGuide() else onOpenGuide(); true }
+                            KeyEvent.KEYCODE_GUIDE -> {
+                                if (guideOpen && isTv) return@onPreviewKeyEvent false
+                                if (guideOpen) onCloseGuide()
+                                else if (isTv) { launchFullEpg = true; onOpenGuide() }
+                                else openQuickGuide()
+                                true
+                            }
+                            KeyEvent.KEYCODE_MENU -> {
+                                if (guideOpen && isTv) return@onPreviewKeyEvent false
+                                if (guideOpen) onCloseGuide() else openQuickGuide()
+                                true
+                            }
                             KeyEvent.KEYCODE_PAGE_UP, KeyEvent.KEYCODE_BUTTON_L1 -> {
                                 if (guideOpen && !isTv) { chooseCategory(categories[(categories.indexOf(category) - 1 + categories.size) % categories.size]); true } else false
                             }
@@ -263,7 +278,7 @@ internal fun AuTvScreen(
                 } }, update = { it.player = player; onPlayerViewAttached(it) }, onRelease = { onPlayerViewReleased(it); it.player = null }, modifier = Modifier.fillMaxSize().testTag("video"))
                 if (remoteController && !pictureInPicture && !guideOpen) CastController(
                     castPlayback, selected, epg.at(selected, now), now, playable,
-                    onPrevious, onNext, onOpenGuide, onOpenSettings, onCastPause, onCastMute,
+                    onPrevious, onNext, ::openQuickGuide, onOpenSettings, onCastPause, onCastMute,
                     onCastVolume, onStopCasting)
                 if (!pictureInPicture) AnimatedVisibility(visible = (!remoteController && chrome) || guideOpen, enter = fadeIn(tween(180)), exit = fadeOut(tween(250))) {
                     Box(Modifier.fillMaxSize().testTag("chrome")) {
@@ -291,7 +306,7 @@ internal fun AuTvScreen(
                                 if (!isTv) CastControl(false, onInteraction = { wake() }, compact = landscape, providerUnavailable = selected?.providerChannel != null)
                                 else if (!guideOpen) {
                                     FocusButton("CH −", { wake(); onPrevious() }, Modifier.onFocusChanged { if (it.isFocused) playbackControl = 1 else if (playbackControl == 1) playbackControl = 0 }.focusRequester(previousFocus).focusProperties { left = settingsFocus; right = guideControlFocus }.semantics { contentDescription = "Previous channel" }.testTag("ch-minus"), playable)
-                                    FocusButton("Guide", { wake(); onOpenGuide() }, Modifier.padding(horizontal = 8.dp).onFocusChanged { if (it.isFocused) playbackControl = 2 else if (playbackControl == 2) playbackControl = 0 }.focusRequester(guideControlFocus)
+                                    FocusButton("Guide", { wake(); openQuickGuide() }, Modifier.padding(horizontal = 8.dp).onFocusChanged { if (it.isFocused) playbackControl = 2 else if (playbackControl == 2) playbackControl = 0 }.focusRequester(guideControlFocus)
                                         .focusProperties { left = previousFocus; right = nextFocus }.semantics { contentDescription = "Open channel guide" }.testTag("guide-toggle"))
                                     FocusButton("CH +", { wake(); onNext() }, Modifier.onFocusChanged { if (it.isFocused) playbackControl = 3 else if (playbackControl == 3) playbackControl = 0 }.focusRequester(nextFocus).focusProperties { left = guideControlFocus }.semantics { contentDescription = "Next channel" }.testTag("ch-plus"), playable)
                                 }
@@ -412,14 +427,15 @@ internal fun AuTvScreen(
                             }
                             if (!isTv && !guideOpen && !keyboardOpen) Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                 OutlinedButton(onClick = { wake(); onPrevious() }, enabled = playable, modifier = Modifier.weight(1f).heightIn(min = 48.dp).semantics { contentDescription = "Previous channel" }.testTag("ch-minus")) { Text("CH −") }
-                                OutlinedButton(onClick = { wake(); if (guideOpen) onCloseGuide() else onOpenGuide() }, modifier = Modifier.weight(1.2f).heightIn(min = 48.dp).semantics { contentDescription = if (guideOpen) "Close channel guide" else "Open channel guide" }.testTag("guide-toggle")) { Text(if (guideOpen) "Close guide" else "Guide") }
+                                OutlinedButton(onClick = { wake(); if (guideOpen) onCloseGuide() else openQuickGuide() }, modifier = Modifier.weight(1.2f).heightIn(min = 48.dp).semantics { contentDescription = if (guideOpen) "Close channel guide" else "Open channel guide" }.testTag("guide-toggle")) { Text(if (guideOpen) "Close guide" else "Guide") }
                                 OutlinedButton(onClick = { wake(); onNext() }, enabled = playable, modifier = Modifier.weight(1f).heightIn(min = 48.dp).semantics { contentDescription = "Next channel" }.testTag("ch-plus")) { Text("CH +") }
                             }
                         }
                     }
                 }
                 if (isTv && !pictureInPicture) TvDualGuide(guideOpen, guide, selected, epg, now, failed,
-                    onTune = { wake(); onSelect(it) }, onFullTune = { wake(); onFullSelect(it) }, onClose = { wake(); onCloseGuide() }, onRetry = onRetry, loadError = loadError, favourites = favourites, onFavourite = onFavourite)
+                    onTune = { wake(); onSelect(it) }, onFullTune = { wake(); onFullSelect(it) }, onClose = { wake(); onCloseGuide() }, onRetry = onRetry, loadError = loadError, favourites = favourites, onFavourite = onFavourite,
+                    initialFullEpg = launchFullEpg)
             }
         }
     }
@@ -540,10 +556,33 @@ private fun ProgrammeInfo(schedule: NowNext, now: Long, fallback: String = "Live
 }
 
 @Composable
-private fun ChannelLogo(channel: Channel?, modifier: Modifier) {
+internal fun ChannelLogo(channel: Channel?, modifier: Modifier) {
+    // Prefer catalogue/playlist channel artwork, then the app's bundled broadcaster marks.
+    // This only changes a drawing fallback: neither the catalogue nor playback is modified.
+    val provider = channel?.providerChannel?.id?.provider?.lowercase(Locale.ROOT)
+    val network = channel?.subgenre?.lowercase(Locale.ROOT)
+    val bundled = when {
+        provider == "9now" || network == "9now" -> R.drawable.provider_nine
+        provider == "seven" || network == "7plus" -> R.drawable.provider_seven
+        provider == "sbs" || network?.contains("sbs") == true -> R.drawable.provider_sbs
+        provider == "ten" || network == "10" -> R.drawable.provider_ten
+        else -> null
+    }
+    val textFallback = when {
+        provider == "abc" || network == "abc iview" -> "ABC"
+        channel?.name?.equals("MUTV", ignoreCase = true) == true -> "MUTV"
+        else -> null
+    }
     Box(modifier.background(Color.White.copy(alpha = 0.04f), RoundedCornerShape(8.dp)).padding(4.dp), contentAlignment = Alignment.Center) {
-        if (channel?.logoUrl != null) AsyncImage(model = channel.logoUrl, contentDescription = null, modifier = Modifier.fillMaxSize(), error = painterResource(R.drawable.autv_logo))
-        else Image(painterResource(R.drawable.autv_logo), null, Modifier.fillMaxSize())
+        when {
+            !channel?.logoUrl.isNullOrBlank() -> AsyncImage(
+                model = channel?.logoUrl, contentDescription = null, modifier = Modifier.fillMaxSize(),
+                error = painterResource(bundled ?: R.drawable.autv_logo))
+            bundled != null -> Image(painterResource(bundled), null, Modifier.fillMaxSize())
+            textFallback != null -> Text(textFallback, color = WarmWhite,
+                style = MaterialTheme.typography.labelSmall, maxLines = 1)
+            else -> Image(painterResource(R.drawable.autv_logo), null, Modifier.fillMaxSize())
+        }
     }
 }
 
@@ -551,19 +590,16 @@ private fun ChannelLogo(channel: Channel?, modifier: Modifier) {
 private fun CastControl(isTv: Boolean, onInteraction: () -> Unit, compact: Boolean = false, providerUnavailable: Boolean = false) {
     val context = LocalContext.current
     val supported = remember(context, isTv) { !isTv && runCatching { CastContext.getSharedInstance(context); true }.getOrDefault(false) }
-    var explanation by remember { mutableStateOf(false) }
     Box(Modifier.size(if (compact) 48.dp else 52.dp).testTag("cast-control"), contentAlignment = Alignment.Center) {
         if (supported && !providerUnavailable) AndroidView(factory = { ctx -> MediaRouteButton(ctx).also {
             it.setAlwaysVisible(true); it.contentDescription = "Cast to a screen"
             CastButtonFactory.setUpMediaRouteButton(ctx, it)
         } }, modifier = Modifier.size(48.dp))
-        else TextButton(onClick = { onInteraction(); explanation = true }, modifier = Modifier.fillMaxSize().semantics { contentDescription = if (providerUnavailable) "Cast unavailable for 9Now" else "Cast options and status" }, contentPadding = PaddingValues(0.dp)) {
-            Text(if (providerUnavailable) "Cast unavailable" else "Cast", color = Silver, maxLines = 1)
-        }
+        else Icon(painterResource(R.drawable.ic_cast_unavailable),
+            contentDescription = "Cast unavailable for this channel",
+            tint = Silver.copy(alpha = 0.4f),
+            modifier = Modifier.size(30.dp).testTag("cast-disabled-icon"))
     }
-    if (explanation) AlertDialog(onDismissRequest = { explanation = false; onInteraction() }, title = { Text("Google Cast") },
-        text = { Text(if (providerUnavailable) "Casting 9Now is unavailable. You can still cast other channels." else if (isTv) "Use AUTV on a phone or tablet to choose a Cast screen." else "Cast needs Google Play services and a compatible screen on the same Wi-Fi network.") },
-        confirmButton = { TextButton(onClick = { explanation = false; onInteraction() }) { Text("OK") } })
 }
 
 @Composable
