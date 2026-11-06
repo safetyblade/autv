@@ -6,7 +6,7 @@ on:
       - 'android/**'
       - '.github/workflows/autv-trial.yml'
   push:
-    branches: [release/cleanup-20261106]
+    branches: [main]
     paths:
       - 'android/**'
       - '.github/workflows/autv-trial.yml'
