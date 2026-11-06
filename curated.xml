@@ -4,6 +4,10 @@
     <display-name>CW Presents WWE NXT</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/ac0caef9123a35df3b884b139340a597/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1783457806003_cw_presents_wwe_nxt_logo_hud.png" />
   </channel>
+  <channel id="400000116">
+    <display-name>The NBA Channel</display-name>
+    <icon src="https://canvas-lb.tubitv.com/opts/VGJpYUttk1EYXg==/7d258341-afc7-4022-acd4-ce330c6db573/CHgQeDoFMS4xLjlAAQ==" />
+  </channel>
   <channel id="697140a85d851f5e69414688-63eecb32ac23d1ee072087cb">
     <display-name>123GO!</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/59623ed1-b641-4001-b634-b25e307c3c49/123GO_-_Jonathan_Shrank1500x1000.png" />
@@ -2239,6 +2243,10 @@
     <display-name>Gordon Ramsay</display-name>
     <icon src="https://canvas-lb.tubitv.com/opts/zBCOxZ6hwxcgWg==/f7eea1c7-409e-4abc-b6f3-1228bb7135d7/CHgQeDoFMS4xLjlAAQ==" />
   </channel>
+  <channel id="400000116">
+    <display-name>The NBA Channel</display-name>
+    <icon src="https://canvas-lb.tubitv.com/opts/VGJpYUttk1EYXg==/7d258341-afc7-4022-acd4-ce330c6db573/CHgQeDoFMS4xLjlAAQ==" />
+  </channel>
   <channel id="5ddd7cb2cbb9010009b4fe32">
     <display-name>Nick Jr Club</display-name>
     <icon src="https://images.pluto.tv/channels/5ddd7cb2cbb9010009b4fe32/colorLogoPNG.png" />
@@ -2680,5 +2688,11 @@
   </channel>
   <channel id="MUTV.uk@SD">
     <display-name>MUTV</display-name>
+  </channel>
+  <channel id="Comet.us@SD">
+    <display-name>Comet TV</display-name>
+  </channel>
+  <channel id="Charge.us@SD">
+    <display-name>CHARGE!</display-name>
   </channel>
 </tv>
