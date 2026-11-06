@@ -73,7 +73,7 @@ def page_plan(rows, published, grouped):
         {"kind":"cover", "label":"AUTV"},
         {"kind":"intro", "label":"Getting started"},
         {"kind":"contents", "label":"Contents"},
-        {"kind":"providers", "label":"Australian TV"},
+        {"kind":"providers", "label":"Free-To-Air TV"},
     ]
     for genre, entries in grouped:
         for start in range(0, len(entries), MAX_PER_PAGE):
@@ -123,7 +123,7 @@ def provider_row(c, x, y, w=74, h=59):
         else:
             c.setFillColor(WARM);c.setFont("Helvetica-Bold",8.5)
             c.drawCentredString(cx,y+32,"ABC")
-    label(c,"AUSTRALIAN TV",x+12,y+9,7,"Helvetica-Bold",SILVER)
+    label(c,"FREE-TO-AIR TV",x+12,y+9,7,"Helvetica-Bold",SILVER)
 
 def top_header(c, pno, title, kind):
     rect(c,0,PAGE_H-36,PAGE_W,36,INK)
@@ -177,7 +177,7 @@ def intro(c, pno, count):
 
 def contents(c,pno,grouped,pages):
     top_header(c,pno,"Contents","contents")
-    label(c,"THE LINE-UP",22,PAGE_H-80,22,"Helvetica-Bold",INK)
+    label(c,"WHAT'S INSIDE",22,PAGE_H-80,22,"Helvetica-Bold",INK)
     y=PAGE_H-118
     for name,rows in grouped:
         pos=next(i+1 for i,p in enumerate(pages) if p["kind"]=="directory" and p["label"]==name)
@@ -186,12 +186,12 @@ def contents(c,pno,grouped,pages):
         label(c,f"{len(rows)} channels",31,y-10,7.4,"Helvetica",MUTED)
         c.setFont("Helvetica-Bold",10);c.setFillColor(INK);c.drawRightString(PAGE_W-32,y,str(pos))
         y-=35
-    label(c,"FLIP TO YOUR FAVOURITE SECTION.",22,49,7.6,"Helvetica",MUTED)
+    label(c,"PAGE NUMBERS REFER TO THE READING EDITION.",22,49,7.6,"Helvetica",MUTED)
 
 def providers(c,pno):
-    top_header(c,pno,"Australian TV","providers")
-    label(c,"THE HOME TEAM",22,PAGE_H-82,22,"Helvetica-Bold",INK)
-    label(c,"The familiar faces of Australian television",22,PAGE_H-104,9.7,"Helvetica",MUTED)
+    top_header(c,pno,"Free-To-Air TV","providers")
+    label(c,"FREE-TO-AIR TV",22,PAGE_H-82,20,"Helvetica-Bold",INK)
+    label(c,"Your local channels, all in one place.",22,PAGE_H-104,9.7,"Helvetica",MUTED)
     items=[("9Now","Nine Network"),("7plus","Seven Network"),("10","Network 10"),("SBS","SBS On Demand"),("ABC","ABC iview")]
     y=PAGE_H-155
     for name,desc in items:
@@ -206,13 +206,25 @@ def providers(c,pno):
         y-=83
     label(c,"Availability depends on the installed app and account access.",22,45,7.9,"Helvetica",MUTED)
 
+CATEGORY_TEASERS = {
+    "Sport": "Front-row seats, without leaving the sofa.",
+    "Movies": "Lights down. Feet up. Movie time.",
+    "Comedy": "A little laughter goes a long way.",
+    "Entertainment": "Old favourites. New discoveries.",
+}
+
 def directory(c,pno,page,published):
     genre=page["label"];top_header(c,pno,genre,"directory")
     label(c,genre.upper(),20,PAGE_H-72,18,"Helvetica-Bold",INK)
-    label(c,f"CHANNEL DIRECTORY  •  {page['part']} OF {page['parts']}",20,PAGE_H-88,8,"Helvetica",MUTED)
+    teaser=CATEGORY_TEASERS.get(genre)
+    if teaser:
+        label(c,text_fit(teaser,PAGE_W-42,"Helvetica",8.8),20,PAGE_H-88,8.8,"Helvetica",MUTED)
+        label(c,f"CHANNEL DIRECTORY  •  {page['part']} OF {page['parts']}",20,PAGE_H-101,7.5,"Helvetica",MUTED)
+    else:
+        label(c,f"CHANNEL DIRECTORY  •  {page['part']} OF {page['parts']}",20,PAGE_H-88,8,"Helvetica",MUTED)
     rows=page["rows"]
-    y=PAGE_H-111
-    step=17.5  # 24 entries fit above the 41pt footer and print-safe margin
+    y=PAGE_H-(122 if teaser else 111)
+    step=17.1 if teaser else 17.5  # 24 entries fit above the 41pt footer and print-safe margin
     for i,row in enumerate(rows):
         number=int(row["Channel number"])
         rect(c,20,y-12,PAGE_W-40,step,LIGHT if i%2==0 else Color(1,1,1),0)
@@ -320,6 +332,8 @@ def write_word(pages):
             d.add_paragraph(ISSUE_DATE)
         elif p["kind"]=="directory":
             d.add_heading(p["label"],1)
+            if p["label"] in CATEGORY_TEASERS:
+                d.add_paragraph(CATEGORY_TEASERS[p["label"]])
             for row in p["rows"]:
                 x=d.add_paragraph(style="Normal")
                 x.paragraph_format.space_after=Pt(3)
@@ -335,7 +349,7 @@ def write_word(pages):
                 if pp["kind"]=="directory" and pp["part"]==1:
                     d.add_paragraph(pp["label"])
         elif p["kind"]=="providers":
-            d.add_heading("Australian TV",1)
+            d.add_heading("Free-To-Air TV",1)
             for name,path in SOURCES.items():
                 if path.is_file():d.add_picture(str(path),width=Cm(1.1))
                 d.add_paragraph(name)
