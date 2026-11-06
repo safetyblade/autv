@@ -10,6 +10,8 @@ on:
       - scripts/epg_crosswalk.py
       - epg_crosswalk_holds.csv
       - tests/test_epg_crosswalk.py
+      - scripts/compare_epg_programmes.py
+      - tests/test_epg_schedule_consistency.py
       - .github/workflows/epg-source-discovery.yml
 permissions:
   contents: read
@@ -24,6 +26,7 @@ jobs:
           python3 -m unittest discover -s tests -p test_epg_source_research.py -v
           python3 -m unittest discover -s tests -p test_epg_candidate_identity_safety.py -v
           python3 -m unittest discover -s tests -p test_epg_crosswalk.py -v
+          python3 -m unittest discover -s tests -p test_epg_schedule_consistency.py -v
       - name: Audit published guide and build missing-EPG queue
         run: |
           python3 scripts/audit_epg_gate1.py
@@ -53,6 +56,8 @@ jobs:
         run: python3 scripts/research_epg_sources.py
       - name: Check candidates against published stream identity clues
         run: python3 scripts/triage_epg_candidate_identity.py
+      - name: Compare real candidate schedules across upstream XMLTV catalogues
+        run: python3 scripts/compare_epg_programmes.py
       - name: Preserve the reviewed candidate evidence (never a deployed EPG)
         uses: actions/upload-artifact@v4
         with:
@@ -64,3 +69,5 @@ jobs:
             audits/epg_source_candidate_review.csv
             audits/epg_source_candidate_summary.json
             audits/epg_candidate_identity_triage.csv
+            audits/epg_candidate_schedule_consistency.csv
+            audits/epg_candidate_schedule_consistency_summary.json
