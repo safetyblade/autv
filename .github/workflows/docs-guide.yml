@@ -47,7 +47,7 @@ jobs:
           path: docs/AUTV_TV_Guide.docx
           if-no-files-found: error
       - name: Publish current guides to main
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
         shell: bash
         run: |
           set -euo pipefail
