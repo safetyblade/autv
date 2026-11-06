@@ -6,6 +6,15 @@ AUTV brings approved free live television, Australian broadcaster services and a
 
 The **AUTV signed update** and **AUTV Trial** are different builds. Use the signed update for the existing AUTV application only if Android accepts the matching signing certificate and a newer version; the trial is a separate installation and has separate account data. Never uninstall to work around a signing mismatch without accepting the loss of stored accounts. See [Android updates](docs/android-updates.md).
 
+## Printable TV booklet
+
+The approved design is maintained automatically from the current channel catalogue. Both downloads keep the same editorial layout as channel numbers and totals change.
+
+- [A5 Reading Edition](docs/AUTV_TV_Booklet_Reader.pdf)
+- [A4 Duplex Print Edition](docs/AUTV_TV_Booklet_Print.pdf) — print landscape, double-sided, flip on short edge, then fold.
+
+The booklet includes the Free-To-Air TV section and the full numbered FAST channel directory. The older generic printable channel list is no longer the approved edition.
+
 ## Watch TV
 
 1. Open the guide and choose **Australian TV** for the six tested no-login channels below, or select a FAST/IPTV channel by number and genre.
