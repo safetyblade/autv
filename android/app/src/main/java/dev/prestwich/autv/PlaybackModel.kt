@@ -181,7 +181,13 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
         { epg.at(it, System.currentTimeMillis()).now }, ::onCastChanged)
     private val listener = object : Player.Listener {
         override fun onPlayerError(error: PlaybackException) {
-            player.currentMediaItem?.mediaId?.toIntOrNull()?.let { failed[it] = "Playback failed" }
+            val failedNumber = player.currentMediaItem?.mediaId?.toIntOrNull()
+            // Show safe Media3 error classification for recurring NBA #228 failures.
+            // Never display exception messages, playback URLs, tokens or headers.
+            val summary = if (failedNumber == 228) {
+                "Playback failed · ${error.errorCodeName} (${error.errorCode})"
+            } else "Playback failed"
+            failedNumber?.let { failed[it] = summary }
             buffering = false
             if (startupAttempt) { startupFailed = true; return }
             if (selected?.providerChannel != null) { providerAccounts[selected?.providerChannel?.id?.provider]?.playbackFailed(error.errorCode); recoverProvider() }
