@@ -1,6 +1,12 @@
 name: Refresh playlist
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'selected_tubi_channels.txt'
+      - 'scripts/merge.py'
+      - 'channel_guide.csv'
   workflow_dispatch:
   schedule:
     # Pluto v2 sessions can expire in 24h; refresh before expiry.
