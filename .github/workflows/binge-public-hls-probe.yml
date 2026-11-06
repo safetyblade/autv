@@ -1,0 +1,27 @@
+name: BINGE listed channels — public HLS diagnostics
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - investigate/ten-binge-free-source-audit-20261106
+    paths:
+      - scripts/probe_binge_public_hls_20261106.py
+      - .github/workflows/binge-public-hls-probe.yml
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Check safe syntax
+        run: python -m py_compile scripts/probe_binge_public_hls_20261106.py
+      - name: Check manifest access (no Australian playback claim)
+        run: python -u scripts/probe_binge_public_hls_20261106.py
