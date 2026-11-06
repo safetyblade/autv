@@ -113,12 +113,12 @@ def provider_row(c, x, y, w=74, h=59):
     slots=[("9Now",0),("7plus",1),("10",2),("SBS",3),("ABC",4)]
     imgw=35
     for name, idx in slots:
-        xx=x+5+idx*(w-10)/5
+        xx=x+9+idx*(w-18)/5
         file=SOURCES.get(name)
         if file and file.is_file():
-            c.drawImage(str(file),xx,y+23,width=12,height=12,mask="auto",preserveAspectRatio=True,anchor="c")
+            c.drawImage(str(file),xx,y+20,width=28,height=28,mask="auto",preserveAspectRatio=True,anchor="c")
         else:
-            label(c,"ABC",xx-2,y+27,7.6,"Helvetica-Bold",WARM)
+            label(c,"ABC",xx+1,y+27,8.4,"Helvetica-Bold",WARM)
     label(c,"AUSTRALIAN TV",x+8,y+7,7,"Helvetica-Bold",SILVER)
 
 def top_header(c, pno, title, kind):
@@ -179,7 +179,7 @@ def contents(c,pno,grouped,pages):
         rect(c,22,y-11,PAGE_W-44,31,LIGHT if int((PAGE_H-y)/35)%2==0 else Color(1,1,1),0)
         label(c,name,31,y+2,11,"Helvetica-Bold",INK)
         label(c,f"{len(rows)} channels",31,y-10,7.4,"Helvetica",MUTED)
-        c.setFont("Helvetica-Bold",10);c.setFillColor(INK);c.drawRightString(PAGE_W-32,y,pos)
+        c.setFont("Helvetica-Bold",10);c.setFillColor(INK);c.drawRightString(PAGE_W-32,y,str(pos))
         y-=35
     label(c,"PAGE NUMBERS REFER TO THE READING EDITION.",22,49,7.6,"Helvetica",MUTED)
 
@@ -324,7 +324,7 @@ def write_word(pages):
             d.add_paragraph("ABC iview")
         elif p["kind"]=="notes": d.add_heading("Notes",1)
         else:d.add_heading("AUTV — Your TV. Your guide.",1)
-    path=OUT/"AUTV_TV_Booklet_A5.docx"
+    path=OUT/"AUTV_TV_Booklet.docx"
     d.save(path)
     return path
 
