@@ -1,0 +1,23 @@
+name: ABC public catalogue schema proof
+
+on:
+  pull_request:
+    paths:
+      - scripts/probe_abc_catalogue_schema.py
+      - .github/workflows/abc-catalogue-schema.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  abc-schema:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Read ABC public catalogue schema (no authentication, tokens or media URLs)
+        run: python scripts/probe_abc_catalogue_schema.py
