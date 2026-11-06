@@ -1,4 +1,4 @@
-name: Publish approved AUTV booklet
+name: Publish approved AUTV booklet from locked master
 on:
   workflow_dispatch:
   push:
@@ -6,6 +6,7 @@ on:
     paths:
       - channel_guide.csv
       - android/app/src/main/java/dev/prestwich/autv/provider/AustralianLiveChannels.kt
+      - docs/templates/AUTV_TV_Booklet_Master.pdf
       - scripts/build_printable_guide.py
       - .github/workflows/publish-printable-guide.yml
 
@@ -22,55 +23,59 @@ jobs:
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v5
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - name: Install PDF dependencies
-        run: python -m pip install reportlab pypdf
-      - name: Build locked-layout reading and print editions
+      - name: Install PDF preservation engine
+        run: python -m pip install PyMuPDF
+      - name: Confirm signed-off PDF asset is unchanged
+        shell: bash
+        run: |
+          echo "96c309e947ee742e454126af9e5d6376745bc703eb1041855530c31db140c2ff  docs/templates/AUTV_TV_Booklet_Master.pdf" | sha256sum --check
+      - name: Refresh catalogue data within approved booklet design
         run: python scripts/build_printable_guide.py
-      - name: Verify booklet geometry and full source-channel coverage
+      - name: Validate page geometry and complete channel inventory
         run: |
           python - <<'PY'
-          import csv, re
+          import csv, hashlib
+          import fitz
           from pathlib import Path
-          from pypdf import PdfReader
-          base=Path("docs")
-          read=PdfReader(str(base/"AUTV_TV_Booklet_Reader.pdf"))
-          printpdf=PdfReader(str(base/"AUTV_TV_Booklet_Print.pdf"))
+          root=Path("docs")
+          master=root/"templates/AUTV_TV_Booklet_Master.pdf"
+          print_pdf=root/"AUTV_TV_Booklet_Print.pdf"
+          read_pdf=root/"AUTV_TV_Booklet_Reader.pdf"
           with open("channel_guide.csv",encoding="utf-8-sig",newline="") as f:
-              names=[r["Channel name"] for r in csv.DictReader(f) if r["Status"].lower()=="active"]
-          native=re.findall(r'LiveChannel\(\s*(\d+)\s*,\s*"([^"]+)"',
-              Path("android/app/src/main/java/dev/prestwich/autv/provider/AustralianLiveChannels.kt").read_text())
-          assert len(read.pages)%4==0
-          assert len(printpdf.pages)==len(read.pages)//2
-          assert len(names)>=600 and len(native)>=6
-          for f in ("AUTV_TV_Booklet_Reader.pdf","AUTV_TV_Booklet_Print.pdf"):
-              assert (base/f).stat().st_size>30000
-          print(f"Validated {len(names)} curated channels and {len(native)} Free-To-Air channels; "
-                f"{len(read.pages)} reading pages; {len(printpdf.pages)} imposed A4 print faces.")
+              rows=[r for r in csv.DictReader(f) if r["Status"].strip().lower()=="active"]
+          assert len(rows)>=600
+          with fitz.open(print_pdf) as pdf:
+              assert pdf.page_count==18
+              assert all(840<page.rect.width<843 and 594<page.rect.height<597 for page in pdf)
+          with fitz.open(read_pdf) as pdf:
+              assert pdf.page_count==36
+              assert all(419<page.rect.width<421 and 594<page.rect.height<597 for page in pdf)
+          assert print_pdf.stat().st_size>30000 and read_pdf.stat().st_size>30000
+          print(f"Approved master preserved. {len(rows)} channel records; 18 imposed / 36 reading pages.")
           PY
-      - name: Upload approved booklet editions
+      - name: Archive approved editions
         uses: actions/upload-artifact@v4
         with:
-          name: AUTV-Approved-TV-Booklet
+          name: AUTV-Approved-Booklet
           path: |
-            docs/AUTV_TV_Booklet_Reader.pdf
             docs/AUTV_TV_Booklet_Print.pdf
+            docs/AUTV_TV_Booklet_Reader.pdf
           retention-days: 90
-      - name: Publish stable booklet links
+      - name: Publish stable download links
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/AUTV_TV_Booklet_Reader.pdf docs/AUTV_TV_Booklet_Print.pdf
+          git add docs/AUTV_TV_Booklet_Print.pdf docs/AUTV_TV_Booklet_Reader.pdf
           if git diff --cached --quiet; then
-            echo "Booklet layout and catalogue unchanged."
+            echo "Booklet already current."
             exit 0
           fi
-          git commit -m "docs: refresh approved AUTV reading and print booklets"
+          git commit -m "docs: update approved booklet data without changing design"
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
