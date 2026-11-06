@@ -94,7 +94,7 @@ The six Australian TV rows above are app-managed and not counted in this FAST/IP
 | 225 | GFN Football | Sport | Samsung GB | Channel only |
 | 226 | ViX Lo Mejor de Liga MX | Sport | Roku | Channel only |
 | 227 | beIN SPORTS XTRA | Sport | Plex AU | Full |
-| 228 | The NBA Channel | Sport | Xumo | Full |
+| 228 | The NBA Channel | Sport | Tubi | Full |
 | 229 | Hoop TV | Sport | SoFast | Channel only |
 | 230 | NFL Channel | Sport | Plex AU | Full |
 | 231 | NFL Super Bowl Champions | Sport | Plex AU | Full |
