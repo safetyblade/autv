@@ -1,0 +1,55 @@
+name: AUTV EPG Gate 1 — source verification candidates
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - scripts/research_epg_sources.py
+      - tests/test_epg_source_research.py
+      - .github/workflows/epg-source-discovery.yml
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test source evidence and conservative matching
+        run: python3 -m unittest discover -s tests -p test_epg_source_research.py -v
+      - name: Audit published guide and build missing-EPG queue
+        run: |
+          python3 scripts/audit_epg_gate1.py
+          python3 scripts/epg_gate1_priority.py
+      - name: Download listed XMLTV sources for READ-ONLY source verification
+        shell: bash
+        run: |
+          set -uo pipefail
+          fetch_epg() {
+            local name="$1" url="$2"
+            if curl --fail --silent --show-error --location --retry 1 --connect-timeout 12 --max-time 80 "$url" --output "$name"; then
+              echo "::notice::Retrieved XMLTV source $name"
+            else
+              echo "::warning::Upstream $name unavailable; leaving it excluded from candidate inspection"
+              rm -f "$name"
+            fi
+          }
+          fetch_epg epg_plex_au.xml.gz "https://github.com/matthuisman/i.mjh.nz/raw/master/Plex/au.xml.gz"
+          fetch_epg epg_pluto_us.xml.gz "https://github.com/matthuisman/i.mjh.nz/raw/master/PlutoTV/us.xml.gz"
+          fetch_epg epg_pluto_gb.xml.gz "https://github.com/matthuisman/i.mjh.nz/raw/master/PlutoTV/gb.xml.gz"
+          fetch_epg epg_pluto_ca.xml.gz "https://github.com/matthuisman/i.mjh.nz/raw/master/PlutoTV/ca.xml.gz"
+          fetch_epg epg_roku_all.xml.gz "https://github.com/matthuisman/i.mjh.nz/raw/master/Roku/all.xml.gz"
+          fetch_epg epg_xumo.xml.gz "https://raw.githubusercontent.com/BuddyChewChew/xumo-playlist-generator/main/playlists/xumo_epg.xml.gz"
+          fetch_epg epg_tubi.xml "https://raw.githubusercontent.com/BuddyChewChew/tubi-scraper/main/tubi_epg.xml"
+          fetch_epg epg_samsung_all.xml.gz "https://i.mjh.nz/SamsungTVPlus/all.xml.gz"
+      - name: Inspect source IDs and actual current/upcoming schedules
+        run: python3 scripts/research_epg_sources.py
+      - name: Preserve the reviewed candidate evidence (never a deployed EPG)
+        uses: actions/upload-artifact@v4
+        with:
+          name: autv-epg-gate1-source-candidates
+          retention-days: 30
+          if-no-files-found: error
+          path: |
+            audits/epg_gate1_recovery_queue.csv
+            audits/epg_source_candidate_review.csv
+            audits/epg_source_candidate_summary.json
