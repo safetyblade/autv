@@ -10,7 +10,8 @@ number,name,provider,guide,status to include those listings. No source URLs.
 """
 import csv
 from collections import Counter
-from datetime import date
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from pathlib import Path
 import sys
 
@@ -52,7 +53,7 @@ normal.font.name = "Aptos"
 normal.font.size = Pt(9)
 
 d.add_heading("AUTV — Home TV Guide", 0)
-d.add_paragraph(f"Generated {date.today().isoformat()} | {len(records)} active FAST/IPTV channels")
+d.add_paragraph(f"Generated {datetime.now(ZoneInfo("Australia/Melbourne")).date().isoformat()} | {len(records)} active FAST/IPTV channels")
 d.add_paragraph("Current catalogue source: channel_guide.csv. Listed channels are configured, not guaranteed to be playable at every moment.")
 d.add_heading("Install and start", 1)
 for step in [
@@ -61,7 +62,7 @@ for step in [
     "Use the remote direction buttons to navigate, OK to tune and Back to return.",
     "Browse categories, Australian TV and Favourites. Long-press OK on a supported channel to toggle Favourites.",
     "In Settings, select a starting channel if supported and connect broadcaster accounts using the on-screen instructions or QR activation where available.",
-    "After a playlist update, refresh the channel guide in AUTV.",
+    "After a channel update, open Settings and select Refresh channels and TV guide. The previous guide is kept if a download fails.",
 ]:
     d.add_paragraph(step, style="List Number")
 d.add_heading("Australian TV", 1)
@@ -86,7 +87,7 @@ for item in [
     "No live stream: refresh once and retry. A catalogue listing does not prove the stream is currently available.",
     "No programme information: some channels intentionally have channel-only guide coverage.",
     "Configuration required: review that broadcaster's status in Settings. Unsupported provisioning cannot be fixed by repeatedly signing in.",
-    "Outdated channels: refresh the playlist/guide and verify the installed APK version.",
+    "Outdated channels: in the updated AUTV app, open Settings and select Refresh channels and TV guide.",
 ]:
     d.add_paragraph(item, style="List Bullet")
 d.add_heading("FAST/IPTV category totals", 1)
