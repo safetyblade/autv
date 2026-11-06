@@ -65,11 +65,11 @@ def parse():
             # Markdown contains exactly five pipe-delimited cells.
             tail=line.strip().rstrip("|")
             category=r"(News|Sport|Movies|Game Shows|Crime|Comedy|Entertainment|Reality & Lifestyle|Factual|Kids & Animation|Music)"
-            m=re.match(r"^\\|\\s*(\\d+)\\s*\\|\\s*(.*?)\\s*\\|\\s*"+category+r"\\s*\\|\\s*(.*?)\\s*\\|\\s*(.*?)\\s*\\|?$",tail)
+            m=re.match(r"^\|\s*(\d+)\s*\|\s*(.*?)\s*\|\s*"+category+r"\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|?$",tail)
             if not m:
                 raise SystemExit(f"Cannot parse catalogue row: {line}")
             no,name,cat,source,epg=m.groups()
-            fast.append((int(no),name.replace(r"\\|","|").strip(),cat,source.strip(),epg.strip()))
+            fast.append((int(no),name.replace(r"\|","|").strip(),cat,source.strip(),epg.strip()))
     if len(native)!=6 or len(fast)<600:
         raise SystemExit(f"Refusing incomplete printable guide: {len(native)} native / {len(fast)} FAST")
     numbers=[r[0] for r in fast]
