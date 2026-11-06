@@ -244,7 +244,7 @@ def back(c,count):
 def build_pdf(pages,rows,published,grouped):
     OUT.mkdir(exist_ok=True,parents=True)
     path=OUT/"AUTV_TV_Booklet_Reader.pdf"
-    c=canvas.Canvas(str(path),pagesize=A5,pageCompression=1)
+    c=canvas.Canvas(str(path),pagesize=(PAGE_W,PAGE_H),pageCompression=1)
     pub=len({int(r["Channel number"]) for r in rows}&published)
     for i,page in enumerate(pages,1):
         kind=page["kind"]
