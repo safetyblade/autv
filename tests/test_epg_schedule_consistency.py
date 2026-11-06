@@ -19,9 +19,20 @@ class CompareProgrammeTests(unittest.TestCase):
     def test_reports_strong_and_conflict(self):
         rows=[row("one.xml.gz"),row("two.xml.gz","b")]
         program={("one.xml.gz","a"):blocks("x"),("two.xml.gz","b"):blocks("x")}
-        self.assertEqual(produce(rows,program,T)[0]["finding"],"STRONG_SCHEDULE_AGREEMENT")
+        self.assertEqual(produce(rows,program,T)[0]["finding"],"CROSS_SOURCE_SCHEDULE_AGREEMENT")
         program[("two.xml.gz","b")]=blocks("y")
         self.assertEqual(produce(rows,program,T)[0]["finding"],"REGIONAL_OR_SERVICE_CONFLICT")
+    def test_same_feed_variants_not_independent_confirmation(self):
+        rows=[row("samsung.xml.gz","a"),row("samsung.xml.gz","b")]
+        programmes={("samsung.xml.gz","a"):blocks("same"),
+                    ("samsung.xml.gz","b"):blocks("same")}
+        self.assertEqual(produce(rows,programmes,T)[0]["finding"],"SAME_FEED_VARIANT_AGREEMENT")
+    def test_different_source_conflict_is_not_applied(self):
+        rows=[row("roku.xml.gz"),row("samsung.xml.gz","b")]
+        programmes={("roku.xml.gz","a"):blocks("west"),
+                    ("samsung.xml.gz","b"):blocks("east")}
+        self.assertEqual(produce(rows,programmes,T)[0]["finding"],"REGIONAL_OR_SERVICE_CONFLICT")
+
     def test_held_or_identity_mismatch_not_compared(self):
         rows=[row("one.xml.gz"),row("two.xml.gz","b","BLOCKED_STREAM_IDENTITY_CONFLICT")]
         self.assertEqual(produce(rows,{},T),[])
