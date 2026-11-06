@@ -27,23 +27,23 @@ if any(not 100 <= n <= 1399 for n in numbers):
     raise ValueError("Curated FAST/IPTV channel number outside its supported range")
 
 source = APPROVED.read_text(encoding="utf-8")
-pattern = re.compile(r'LiveChannel\\(\\s*(\\d+)\\s*,\\s*"([^"]+)"\\s*,\\s*"([^"]+)"\\s*,\\s*"([^"]+)"', re.S)
+pattern = re.compile(r'LiveChannel\(\s*(\d+)\s*,\s*"([^"]+)"\s*,\s*"([^"]+)"\s*,\s*"([^"]+)"', re.S)
 live = [(int(number), name, provider) for number, name, _identity, provider in pattern.findall(source)]
 if not live or len({number for number, _, _ in live}) != len(live):
     raise ValueError("Australian TV approval list missing or contains duplicate channel numbers")
 live.sort()
 
 def tidy(value):
-    return str(value or "").replace("|", r"\\|").replace("\\r", " ").replace("\\n", " ").replace("<", "‹").strip()
+    return str(value or "").replace("|", r"\|").replace("\r", " ").replace("\n", " ").replace("<", "‹").strip()
 
 date = datetime.now(ZoneInfo("Australia/Melbourne")).strftime("%-d %B %Y")
 counts = Counter(r["Genre"] for r in rows)
 categories = ["News", "Sport", "Movies", "Game Shows", "Crime", "Comedy",
               "Entertainment", "Reality & Lifestyle", "Factual", "Kids & Animation", "Music"]
-summary = "\\n".join(f"| {tidy(category)} | {counts[category]} |" for category in categories)
-australian = "\\n".join(f"| {number} | {tidy(name)} | {tidy(provider)} | No |"
+summary = "\n".join(f"| {tidy(category)} | {counts[category]} |" for category in categories)
+australian = "\n".join(f"| {number} | {tidy(name)} | {tidy(provider)} | No |"
                        for number, name, provider in live)
-directory = "\\n".join(
+directory = "\n".join(
     "| " + " | ".join(tidy(r[col]) for col in
     ("Channel number", "Channel name", "Genre", "Source", "EPG")) + " |"
     for r in rows
