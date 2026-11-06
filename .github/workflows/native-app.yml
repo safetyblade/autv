@@ -2,13 +2,6 @@ name: Native app
 
 on:
   workflow_dispatch:
-  # Release-candidate build on the dedicated review branch only.
-  # Remove this temporary branch trigger after sign-off; manual is the release path.
-  push:
-    branches: [release/cleanup-20261106]
-    paths:
-      - 'android/**'
-      - '.github/workflows/native-app.yml'
 
 permissions:
   contents: read
