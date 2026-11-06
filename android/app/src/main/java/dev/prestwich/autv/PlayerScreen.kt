@@ -117,6 +117,7 @@ internal fun AuTvScreen(
     // The remote GUIDE key opens the optional full timeline; existing Guide controls remain quick.
     var launchFullEpg by remember { mutableStateOf(false) }
     fun openQuickGuide() { launchFullEpg = false; onOpenGuide() }
+    LaunchedEffect(guideOpen) { if (!guideOpen) launchFullEpg = false }
     LaunchedEffect(digits) {
         if (digits.isNotEmpty()) { delay(1_500); digits.toIntOrNull()?.let(onTuneNumber); digits = "" }
     }
