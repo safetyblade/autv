@@ -59,3 +59,26 @@ internal fun StartupSettings(model: PlaybackModel) {
             style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(vertical = 8.dp))
     }
 }
+
+/** One TV-remote-friendly manual refresh for the FAST/IPTV catalogue and XMLTV EPG. */
+@Composable
+internal fun ChannelRefreshSettings(model: PlaybackModel) {
+    Text("Channel list and TV guide", style = MaterialTheme.typography.titleLarge)
+    Text("Load the latest numbered channels and programme information without restarting AUTV.",
+        style = MaterialTheme.typography.bodySmall)
+    FocusButton(
+        if (model.manualRefreshBusy) "Refreshing channels and guide…" else "Refresh channels and TV guide",
+        model::refreshChannelsAndGuide,
+        Modifier.fillMaxWidth().testTag("refresh-all-channels"),
+        !model.manualRefreshBusy,
+    )
+    if (model.manualRefreshBusy) {
+        LinearProgressIndicator(Modifier.fillMaxWidth().testTag("refresh-all-progress"))
+    }
+    model.manualRefreshStatus?.let { message ->
+        Text(message, style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.testTag("refresh-all-status"))
+    }
+    Text("Australian broadcaster accounts can be refreshed individually below.",
+        style = MaterialTheme.typography.bodySmall)
+}

@@ -9,6 +9,12 @@ import org.junit.Test
 
 class ProviderSettingsUiTest {
     @get:Rule val ui = createAndroidComposeRule<ProviderTestActivity>()
+    @Test fun settingsCanRefreshChannelsAndProgrammeGuideWithoutLeavingSettings() {
+        ui.onNodeWithTag("settings-button").performClick()
+        ui.onNodeWithTag("refresh-all-channels").performScrollTo().assertExists().performClick()
+        ui.onNodeWithTag("refresh-all-status").assertExists()
+        ui.onNodeWithTag("close-settings").performClick()
+    }
     @Test fun providerCardsOpenDetailsWithoutOfferingUnsupportedSignIn() {
         ui.onNodeWithTag("settings-button").performClick()
         ui.onNodeWithTag("provider-abc").performScrollTo().performClick()

@@ -95,6 +95,8 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
     private val rokuResolver = RokuChannelResolver()
     var startupState by mutableStateOf(GuideStartupState.LOADING); private set
     var refreshFailed by mutableStateOf(false); private set
+    var manualRefreshBusy by mutableStateOf(false); private set
+    var manualRefreshStatus by mutableStateOf<String?>(null); private set
     val holder = AuTvPlayer(application, advancedProviderPlayback = configuredAdapters.keys.any { it in setOf("ten","abc") })
     val player = holder.player
     var guide by mutableStateOf<Guide?>(null); private set
@@ -235,6 +237,62 @@ class PlaybackModel(application: Application, private val guideLoader: () -> Gui
                     }
                 }
             } finally { loading = false }
+        }
+    }
+    /**
+     * Explicit user-initiated refresh. The existing guide remains visible while fetching.
+     * No player or account instance is recreated, and cached EPG survives failures.
+     * A provider-specific channel refresh remains available on that provider's screen.
+     */
+    fun refreshChannelsAndGuide() {
+        if (loading || manualRefreshBusy) {
+            manualRefreshStatus = "A channel refresh is already running."
+            return
+        }
+        loading = true
+        manualRefreshBusy = true
+        manualRefreshStatus = "Refreshing channel list and programme guide…"
+        viewModelScope.launch {
+            var channelSuccess = false
+            var epgSuccess = false
+            try {
+                try {
+                    startup.refresh(fastGuide) { update ->
+                        startupState = update.state
+                        refreshFailed = update.refreshFailed
+                        loadError = update.state == GuideStartupState.ERROR
+                        update.guide?.let { applyGuide(it) }
+                        if (update.state == GuideStartupState.READY && !update.refreshFailed) {
+                            channelSuccess = true
+                        }
+                        if (hasPending && (update.state == GuideStartupState.READY || update.refreshFailed)) {
+                            hasPending = false
+                            applyRequest(pending)
+                        }
+                    }
+                } catch (error: Exception) {
+                    if (error is CancellationException) throw error
+                }
+                try {
+                    epg = withContext(Dispatchers.IO) { epgLoader() }
+                    epgSuccess = true
+                } catch (error: Exception) {
+                    if (error is CancellationException) throw error
+                }
+                manualRefreshStatus = when {
+                    channelSuccess && epgSuccess ->
+                        "Channel list updated (${fastGuide?.channels?.size ?: 0} channels). Programme guide checked."
+                    channelSuccess ->
+                        "Channel list updated (${fastGuide?.channels?.size ?: 0} channels). Programme guide unavailable; previous listings retained."
+                    epgSuccess ->
+                        "Channel list unavailable; previous channels retained. Programme guide checked."
+                    else ->
+                        "Unable to refresh channels or programme guide. Previous data retained."
+                }
+            } finally {
+                loading = false
+                manualRefreshBusy = false
+            }
         }
     }
     private fun applyGuide(fastLoaded: Guide) {
