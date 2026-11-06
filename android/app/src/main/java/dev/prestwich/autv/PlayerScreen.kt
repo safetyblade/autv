@@ -377,7 +377,7 @@ internal fun AuTvScreen(
                                                 modifier = Modifier.padding(vertical = if (compact) 0.dp else 4.dp).testTag("guide-categories")) {
                                                 items(categories) { genre ->
                                                     var focused by remember { mutableStateOf(false) }
-                                                    FilterChip(selected = category == genre, onClick = { chooseCategory(genre) }, label = { Text(genre, style = MaterialTheme.typography.labelMedium) },
+                                                    FilterChip(selected = category == genre, onClick = { chooseCategory(genre) }, label = { Text(if (genre == "Australian TV") "Free-To-Air TV" else genre, style = MaterialTheme.typography.labelMedium) },
                                                         modifier = Modifier.then(if (category == genre) Modifier.focusRequester(categoryFocus) else Modifier)
                                                             .focusProperties { down = rowTarget; up = searchFocus }.onFocusChanged { focused = it.isFocused }
                                                             .then(if (focused && isTv) Modifier.border(3.dp, WarmWhite, RoundedCornerShape(8.dp)) else Modifier)
