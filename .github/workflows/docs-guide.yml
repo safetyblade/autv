@@ -20,6 +20,7 @@ on:
       - "guide.json"
       - "docs/australian_tv_channels.csv"
       - "scripts/build_tv_guide.py"
+      - "scripts/build_tv_booklet.py"
       - "scripts/build_tv_guide_markdown.py"
       - ".github/workflows/docs-guide.yml"
   workflow_dispatch:
