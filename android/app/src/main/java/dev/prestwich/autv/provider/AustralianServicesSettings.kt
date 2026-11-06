@@ -112,43 +112,82 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                     Column { Text(service.name,style=MaterialTheme.typography.headlineSmall)
                                         Text(service.description,color=Muted,style=MaterialTheme.typography.bodyMedium) }
                                 }
-                                if(unavailable!=null) {
-                                    Text("Configuration required",style=MaterialTheme.typography.titleMedium)
-                                    Text(unavailable,color=Muted,modifier=Modifier.testTag("${service.id}-unavailable"))
-                                    Text("Your saved account has not been removed. Provider-issued access must be configured in an authorised AUTV build.",style=MaterialTheme.typography.bodySmall,color=Muted)
-                                    if (BuildConfig.DEBUG && service.id in setOf("abc","ten")) {
-                                        HorizontalDivider(color=MaterialTheme.colorScheme.outline)
-                                        Text("Native connection trials",style=MaterialTheme.typography.titleMedium)
-                                        Text("Uses this TV's network. Real service responses only; no simulated account link. Other networks are unaffected.",
-                                            color=Muted,style=MaterialTheme.typography.bodySmall)
-                                        FocusButton(if (probeBusy) "Checking…" else if (service.id=="abc") "Check ABC live catalogue" else "Check 10 connection service", {
-                                            if (!probeBusy) {
-                                                probeBusy=true
-                                                val checking=service.id
-                                                probeScope.launch {
-                                                    try {
-                                                        val result=withContext(Dispatchers.IO) { NativeBroadcasterTrial.inspect(checking) }
-                                                        if (selected==checking) probeResult=result
-                                                    } finally { if (selected==checking) probeBusy=false }
-                                                }
+                                if(service.id in setOf("abc", "ten")) {
+                                    val liveChannels = AustralianLiveChannels.approved.filter { item ->
+                                        item.provider == if(service.id == "abc") "ABC iview" else "10"
+                                    }
+                                    Text("Live TV available", style=MaterialTheme.typography.titleMedium,
+                                        modifier=Modifier.testTag("${service.id}-connection-state"))
+                                    Text("${liveChannels.size} live channels · No sign-in required",
+                                        color=Silver, style=MaterialTheme.typography.bodyLarge,
+                                        modifier=Modifier.testTag("${service.id}-live-channel-count"))
+                                    Text("Included in your Australian TV guide:",
+                                        style=MaterialTheme.typography.bodyMedium, color=Muted)
+                                    Text(liveChannels.joinToString("  ·  ") { it.name },
+                                        style=MaterialTheme.typography.bodyMedium)
+                                    FocusButton("Open Australian TV guide", {
+                                        model.openGuide()
+                                        onClose()
+                                    }, Modifier.testTag("${service.id}-open-guide"))
+                                    Text("These free live streams use an independent source. They do not need your broadcaster account.",
+                                        style=MaterialTheme.typography.bodySmall, color=Muted)
+
+                                    if(service.id == "abc" && account != null) {
+                                        var accountExpanded by rememberSaveable(service.id) { mutableStateOf(false) }
+                                        HorizontalDivider(color=MaterialTheme.colorScheme.outline.copy(alpha=0.4f))
+                                        FocusButton(if(accountExpanded) "Hide optional ABC account options"
+                                            else "ABC account options (optional)", {
+                                            accountExpanded = !accountExpanded
+                                        }, Modifier.testTag("abc-optional-account-options"))
+                                        if(accountExpanded) {
+                                            Text(if(account.connection == ProviderConnection.CONNECTED)
+                                                "ABC account linked · not used for live TV"
+                                                else "ABC account not linked · live TV still works",
+                                                color=Silver,style=MaterialTheme.typography.bodyMedium)
+                                            Text("The existing ABC device-code connection is retained for possible future iview features.",
+                                                style=MaterialTheme.typography.bodySmall,color=Muted)
+                                            account.status?.let { Text(it,color=Muted) }
+                                            account.error?.let {
+                                                Text(it,color=MaterialTheme.colorScheme.error,
+                                                    modifier=Modifier.testTag("abc-error"))
                                             }
-                                        }, Modifier.testTag("${service.id}-native-probe"),!probeBusy)
-                                        probeResult?.let { result ->
-                                            Text("${result.stage}: ${result.summary}",modifier=Modifier.testTag("${service.id}-native-probe-result"))
-                                            if (result.channels.isNotEmpty()) Text(result.channels.joinToString(" • "),style=MaterialTheme.typography.bodySmall,color=Muted)
-                                        }
-                                        if (service.id=="ten") {
-                                            FocusButton("Try real 10 account linking", {
-                                                context.startActivity(Intent().setClassName(context,"dev.prestwich.autv.BroadcasterLinkLabActivity"))
-                                            },Modifier.testTag("ten-real-activation"))
-                                            FocusButton("Play 10 VIC native trial",{
-                                                model.playTenVicNativeTrial()
-                                                onClose()
-                                            },Modifier.testTag("ten-vic-native-trial"))
-                                            Text("Experimental unofficial HLS candidate. No linked account or approved production feed is implied. Picture and audio must be checked on this TV.",
-                                                color=Muted,style=MaterialTheme.typography.bodySmall)
+                                            if(account.busy) LinearProgressIndicator(Modifier.fillMaxWidth())
+                                            else if(account.connection == ProviderConnection.CONNECTED) {
+                                                FocusButton("Sign out of ABC iview",account::disconnect,
+                                                    Modifier.testTag("abc-disconnect"))
+                                            } else if(account.accountLinkingEnabled) {
+                                                FocusButton("Link ABC account",account::connect,
+                                                    Modifier.testTag("abc-connect"))
+                                            }
                                         }
                                     }
+                                    if(service.id == "ten" && account != null) {
+                                        var accountExpanded by rememberSaveable("ten-registered") { mutableStateOf(false) }
+                                        HorizontalDivider(color=MaterialTheme.colorScheme.outline.copy(alpha=0.4f))
+                                        FocusButton(if(accountExpanded) "Hide optional 10 account options"
+                                            else "10 account options (optional)", {
+                                            accountExpanded = !accountExpanded
+                                        }, Modifier.testTag("ten-optional-account-options"))
+                                        if(accountExpanded) {
+                                            Text(if(account.connection == ProviderConnection.CONNECTED)
+                                                "10 registered account linked · not used for direct live TV"
+                                                else "10 account not linked · live TV still works",
+                                                color=Silver,style=MaterialTheme.typography.bodyMedium)
+                                            account.status?.let { Text(it,color=Muted) }
+                                            account.error?.let { Text(it,color=MaterialTheme.colorScheme.error) }
+                                            if(account.busy) LinearProgressIndicator(Modifier.fillMaxWidth())
+                                            else if(account.connection == ProviderConnection.CONNECTED) {
+                                                FocusButton("Sign out of 10",account::disconnect,
+                                                    Modifier.testTag("ten-disconnect"))
+                                            } else if(account.accountLinkingEnabled) {
+                                                FocusButton("Link 10 account",account::connect,
+                                                    Modifier.testTag("ten-connect"))
+                                            }
+                                        }
+                                    }
+                                } else if(unavailable!=null) {
+                                    Text("Configuration required",style=MaterialTheme.typography.titleMedium)
+                                    Text(unavailable,color=Muted,modifier=Modifier.testTag("${service.id}-unavailable"))
                                 } else {
                                     val busy=account?.busy ?: model.providerBusy
                                     val count=account?.channels?.size ?: model.providerChannelCount
@@ -202,6 +241,7 @@ private fun ServiceCard(service: AustralianService,model: PlaybackModel,onClick:
     var focused by remember {mutableStateOf(false)}
     val account=model.providerAccounts[service.id]
     val state=when {
+        service.id in setOf("abc","ten") -> "${AustralianLiveChannels.count(service.id)} live channels · No sign-in required"
         service.id=="9now" -> connectionLabel(model.providerConnection)
         account!=null -> serviceState(service.id,account.connection,account.anonymousLiveApproved)
         else -> "Configuration required"

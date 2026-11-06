@@ -1,0 +1,45 @@
+name: AUTV Full Application Isolated Trial
+
+on:
+  pull_request:
+    paths:
+      - 'android/**'
+      - '.github/workflows/autv-full-isolated-trial.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  full-trial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+      - name: Build full AUTV with separate trial package
+        run: gradle -p android -PautvMediaLab=false -PautvIsolatedTrial=true :app:testDebugUnitTest :app:assembleDebug
+      - name: Verify trial application ID and separate launcher
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          AAPT="$(find "$ANDROID_HOME/build-tools" -type f -name aapt | sort -V | tail -1)"
+          "$AAPT" dump badging "$APK" > trial-package.txt
+          grep -q "package: name='dev.prestwich.autv.trial'" trial-package.txt
+          grep -q "application-label:'AUTV Trial'" trial-package.txt
+          echo 'Package isolation: PASS'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AUTV-Full-ABC-10-Isolated-Trial
+          path: |
+            android/app/build/outputs/apk/debug/app-debug.apk
+            trial-package.txt
+          if-no-files-found: error
+          retention-days: 30

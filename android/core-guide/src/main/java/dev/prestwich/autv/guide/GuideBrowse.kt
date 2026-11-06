@@ -17,5 +17,5 @@ object GuideBrowse {
 
     fun categoryForPlaying(current: String, channel: Channel?): String =
         if (current == "All" || channel == null || channel.genre == current) current
-        else channel.genre.takeIf { it in categories } ?: "All"
+        else channel.genre.takeIf { it in categories || it == "Australian TV" } ?: "All"
 }

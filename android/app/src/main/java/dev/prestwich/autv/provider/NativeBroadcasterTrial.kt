@@ -17,10 +17,6 @@ internal object NativeBroadcasterTrial {
     private const val ABC_COLLECTION = "https://api.iview.abc.net.au/v2/collection/"
     private const val TEN_CONFIG = "https://10.com.au/api/v1/config"
 
-    // A known unofficial candidate, deliberately limited to an explicit user-initiated debug test.
-    // It is NOT a registered Network 10 account session or an approved production channel feed.
-    const val TEN_VIC_EXPERIMENTAL_HLS = "https://i.mjh.nz/.r/10-vic.m3u8"
-
     fun inspect(provider: String, fetch: (String) -> JSONObject = ::getJson): Result = try {
         when (provider) {
             "abc" -> {

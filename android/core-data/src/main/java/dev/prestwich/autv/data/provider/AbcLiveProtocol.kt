@@ -15,7 +15,15 @@ object AbcLiveProtocol {
     fun liveCollectionId(home: JSONObject): String {
         val rows = home.optJSONObject("_embedded")?.optJSONArray("collections") ?: unsupported()
         val ids = (0 until rows.length()).mapNotNull { rows.optJSONObject(it) }
-            .filter { it.optString("title").contains("watch abc channels live", ignoreCase = true) }
+            .filter { row ->
+                // Live ABC home on 5 Nov 2026 uses "Watch ABC Live" (collection 959),
+                // rather than the older "Watch ABC Channels Live" fixture name.
+                // Recognise the actual typed collection, not a stale marketing string.
+                val title = row.optString("title").trim()
+                row.optString("type").equals("livestream", ignoreCase = true) &&
+                    (title.equals("Watch ABC Live", true) || title.equals("Watch ABC Channels Live", true)) ||
+                    title.equals("Watch ABC Channels Live", true)
+            }
             .map { identifier(it.optString("id")) }.distinct()
         return ids.singleOrNull() ?: unsupported()
     }
