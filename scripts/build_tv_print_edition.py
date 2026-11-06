@@ -39,7 +39,7 @@ SOURCES = {
     "SBS": ROOT / "android/app/src/main/res/drawable-nodpi/provider_sbs.png",
 }
 MAX_PER_PAGE = 24
-PAGE_W, PAGE_H = A5
+PAGE_W, PAGE_H = landscape(A4)[0]/2, landscape(A4)[1]  # exact A4 half-width: 148.5 x 210 mm
 
 def text_fit(value: str, max_w: float, font="Helvetica", size=8.2) -> str:
     value = value.replace("\n", " ").strip()
