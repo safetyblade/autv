@@ -1,0 +1,84 @@
+name: AUTV Full Native APK — test build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/autv-full-native-apk.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+      - name: Verify approved broadcaster channels and Seven baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/verify-seven-baseline.py
+          python3 - <<'PY'
+          from pathlib import Path
+          channels = Path('android/app/src/main/java/dev/prestwich/autv/provider/AustralianLiveChannels.kt').read_text()
+          expected = ['LiveChannel(2, "ABC TV VIC"', 'LiveChannel(20, "ABC NEWS"',
+                      'LiveChannel(22, "ABC Kids"', 'LiveChannel(10, "10 VIC"',
+                      'LiveChannel(11, "10 Drama"', 'LiveChannel(12, "10 Comedy"']
+          assert all(value in channels for value in expected), 'Approved live channel missing from native app'
+          settings = Path('android/app/src/main/java/dev/prestwich/autv/provider/AustralianServicesSettings.kt').read_text()
+          assert 'ChannelRefreshSettings(model)' in settings
+          assert 'StartupSettings(model)' in settings
+          assert 'AustralianLiveChannels.approved' in settings
+          print('Six live channels and native Settings integration: PASS')
+          PY
+      - name: Test and build complete native AUTV
+        shell: bash
+        run: |
+          set -euo pipefail
+          gradle -p android \
+            -PautvMediaLab=false -PautvIsolatedTrial=false \
+            -PautvVersionCode=$((1000 + ${{ github.run_number }})) \
+            -PautvVersionName=0.5.0-native.${{ github.run_number }} \
+            :core-data:testDebugUnitTest :core-guide:testDebugUnitTest \
+            :core-player:testDebugUnitTest :app:testDebugUnitTest :app:assembleDebug
+      - name: Verify native package and record debug signing
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          AAPT=$(find "$ANDROID_HOME/build-tools" -name aapt -type f | sort -V | tail -n 1)
+          SIGN=$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -n 1)
+          mkdir -p native-apk
+          "$AAPT" dump badging "$APK" > native-apk/package.txt
+          grep -q "package: name='dev.prestwich.autv'" native-apk/package.txt
+          grep -q "application-label:'AUTV'" native-apk/package.txt
+          "$SIGN" verify --verbose --print-certs "$APK" > native-apk/signing.txt
+          cp "$APK" native-apk/AUTV-Full-Native-Debug.apk
+          {
+            echo "Commit: $GITHUB_SHA"
+            echo "Version name: 0.5.0-native.${{ github.run_number }}"
+            echo "Version code: $((1000 + ${{ github.run_number }}))"
+            echo 'Package: dev.prestwich.autv'
+            echo 'Build: COMPLETE NATIVE DEBUG, not Trial or Media Lab.'
+            echo 'Signing: CI debug certificate, NOT the permanent distribution signing identity.'
+            echo 'Install: NOT an in-place update unless the certificate independently matches the installed application.'
+            echo 'Never uninstall the installed application to force this APK without backing up provider sessions and preferences.'
+            sha256sum "$APK"
+          } > native-apk/README.txt
+      - name: Publish full native test APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: AUTV-Full-Native-Debug-${{ github.run_number }}
+          path: native-apk/
+          if-no-files-found: error
+          retention-days: 30
