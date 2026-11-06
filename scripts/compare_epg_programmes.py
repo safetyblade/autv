@@ -93,8 +93,10 @@ def produce(candidates, programmes, now):
             right=programmes.get((b["candidate_source_file"],b["candidate_source_id"]),[])
             shared,agree,conflict=comparison(left,right,now)
             pct=round(agree/shared*100,1) if shared else 0
+            independent=a["candidate_source_file"]!=b["candidate_source_file"]
             disposition=("INSUFFICIENT_SHARED_TIMES" if shared<8 else
-                         "STRONG_SCHEDULE_AGREEMENT" if pct>=90 else
+                         "SAME_FEED_VARIANT_AGREEMENT" if pct>=90 and not independent else
+                         "CROSS_SOURCE_SCHEDULE_AGREEMENT" if pct>=90 else
                          "REGIONAL_OR_SERVICE_CONFLICT" if pct<50 else
                          "PARTIAL_SCHEDULE_AGREEMENT")
             out.append({
@@ -124,12 +126,14 @@ def main():
     summary={
         "generated_at_utc":now.isoformat(),
         "compared_pairs":len(report),
-        "strong_agreement_pairs":sum(x["finding"]=="STRONG_SCHEDULE_AGREEMENT" for x in report),
+        "cross_source_agreement_pairs":sum(x["finding"]=="CROSS_SOURCE_SCHEDULE_AGREEMENT" for x in report),
+        "same_feed_variant_agreement_pairs":sum(x["finding"]=="SAME_FEED_VARIANT_AGREEMENT" for x in report),
         "conflicting_pairs":sum(x["finding"]=="REGIONAL_OR_SERVICE_CONFLICT" for x in report),
         "partial_pairs":sum(x["finding"]=="PARTIAL_SCHEDULE_AGREEMENT" for x in report),
         "insufficient_pairs":sum(x["finding"]=="INSUFFICIENT_SHARED_TIMES" for x in report),
-        "channels_with_strong_agreement":sorted({x["number"] for x in report if x["finding"]=="STRONG_SCHEDULE_AGREEMENT"},key=int),
+        "channels_with_strong_agreement":sorted({x["number"] for x in report if x["finding"]=="CROSS_SOURCE_SCHEDULE_AGREEMENT"},key=int),
         "not_evidence_of_on_air_playback":True,
+        "not_independent_if_same_feed":True,
     }
     SUMMARY.write_text(json.dumps(summary,indent=2)+"\n",encoding="utf-8")
     print(json.dumps(summary,indent=2))
