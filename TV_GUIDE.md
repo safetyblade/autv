@@ -1,27 +1,28 @@
 # AUTV — TV guide and current channel directory
 
-Updated **6 November 2026** from `channel_guide.csv`. The CSV records 639 active curated FAST/IPTV channels. The published playlist currently contains 634 entries; a catalogue entry does not prove the stream is playable or that its programme guide is complete.
+Generated **6 November 2026** from `channel_guide.csv` and `AustralianLiveChannels.kt`.
+The curated source lists **639 active FAST/IPTV channels**. The published playlist can have fewer streams during upstream disruptions. A listed source is not proof of working audio/video, distribution permission or current EPG data.
 
 ## Getting started
 
-Use the TV remote to browse categories or channel numbers, press **OK** to play and long-press **OK** to add/remove Favourites. Select a startup channel in Settings; refresh the guide after playlist changes.
+Browse categories or channel numbers with your TV remote; press **OK** to watch and long-press **OK** to add/remove a Favourite. Select a startup channel in Settings. Following an approved playlist refresh, use **Settings → Refresh channels and TV guide** in supported versions to update local channel and programme data.
 
-### Australian TV — owner-tested, no login
+## Australian TV — approved free live channels
 
-| Number | Channel | Provider |
-| ---: | --- | --- |
-| 2 | ABC TV VIC | ABC |
-| 10 | 10 VIC | Network 10 |
-| 11 | 10 Drama | Network 10 |
-| 12 | 10 Comedy | Network 10 |
-| 20 | ABC NEWS | ABC |
-| 22 | ABC Kids | ABC |
+| Number | Channel | Provider | Account required |
+| ---: | --- | --- | --- |
+| 2 | ABC TV VIC | ABC iview | No |
+| 10 | 10 VIC | 10 | No |
+| 11 | 10 Drama | 10 | No |
+| 12 | 10 Comedy | 10 | No |
+| 20 | ABC NEWS | ABC iview | No |
+| 22 | ABC Kids | ABC iview | No |
 
-All six were verified playing on an Australian device on 6 November 2026. They are app-side Australian TV rows, **not** part of the FAST/IPTV CSV below. ABC account linking may be offered separately but is not needed for these live services. 7plus, SBS and 9Now use their own sign-in and source authorisation where supported. If a channel fails, refresh once and capture its number and playback error; do not assume an account login or a source URL alone proves playback.
+The channel streams are physically approved on the owner's Australian TV and play without a broadcaster account. ABC's separate optional device-code link is retained for possible future capabilities. Provider-labelled services 9Now, 7plus and SBS have independent activation requirements.
 
-## Current curated FAST/IPTV catalogue
+## Catalogue summary
 
-| Category | Entries |
+| Category | Active channels |
 | --- | ---: |
 | News | 24 |
 | Sport | 96 |
@@ -34,7 +35,9 @@ All six were verified playing on an Australian device on 6 November 2026. They a
 | Factual | 55 |
 | Kids & Animation | 50 |
 | Music | 29 |
-| **Total** | **639** |
+| **Curated FAST/IPTV total** | **639** |
+
+The six Australian TV rows above are app-managed and not counted in this FAST/IPTV CSV total.
 
 ## Full numbered FAST/IPTV directory
 
@@ -680,4 +683,6 @@ All six were verified playing on an Australian device on 6 November 2026. They a
 | 1327 | Stingray Holidayscapes | Music | Plex AU | Full |
 | 1328 | ZenLIFE by Stingray | Music | Plex AU | Full |
 
-**Source policy:** A found stream, a matching channel name or an HTTP 200 manifest is only a candidate until its programme identity, Australian access, video/audio, adverts and use permissions are checked. For discovery work use [Source discovery](docs/SOURCE_DISCOVERY.md), not historical project notes.
+## Editorial notes
+
+For the live app catalogue use the code and datasets, not obsolete manual lists. Historical investigations and unsuccessful stream tests are dated evidence—not permanent prohibitions. See [Source discovery](docs/SOURCE_DISCOVERY.md) and [Maintenance](docs/MAINTENANCE.md). Never import a foreign-region playlist or paid account token without permission and physical playback verification.
