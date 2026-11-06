@@ -18,13 +18,16 @@ The operational source of truth is the current repository code and datasets, not
 
 **Release:** Use the signed Native app distribution for `dev.prestwich.autv`, and the isolated Trial for device QA. Compare certificate SHA-256 with the device's existing package before promising an over-install update.
 
-## Approved printed guide
+## Approved printed guide — immutable master
 
-The **approved A5 editorial booklet** is generated from `channel_guide.csv` and the six native Free-To-Air TV entries in `AustralianLiveChannels.kt` by `scripts/build_printable_guide.py`.
+**The original owner-approved PDF is the design authority:** `docs/templates/AUTV_TV_Booklet_Master.pdf`.
+It is the byte-exact 18-face A4 duplex booklet approved on 6 November 2026 (SHA-256 `96c309e947ee742e454126af9e5d6376745bc703eb1041855530c31db140c2ff`).
 
-The publisher `.github/workflows/publish-printable-guide.yml` rebuilds both editions when either source changes. It does **not** derive the booklet from `TV_GUIDE.md`, which can lag behind source changes. It publishes permanent paths:
+The generator `scripts/build_printable_guide.py` preserves this PDF's actual artwork, brand logos, Free-To-Air TV cards, fonts, wording, category structure, page styling, duplex order and editorial content. **No layout may be generated from an approximate ReportLab recreation.** Channel numbers, names, page contents and totals come from the controlled `channel_guide.csv`. A catalogue-identical build copies the approved print PDF byte-for-byte. A changed channel list changes only its relevant entries and totals; the immutable master remains untouched. If approved pagination capacity is exceeded, publishing fails rather than changing page design.
 
-- `docs/AUTV_TV_Booklet_Reader.pdf` — A5 reading-order edition.
-- `docs/AUTV_TV_Booklet_Print.pdf` — A4 landscape, booklet-imposed duplex edition; print two-sided, short-edge flip.
+The `publish-printable-guide.yml` workflow runs when the controlled catalogue, native Free-To-Air channel declarations or rendering engine change. It publishes:
 
-The layout, category order, Free-To-Air terminology and editor-approved book structure are fixed in the generator. Channel numbers, names and counts are data-only changes. A stream refresh without a catalogue change does not need to regenerate the PDF. The workflow must validate successfully before claiming the PDF is published. The old generic `AUTV_Printable_TV_Guide.pdf` is superseded and must not be distributed as the approved booklet.
+- `docs/AUTV_TV_Booklet_Print.pdf` — A4 landscape, imposed duplex, print both sides / short edge.
+- `docs/AUTV_TV_Booklet_Reader.pdf` — 36 A5 pages, normal reading order.
+
+The master SHA-256 is checked on every build. Ordinary six-hour stream/EPG token refreshes do not change the printed channel directory and do not require republishing identical PDFs. The generic `AUTV_Printable_TV_Guide.pdf` is superseded and is not an approved design.
