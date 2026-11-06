@@ -44,10 +44,11 @@ android {
         getByName("debug") {
             if (mediaLab) applicationIdSuffix = ".medialab"
             if (isolatedTrial) {
-                // Separate fully functional AUTV test app; never uninstall the owner's
-                // previously linked package merely to test a newly signed CI build.
+                // Separate full TV application. Signing only becomes update-stable
+                // when the permanent distribution key is provided in CI.
                 applicationIdSuffix = ".trial"
                 manifestPlaceholders["autvAppLabel"] = "AUTV Trial"
+                if (signingPath != null) signingConfig = signingConfigs.getByName("distribution")
             }
         }
         getByName("release") {
