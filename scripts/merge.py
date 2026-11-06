@@ -230,19 +230,31 @@ def main():
         xml_channels.append(xml)
         print(f"ADDED DYNAMIC: {name}")
 
-    # Source-only NBA #228 recovery: prefer an actual current Tubi catalogue
-    # entry over Xumo. Existing Xumo selection remains a fallback if Tubi
-    # drops its listing; apply_guide.py retains the first matching channel.
-    if "The NBA Channel" in wanted(SELECTED_TUBI):
+    # NBA #228 source trial via the EXISTING refresh. Prefer the genuine Pluto
+    # provider session acquired by this workflow, then Tubi, then Xumo.
+    # The guide applies first-match deduplication: exactly one visible #228.
+    nba_pluto = None
+    if "The NBA Channel" in wanted(SELECTED_PLUTO):
+        nba_pluto = next((entry for entry in pluto_entries
+                          if entry[0].casefold() == "the nba channel"
+                          and ".pluto.tv/" in entry[2]
+                          and "service-channel-stitcher" in entry[2]
+                          and "jwt=" in entry[2]), None)
+    if nba_pluto:
+        m3u, xml = normalise(*nba_pluto)
+        extras.append(m3u)
+        xml_channels.append(xml)
+        print("PREFERRED PLUTO: The NBA Channel (Tubi/Xumo catalogue fallbacks)")
+    elif "The NBA Channel" in wanted(SELECTED_TUBI):
         nba_tubi = next((entry for entry in tubi_entries
                          if entry[0].casefold() == "the nba channel"), None)
         if nba_tubi:
             m3u, xml = normalise(*nba_tubi)
             extras.append(m3u)
             xml_channels.append(xml)
-            print("PREFERRED TUBI: The NBA Channel (Xumo retained as fallback)")
+            print("PLUTO UNAVAILABLE: NBA #228 fallback to Tubi")
         else:
-            print("NBA TUBI NOT FOUND: retaining existing Xumo selection")
+            print("PLUTO/TUBI UNAVAILABLE: NBA #228 fallback to Xumo")
 
     # Custom entries are authoritative overrides. apply_guide.py keeps the first
     # matching logical channel name, so add custom before provider selections.
