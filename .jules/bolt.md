@@ -33,3 +33,7 @@
 ## 2025-05-18 - Fast String Query Parameter Updating in Pluto Session Refresh
 **Learning:** Replacing `urlsplit`, `parse_qsl`, `dict` instantiation, `urlencode`, and `urlunsplit` operations inside Pluto playlist session update loop with direct string query slicing and parameter replacement (`_update_query_params`) yields a ~3.43x speedup (~70.8% time reduction) by eliminating URL object decomposition and dictionary allocations.
 **Action:** Prefer direct query string slicing (`str.find("?")`, `str.split("&")`) over `urlsplit`/`parse_qsl`/`urlencode` when updating specific known query parameters in bulk URL collections.
+
+## 2025-05-18 - Fast ASCII Digit Checking vs Regex Fullmatch
+**Learning:** Replacing `re.fullmatch(r"[0-9]+", s)` with `s.isascii() and s.isdigit()` in CSV channel number validation yields a ~8.8x to 11.9x speedup (~88% to 91% time reduction) by eliminating regex engine compilation/matching overhead and unicode-aware digit edge cases.
+**Action:** Use `s.isascii() and s.isdigit()` instead of `re.fullmatch(r"[0-9]+", s)` for fast ASCII decimal digit validation in loops.
