@@ -70,8 +70,9 @@ internal fun ProviderActivationScreen(
                 val codeDescription="Activation code: ${challenge.userCode.map {it.toString()}.joinToString(" ")}"
                 Text(challenge.userCode,style=MaterialTheme.typography.headlineLarge,textAlign=TextAlign.Center,
                     modifier=Modifier.semantics {contentDescription=codeDescription}.testTag("activation-code"))
+                val expiryDescription = "Expires in ${remaining / 60} minutes ${(remaining % 60)} seconds"
                 Text("Expires in ${remaining/60}:${(remaining%60).toString().padStart(2,'0')}",style=MaterialTheme.typography.bodySmall,
-                    modifier=Modifier.testTag("activation-expiry"))
+                    modifier=Modifier.semantics { contentDescription = expiryDescription }.testTag("activation-expiry"))
             }
             if(remaining==0L) Text("This code has expired. Cancel and request a new code.",
                 color=MaterialTheme.colorScheme.error,textAlign=TextAlign.Center,

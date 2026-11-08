@@ -73,7 +73,9 @@ internal fun ChannelRefreshSettings(model: PlaybackModel) {
         !model.manualRefreshBusy,
     )
     if (model.manualRefreshBusy) {
-        LinearProgressIndicator(Modifier.fillMaxWidth().testTag("refresh-all-progress"))
+        LinearProgressIndicator(Modifier.fillMaxWidth().semantics {
+            contentDescription = "Refreshing channels and TV guide"
+        }.testTag("refresh-all-progress"))
     }
     model.manualRefreshStatus?.let { message ->
         Text(message, style = MaterialTheme.typography.bodySmall,
