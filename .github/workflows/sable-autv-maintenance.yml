@@ -1,0 +1,213 @@
+name: SABLE — AUTV junior QA pilot
+run-name: SABLE ${{ inputs.task_id }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      task_id:
+        description: Fixed pilot task identifier
+        required: true
+        type: string
+      base_sha:
+        description: Approved AUTV main SHA
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sable-autv-junior-qa
+  cancel-in-progress: false
+
+jobs:
+  agent:
+    if: inputs.task_id == 'autv-xmltv-offset-001'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    outputs:
+      has_patch: ${{ steps.scope.outputs.has_patch }}
+    steps:
+      - name: Checkout approved revision
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ inputs.base_sha }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Check fixed task and unchanged source
+        env:
+          SABLE_TASK: ${{ inputs.task_id }}
+          BASE_SHA: ${{ inputs.base_sha }}
+        run: |
+          set -euo pipefail
+          [[ "$SABLE_TASK" == 'autv-xmltv-offset-001' ]]
+          [[ "$BASE_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$(git rev-parse HEAD)" == "$BASE_SHA" ]]
+          [[ "$(git ls-remote origin refs/heads/main | cut -f1)" == "$BASE_SHA" ]] || { echo 'AUTV main changed; reapproval required'; exit 1; }
+          mkdir -p "$RUNNER_TEMP/sable-proof"
+
+      - name: Reproduce source defect before changes
+        run: |
+          python - <<'PY'
+          from scripts.audit_epg_gate1 import parse_xmltv_time
+          try:
+              parse_xmltv_time("202611071900 +2360")
+          except ValueError:
+              print("BASELINE_REPRODUCED: invalid timezone raises ValueError")
+          else:
+              raise SystemExit("Issue not reproducible; do not modify source")
+          PY
+
+      - name: Install pinned agent
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+
+      - name: Install OpenCode CLI
+        run: |
+          set -euo pipefail
+          npm install --global opencode-ai@1.18.16 --no-audit --no-fund
+          opencode --version
+
+      - name: Execute fixed-scope task without GitHub write credentials
+        timeout-minutes: 15
+        env:
+          GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.SABLE_GEMINI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.SABLE_GEMINI_API_KEY }}
+          SABLE_MODEL: ${{ vars.SABLE_OPENCODE_MODEL }}
+        run: |
+          set -euo pipefail
+          [[ -n "$GOOGLE_GENERATIVE_AI_API_KEY" ]] || { echo 'AUTV Actions secret SABLE_GEMINI_API_KEY not configured'; exit 1; }
+          model="${SABLE_MODEL:-google/gemini-2.5-flash}"
+          cat > "$RUNNER_TEMP/sable-task.md" <<'TASK'
+          You are SABLE conducting one controlled AUTV Junior QA task.
+          Reproduce and fix the 12-digit XMLTV fallback timezone bug in scripts/audit_epg_gate1.py.
+          Invalid offsets such as +2360 currently cause ValueError; return None instead.
+          Add regression coverage in tests/test_audit_epg_gate1.py.
+          Keep all valid timestamp and fast-path behaviour unchanged.
+          Touch ONLY those two files. Do not add files.
+          Run python -m unittest discover -s tests -p test_audit_epg_gate1.py.
+          No source feed, channel, provider, signing, APK or generated guide changes.
+          No pushes, pull requests, deployments, broad refactors or unrelated packages.
+          If no safe change is needed, leave the files untouched and report the finding.
+          Report only demonstrated changes and tests. Never print secrets.
+          TASK
+          # Raw model stream is not uploaded as it may contain private data.
+          timeout 850 opencode run --format json --model "$model" "$(cat "$RUNNER_TEMP/sable-task.md")" > "$RUNNER_TEMP/sable-private-events.jsonl"
+          echo 'Agent finished. Independent scope and regression checks follow.'
+
+      - name: Validate agent patch scope and size
+        id: scope
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os, pathlib, subprocess
+          allowed={'scripts/audit_epg_gate1.py','tests/test_audit_epg_gate1.py'}
+          changed=set(subprocess.check_output(['git','diff','--name-only'],text=True).splitlines())
+          untracked=subprocess.check_output(['git','ls-files','--others','--exclude-standard'],text=True).splitlines()
+          if untracked or changed-allowed:
+              raise SystemExit('Unapproved file edit or addition detected')
+          if any(pathlib.Path(p).is_symlink() for p in changed):
+              raise SystemExit('Symlinks are not permitted')
+          patch=subprocess.check_output(['git','diff','--binary'])
+          if len(patch)>80000 or b'GIT binary patch' in patch:
+              raise SystemExit('Oversized or binary patch rejected')
+          proof=pathlib.Path(os.environ['RUNNER_TEMP'])/'sable-proof'
+          proof.mkdir(exist_ok=True)
+          (proof/'change.patch').write_bytes(patch)
+          (proof/'changed-files.txt').write_text('\n'.join(sorted(changed))+'\n')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as output:
+              print('has_patch='+('true' if changed else 'false'),file=output)
+          print('Allowed changes:',', '.join(sorted(changed)) or 'NONE')
+          PY
+          git diff --check
+
+      - name: Test actual agent changes
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p 'test_audit_epg_gate1.py' 2>&1 | tee "$RUNNER_TEMP/sable-proof/test-output.log"
+          python -m py_compile scripts/audit_epg_gate1.py tests/test_audit_epg_gate1.py
+
+      - name: Retain nonsecret evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: sable-autv-pilot-evidence
+          path: ${{ runner.temp }}/sable-proof/
+          if-no-files-found: warn
+          retention-days: 7
+
+  publish:
+    needs: agent
+    if: needs.agent.result == 'success' && needs.agent.outputs.has_patch == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout pinned AUTV revision
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ inputs.base_sha }}
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Download reviewed-scope patch
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: sable-autv-pilot-evidence
+          path: ${{ runner.temp }}/sable-proof
+
+      - name: Independently validate patch and rerun tests
+        env:
+          BASE_SHA: ${{ inputs.base_sha }}
+        run: |
+          set -euo pipefail
+          [[ "$BASE_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$(git rev-parse HEAD)" == "$BASE_SHA" ]]
+          [[ "$(git ls-remote origin refs/heads/main | cut -f1)" == "$BASE_SHA" ]] || { echo 'Source changed before publication'; exit 1; }
+          git apply --check "$RUNNER_TEMP/sable-proof/change.patch"
+          git apply "$RUNNER_TEMP/sable-proof/change.patch"
+          python - <<'PY'
+          import pathlib, subprocess
+          changed=set(subprocess.check_output(['git','diff','--name-only'],text=True).splitlines())
+          allowed={'scripts/audit_epg_gate1.py','tests/test_audit_epg_gate1.py'}
+          if not changed or changed-allowed or any(pathlib.Path(p).is_symlink() for p in changed):
+              raise SystemExit('Patch outside approved scope')
+          print('Independent patch scope validated')
+          PY
+          git diff --check
+          python -m unittest discover -s tests -p 'test_audit_epg_gate1.py'
+          python -m py_compile scripts/audit_epg_gate1.py tests/test_audit_epg_gate1.py
+
+      - name: Push task branch and open draft PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          branch='sable/autv-xmltv-offset-001'
+          [[ -z "$(git ls-remote --heads origin "$branch")" ]] || { echo 'Task branch exists; refusing overwrite'; exit 1; }
+          git switch -c "$branch"
+          git config user.name 'sable[bot]'
+          git config user.email 'sable-agent@users.noreply.github.com'
+          git add -- scripts/audit_epg_gate1.py tests/test_audit_epg_gate1.py
+          git commit -m 'fix(epg): handle malformed XMLTV timezone offsets'
+          gh auth setup-git
+          git push origin "$branch"
+          cat > "$RUNNER_TEMP/sable-pr.md" <<'BODY'
+          ## SABLE Junior QA — controlled AUTV pilot
+          Scope: XMLTV fallback parser and associated regression tests only.
+          Source: https://github.com/safetyblade/projectsable/issues/4
+
+          The associated GitHub Actions run contains the actual test outcome
+          and a bounded patch artifact. Independent Marcus QA and owner merge
+          approval are still required. No channel or provider changes.
+          BODY
+          gh pr create --draft --base main --head "$branch" \
+            --title 'fix(epg): handle malformed XMLTV timezone offsets' \
+            --body-file "$RUNNER_TEMP/sable-pr.md"
+
