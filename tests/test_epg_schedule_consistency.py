@@ -11,6 +11,27 @@ def row(source,sid="a",status="REVIEW_REQUIRED"):
 class CompareProgrammeTests(unittest.TestCase):
     def test_timezone_correctness(self):
         self.assertEqual(instant("20261106230000 +1100"),T)
+
+    def test_instant_timestamp_variations_and_edge_cases(self):
+        # Fast path 20-char tests (+0000 UTC, positive offset, negative offset)
+        self.assertEqual(instant("20261106120000 +0000"), T)
+        self.assertEqual(instant("20261106070000 -0500"), T)
+        self.assertEqual(instant("   20261106120000 +0000   "), T)
+
+        # Fallback path tests (12-char with zone, 12-char without zone, invalid)
+        expected_12 = datetime(2026, 11, 6, 12, 0, 0, tzinfo=timezone.utc)
+        self.assertEqual(instant("202611061200 +0000"), expected_12)
+        self.assertEqual(instant("202611061200"), expected_12)
+        self.assertEqual(instant("20261106120000"), expected_12)
+
+        # Invalid strings and edge cases
+        self.assertIsNone(instant(None))
+        self.assertIsNone(instant(""))
+        self.assertIsNone(instant("   "))
+        self.assertIsNone(instant("invalid timestamp"))
+        self.assertIsNone(instant("20261106990000 +0000"))  # Invalid hour
+        self.assertIsNone(instant("20261106120000 +9999"))  # Invalid tz offset
+
     def test_matching_programmes(self):
         self.assertEqual(comparison(blocks("same"),blocks("same"),T),(96,96,0))
     def test_different_regional_timetables(self):
