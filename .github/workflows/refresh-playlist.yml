@@ -33,6 +33,11 @@ jobs:
         run: |
           set -euo pipefail
           curl --fail --silent --show-error --location "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plex_au.m3u" --output base_upstream.m3u
+          # Distinct FilmRise Beyblade channel in Plex GB; keep AU as fallback when unavailable.
+          if ! curl --fail --silent --show-error --location "https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/main/playlists/plex_gb.m3u" --output plex_gb_upstream.m3u; then
+            printf "#EXTM3U\n" > plex_gb_upstream.m3u
+            echo "::warning::Plex GB unavailable; existing Plex AU Beyblade fallback retained"
+          fi
           curl --fail --silent --show-error --location "https://www.apsattv.com/ssungaus.m3u" --output secondary_upstream.m3u
           curl --fail --silent --show-error --location "https://www.apsattv.com/aulg.m3u" --output lg_upstream.m3u
           # Never merge an upstream Pluto catalogue solely because curl returned 200:
@@ -131,7 +136,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -f base_upstream.m3u secondary_upstream.m3u lg_upstream.m3u pluto_us_upstream.m3u pluto_ca_upstream.m3u pluto_gb_upstream.m3u roku_upstream.m3u epg_plex_*.xml.gz epg_pluto_*.xml.gz epg_roku_*.xml.gz xumo_upstream.m3u epg_xumo.xml.gz tubi_upstream.m3u epg_tubi.xml epg_samsung_all.xml.gz dynamic_sources.m3u pluto_degraded.marker
+          rm -f base_upstream.m3u plex_gb_upstream.m3u secondary_upstream.m3u lg_upstream.m3u pluto_us_upstream.m3u pluto_ca_upstream.m3u pluto_gb_upstream.m3u roku_upstream.m3u epg_plex_*.xml.gz epg_pluto_*.xml.gz epg_roku_*.xml.gz xumo_upstream.m3u epg_xumo.xml.gz tubi_upstream.m3u epg_tubi.xml epg_samsung_all.xml.gz dynamic_sources.m3u pluto_degraded.marker
 
           # Stage first: match trace is a newly generated file on the first run.
           # A worktree-only diff does not detect untracked provenance outputs.
