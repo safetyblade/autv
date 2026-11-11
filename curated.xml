@@ -36,6 +36,10 @@
     <display-name>AfroLandTV</display-name>
     <icon src="https://provider-static.plex.tv/epg/images/ott_channels/logos/AfroLandTV_logo_dark_v3.png" />
   </channel>
+  <channel id="697140a85d851f5e69414688-6ad2667e5374a1e72d134626">
+    <display-name>After the First 48</display-name>
+    <icon src="https://provider-static.plex.tv/epg/cms/production/f67dc3f5-4589-411e-8386-198f9be1d37a/After_the_First_48_channel_logo_white_1500x1000.png" />
+  </channel>
   <channel id="697140a85d851f5e69414688-62efbb8652f7d73061eec498">
     <display-name>Alternative</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/bf09a995-48fe-45f6-abb3-56b442494c12/Rock_alternatives_Rdx.png" />
@@ -139,6 +143,10 @@
   <channel id="697140a85d851f5e69414688-6164a963766ab4f9f57e81b1">
     <display-name>Camp Spoopy</display-name>
     <icon src="https://provider-static.plex.tv/epg/images/ott_channels/logos/camp-spoopy-logo_dark.png" />
+  </channel>
+  <channel id="697140a85d851f5e69414688-6ad25babb3edba59b49aabc0">
+    <display-name>Carwow</display-name>
+    <icon src="https://provider-static.plex.tv/epg/cms/production/d8e4adb1-d357-4459-9670-647dae6022d6/CarWow_channel_logo_4c_1500x1000.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-64c91830ea7db2f52688c52c">
     <display-name>CBC News</display-name>
@@ -291,6 +299,10 @@
   <channel id="697140a85d851f5e69414688-68db6db222efe0c218a90a9d">
     <display-name>Forensic Files</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/cc7e7351-9dd7-4844-830d-f111796b50e1/FilmRise_ForensicFiles_Color_Logo.png" />
+  </channel>
+  <channel id="697140a85d851f5e69414688-6abd547da9d133322be5f945">
+    <display-name>Forged in Fire</display-name>
+    <icon src="https://provider-static.plex.tv/epg/cms/production/57c2c4f5-ec9d-4673-936c-a16ed80fa6d3/Forged_In_Fire_channel_logo_4c_1500x1000.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-66e8d7600a1c525933947792">
     <display-name>Four in a Bed</display-name>
@@ -515,6 +527,10 @@
   <channel id="697140a85d851f5e69414688-690cd1fb750b5c46ff424c8e">
     <display-name>Mayday: Air Disaster</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/d4c908f9-fa67-4a24-9413-b2e735726e89/PTV_Mayday_1500x1000px_Logo_Colored.png" />
+  </channel>
+  <channel id="697140a85d851f5e69414688-6ad29fe25374a1e72d134649">
+    <display-name>Mega Machines</display-name>
+    <icon src="https://provider-static.plex.tv/epg/cms/production/368f0a2f-2a0e-4fa5-8704-19a094b408a3/MMC_logo_dark-bg_1500x1000.png" />
   </channel>
   <channel id="697140a85d851f5e69414688-68e9436dda6bb987138625c7">
     <display-name>Metal.Rocks</display-name>
