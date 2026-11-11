@@ -220,6 +220,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 543,Hawaii Five-O,Crime,Crime Drama / Mystery,Full,Pluto,,Active,"Crime, investigation, court, mystery or forensic programming."
 544,JAG,Crime,Crime Drama / Mystery,Full,Pluto,,Active,"Crime, investigation, court, mystery or forensic programming."
 545,Universal Crime,Crime,Crime Drama / Mystery,Full,Xumo,,Active,"Crime, investigation, court, mystery or forensic programming."
+546,After the First 48,Crime,True Crime / Investigations,Full,Plex AU,,Active,True-crime documentary coverage following investigations after the initial 48 hours.
 600,Cheers,Comedy,Major / Modern Sitcoms,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
 601,Frasier,Comedy,Major / Modern Sitcoms,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
 602,King of Queens,Comedy,Major / Modern Sitcoms,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
@@ -559,6 +560,9 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1152,World War TV,Factual,History / War,Full,Pluto,,Active,"Military-history channel focused on major conflicts, campaigns and wartime history."
 1153,Pluto TV Military,Factual,History / War,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
 1154,Pluto TV Britain at War,Factual,History / War,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
+1155,Forged in Fire,Factual,Science / Engineering / Discovery,Full,Plex AU,,Active,Bladesmithing competition featuring historical weapons and craftsmanship.
+1156,Carwow,Factual,Science / Engineering / Discovery,Full,Plex AU,,Active,Car reviews and comparisons with automotive engineering features.
+1157,Mega Machines,Factual,Science / Engineering / Discovery,Full,Plex AU,,Active,Documentaries about large machinery and engineering projects.
 1200,The Wiggles,Kids & Animation,Preschool / Young Kids,Full,Plex AU,,Active,Preschool and family channel featuring The Wiggles.
 1201,Peppa Pig,Kids & Animation,Preschool / Young Kids,Full,Pluto,,Active,"Kids, family and animation programming."
 1202,Baby Shark TV,Kids & Animation,Preschool / Young Kids,Full,Samsung AU,Pluto,Active,"Kids, family and animation programming."
@@ -609,6 +613,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1248,Preston & Brianna,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,"Youth creator channel featuring gaming, challenges and family-friendly entertainment."
 1249,Ryan and Friends,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,Children's creator-led entertainment featuring Ryan and related family programming.
 1250,Unspeakable,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,"Youth creator channel featuring gaming, challenges and family-friendly entertainment."
+1251,Beyblade,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,Animated action and competitions featuring Beyblade spinning tops.
 1300,Stingray Greatest Hits,Music,Hits / Pop / Decades,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
 1301,Stingray Hit List,Music,Hits / Pop / Decades,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
 1302,Stingray Pop Adult,Music,Hits / Pop / Decades,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
