@@ -1,7 +1,7 @@
 # AUTV — TV guide and current channel directory
 
-Generated **6 November 2026** from `channel_guide.csv` and `AustralianLiveChannels.kt`.
-The curated source lists **639 active FAST/IPTV channels**. The published playlist can have fewer streams during upstream disruptions. A listed source is not proof of working audio/video, distribution permission or current EPG data.
+Generated **12 November 2026** from `channel_guide.csv` and `AustralianLiveChannels.kt`.
+The curated source lists **644 active FAST/IPTV channels**. The published playlist can have fewer streams during upstream disruptions. A listed source is not proof of working audio/video, distribution permission or current EPG data.
 
 ## Getting started
 
@@ -28,14 +28,14 @@ The channel streams are physically approved on the owner's Australian TV and pla
 | Sport | 96 |
 | Movies | 36 |
 | Game Shows | 20 |
-| Crime | 45 |
+| Crime | 46 |
 | Comedy | 44 |
 | Entertainment | 149 |
 | Reality & Lifestyle | 91 |
-| Factual | 55 |
-| Kids & Animation | 50 |
+| Factual | 58 |
+| Kids & Animation | 51 |
 | Music | 29 |
-| **Curated FAST/IPTV total** | **639** |
+| **Curated FAST/IPTV total** | **644** |
 
 The six Australian TV rows above are app-managed and not counted in this FAST/IPTV CSV total.
 
@@ -94,7 +94,7 @@ The six Australian TV rows above are app-managed and not counted in this FAST/IP
 | 225 | GFN Football | Sport | Samsung GB | Channel only |
 | 226 | ViX Lo Mejor de Liga MX | Sport | Roku | Channel only |
 | 227 | beIN SPORTS XTRA | Sport | Plex AU | Full |
-| 228 | The NBA Channel | Sport | Tubi | Full |
+| 228 | The NBA Channel | Sport | Pluto | Full |
 | 229 | Hoop TV | Sport | SoFast | Channel only |
 | 230 | NFL Channel | Sport | Plex AU | Full |
 | 231 | NFL Super Bowl Champions | Sport | Plex AU | Full |
@@ -264,6 +264,7 @@ The six Australian TV rows above are app-managed and not counted in this FAST/IP
 | 543 | Hawaii Five-O | Crime | Pluto | Full |
 | 544 | JAG | Crime | Pluto | Full |
 | 545 | Universal Crime | Crime | Xumo | Full |
+| 546 | After the First 48 | Crime | Plex AU | Full |
 | 600 | Cheers | Comedy | Pluto | Full |
 | 601 | Frasier | Comedy | Pluto | Full |
 | 602 | King of Queens | Comedy | Pluto | Full |
@@ -603,6 +604,9 @@ The six Australian TV rows above are app-managed and not counted in this FAST/IP
 | 1152 | World War TV | Factual | Pluto | Full |
 | 1153 | Pluto TV Military | Factual | Pluto | Full |
 | 1154 | Pluto TV Britain at War | Factual | Pluto | Full |
+| 1155 | Forged in Fire | Factual | Plex AU | Full |
+| 1156 | Carwow | Factual | Plex AU | Full |
+| 1157 | Mega Machines | Factual | Plex AU | Full |
 | 1200 | The Wiggles | Kids & Animation | Plex AU | Full |
 | 1201 | Peppa Pig | Kids & Animation | Pluto | Full |
 | 1202 | Baby Shark TV | Kids & Animation | Samsung AU | Full |
@@ -653,6 +657,7 @@ The six Australian TV rows above are app-managed and not counted in this FAST/IP
 | 1248 | Preston & Brianna | Kids & Animation | Plex AU | Full |
 | 1249 | Ryan and Friends | Kids & Animation | Plex AU | Full |
 | 1250 | Unspeakable | Kids & Animation | Plex AU | Full |
+| 1251 | Beyblade | Kids & Animation | Plex GB | Full |
 | 1300 | Stingray Greatest Hits | Music | Plex AU | Full |
 | 1301 | Stingray Hit List | Music | Samsung | Channel only |
 | 1302 | Stingray Pop Adult | Music | Samsung | Channel only |
