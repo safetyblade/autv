@@ -462,7 +462,7 @@ private fun CastController(state: CastPlayback, channel: Channel?, schedule: Now
         }
         Text(status, color = Silver, modifier = Modifier.testTag("cast-status"))
         if (state.phase !in setOf(CastPhase.PLAYING, CastPhase.PAUSED)) {
-            LinearProgressIndicator(Modifier.fillMaxWidth())
+            LinearProgressIndicator(Modifier.fillMaxWidth().semantics { contentDescription = "Connecting to Cast receiver" })
             Text("Waiting for the receiver. Playback returns here if it cannot continue.", color = Muted, style = MaterialTheme.typography.bodySmall)
         }
         Surface(color = Glass, shape = RoundedCornerShape(16.dp)) {
