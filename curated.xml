@@ -8,6 +8,10 @@
     <display-name>The NBA Channel</display-name>
     <icon src="https://images.pluto.tv/channels/6792c30abc03978b9b8bb832/colorLogoPNG_1747950897785.png" />
   </channel>
+  <channel id="64305451fc3be5947773c339-64d78b77e5f67b0fab47ff20">
+    <display-name>Beyblade</display-name>
+    <icon src="https://provider-static.plex.tv/epg/cms/production/60b89fec-c657-48fe-a093-c32af674224d/Plex_FilmRise_Beyblade_Color_Logo.png" />
+  </channel>
   <channel id="697140a85d851f5e69414688-63eecb32ac23d1ee072087cb">
     <display-name>123GO!</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/59623ed1-b641-4001-b634-b25e307c3c49/123GO_-_Jonathan_Shrank1500x1000.png" />
