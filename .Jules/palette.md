@@ -29,3 +29,7 @@
 ## 2026-11-04 - Selection Semantics and RadioButton Roles in Settings Option Lists
 **Learning:** Single-selection option lists built with custom buttons (like `FocusButton` for startup channel modes and channels) using visual checkmarks ("✓ ") do not expose selection state to screen readers unless given explicit `Role.RadioButton` and `selected = isSelected` semantics; TalkBack announces raw checkmark symbols or skips state context entirely without these semantics.
 **Action:** Set `semantics { this.selected = isSelected; role = Role.RadioButton; contentDescription = ... }` on interactive option buttons within settings selection lists.
+
+## 2026-11-11 - Accessibility Semantics for Provider Account Operations and Cast Transfer Indicators
+**Learning:** Indeterminate LinearProgressIndicators shown when connecting broadcaster accounts (such as ABC or 10) or handoff to a Cast receiver are ignored or reported as nameless loading indicators by TalkBack unless given explicit `contentDescription` semantics describing the ongoing asynchronous operation.
+**Action:** Always provide explicit `semantics { contentDescription = ... }` for indeterminate progress bars indicating account mutation or receiver handoff.

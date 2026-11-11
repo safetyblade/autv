@@ -151,7 +151,7 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                                 Text(it,color=MaterialTheme.colorScheme.error,
                                                     modifier=Modifier.testTag("abc-error"))
                                             }
-                                            if(account.busy) LinearProgressIndicator(Modifier.fillMaxWidth())
+                                            if(account.busy) LinearProgressIndicator(Modifier.fillMaxWidth().semantics { contentDescription = "Connecting or updating ABC iview account" })
                                             else if(account.connection == ProviderConnection.CONNECTED) {
                                                 FocusButton("Sign out of ABC iview",account::disconnect,
                                                     Modifier.testTag("abc-disconnect"))
@@ -175,7 +175,7 @@ internal fun AustralianServicesSettings(model: PlaybackModel, onClose: () -> Uni
                                                 color=Silver,style=MaterialTheme.typography.bodyMedium)
                                             account.status?.let { Text(it,color=Muted) }
                                             account.error?.let { Text(it,color=MaterialTheme.colorScheme.error) }
-                                            if(account.busy) LinearProgressIndicator(Modifier.fillMaxWidth())
+                                            if(account.busy) LinearProgressIndicator(Modifier.fillMaxWidth().semantics { contentDescription = "Connecting or updating 10 account" })
                                             else if(account.connection == ProviderConnection.CONNECTED) {
                                                 FocusButton("Sign out of 10",account::disconnect,
                                                     Modifier.testTag("ten-disconnect"))
