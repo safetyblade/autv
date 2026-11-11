@@ -6,6 +6,7 @@ ACL Cornhole TV
 Action Hollywood Movies
 Adventure Earth
 AfroLandTV
+After the First 48
 Alternative
 American Crime Channel
 Andromeda
@@ -32,6 +33,7 @@ Brat TV
 Breaking Sports News
 Bring It!
 Camp Spoopy
+Carwow
 CBC News
 Cesar's Pack Leader TV
 Cheaters
@@ -70,6 +72,7 @@ Fight Network
 FilmRise Creators
 Flashback 70s
 Forensic Files
+Forged in Fire
 Four in a Bed
 FRANCE 24
 FrightFlix
@@ -126,6 +129,7 @@ Made In Hollywood
 MagellanTV Wildest
 Maverick Black Cinema
 Mayday: Air Disaster
+Mega Machines
 Metal.Rocks
 Million Dollar Dream Home
 Modern Marvels
