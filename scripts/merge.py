@@ -4,6 +4,7 @@ import unicodedata
 from xml.sax.saxutils import escape
 
 BASE = Path("base_upstream.m3u")
+PLEX_GB = Path("plex_gb_upstream.m3u")
 SAMSUNG = Path("secondary_upstream.m3u")
 LG = Path("lg_upstream.m3u")
 PLUTO_US = Path("pluto_us_upstream.m3u")
@@ -196,6 +197,7 @@ def main():
         raise SystemExit("Plex playlist is invalid")
 
     plex_entries = parse_entries(plex_text)
+    plex_gb_entries = parse_entries(read(PLEX_GB))
     samsung_entries = parse_entries(read(SAMSUNG))
     lg_entries = parse_entries(read(LG))
     pluto_entries = (
@@ -255,6 +257,23 @@ def main():
             print("PLUTO UNAVAILABLE: NBA #228 fallback to Tubi")
         else:
             print("PLUTO/TUBI UNAVAILABLE: NBA #228 fallback to Xumo")
+
+    # Owner test: Plex AU Beyblade #1251 failed on Australian TV (12 Nov 2026).
+    # Try Plex GB's distinct FilmRise Beyblade channel, not the same AU/US/NZ
+    # Plex programme ID. Existing Plex AU remains in selected_plex_channels.txt
+    # as catalogue fallback when the GB listing disappears on a refresh.
+    if "Beyblade" in wanted(SELECTED_PLEX):
+        beyblade_gb = next((entry for entry in plex_gb_entries
+                            if entry[0].casefold() == "beyblade"
+                            and attr(entry[1], "tvg-id")
+                            and entry[2].startswith("https://epg.provider.plex.tv/library/parts/")), None)
+        if beyblade_gb:
+            m3u, xml = normalise(*beyblade_gb)
+            extras.append(m3u)
+            xml_channels.append(xml)
+            print("PREFERRED PLEX GB: Beyblade #1251 FilmRise trial; Plex AU fallback retained")
+        else:
+            print("PLEX GB Beyblade unavailable: retaining Plex AU selection")
 
     # Custom entries are authoritative overrides. apply_guide.py keeps the first
     # matching logical channel name, so add custom before provider selections.
