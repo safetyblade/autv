@@ -616,7 +616,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1251,Beyblade,Kids & Animation,Kids / Family Animation,Full,Plex GB,Plex AU,Active,Animated action and competitions featuring Beyblade spinning tops.
 1300,Stingray Greatest Hits,Music,Hits / Pop / Decades,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
 1301,Stingray Hit List,Music,Hits / Pop / Decades,Channel only,Xumo,Samsung,Active,"Music videos, performances or genre-based music programming."
-1302,Stingray Pop Adult,Music,Hits / Pop / Decades,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
+1302,Stingray Pop Adult,Music,Hits / Pop / Decades,Channel only,Plex AU,Samsung,Active,"Music videos, performances or genre-based music programming."
 1303,Stingray 2000s,Music,Hits / Pop / Decades,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
 1304,Nothin' But 90s,Music,Hits / Pop / Decades,Full,Plex AU,,Active,"1990s music channel featuring pop, rock and hits from the decade."
 1305,Remember the ‘80s,Music,Hits / Pop / Decades,Full,Plex AU,,Active,1980s music channel featuring hits and music videos from the decade.
@@ -638,7 +638,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1321,Qello Concerts,Music,Concerts / Specialty,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
 1322,Stingray Karaoke,Music,Concerts / Specialty,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
 1323,XITE Gospel,Music,Concerts / Specialty,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
-1324,Stingray Easy Listening,Music,Chill / Ambient,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
+1324,Stingray Easy Listening,Music,Chill / Ambient,Channel only,Plex AU,Samsung,Active,"Music videos, performances or genre-based music programming."
 1325,Stingray SPA,Music,Chill / Ambient,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
 1326,Stingray Naturescape,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
 1327,Stingray Holidayscapes,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
