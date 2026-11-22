@@ -9,7 +9,7 @@
     "epg": "https://raw.githubusercontent.com/safetyblade/autv/main/epg.xml.gz",
     "guide": "https://raw.githubusercontent.com/safetyblade/autv/main/guide.json"
   },
-  "activeCount": 644,
+  "activeCount": 645,
   "availableCount": 614,
   "channels": [
     {
@@ -6083,6 +6083,18 @@
       "streamUrl": "https://epg.provider.plex.tv/library/parts/697140a85d851f5e69414688-6515fa752ff655e77635c626/?X-Plex-Token=Pr1jKGsEtPxL2q1cXhGm",
       "tvgId": "697140a85d851f5e69414688-6515fa752ff655e77635c626",
       "logoUrl": "https://provider-static.plex.tv/epg/cms/production/800e74ab-7d32-40a7-bfcd-46759da46896/TheOsbournes_Logo_White_1500x1000_-_Harry_Marshall.png"
+    },
+    {
+      "number": 1091,
+      "name": "Counting Cars+",
+      "genre": "Reality & Lifestyle",
+      "subgenre": "People / Work / Unscripted",
+      "description": "Motoring reality channel following a Las Vegas car restoration and customisation shop.",
+      "epg": "Full",
+      "available": false,
+      "streamUrl": null,
+      "tvgId": null,
+      "logoUrl": null
     },
     {
       "number": 1100,
