@@ -38,8 +38,16 @@ jobs:
             printf "#EXTM3U\n" > plex_gb_upstream.m3u
             echo "::warning::Plex GB unavailable; existing Plex AU Beyblade fallback retained"
           fi
-          curl --fail --silent --show-error --location "https://www.apsattv.com/ssungaus.m3u" --output secondary_upstream.m3u
-          curl --fail --silent --show-error --location "https://www.apsattv.com/aulg.m3u" --output lg_upstream.m3u
+          # 23 Nov 2026: apsattv became a single point of failure for the entire refresh.
+          # Missing Samsung/LG catalogues must not prevent all other providers publishing.
+          if ! curl --fail --silent --show-error --location "https://www.apsattv.com/ssungaus.m3u" --output secondary_upstream.m3u; then
+            printf "#EXTM3U\n" > secondary_upstream.m3u
+            echo "::warning::apsattv Samsung AU unavailable; Samsung catalogue excluded from this refresh"
+          fi
+          if ! curl --fail --silent --show-error --location "https://www.apsattv.com/aulg.m3u" --output lg_upstream.m3u; then
+            printf "#EXTM3U\n" > lg_upstream.m3u
+            echo "::warning::apsattv LG AU unavailable; LG catalogue excluded from this refresh"
+          fi
           # Never merge an upstream Pluto catalogue solely because curl returned 200:
           # its JWTs may already be expired. Try maintained alternative catalogues,
           # re-authenticating and validating each regional file before accepting it.
