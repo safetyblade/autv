@@ -1,7 +1,7 @@
 # AUTV — TV guide and current channel directory
 
-Generated **12 November 2026** from `channel_guide.csv` and `AustralianLiveChannels.kt`.
-The curated source lists **644 active FAST/IPTV channels**. The published playlist can have fewer streams during upstream disruptions. A listed source is not proof of working audio/video, distribution permission or current EPG data.
+Generated **23 November 2026** from `channel_guide.csv` and `AustralianLiveChannels.kt`.
+The curated source lists **645 active FAST/IPTV channels**. The published playlist can have fewer streams during upstream disruptions. A listed source is not proof of working audio/video, distribution permission or current EPG data.
 
 ## Getting started
 
@@ -31,11 +31,11 @@ The channel streams are physically approved on the owner's Australian TV and pla
 | Crime | 46 |
 | Comedy | 44 |
 | Entertainment | 149 |
-| Reality & Lifestyle | 91 |
+| Reality & Lifestyle | 92 |
 | Factual | 58 |
 | Kids & Animation | 51 |
 | Music | 29 |
-| **Curated FAST/IPTV total** | **644** |
+| **Curated FAST/IPTV total** | **645** |
 
 The six Australian TV rows above are app-managed and not counted in this FAST/IPTV CSV total.
 
@@ -197,7 +197,7 @@ The six Australian TV rows above are app-managed and not counted in this FAST/IP
 | 332 | PopCorn Central | Movies | Roku | Full |
 | 333 | Surf Cinema | Movies | Plex AU | Full |
 | 334 | CINEPRIDE | Movies | Plex AU | Full |
-| 335 | The Asylum (Australia) | Movies | Curated | Full |
+| 335 | The Asylum (Australia) | Movies | Xumo | Full |
 | 336 | Trailers From Hell | Movies | Plex AU | Full |
 | 400 | Family Feud | Game Shows | Xumo | Full |
 | 401 | Family Feud Classic | Game Shows | Xumo | Full |
@@ -212,7 +212,7 @@ The six Australian TV rows above are app-managed and not counted in this FAST/IP
 | 410 | Robot Wars by Mech+ | Game Shows | Plex AU | Full |
 | 411 | Xumo Free Game Show TV | Game Shows | Xumo | Full |
 | 412 | America's Next Top Model | Game Shows | Pluto | Full |
-| 413 | Project Runway (Australia) | Game Shows | Curated | Full |
+| 413 | Project Runway (Australia) | Game Shows | Pluto | Full |
 | 414 | Survivor | Game Shows | Pluto | Full |
 | 415 | The Amazing Race | Game Shows | Pluto | Full |
 | 416 | The Biggest Loser | Game Shows | Plex AU | Full |
@@ -237,7 +237,7 @@ The six Australian TV rows above are app-managed and not counted in this FAST/IP
 | 516 | The First 48 by A&E | Crime | Xumo | Full |
 | 517 | The New Detectives | Crime | Pluto | Full |
 | 518 | True Crime Now | Crime | Plex AU | Full |
-| 519 | Unsolved Mysteries (Australia) | Crime | Curated | Full |
+| 519 | Unsolved Mysteries (Australia) | Crime | Xumo | Full |
 | 520 | Women Behind Bars | Crime | Plex AU | Full |
 | 521 | 48 Hours | Crime | Pluto | Full |
 | 522 | Homicide Hunter | Crime | Plex AU | Full |
@@ -290,7 +290,7 @@ The six Australian TV rows above are app-managed and not counted in this FAST/IP
 | 623 | Always Funny Videos | Comedy | Roku | Full |
 | 624 | MST3K | Comedy | Pluto | Full |
 | 625 | RiffTrax | Comedy | Pluto | Full |
-| 626 | Mr Bean Animated (Australia) | Comedy | Curated | Full |
+| 626 | Mr Bean Animated (Australia) | Comedy | Pluto | Full |
 | 627 | Stokes Twins | Comedy | Roku | Full |
 | 628 | Taxi | Comedy | Pluto | Full |
 | 629 | Three's Company | Comedy | Pluto | Full |
@@ -300,7 +300,7 @@ The six Australian TV rows above are app-managed and not counted in this FAST/IP
 | 633 | Green Acres | Comedy | Xumo | Full |
 | 634 | Leave It to Beaver | Comedy | Xumo | Full |
 | 635 | ALF | Comedy | Roku | Full |
-| 636 | Anger Management (Australia) | Comedy | Curated | Full |
+| 636 | Anger Management (Australia) | Comedy | Xumo | Full |
 | 637 | Corner Gas | Comedy | Plex AU | Full |
 | 638 | Dick Van Dyke | Comedy | Plex AU | Full |
 | 639 | Happy Days | Comedy | Pluto | Full |
@@ -549,6 +549,7 @@ The six Australian TV rows above are app-managed and not counted in this FAST/IP
 | 1088 | MTV Jersey Shore | Reality & Lifestyle | Pluto | Full |
 | 1089 | Teen Mom | Reality & Lifestyle | Pluto | Full |
 | 1090 | The Osbournes | Reality & Lifestyle | Plex AU | Full |
+| 1091 | Counting Cars+ | Reality & Lifestyle | Plex AU | Full |
 | 1100 | BBC Earth | Factual | Pluto | Full |
 | 1101 | Smithsonian Channel Selects | Factual | Pluto | Full |
 | 1102 | Documentary+ | Factual | Plex AU | Full |
@@ -569,7 +570,7 @@ The six Australian TV rows above are app-managed and not counted in this FAST/IP
 | 1117 | Evolution Earth | Factual | Plex AU | Full |
 | 1118 | Dinos 24/7 | Factual | Pluto | Full |
 | 1119 | Nature Moments | Factual | Roku | Full |
-| 1120 | Naturetime (Australia) | Factual | Curated | Full |
+| 1120 | Naturetime (Australia) | Factual | Pluto | Full |
 | 1121 | River Monsters | Factual | Plex AU | Full |
 | 1122 | Eddie's Wonderland | Factual | Plex AU | Full |
 | 1123 | PBS Science | Factual | Plex AU | Full |
@@ -636,7 +637,7 @@ The six Australian TV rows above are app-managed and not counted in this FAST/IP
 | 1227 | Arthur | Kids & Animation | Plex AU | Full |
 | 1228 | Mona The Vampire | Kids & Animation | Pluto | Full |
 | 1229 | The Raccoons | Kids & Animation | Pluto | Full |
-| 1230 | Kartoon Channel (Australia) | Kids & Animation | Curated | Full |
+| 1230 | Kartoon Channel (Australia) | Kids & Animation | Tubi | Full |
 | 1231 | Nickelodeon Pluto TV | Kids & Animation | Pluto | Full |
 | 1232 | NickToons | Kids & Animation | Pluto | Full |
 | 1233 | Pluto TV Retro Toons | Kids & Animation | Pluto | Full |
@@ -659,7 +660,7 @@ The six Australian TV rows above are app-managed and not counted in this FAST/IP
 | 1250 | Unspeakable | Kids & Animation | Plex AU | Full |
 | 1251 | Beyblade | Kids & Animation | Plex GB | Full |
 | 1300 | Stingray Greatest Hits | Music | Plex AU | Full |
-| 1301 | Stingray Hit List | Music | Samsung | Channel only |
+| 1301 | Stingray Hit List | Music | Xumo | Channel only |
 | 1302 | Stingray Pop Adult | Music | Samsung | Channel only |
 | 1303 | Stingray 2000s | Music | Samsung | Channel only |
 | 1304 | Nothin' But 90s | Music | Plex AU | Full |
@@ -667,7 +668,7 @@ The six Australian TV rows above are app-managed and not counted in this FAST/IP
 | 1306 | Y2K | Music | Plex AU | Full |
 | 1307 | MTV Spankin' New | Music | Pluto | Full |
 | 1308 | TRACE UK | Music | Plex AU | Full |
-| 1309 | Stingray Classic Rock | Music | Samsung | Channel only |
+| 1309 | Stingray Classic Rock | Music | Xumo | Channel only |
 | 1310 | Metal.Rocks | Music | Plex AU | Full |
 | 1311 | Hip-Hop/R&B | Music | Plex AU | Full |
 | 1312 | Yo! MTV | Music | Pluto | Full |
