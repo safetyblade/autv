@@ -7,3 +7,4 @@ Gordon Ramsay
 The NBA Channel
 # Refresh workflow retrigger after apsattv fallback fix — 23 Nov 2026
 Kartoon Channel!
+# Refresh trigger 23 Nov 2026: re-run after the 09:17 AEDT push-triggered runs were cancelled by the concurrency group before publishing.
