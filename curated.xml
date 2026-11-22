@@ -1092,6 +1092,10 @@
     <display-name>ZenLIFE by Stingray</display-name>
     <icon src="https://provider-static.plex.tv/epg/cms/production/6e254786-1243-462b-bf6c-75d21b68582d/10423_ZL_Plex_Launch-assets_Channel-Logo_1500x1000_V01-White_-_Sacha_Portaria.png" />
   </channel>
+  <channel id="697140a85d851f5e69414688-6ad26abd5374a1e72d134628">
+    <display-name>Counting Cars+</display-name>
+    <icon src="https://provider-static.plex.tv/epg/cms/production/345642f1-edf4-4726-90e9-c6c5b44d3629/Counting_Cars_channel_logo_4c_1500x1000.png" />
+  </channel>
   <channel id="66b646f9cd0d3100086af83c">
     <display-name>60 Minutes</display-name>
     <icon src="https://images.pluto.tv/channels/66b646f9cd0d3100086af83c/colorLogoPNG.png" />
@@ -1624,6 +1628,18 @@
     <display-name>Big A Anime</display-name>
     <icon src="https://images.pluto.tv/channels/6a3c5fa46276c42ac6726b27/colorLogoPNG_1785178474278.png" />
   </channel>
+  <channel id="68757c60552299d2b080eab6">
+    <display-name>Project Runway</display-name>
+    <icon src="https://images.pluto.tv/channels/68757c60552299d2b080eab6/colorLogoPNG_1753221108158.png" />
+  </channel>
+  <channel id="69fca9f9b9c0f0d444f631ca">
+    <display-name>Mr. Bean Animated</display-name>
+    <icon src="https://images.pluto.tv/channels/69fca9f9b9c0f0d444f631ca/colorLogoPNG_1778514521886.png" />
+  </channel>
+  <channel id="681ba2729624e6275efe0044">
+    <display-name>NatureTime</display-name>
+    <icon src="https://images.pluto.tv/channels/681ba2729624e6275efe0044/colorLogoPNG_1785345896564.png" />
+  </channel>
   <channel id="c0b79a332cfd90b8eeb6d4a0dcb63674">
     <display-name>Top Rank Classics</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/c0b79a332cfd90b8eeb6d4a0dcb63674/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1730998467166_TRClassics_HUD.png" />
@@ -2048,6 +2064,26 @@
     <display-name>The First 48 by A&amp;E</display-name>
     <icon src="https://image.xumo.com/v1/channels/channel/99951490/168x168.png?type=color_onBlack" />
   </channel>
+  <channel id="99991331">
+    <display-name>The Asylum</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99991331/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99991680">
+    <display-name>Unsolved Mysteries</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99991680/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99951192">
+    <display-name>Anger Management</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99951192/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99991117">
+    <display-name>Stingray Hit List</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99991117/168x168.png?type=color_onBlack" />
+  </channel>
+  <channel id="99991119">
+    <display-name>Stingray Classic Rock</display-name>
+    <icon src="https://image.xumo.com/v1/channels/channel/99991119/168x168.png?type=color_onBlack" />
+  </channel>
   <channel id="400000294">
     <display-name>Watch AEW</display-name>
     <icon src="https://canvas-lb.tubitv.com/opts/yeAV3-c2XWfYzw==/e9cd4624-20d8-421b-b5ed-282769cf2f57/CHgQeDoFMS4xLjlAAQ==" />
@@ -2075,6 +2111,10 @@
   <channel id="400000116">
     <display-name>The NBA Channel</display-name>
     <icon src="https://canvas-lb.tubitv.com/opts/VGJpYUttk1EYXg==/7d258341-afc7-4022-acd4-ce330c6db573/CHgQeDoFMS4xLjlAAQ==" />
+  </channel>
+  <channel id="400000033">
+    <display-name>Kartoon Channel!</display-name>
+    <icon src="https://canvas-lb.tubitv.com/opts/_oaMTbqkvgy0VA==/4258e598-4722-409b-8e3c-625f800ba9ba/CHgQeDoFMS4xLjlAAQ==" />
   </channel>
   <channel id="5ddd7cb2cbb9010009b4fe32">
     <display-name>Nick Jr Club</display-name>
