@@ -153,7 +153,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 332,PopCorn Central,Movies,Specialty / Niche,Full,Roku,,Active,Movie and entertainment channel featuring a broad catalogue of films and selected series.
 333,Surf Cinema,Movies,Specialty / Niche,Full,Plex AU,,Active,Movie-focused FAST channel with scheduled films or genre collections.
 334,CINEPRIDE,Movies,Specialty / Niche,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
-335,The Asylum (Australia),Movies,Specialty / Niche,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
+335,The Asylum (Australia),Movies,Specialty / Niche,Full,Xumo,Curated (apsattv),Active,General entertainment FAST channel with mixed or broad programming.
 336,Trailers From Hell,Movies,Specialty / Niche,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 400,Family Feud,Game Shows,Major / Classic Game Shows,Full,Xumo,,Active,Game-show and competition programming.
 401,Family Feud Classic,Game Shows,Major / Classic Game Shows,Full,Xumo,,Active,Game-show and competition programming.
@@ -168,7 +168,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 410,Robot Wars by Mech+,Game Shows,Physical / Competition,Full,Plex AU,,Active,Robot-combat competition channel featuring Robot Wars and related mechanical competition programming.
 411,Xumo Free Game Show TV,Game Shows,General Game Show Network,Full,Xumo,,Active,Game-show and competition programming.
 412,America's Next Top Model,Game Shows,Competition / Reality,Full,Pluto,,Active,Competition-format reality programming.
-413,Project Runway (Australia),Game Shows,Competition / Reality,Full,Curated,,Active,Competition-format reality programming.
+413,Project Runway (Australia),Game Shows,Competition / Reality,Full,Pluto,Curated (apsattv),Active,Competition-format reality programming.
 414,Survivor,Game Shows,Competition / Reality,Full,Pluto,,Active,Competition-format reality programming.
 415,The Amazing Race,Game Shows,Competition / Reality,Full,Pluto,,Active,Competition-format reality programming.
 416,The Biggest Loser,Game Shows,Competition / Reality,Full,Plex AU,,Active,Competition-format reality programming.
@@ -193,7 +193,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 516,The First 48 by A&E,Crime,True Crime / Investigations,Full,Xumo,Pluto,Active,"Crime, investigation, court, mystery or forensic programming."
 517,The New Detectives,Crime,True Crime / Investigations,Full,Pluto,,Active,"Crime, investigation, court, mystery or forensic programming."
 518,True Crime Now,Crime,True Crime / Investigations,Full,Plex AU,,Active,"Crime, investigation, court, mystery or forensic programming."
-519,Unsolved Mysteries (Australia),Crime,True Crime / Investigations,Full,Curated,,Active,"Crime, investigation, court, mystery or forensic programming."
+519,Unsolved Mysteries (Australia),Crime,True Crime / Investigations,Full,Xumo,Curated (apsattv),Active,"Crime, investigation, court, mystery or forensic programming."
 520,Women Behind Bars,Crime,True Crime / Investigations,Full,Plex AU,,Active,True-crime and prison-focused programming centred on incarcerated women.
 521,48 Hours,Crime,True Crime / Investigations,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
 522,Homicide Hunter,Crime,True Crime / Investigations,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
@@ -246,7 +246,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 623,Always Funny Videos,Comedy,Alternative / Visual / Creator Comedy,Full,Roku,,Active,"Comedy, sitcom or stand-up programming."
 624,MST3K,Comedy,Alternative / Visual / Creator Comedy,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
 625,RiffTrax,Comedy,Alternative / Visual / Creator Comedy,Full,Pluto,,Active,"Comedy, sitcom or stand-up programming."
-626,Mr Bean Animated (Australia),Comedy,Alternative / Visual / Creator Comedy,Full,Curated,,Active,"Comedy, sitcom or stand-up programming."
+626,Mr Bean Animated (Australia),Comedy,Alternative / Visual / Creator Comedy,Full,Pluto,Curated (apsattv),Active,"Comedy, sitcom or stand-up programming."
 627,Stokes Twins,Comedy,Alternative / Visual / Creator Comedy,Full,Roku,,Active,"Comedy, sitcom or stand-up programming."
 628,Taxi,Comedy,Classic Sitcoms,Full,Pluto,,Active,Classic sitcom channel featuring Taxi episodes.
 629,Three's Company,Comedy,Classic Sitcoms,Full,Pluto,,Active,Classic sitcom channel featuring Three's Company.
@@ -256,7 +256,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 633,Green Acres,Comedy,Classic Sitcoms,Full,Xumo,,Active,Classic television series and archive entertainment.
 634,Leave It to Beaver,Comedy,Classic Sitcoms,Full,Xumo,,Active,Classic television series and archive entertainment.
 635,ALF,Comedy,Classic Sitcoms,Full,Roku,,Active,"Comedy, sitcom or stand-up programming."
-636,Anger Management (Australia),Comedy,Major / Modern Sitcoms,Full,Curated,,Active,General entertainment FAST channel with mixed or broad programming.
+636,Anger Management (Australia),Comedy,Major / Modern Sitcoms,Full,Xumo,Curated (apsattv),Active,General entertainment FAST channel with mixed or broad programming.
 637,Corner Gas,Comedy,Major / Modern Sitcoms,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 638,Dick Van Dyke,Comedy,Classic Sitcoms,Full,Plex AU,,Active,General entertainment FAST channel with mixed or broad programming.
 639,Happy Days,Comedy,Classic Sitcoms,Full,Pluto,,Active,General entertainment FAST channel with mixed or broad programming.
@@ -525,7 +525,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1117,Evolution Earth,Factual,Nature / Wildlife,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
 1118,Dinos 24/7,Factual,Nature / Wildlife,Full,Pluto,,Active,"Documentary, factual, history, science or real-world programming."
 1119,Nature Moments,Factual,Nature / Wildlife,Full,Roku,,Active,"Documentary, factual, history, science or real-world programming."
-1120,Naturetime (Australia),Factual,Nature / Wildlife,Full,Curated,,Active,"Documentary, factual, history, science or real-world programming."
+1120,Naturetime (Australia),Factual,Nature / Wildlife,Full,Pluto,Curated (apsattv),Active,"Documentary, factual, history, science or real-world programming."
 1121,River Monsters,Factual,Nature / Wildlife,Full,Plex AU,,Active,Wildlife and adventure factual series focused on freshwater predators and extreme fishing expeditions.
 1122,Eddie's Wonderland,Factual,Nature / Wildlife,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
 1123,PBS Science,Factual,Science / Engineering / Discovery,Full,Plex AU,,Active,"Documentary, factual, history, science or real-world programming."
@@ -592,7 +592,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1227,Arthur,Kids & Animation,Kids / Family Animation,Full,Plex AU,,Active,"Kids, family and animation programming."
 1228,Mona The Vampire,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
 1229,The Raccoons,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
-1230,Kartoon Channel (Australia),Kids & Animation,Kids / Family Animation,Full,Curated,,Active,"Kids, family and animation programming."
+1230,Kartoon Channel (Australia),Kids & Animation,Kids / Family Animation,Full,Tubi,Curated (apsattv),Active,"Kids, family and animation programming."
 1231,Nickelodeon Pluto TV,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
 1232,NickToons,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
 1233,Pluto TV Retro Toons,Kids & Animation,Kids / Family Animation,Full,Pluto,,Active,"Kids, family and animation programming."
@@ -615,7 +615,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1250,Unspeakable,Kids & Animation,Youth Creator / Gaming,Full,Plex AU,,Active,"Youth creator channel featuring gaming, challenges and family-friendly entertainment."
 1251,Beyblade,Kids & Animation,Kids / Family Animation,Full,Plex GB,Plex AU,Active,Animated action and competitions featuring Beyblade spinning tops.
 1300,Stingray Greatest Hits,Music,Hits / Pop / Decades,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
-1301,Stingray Hit List,Music,Hits / Pop / Decades,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
+1301,Stingray Hit List,Music,Hits / Pop / Decades,Channel only,Xumo,Samsung,Active,"Music videos, performances or genre-based music programming."
 1302,Stingray Pop Adult,Music,Hits / Pop / Decades,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
 1303,Stingray 2000s,Music,Hits / Pop / Decades,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
 1304,Nothin' But 90s,Music,Hits / Pop / Decades,Full,Plex AU,,Active,"1990s music channel featuring pop, rock and hits from the decade."
@@ -623,7 +623,7 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1306,Y2K,Music,Hits / Pop / Decades,Full,Plex AU,,Active,2000s-era music channel featuring pop and hits from the Y2K period.
 1307,MTV Spankin' New,Music,Hits / Pop / Decades,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
 1308,TRACE UK,Music,Hits / Pop / Decades,Full,Plex AU,,Active,UK-focused music channel featuring contemporary hits and music videos.
-1309,Stingray Classic Rock,Music,Rock / Metal,Channel only,Samsung,,Active,"Music videos, performances or genre-based music programming."
+1309,Stingray Classic Rock,Music,Rock / Metal,Channel only,Xumo,Samsung,Active,"Music videos, performances or genre-based music programming."
 1310,Metal.Rocks,Music,Rock / Metal,Full,Plex AU,,Active,Rock and metal music channel featuring heavy music videos and related programming.
 1311,Hip-Hop/R&B,Music,Hip-Hop / R&B / Soul,Full,Plex AU,,Active,Hip-hop and R&B music channel featuring music videos and genre programming.
 1312,Yo! MTV,Music,Hip-Hop / R&B / Soul,Full,Pluto,,Active,"Music videos, performances or genre-based music programming."
@@ -643,3 +643,4 @@ Channel number,Channel name,Genre,Subgenre,EPG,Source,Alternate source,Status,De
 1326,Stingray Naturescape,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
 1327,Stingray Holidayscapes,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
 1328,ZenLIFE by Stingray,Music,Chill / Ambient,Full,Plex AU,,Active,"Music videos, performances or genre-based music programming."
+1091,Counting Cars+,Reality & Lifestyle,People / Work / Unscripted,Full,Plex AU,,Active,Motoring reality channel following a Las Vegas car restoration and customisation shop.
