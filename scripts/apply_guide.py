@@ -101,6 +101,14 @@ guide = {
     if row.get("Status", "Active").strip().casefold() == "active"
 }
 
+# Owner-approved upstream name equivalences (23 Nov 2026): branded guide
+# channels whose replacement provider lists them under an unbranded name.
+# Maps the provider's canonical listing name to the guide's canonical name.
+GUIDE_NAME_ALIASES = {
+    "pop adult": "stingray pop adult",
+    "easy listening": "stingray easy listening",
+}
+
 header, entries = parse_entries(PLAYLIST.read_text(encoding="utf-8-sig"))
 ranked = []
 missing = []
@@ -111,10 +119,15 @@ for position, (name, extinf, url) in enumerate(entries):
     if logical_name in seen_names:
         continue
     seen_names.add(logical_name)
-    guide_row = guide_all.get(logical_name)
+    lookup_name = logical_name
+    if logical_name not in guide_all:
+        alias_target = GUIDE_NAME_ALIASES.get(logical_name)
+        if alias_target and alias_target in guide_all:
+            lookup_name = alias_target
+    guide_row = guide_all.get(lookup_name)
     if guide_row and guide_row.get("Status", "Active").strip().casefold() != "active":
         continue
-    row = guide.get(logical_name)
+    row = guide.get(lookup_name)
     if row:
         channel_no = int(row["Channel number"])
         genre = row["Genre"].strip() or "General Entertainment"
