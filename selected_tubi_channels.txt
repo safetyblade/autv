@@ -6,3 +6,4 @@ UEFA.tv
 Gordon Ramsay
 The NBA Channel
 # Refresh workflow retrigger after apsattv fallback fix — 23 Nov 2026
+Kartoon Channel!
