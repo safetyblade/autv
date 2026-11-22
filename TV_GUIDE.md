@@ -661,7 +661,7 @@ The six Australian TV rows above are app-managed and not counted in this FAST/IP
 | 1251 | Beyblade | Kids & Animation | Plex GB | Full |
 | 1300 | Stingray Greatest Hits | Music | Plex AU | Full |
 | 1301 | Stingray Hit List | Music | Xumo | Channel only |
-| 1302 | Stingray Pop Adult | Music | Samsung | Channel only |
+| 1302 | Stingray Pop Adult | Music | Plex AU | Channel only |
 | 1303 | Stingray 2000s | Music | Samsung | Channel only |
 | 1304 | Nothin' But 90s | Music | Plex AU | Full |
 | 1305 | Remember the ‘80s | Music | Plex AU | Full |
@@ -683,7 +683,7 @@ The six Australian TV rows above are app-managed and not counted in this FAST/IP
 | 1321 | Qello Concerts | Music | Pluto | Full |
 | 1322 | Stingray Karaoke | Music | Plex AU | Full |
 | 1323 | XITE Gospel | Music | Pluto | Full |
-| 1324 | Stingray Easy Listening | Music | Samsung | Channel only |
+| 1324 | Stingray Easy Listening | Music | Plex AU | Channel only |
 | 1325 | Stingray SPA | Music | Samsung | Channel only |
 | 1326 | Stingray Naturescape | Music | Plex AU | Full |
 | 1327 | Stingray Holidayscapes | Music | Plex AU | Full |
