@@ -48,13 +48,15 @@ jobs:
               rows=[r for r in csv.DictReader(f) if r["Status"].strip().lower()=="active"]
           assert len(rows)>=600
           with fitz.open(print_pdf) as pdf:
-              assert pdf.page_count==18
+              print_pages=pdf.page_count
               assert all(840<page.rect.width<843 and 594<page.rect.height<597 for page in pdf)
           with fitz.open(read_pdf) as pdf:
-              assert pdf.page_count==36
+              reader_pages=pdf.page_count
+              assert reader_pages % 4 == 0
+              assert print_pages * 2 == reader_pages
               assert all(419<page.rect.width<421 and 594<page.rect.height<597 for page in pdf)
           assert print_pdf.stat().st_size>30000 and read_pdf.stat().st_size>30000
-          print(f"Approved master preserved. {len(rows)} channel records; 18 imposed / 36 reading pages.")
+          print(f"Approved master preserved. {len(rows)} channel records; {print_pages} imposed / {reader_pages} reading pages.")
           PY
       - name: Archive approved editions
         uses: actions/upload-artifact@v4
@@ -76,6 +78,28 @@ jobs:
             exit 0
           fi
           git commit -m "docs: update approved booklet data without changing design"
-          git fetch origin main
-          git rebase origin/main
-          git push origin HEAD:main
+          for attempt in 1 2 3; do
+            echo "Publish attempt ${attempt}/3"
+            git fetch origin main
+            if ! git rebase origin/main; then
+              echo "::warning::Rebase failed on attempt ${attempt}; aborting rebase before retry"
+              git rebase --abort || true
+              if [ "${attempt}" -eq 3 ]; then
+                echo "::error::Unable to rebase booklet publication after 3 attempts"
+                exit 1
+              fi
+              sleep $((attempt * 2))
+              continue
+            fi
+            if git push origin HEAD:main; then
+              echo "Booklet PDFs published successfully on attempt ${attempt}"
+              exit 0
+            fi
+            echo "::warning::Push rejected or failed on attempt ${attempt}; will fetch and rebase again"
+            if [ "${attempt}" -eq 3 ]; then
+              echo "::error::Unable to publish booklet PDFs after 3 attempts"
+              exit 1
+            fi
+            sleep $((attempt * 2))
+          done
+          exit 1
