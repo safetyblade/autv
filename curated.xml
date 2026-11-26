@@ -1816,6 +1816,10 @@
     <display-name>SPARK TV</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/eb1dbd690001553eacdf32d7b155b933/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1659742235158_Whitt_Hansen_-_SparkTVLogo_HUD_2_v2.png" />
   </channel>
+  <channel id="34e2d8f442ab5fa3aed29436c2f8ed63">
+    <display-name>Shades of Black</display-name>
+    <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/34e2d8f442ab5fa3aed29436c2f8ed63/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1665448180798_ShadesOfBlack_Logo_Roku_EFEF_260x147_%25281%2529.png" />
+  </channel>
   <channel id="223627443ebe5007b1b9461cc1ea297e">
     <display-name>Life with Derek</display-name>
     <icon src="https://images.sr.roku.com/idType/roku-trc/context/trc/id/223627443ebe5007b1b9461cc1ea297e/https%3A%2F%2Fimage.roku.com%2Fbh-uploads%2Fproduction%2FinfoHUDLogo%2F1788370831477_US_ROKU_LIFEWITHDEREK_INFOHUD_260x147.png" />
